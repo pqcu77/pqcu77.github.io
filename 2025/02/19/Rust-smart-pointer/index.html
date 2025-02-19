@@ -1,0 +1,488 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>Rust_smart_pointer | PQCU' blog</title><meta name="author" content="PQCU"><meta name="copyright" content="PQCU"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="Rust_smart_pointer"><meta name="application-name" content="Rust_smart_pointer"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="Rust_smart_pointer"><meta property="og:url" content="http://example.com/2025/02/19/Rust-smart-pointer/index.html"><meta property="og:site_name" content="PQCU' blog"><meta property="og:description" content="智能指针智能指针是一类数据结构，它们表现类似指针，但是也拥有额外的元数据和功能。  引用计数 （ reference counting ）智能指针类型。这种指针允许数据有多个所有者，它会记录所有者的数量，当没有所有者时清理数据。 在 Rust 中因为引用和借用，普通引用和智能指针的一个额外的区别是引"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://wx3.sinaimg.cn/mw690/007Bih3Rgy1hyk9bmxq5kj32382sbx6p.jpg"><meta property="article:author" content="PQCU"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://wx3.sinaimg.cn/mw690/007Bih3Rgy1hyk9bmxq5kj32382sbx6p.jpg"><meta name="description" content="智能指针智能指针是一类数据结构，它们表现类似指针，但是也拥有额外的元数据和功能。  引用计数 （ reference counting ）智能指针类型。这种指针允许数据有多个所有者，它会记录所有者的数量，当没有所有者时清理数据。 在 Rust 中因为引用和借用，普通引用和智能指针的一个额外的区别是引"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="http://example.com/2025/02/19/Rust-smart-pointer/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: {"enable":true,"img":"https://upload-bbs.miyoushe.com/upload/2024/07/27/125766904/ba62475f396df9de3316a08ed9e65d86_5680958632268053399..png"},
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: {"enable":true,"ck":null,"LingQueMonitorID":null},
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 休息一下叭！","startTime":12,"endTime":14},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":18},{"greeting":"19点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":19,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: '',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"","mailMd5":""},
+  music_page_default: "nav_music",
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: false,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ cs专业在读","🔍 本科课程笔记记录"]},
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: PQCU","link":"链接: ","source":"来源: PQCU' blog","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'PQCU' blog',
+  title: 'Rust_smart_pointer',
+  postAI: '',
+  pageFillDescription: '智能指针, 使用BoxltTgt指向堆上的数据, 使用BoxltTgt在堆上储存数据, Box允许创建递归类型, 通过Deref trait将智能指针当作常规引用处理, RcltTgt引用计数智能指针, cow, Cow 的核心思想是：, Cow 的常用方法, (1) to_mut：获取可变引用, (2) into_owned：获取所有权, (3) is_borrowed 和 is_owned：检查状态, 使用Drop Trait运行清理代码, 定义, Drop与所有权, Drop与Copy, RefCellltTgt和内部可变模式, 通过 RefCellltTgt在运行时检查借用规则, 内部可变性：不可变值的可变借用, 主要方法, ArcltTgt： Atomic Reference Counting （原子引用计数）, 主要方法智能指针智能指针是一类数据结构它们表现类似指针但是也拥有额外的元数据和功能引用计数智能指针类型这种指针允许数据有多个所有者它会记录所有者的数量当没有所有者时清理数据在中因为引用和借用普通引用和智能指针的一个额外的区别是引用是一类只借用数据的指针相反在大部分情况下智能指针拥有它们指向的数据常用的智能指针用于在堆上分配值一个引用计数类型其数据可以有多个所有者和通过访问是一个在运行时而不是在编译时执行借用规则的类型使用指向堆上的数据允许你将一个值放在堆上而不是栈上留在栈上的则是指向堆数据的指针使用在堆上储存数据允许创建递归类型递归类型的值可以拥有另一个同类型的值作为其自身的一部分是一个来源于编程语言及其方言的数据结构它由嵌套的列表组成类似于的广义表是指针是可以知道大小的通过将智能指针当作常规引用处理实现允许我们重载解引用运算符解引用像引用一样使用将设置为一个指向值拷贝的实例而不是指向值的引用引用计数智能指针如果某个值有零个引用就代表没有任何有效引用并可以被清理使用共享数据也可以调用而不是不过在这里的习惯是使用克隆会增加引用计数不会复制实例而是增加的引用计数所有行星共享同一个实例引用计数每次调用引用计数加每次调用引用计数减的作用用于手动释放所有权减少引用计数当引用计数为时会自动释放内存的核心思想是如果数据是只读的直接使用借用避免复制如果数据需要修改则复制数据并拥有所有权的常用方法获取可变引用如果是则复制数据并转换为如果已经是则直接返回可变引用复制数据并转换为输出获取所有权将转换为拥有所有权的数据转换为输出和检查状态检查是否是检查是否是使用运行清理代码定义方法在值离开作用域时自动调用也可以手动调用来清理代码手动调用与所有权当一个值的所有权转移时不会立即调用只有在值离开作用域时才会调用如果值被移动如传递给函数会在新作用域结束时调用与二者不能同时实现表示类型可以通过位复制来复制值而表示类型需要清理操作如果类型实现了会阻止你实现因为复制可能会导致资源被多次释放和内部可变模式内部可变性是中的一个设计模式它允许你即使在有不可变引用时也可以改变数据该模式在数据结构中使用代码来模糊通常的可变性和借用规则不安全代码表明我们在手动检查这些规则而不是让编译器替我们检查通过在运行时检查借用规则不同于代表其数据的唯一的所有权如下为选择或的理由允许相同数据有多个所有者和有单一所有者允许在编译时执行不可变或可变借用检查仅允许在编译时执行不可变借用检查允许在运行时执行不可变或可变借用检查因为允许在运行时执行可变借用检查所以我们可以在即便自身是不可变的情况下修改其内部的值内部可变性不可变值的可变借用借用规则的一个推论是当有一个不可变值时不能可变地借用它对象对象是特定类型的测试替身它们记录测试过程中发生了什么以便可以断言操作是正确的主要方法获取一个不可变引用如果已经有可变引用会获取一个可变引用如果已经有其他引用可变或不可变会和与和类似但不会而是返回原子引用计数引用计数会跟踪指向同一数据的引用数量每次克隆时引用计数会增加当被丢弃时引用计数会减少当引用计数为时数据会被释放线程安全是线程安全的因为它的引用计数操作是原子的这意味着多个线程可以安全地共享同一个不可变性本身是不可变的如果需要修改内部数据通常需要与或结合使用主要方法创建一个新的克隆增加引用计数返回当前强引用计数创建一个弱引用不会增加引用计数如果引用计数为则返回内部数据否则返回',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-02-19 11:57:55',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/custom/schedule.css"><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://npm.elemecdn.com/anzhiyu-blog-static@1.0.4/img/avatar.jpg"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><a id="site-name" href="/" accesskey="h"><div class="title">PQCU' blog</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png" target="_blank"><img class="post-qr-code-img" alt="微信" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src="https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">学习笔记<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/02/"><span class="card-archive-list-date">二月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">9</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/Rust/" itemprop="url">Rust</a></span><span class="article-meta tags"></span></div></div><h1 class="post-title" itemprop="name headline">Rust_smart_pointer</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2025-02-19T03:56:48.000Z" title="发表于 2025-02-19 11:56:48">2025-02-19</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2025-02-19T03:57:55.186Z" title="更新于 2025-02-19 11:57:55">2025-02-19</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="Rust_smart_pointer"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为广州"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>广州</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src=""></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="http://example.com/2025/02/19/Rust-smart-pointer/"><header><a class="post-meta-categories" href="/categories/Rust/" itemprop="url">Rust</a><h1 id="CrawlerTitle" itemprop="name headline">Rust_smart_pointer</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">PQCU</span><time itemprop="dateCreated datePublished" datetime="2025-02-19T03:56:48.000Z" title="发表于 2025-02-19 11:56:48">2025-02-19</time><time itemprop="dateCreated datePublished" datetime="2025-02-19T03:57:55.186Z" title="更新于 2025-02-19 11:57:55">2025-02-19</time></header><h1 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h1><p>智能指针是一类数据结构，它们表现类似指针，但是也拥有额外的元数据和功能。</p>
+<ul>
+<li><strong>引用计数</strong> （ <em>reference counting</em> ）智能指针类型。这种指针允许数据有多个所有者，它会记录所有者的数量，当没有所有者时清理数据。</li>
+<li>在 Rust 中因为引用和借用，普通引用和智能指针的一个额外的区别是引用是一类 <strong>只借用数据的指针</strong> ；相反，在大部分情况下，智能指针 <strong>拥有</strong> 它们指向的数据。</li>
+</ul>
+<p>常用的智能指针：</p>
+<ul>
+<li><code>Box&lt;T&gt;</code>，用于在堆上分配值</li>
+<li><code>Rc&lt;T&gt;</code>，一个引用计数类型，其数据可以有多个所有者</li>
+<li><code>Ref&lt;T&gt;</code> 和 <code>RefMut&lt;T&gt;</code>，通过 <code>RefCell&lt;T&gt;</code> 访问。（ <code>RefCell&lt;T&gt;</code> 是一个在运行时而不是在编译时执行借用规则的类型）。</li>
+</ul>
+<h2 id="使用Box指向堆上的数据"><a href="#使用Box指向堆上的数据" class="headerlink" title="使用Box&lt;T&gt;指向堆上的数据"></a>使用Box<code>&lt;T&gt;</code>指向堆上的数据</h2><p>box 允许你将一个值放在堆上而不是栈上。留在栈上的则是指向堆数据的指针。</p>
+<h3 id="使用Box在堆上储存数据"><a href="#使用Box在堆上储存数据" class="headerlink" title="使用Box&lt;T&gt;在堆上储存数据"></a>使用Box<code>&lt;T&gt;</code>在堆上储存数据</h3><ul>
+<li><code>let b = Box::new(5);</code></li>
+</ul>
+<h3 id="Box允许创建递归类型"><a href="#Box允许创建递归类型" class="headerlink" title="Box允许创建递归类型"></a>Box允许创建递归类型</h3><p> <strong>递归类型</strong> （ <em>recursive type</em> ）的值可以拥有另一个同类型的值作为其自身的一部分。</p>
+<ul>
+<li>cons list：<ul>
+<li><em>cons list</em> 是一个来源于 Lisp 编程语言及其方言的数据结构，它由嵌套的列表组成。（类似于c++的广义表）</li>
+<li>Box是指针，是可以知道大小的。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">List</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">Cons</span>(<span class="type">i32</span>, <span class="type">Box</span>&lt;List&gt;),</span><br><span class="line">    Nil,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> crate::List::&#123;Cons, Nil&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">list</span> = <span class="title function_ invoke__">Cons</span>(<span class="number">1</span>, <span class="type">Box</span>::<span class="title function_ invoke__">new</span>(<span class="title function_ invoke__">Cons</span>(<span class="number">2</span>, <span class="type">Box</span>::<span class="title function_ invoke__">new</span>(<span class="title function_ invoke__">Cons</span>(<span class="number">3</span>, <span class="type">Box</span>::<span class="title function_ invoke__">new</span>(Nil))))));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="通过Deref-trait将智能指针当作常规引用处理"><a href="#通过Deref-trait将智能指针当作常规引用处理" class="headerlink" title="通过Deref trait将智能指针当作常规引用处理"></a>通过Deref trait将智能指针当作常规引用处理</h2><ul>
+<li>实现 <code>Deref</code> trait 允许我们重载 <strong>解引用运算符</strong></li>
+<li>解引用</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">y</span> = &amp;x;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">assert_eq!</span>(<span class="number">5</span>, x);</span><br><span class="line">    <span class="built_in">assert_eq!</span>(<span class="number">5</span>, *y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>像引用一样使用Box<code>&lt;T&gt;</code></li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">y</span> = <span class="type">Box</span>::<span class="title function_ invoke__">new</span>(x);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">assert_eq!</span>(<span class="number">5</span>, x);</span><br><span class="line">    <span class="built_in">assert_eq!</span>(<span class="number">5</span>, *y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>将 <code>y</code> 设置为一个指向 <code>x</code> 值拷贝的 <code>Box&lt;T&gt;</code> 实例，而不是指向 <code>x</code> 值的引用。</li>
+</ul>
+<h2 id="Rc引用计数智能指针"><a href="#Rc引用计数智能指针" class="headerlink" title="Rc&lt;T&gt;引用计数智能指针"></a>Rc<code>&lt;T&gt;</code>引用计数智能指针</h2><p>如果某个值有零个引用，就代表没有任何有效引用并可以被清理。</p>
+<ul>
+<li>使用Rc<code>&lt;T&gt;</code>共享数据</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">List</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">Cons</span>(<span class="type">i32</span>, Rc&lt;List&gt;),</span><br><span class="line">    Nil,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> crate::List::&#123;Cons, Nil&#125;;</span><br><span class="line">**<span class="keyword">use</span> std::rc::Rc;**</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">a</span> = Rc::<span class="title function_ invoke__">new</span>(<span class="title function_ invoke__">Cons</span>(<span class="number">5</span>, Rc::<span class="title function_ invoke__">new</span>(<span class="title function_ invoke__">Cons</span>(<span class="number">10</span>, Rc::<span class="title function_ invoke__">new</span>(Nil)))));</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">b</span> = <span class="title function_ invoke__">Cons</span>(<span class="number">3</span>, Rc::<span class="title function_ invoke__">clone</span>(&amp;a));</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">c</span> = <span class="title function_ invoke__">Cons</span>(<span class="number">4</span>, Rc::<span class="title function_ invoke__">clone</span>(&amp;a));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以调用 <code>a.clone()</code> 而不是 <code>Rc::clone(&amp;a)</code>，不过在这里 Rust 的习惯是使用 <code>Rc::clone</code>。</p>
+<ul>
+<li>克隆Rc<code>&lt;T&gt;</code>会增加引用计数</li>
+</ul>
+<ol>
+<li><strong><code>Rc::clone</code></strong> ：</li>
+</ol>
+<ul>
+<li><code>Rc::clone(&amp;sun)</code> 不会复制 <code>Sun</code> 实例，而是增加 <code>Rc</code> 的引用计数。</li>
+<li>所有行星共享同一个 <code>Sun</code> 实例。</li>
+</ul>
+<ol>
+<li><strong>引用计数</strong> ：</li>
+</ol>
+<ul>
+<li>每次调用 <code>Rc::clone(&amp;sun)</code>，引用计数加 1。</li>
+<li>每次调用 <code>drop</code>，引用计数减 1。</li>
+</ul>
+<ol>
+<li><strong><code>drop</code> 的作用</strong> ：</li>
+</ol>
+<ul>
+<li><code>drop</code> 用于手动释放所有权，减少引用计数。</li>
+<li>当引用计数为 0 时，<code>Rc</code> 会自动释放内存。</li>
+</ul>
+<h2 id="cow"><a href="#cow" class="headerlink" title="cow:"></a>cow:</h2><h3 id="Cow-的核心思想是："><a href="#Cow-的核心思想是：" class="headerlink" title="Cow 的核心思想是："></a><code>Cow</code> 的核心思想是：</h3><ul>
+<li>如果数据是 <strong>只读的</strong> ，直接 <strong>使用借用</strong> （<code>Borrowed</code>），避免复制。</li>
+<li>如果数据 <strong>需要修改</strong> ，则 <strong>复制数据并拥有所有权</strong> （<code>Owned</code>）。</li>
+</ul>
+<h2 id="Cow-的常用方法"><a href="#Cow-的常用方法" class="headerlink" title="Cow 的常用方法"></a><code>Cow</code> 的常用方法</h2><h3 id="1-to-mut：获取可变引用"><a href="#1-to-mut：获取可变引用" class="headerlink" title="(1) to_mut：获取可变引用"></a>(1) <code>to_mut</code>：获取可变引用</h3><p>如果 <code>Cow</code> 是 <code>Borrowed</code>，则复制数据并转换为 <code>Owned</code>；如果已经是 <code>Owned</code>，则直接返回可变引用。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let mut cow = Cow::Borrowed(&quot;hello&quot;);</span><br><span class="line">let s = cow.to_mut(); // 复制数据并转换为 Owned</span><br><span class="line">s.push_str(&quot; world&quot;);</span><br><span class="line">println!(&quot;&#123;&#125;&quot;, s); // 输出 &quot;hello world&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-into-owned：获取所有权"><a href="#2-into-owned：获取所有权" class="headerlink" title="(2) into_owned：获取所有权"></a>(2) <code>into_owned</code>：获取所有权</h3><p>将 <code>Cow</code> 转换为拥有所有权的数据。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let cow = Cow::Borrowed(&quot;hello&quot;);</span><br><span class="line">let s: String = cow.into_owned(); // 转换为 String</span><br><span class="line">println!(&quot;&#123;&#125;&quot;, s); // 输出 &quot;hello&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-is-borrowed-和-is-owned：检查状态"><a href="#3-is-borrowed-和-is-owned：检查状态" class="headerlink" title="(3) is_borrowed 和 is_owned：检查状态"></a>(3) <code>is_borrowed</code> 和 <code>is_owned</code>：检查状态</h3><ul>
+<li><code>is_borrowed</code>：检查是否是 <code>Borrowed</code>。</li>
+<li><code>is_owned</code>：检查是否是 <code>Owned</code>。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">let cow = Cow::Borrowed(&quot;hello&quot;);</span><br><span class="line">assert!(cow.is_borrowed());</span><br><span class="line">assert!(!cow.is_owned());</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用Drop-Trait运行清理代码"><a href="#使用Drop-Trait运行清理代码" class="headerlink" title="使用Drop Trait运行清理代码"></a>使用Drop Trait运行清理代码</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">pub</span> <span class="keyword">trait</span> <span class="title class_">Drop</span> &#123;</span><br><span class="line">    <span class="keyword">fn</span> <span class="title function_">drop</span>(&amp;<span class="keyword">mut</span> <span class="keyword">self</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>drop方法在值离开作用域时<strong>自动调用</strong></p>
+<p>也可以手动调用drop()来清理代码</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">x</span> = MyStruct &#123; name: <span class="type">String</span>::<span class="title function_ invoke__">from</span>(<span class="string">&quot;x&quot;</span>) &#125;;</span><br><span class="line">    <span class="title function_ invoke__">drop</span>(x); <span class="comment">// 手动调用 drop</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;x has been dropped&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Drop与所有权"><a href="#Drop与所有权" class="headerlink" title="Drop与所有权"></a>Drop与所有权</h3><ul>
+<li>当一个值的所有权转移时，drop不会立即调用，只有在<strong>值离开作用域时</strong>才会调用</li>
+<li>如果值被移动（如传递给函数），drop会在新作用域结束时调用</li>
+</ul>
+<h2 id="Drop与Copy"><a href="#Drop与Copy" class="headerlink" title="Drop与Copy"></a>Drop与Copy</h2><p>二者不能同时实现</p>
+<ul>
+<li><code>Copy</code> trait 表示类型可以通过位复制来复制值，而 <code>Drop</code> 表示类型需要清理操作。</li>
+<li>如果类型实现了 <code>Drop</code>，Rust 会阻止你实现 <code>Copy</code>，因为复制可能会<strong>导致资源被多次释放。</strong></li>
+</ul>
+<h2 id="RefCell和内部可变模式"><a href="#RefCell和内部可变模式" class="headerlink" title="RefCell&lt;T&gt;和内部可变模式"></a>RefCell<code>&lt;T&gt;</code>和内部可变模式</h2><ul>
+<li><strong>内部可变性</strong>是rust中的一个设计模式，它允许你 <strong>即使在有不可变引用时也可以改变数据</strong> 。</li>
+<li>该模式在数据结构中使用 <code>unsafe</code> 代码来模糊rust通常的可变性和借用规则。不安全代码表明我们在<strong>手动检查</strong>这些规则而不是让编译器替我们检查。</li>
+</ul>
+<h3 id="通过-RefCell在运行时检查借用规则"><a href="#通过-RefCell在运行时检查借用规则" class="headerlink" title="通过 RefCell&lt;T&gt;在运行时检查借用规则"></a>通过 <code>RefCell&lt;T&gt;</code>在运行时检查借用规则</h3><ul>
+<li>不同于 <code>Rc&lt;T&gt;</code>，<code>RefCell&lt;T&gt;</code> 代表其数据的唯一的所有权。</li>
+</ul>
+<p>如下为选择 <code>Box&lt;T&gt;</code>，<code>Rc&lt;T&gt;</code> 或 <code>RefCell&lt;T&gt;</code> 的理由：</p>
+<ul>
+<li><code>Rc&lt;T&gt;</code> 允许相同数据 <strong>有多个所有者</strong> ；<code>Box&lt;T&gt;</code> 和 <code>RefCell&lt;T&gt;</code> 有单一所有者。</li>
+<li><code>Box&lt;T&gt;</code> 允许在编译时执行不可变或可变借用检查；<code>Rc&lt;T&gt;</code>仅允许在编译时执行不可变借用检查；<code>RefCell&lt;T&gt;</code> 允许在运行时执行不可变或可变借用检查。</li>
+<li>因为 <code>RefCell&lt;T&gt;</code> 允许在运行时执行可变借用检查，所以我们可以在即便 <code>RefCell&lt;T&gt;</code> 自身是不可变的情况下修改其内部的值。</li>
+</ul>
+<h3 id="内部可变性：不可变值的可变借用"><a href="#内部可变性：不可变值的可变借用" class="headerlink" title="内部可变性：不可变值的可变借用"></a>内部可变性：不可变值的可变借用</h3><p>借用规则的一个推论是当有一个不可变值时，不能可变地借用它。</p>
+<ul>
+<li><strong>mock对象</strong><ul>
+<li><strong>mock 对象</strong> 是特定类型的 <strong>测试替身</strong> ，它们记录测试过程中发生了什么以便可以断言操作是正确的。</li>
+</ul>
+</li>
+</ul>
+<h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><ul>
+<li><code>borrow()</code>：获取一个不可变引用（<code>Ref&lt;T&gt;</code>）。如果已经有可变引用，会 panic。</li>
+<li><code>borrow_mut()</code>：获取一个可变引用（<code>RefMut&lt;T&gt;</code>）。如果已经有其他引用（可变或不可变），会 panic。</li>
+<li><code>try_borrow()</code> 和 <code>try_borrow_mut()</code>：与 <code>borrow()</code> 和 <code>borrow_mut()</code> 类似，但不会 panic，而是返回 <code>Result</code>。</li>
+</ul>
+<h2 id="Arc：-Atomic-Reference-Counting-（原子引用计数）"><a href="#Arc：-Atomic-Reference-Counting-（原子引用计数）" class="headerlink" title="Arc&lt;T&gt;： Atomic Reference Counting （原子引用计数）"></a>Arc<code>&lt;T&gt;</code>： <strong>Atomic Reference Counting</strong> （原子引用计数）</h2><ol>
+<li><strong>引用计数</strong> ：<code>Arc&lt;T&gt;</code> 会跟踪指向同一数据的引用数量。每次克隆 <code>Arc&lt;T&gt;</code> 时，引用计数会增加；当 <code>Arc&lt;T&gt;</code> 被丢弃时，引用计数会减少。当引用计数为 0 时，数据会被释放。</li>
+<li><strong>线程安全</strong> ：<code>Arc&lt;T&gt;</code> 是线程安全的，因为它的引用计数操作是原子的（atomic），这意味着多个线程可以安全地共享同一个 <code>Arc&lt;T&gt;</code>。</li>
+<li><strong>不可变性</strong> ：<code>Arc&lt;T&gt;</code> 本身是不可变的。如果需要修改内部数据，通常需要与 <code>Mutex&lt;T&gt;</code> 或 <code>RwLock&lt;T&gt;</code> 结合使用。</li>
+</ol>
+<h3 id="主要方法-1"><a href="#主要方法-1" class="headerlink" title="主要方法"></a>主要方法</h3><ul>
+<li><code>new(value: T) -&gt; Arc&lt;T&gt;</code>：创建一个新的 <code>Arc&lt;T&gt;</code>。</li>
+<li><code>clone(&amp;self) -&gt; Arc&lt;T&gt;</code>：<strong>克隆</strong> <code>Arc&lt;T&gt;</code>，增加引用计数。</li>
+<li><code>strong_count(&amp;self) -&gt; usize</code>：返回当前 <strong>强引用计数</strong> 。</li>
+<li><code>downgrade(&amp;self) -&gt; Weak&lt;T&gt;</code>：创建一个 <strong>弱引用</strong> （<code>Weak&lt;T&gt;</code>），<strong>不会增加引用计数。</strong></li>
+<li><code>try_unwrap(this: Arc&lt;T&gt;) -&gt; Result&lt;T, Arc&lt;T&gt;&gt;</code>：如果引用计数为 1，则返回内部数据；否则返回 <code>Arc&lt;T&gt;</code>。</li>
+</ul>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wx3.sinaimg.cn/mw690/007Bih3Rgy1hyk9bmxq5kj32382sbx6p.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wx3.sinaimg.cn/mw690/007Bih3Rgy1hyk9bmxq5kj32382sbx6p.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">PQCU</div><div class="post-copyright__author_desc">且听风吟，静待花开</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://example.com/2025/02/19/Rust-smart-pointer/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://example.com/2025/02/19/Rust-smart-pointer/')">Rust_smart_pointer</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://example.com/2025/02/19/Rust-smart-pointer/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=Rust_smart_pointer&amp;url=http://example.com/2025/02/19/Rust-smart-pointer/&amp;pic=" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">PQCU' blog</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"></div></div></div><div class="post_share"><div class="social-share" data-image="https://wx3.sinaimg.cn/mw690/007Bih3Rgy1hyk9bmxq5kj32382sbx6p.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/02/19/Rust-iter/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Rust_iter</div></div></a></div><div class="next-post pull-right"><a href="/2025/02/19/Rust-macro/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Rust_macro</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wx3.sinaimg.cn/mw690/007Bih3Rgy1hyk9bmxq5kj32382sbx6p.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/%3Cimg%20src='https:/emotion.acs.pw/emotion/%E8%AF%B7%E5%90%83%E5%B0%8F%E7%BA%A2%E8%B1%86%E5%90%A7/%E5%96%9D%E6%B0%B4.png'%20alt='%E5%96%9D%E6%B0%B4'%3E" alt="status"/></div></div><div class="author-info__description">Welcome!</div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">PQCU</h1><div class="author-info__desc">且听风吟，静待花开</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/pqcu77" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="toc-number">1.</span> <span class="toc-text">智能指针</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Box%E6%8C%87%E5%90%91%E5%A0%86%E4%B8%8A%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.</span> <span class="toc-text">使用Box&lt;T&gt;指向堆上的数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Box%E5%9C%A8%E5%A0%86%E4%B8%8A%E5%82%A8%E5%AD%98%E6%95%B0%E6%8D%AE"><span class="toc-number">1.1.1.</span> <span class="toc-text">使用Box&lt;T&gt;在堆上储存数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Box%E5%85%81%E8%AE%B8%E5%88%9B%E5%BB%BA%E9%80%92%E5%BD%92%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.1.2.</span> <span class="toc-text">Box允许创建递归类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87Deref-trait%E5%B0%86%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88%E5%BD%93%E4%BD%9C%E5%B8%B8%E8%A7%84%E5%BC%95%E7%94%A8%E5%A4%84%E7%90%86"><span class="toc-number">1.2.</span> <span class="toc-text">通过Deref trait将智能指针当作常规引用处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rc%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="toc-number">1.3.</span> <span class="toc-text">Rc&lt;T&gt;引用计数智能指针</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cow"><span class="toc-number">1.4.</span> <span class="toc-text">cow:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Cow-%E7%9A%84%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3%E6%98%AF%EF%BC%9A"><span class="toc-number">1.4.1.</span> <span class="toc-text">Cow 的核心思想是：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cow-%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.5.</span> <span class="toc-text">Cow 的常用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-to-mut%EF%BC%9A%E8%8E%B7%E5%8F%96%E5%8F%AF%E5%8F%98%E5%BC%95%E7%94%A8"><span class="toc-number">1.5.1.</span> <span class="toc-text">(1) to_mut：获取可变引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-into-owned%EF%BC%9A%E8%8E%B7%E5%8F%96%E6%89%80%E6%9C%89%E6%9D%83"><span class="toc-number">1.5.2.</span> <span class="toc-text">(2) into_owned：获取所有权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-is-borrowed-%E5%92%8C-is-owned%EF%BC%9A%E6%A3%80%E6%9F%A5%E7%8A%B6%E6%80%81"><span class="toc-number">1.5.3.</span> <span class="toc-text">(3) is_borrowed 和 is_owned：检查状态</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Drop-Trait%E8%BF%90%E8%A1%8C%E6%B8%85%E7%90%86%E4%BB%A3%E7%A0%81"><span class="toc-number">1.6.</span> <span class="toc-text">使用Drop Trait运行清理代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89"><span class="toc-number">1.6.1.</span> <span class="toc-text">定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Drop%E4%B8%8E%E6%89%80%E6%9C%89%E6%9D%83"><span class="toc-number">1.6.2.</span> <span class="toc-text">Drop与所有权</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Drop%E4%B8%8ECopy"><span class="toc-number">1.7.</span> <span class="toc-text">Drop与Copy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RefCell%E5%92%8C%E5%86%85%E9%83%A8%E5%8F%AF%E5%8F%98%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.8.</span> <span class="toc-text">RefCell&lt;T&gt;和内部可变模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E8%BF%87-RefCell%E5%9C%A8%E8%BF%90%E8%A1%8C%E6%97%B6%E6%A3%80%E6%9F%A5%E5%80%9F%E7%94%A8%E8%A7%84%E5%88%99"><span class="toc-number">1.8.1.</span> <span class="toc-text">通过 RefCell&lt;T&gt;在运行时检查借用规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E5%8F%AF%E5%8F%98%E6%80%A7%EF%BC%9A%E4%B8%8D%E5%8F%AF%E5%8F%98%E5%80%BC%E7%9A%84%E5%8F%AF%E5%8F%98%E5%80%9F%E7%94%A8"><span class="toc-number">1.8.2.</span> <span class="toc-text">内部可变性：不可变值的可变借用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E6%96%B9%E6%B3%95"><span class="toc-number">1.8.3.</span> <span class="toc-text">主要方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Arc%EF%BC%9A-Atomic-Reference-Counting-%EF%BC%88%E5%8E%9F%E5%AD%90%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0%EF%BC%89"><span class="toc-number">1.9.</span> <span class="toc-text">Arc&lt;T&gt;： Atomic Reference Counting （原子引用计数）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E6%96%B9%E6%B3%95-1"><span class="toc-number">1.9.1.</span> <span class="toc-text">主要方法</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/19/Rust-macro/" title="Rust_macro">Rust_macro</a><time datetime="2025-02-19T04:05:36.000Z" title="发表于 2025-02-19 12:05:36">2025-02-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/19/Rust-smart-pointer/" title="Rust_smart_pointer">Rust_smart_pointer</a><time datetime="2025-02-19T03:56:48.000Z" title="发表于 2025-02-19 11:56:48">2025-02-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/19/Rust-iter/" title="Rust_iter">Rust_iter</a><time datetime="2025-02-19T03:55:59.000Z" title="发表于 2025-02-19 11:55:59">2025-02-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/19/Rust-%E5%8C%85-Crate/" title="Rust_包/Crate">Rust_包/Crate</a><time datetime="2025-02-19T03:54:35.000Z" title="发表于 2025-02-19 11:54:35">2025-02-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/02/19/Rust-String/" title="Rust_String">Rust_String</a><time datetime="2025-02-19T03:48:15.000Z" title="发表于 2025-02-19 11:48:15">2025-02-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2020 - 2025 By <a class="footer-bar-link" href="/" title="PQCU" target="_blank">PQCU</a></div></div><div id="footer-type-tips"></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">9</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">1</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">2</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.anheyu.com/" title="博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="博客"/><span class="back-menu-item-text">博客</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/essay/"><i class="anzhiyufont anzhiyu-icon-lightbulb faa-tada" style="font-size: 0.9em;"></i><span> 闲言碎语</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem;">学习笔记<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("04/01/2021 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2020 By 安知鱼 V1.6.14",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 PQCU 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><div class="js-pjax"><input type="hidden" name="page-type" id="page-type" value="post"></div><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script src="/js/custom/schedule.js"></script><script src="https://open.lightxi.com/unpkg/chinese-lunar@0.1.4/lib/chinese-lunar.js"></script><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/dist/fireworks.min.js"></script><script id="click-show-text" src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/dist/click-show-text.min.js" data-mobile="false" data-text="Wow,Hello,Great" data-fontsize="15px" data-random="true" async="async"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
