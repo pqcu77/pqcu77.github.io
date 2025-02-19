@@ -98,6 +98,167 @@ window.addEventListener("load", () => {
     return data;
   };
 
+  // const search = () => {
+  //   if (!GLOBAL_CONFIG.localSearch.preload) {
+  //     dataObj = fetchData(GLOBAL_CONFIG.localSearch.path);
+  //   }
+  //   const $input = document.querySelector("#local-search-input input");
+  //   const $resultContent = document.getElementById("local-search-results");
+  //   const $loadingStatus = document.getElementById("loading-status");
+
+  //   $input.addEventListener("input", function () {
+  //     const keywords = this.value.trim().toLowerCase().split(/[\s]+/);
+  //     if (keywords[0] !== "")
+  //       $loadingStatus.innerHTML = '<i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i>';
+
+  //     $resultContent.innerHTML = "";
+  //     let str = '<div class="search-result-list">';
+  //     if (keywords.length <= 0) return;
+  //     let count = 0;
+  //     // perform local searching
+  //     dataObj.then(data => {
+  //       data.forEach(data => {
+  //         let isMatch = true;
+  //         let dataTitle = data.title ? data.title.trim().toLowerCase() : "";
+  //         let dataTags = data.tags;
+  //         let oneImage = data.oneImage ?? "";
+  //         const dataContent = data.content
+  //           ? data.content
+  //               .trim()
+  //               .replace(/<[^>]+>/g, "")
+  //               .toLowerCase()
+  //           : "";
+  //         const dataUrl = data.url.startsWith("/") ? data.url : GLOBAL_CONFIG.root + data.url;
+  //         let indexTitle = -1;
+  //         let indexContent = -1;
+  //         let firstOccur = -1;
+  //         // only match articles with not empty titles and contents
+  //         if (dataTitle !== "" || dataContent !== "") {
+  //           keywords.forEach((keyword, i) => {
+  //             indexTitle = dataTitle.indexOf(keyword);
+  //             indexContent = dataContent.indexOf(keyword);
+  //             if (indexTitle < 0 && indexContent < 0) {
+  //               isMatch = false;
+  //             } else {
+  //               if (indexContent < 0) {
+  //                 indexContent = 0;
+  //               }
+  //               if (i === 0) {
+  //                 firstOccur = indexContent;
+  //               }
+  //             }
+  //           });
+  //         } else {
+  //           isMatch = false;
+  //         }
+
+  //         // show search results
+  //         if (isMatch) {
+  //           if (firstOccur >= 0) {
+  //             // cut out 130 characters
+  //             // let start = firstOccur - 30 < 0 ? 0 : firstOccur - 30
+  //             // let end = firstOccur + 50 > dataContent.length ? dataContent.length : firstOccur + 50
+  //             let start = firstOccur - 30;
+  //             let end = firstOccur + 100;
+  //             let pre = "";
+  //             let post = "";
+
+  //             if (start < 0) {
+  //               start = 0;
+  //             }
+
+  //             if (start === 0) {
+  //               end = 100;
+  //             } else {
+  //               pre = "...";
+  //             }
+
+  //             if (end > dataContent.length) {
+  //               end = dataContent.length;
+  //             } else {
+  //               post = "...";
+  //             }
+
+  //             let matchContent = dataContent.substring(start, end);
+
+  //             // highlight all keywords
+  //             keywords.forEach(keyword => {
+  //               const regS = new RegExp(keyword, "gi");
+  //               matchContent = matchContent.replace(regS, '<span class="search-keyword">' + keyword + "</span>");
+  //               dataTitle = dataTitle.replace(regS, '<span class="search-keyword">' + keyword + "</span>");
+  //             });
+
+  //             str += '<div class="local-search__hit-item">';
+  //             if (oneImage) {
+  //               str += `<div class="search-left"><img src=${oneImage} alt=${dataTitle} data-fancybox='gallery'>`;
+  //             } else {
+  //               str += '<div class="search-left" style="width:0">';
+  //             }
+
+  //             str += "</div>";
+
+  //             if (oneImage) {
+  //               str +=
+  //                 '<div class="search-right"><a href="' +
+  //                 dataUrl +
+  //                 '" class="search-result-title">' +
+  //                 dataTitle +
+  //                 "</a>";
+  //             } else {
+  //               str +=
+  //                 '<div class="search-right" style="width: 100%"><a href="' +
+  //                 dataUrl +
+  //                 '" class="search-result-title">' +
+  //                 dataTitle +
+  //                 "</a>";
+  //             }
+
+  //             count += 1;
+
+  //             if (dataContent !== "") {
+  //               str +=
+  //                 '<p class="search-result" onclick="pjax.loadUrl(`' +
+  //                 dataUrl +
+  //                 '`)">' +
+  //                 pre +
+  //                 matchContent +
+  //                 post +
+  //                 "</p>";
+  //             }
+  //             if (dataTags.length) {
+  //               str += '<div class="search-result-tags">';
+
+  //               for (let i = 0; i < dataTags.length; i++) {
+  //                 const element = dataTags[i].trim();
+
+  //                 str +=
+  //                   '<a class="tag-list" href="/tags/' +
+  //                   element +
+  //                   '/" data-pjax-state="" one-link-mark="yes">#' +
+  //                   element +
+  //                   "</a>";
+  //               }
+
+  //               str += "</div>";
+  //             }
+  //           }
+  //           str += "</div></div>";
+  //         }
+  //       });
+  //       if (count === 0) {
+  //         str +=
+  //           '<div id="local-search__hits-empty">' +
+  //           GLOBAL_CONFIG.localSearch.languages.hits_empty.replace(/\$\{query}/, this.value.trim()) +
+  //           "</div>";
+  //       }
+  //       str += "</div>";
+  //       $resultContent.innerHTML = str;
+  //       if (keywords[0] !== "") $loadingStatus.innerHTML = "";
+  //       window.pjax && window.pjax.refresh($resultContent);
+  //     });
+  //   });
+  // };
+
   const search = () => {
     if (!GLOBAL_CONFIG.localSearch.preload) {
       dataObj = fetchData(GLOBAL_CONFIG.localSearch.path);
@@ -105,160 +266,76 @@ window.addEventListener("load", () => {
     const $input = document.querySelector("#local-search-input input");
     const $resultContent = document.getElementById("local-search-results");
     const $loadingStatus = document.getElementById("loading-status");
-
+  
+    // 每次输入时触发
     $input.addEventListener("input", function () {
       const keywords = this.value.trim().toLowerCase().split(/[\s]+/);
-      if (keywords[0] !== "")
+      
+      // 如果搜索框为空，清空结果并不显示任何内容
+      if (keywords[0] === "") {
+        $resultContent.innerHTML = "";
+        $loadingStatus.innerHTML = "";
+        return;
+      }
+  
+      // 显示加载状态
+      if (keywords[0] !== "") {
         $loadingStatus.innerHTML = '<i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i>';
-
+      }
+  
       $resultContent.innerHTML = "";
       let str = '<div class="search-result-list">';
-      if (keywords.length <= 0) return;
       let count = 0;
-      // perform local searching
+  
+      // 执行本地搜索
       dataObj.then(data => {
         data.forEach(data => {
           let isMatch = true;
           let dataTitle = data.title ? data.title.trim().toLowerCase() : "";
-          let dataTags = data.tags;
-          let oneImage = data.oneImage ?? "";
-          const dataContent = data.content
-            ? data.content
-                .trim()
-                .replace(/<[^>]+>/g, "")
-                .toLowerCase()
-            : "";
           const dataUrl = data.url.startsWith("/") ? data.url : GLOBAL_CONFIG.root + data.url;
-          let indexTitle = -1;
-          let indexContent = -1;
-          let firstOccur = -1;
-          // only match articles with not empty titles and contents
-          if (dataTitle !== "" || dataContent !== "") {
-            keywords.forEach((keyword, i) => {
-              indexTitle = dataTitle.indexOf(keyword);
-              indexContent = dataContent.indexOf(keyword);
-              if (indexTitle < 0 && indexContent < 0) {
-                isMatch = false;
-              } else {
-                if (indexContent < 0) {
-                  indexContent = 0;
-                }
-                if (i === 0) {
-                  firstOccur = indexContent;
-                }
-              }
-            });
-          } else {
-            isMatch = false;
-          }
-
-          // show search results
-          if (isMatch) {
-            if (firstOccur >= 0) {
-              // cut out 130 characters
-              // let start = firstOccur - 30 < 0 ? 0 : firstOccur - 30
-              // let end = firstOccur + 50 > dataContent.length ? dataContent.length : firstOccur + 50
-              let start = firstOccur - 30;
-              let end = firstOccur + 100;
-              let pre = "";
-              let post = "";
-
-              if (start < 0) {
-                start = 0;
-              }
-
-              if (start === 0) {
-                end = 100;
-              } else {
-                pre = "...";
-              }
-
-              if (end > dataContent.length) {
-                end = dataContent.length;
-              } else {
-                post = "...";
-              }
-
-              let matchContent = dataContent.substring(start, end);
-
-              // highlight all keywords
-              keywords.forEach(keyword => {
-                const regS = new RegExp(keyword, "gi");
-                matchContent = matchContent.replace(regS, '<span class="search-keyword">' + keyword + "</span>");
-                dataTitle = dataTitle.replace(regS, '<span class="search-keyword">' + keyword + "</span>");
-              });
-
-              str += '<div class="local-search__hit-item">';
-              if (oneImage) {
-                str += `<div class="search-left"><img src=${oneImage} alt=${dataTitle} data-fancybox='gallery'>`;
-              } else {
-                str += '<div class="search-left" style="width:0">';
-              }
-
-              str += "</div>";
-
-              if (oneImage) {
-                str +=
-                  '<div class="search-right"><a href="' +
-                  dataUrl +
-                  '" class="search-result-title">' +
-                  dataTitle +
-                  "</a>";
-              } else {
-                str +=
-                  '<div class="search-right" style="width: 100%"><a href="' +
-                  dataUrl +
-                  '" class="search-result-title">' +
-                  dataTitle +
-                  "</a>";
-              }
-
-              count += 1;
-
-              if (dataContent !== "") {
-                str +=
-                  '<p class="search-result" onclick="pjax.loadUrl(`' +
-                  dataUrl +
-                  '`)">' +
-                  pre +
-                  matchContent +
-                  post +
-                  "</p>";
-              }
-              if (dataTags.length) {
-                str += '<div class="search-result-tags">';
-
-                for (let i = 0; i < dataTags.length; i++) {
-                  const element = dataTags[i].trim();
-
-                  str +=
-                    '<a class="tag-list" href="/tags/' +
-                    element +
-                    '/" data-pjax-state="" one-link-mark="yes">#' +
-                    element +
-                    "</a>";
-                }
-
-                str += "</div>";
-              }
+          
+          // 仅匹配标题
+          keywords.forEach((keyword, i) => {
+            if (dataTitle.indexOf(keyword) < 0) {
+              isMatch = false;
             }
+          });
+  
+          // 显示搜索结果
+          if (isMatch) {
+            str += '<div class="local-search__hit-item">';
+            str +=
+              '<div class="search-right" style="width: 100%"><a href="' +
+              dataUrl +
+              '" class="search-result-title">' +
+              dataTitle +
+              "</a>";
+            count += 1;
             str += "</div></div>";
           }
         });
+  
+        // 如果没有匹配结果，显示 "未找到"
         if (count === 0) {
           str +=
             '<div id="local-search__hits-empty">' +
             GLOBAL_CONFIG.localSearch.languages.hits_empty.replace(/\$\{query}/, this.value.trim()) +
             "</div>";
+        } else {
+          // 显示匹配的数量
+          str += '<div class="search-result-count">共找到 ' + count + ' 个结果</div>';
         }
+  
         str += "</div>";
         $resultContent.innerHTML = str;
+  
+        // 搜索完成后清除加载状态
         if (keywords[0] !== "") $loadingStatus.innerHTML = "";
+  
         window.pjax && window.pjax.refresh($resultContent);
       });
     });
   };
-
   searchClickFn();
   searchClickFnOnce();
 
