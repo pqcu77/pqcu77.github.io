@@ -1799,6 +1799,7 @@ document.addEventListener("DOMContentLoaded", function () {
     anzhiyu.getCustomPlayList();
     anzhiyu.addEventListenerConsoleMusicList(false);
     anzhiyu.initPaginationObserver();
+    potato.setWelcome_info();
 
     setTimeout(() => {
       setInputFocusListener();
@@ -1810,4 +1811,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
   refreshFn();
   unRefreshFn();
+
 });

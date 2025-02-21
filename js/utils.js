@@ -1,4 +1,5 @@
 const anzhiyu = {
+
   debounce: (func, wait = 0, immediate = false) => {
     let timeout;
     return (...args) => {
@@ -120,7 +121,7 @@ const anzhiyu = {
 
   initJustifiedGallery: function (selector) {
     const runJustifiedGallery = i => {
-      if (!anzhiyu.isHidden(i)) {
+      if (!PQCU.isHidden(i)) {
         fjGallery(i, {
           itemSelector: ".fj-gallery-item",
           rowHeight: i.getAttribute("data-rowHeight"),
@@ -199,7 +200,7 @@ const anzhiyu = {
         if (i.parentNode.tagName !== "A") {
           const dataSrc = i.dataset.lazySrc || i.src;
           const dataCaption = i.title || i.alt || "";
-          anzhiyu.wrap(i, "a", {
+          PQCU.wrap(i, "a", {
             href: dataSrc,
             "data-fancybox": "gallery",
             "data-caption": dataCaption,
@@ -277,7 +278,7 @@ const anzhiyu = {
 
   addEventListenerPjax: (ele, event, fn, option = false) => {
     ele.addEventListener(event, fn, option);
-    anzhiyu.addGlobalFn("pjax", () => {
+    PQCU.addGlobalFn("pjax", () => {
       ele.removeEventListener(event, fn, option);
     });
   },
@@ -310,7 +311,7 @@ const anzhiyu = {
       .replace('"', "");
     const currentTop = window.scrollY || document.documentElement.scrollTop;
     if (currentTop > 26) {
-      if (anzhiyu.is_Post()) {
+      if (PQCU.is_Post()) {
         themeColor = getComputedStyle(document.documentElement)
           .getPropertyValue("--anzhiyu-meta-theme-post-color")
           .trim()
@@ -358,7 +359,7 @@ const anzhiyu = {
     rm.hideRightMenu();
     if (rm.downloadimging == false) {
       rm.downloadimging = true;
-      anzhiyu.snackbarShow("正在下载中，请稍后", false, 10000);
+      PQCU.snackbarShow("正在下载中，请稍后", false, 10000);
       setTimeout(function () {
         let image = new Image();
         // 解决跨域 Canvas 污染问题
@@ -377,11 +378,11 @@ const anzhiyu = {
           a.dispatchEvent(event); // 触发a的单击事件
         };
         image.src = imgsrc;
-        anzhiyu.snackbarShow("图片已添加盲水印，请遵守版权协议");
+        PQCU.snackbarShow("图片已添加盲水印，请遵守版权协议");
         rm.downloadimging = false;
       }, "10000");
     } else {
-      anzhiyu.snackbarShow("有正在进行中的下载，请稍后再试");
+      PQCU.snackbarShow("有正在进行中的下载，请稍后再试");
     }
   },
   //禁止图片右键单击
@@ -416,7 +417,7 @@ const anzhiyu = {
     if (commentBarrage) {
       if (window.getComputedStyle(commentBarrage).display === "flex") {
         commentBarrage.style.display = "none";
-        anzhiyu.snackbarShow("✨ 已关闭评论弹幕");
+        PQCU.snackbarShow("✨ 已关闭评论弹幕");
         document.querySelector(".menu-commentBarrage-text").textContent = "显示热评";
         document.querySelector("#consoleCommentBarrage").classList.remove("on");
         localStorage.setItem("commentBarrageSwitch", "false");
@@ -424,7 +425,7 @@ const anzhiyu = {
         commentBarrage.style.display = "flex";
         document.querySelector(".menu-commentBarrage-text").textContent = "关闭热评";
         document.querySelector("#consoleCommentBarrage").classList.add("on");
-        anzhiyu.snackbarShow("✨ 已开启评论弹幕");
+        PQCU.snackbarShow("✨ 已开启评论弹幕");
         localStorage.removeItem("commentBarrageSwitch");
       }
     }
@@ -506,7 +507,7 @@ const anzhiyu = {
         }
       });
 
-      anzhiyu.scrollByMouseWheel($list, $catalog);
+      PQCU.scrollByMouseWheel($list, $catalog);
     }
   },
   // Page Tag 激活
@@ -514,7 +515,7 @@ const anzhiyu = {
     const $list = document.getElementById("tag-page-tags");
     if ($list) {
       const $tagPageTags = document.getElementById(decodeURIComponent(window.location.pathname));
-      anzhiyu.scrollByMouseWheel($list, $tagPageTags);
+      PQCU.scrollByMouseWheel($list, $tagPageTags);
     }
   },
   // 修改时间显示"最近"
@@ -575,7 +576,7 @@ const anzhiyu = {
       document.querySelectorAll("#bber time").forEach(function (e) {
         var t = e,
           datetime = t.getAttribute("datetime");
-        (t.innerText = anzhiyu.diffDate(datetime, true)), (t.style.display = "inline");
+        (t.innerText = PQCU.diffDate(datetime, true)), (t.style.display = "inline");
       });
   },
   // 修改相册集中的时间
@@ -584,7 +585,7 @@ const anzhiyu = {
       document.querySelectorAll("#album_detail time").forEach(function (e) {
         var t = e,
           datetime = t.getAttribute("datetime");
-        (t.innerText = anzhiyu.diffDate(datetime, true)), (t.style.display = "inline");
+        (t.innerText = PQCU.diffDate(datetime, true)), (t.style.display = "inline");
       });
   },
   // 刷新瀑布流
@@ -646,7 +647,7 @@ const anzhiyu = {
   //切换音乐播放状态
   musicToggle: function (changePaly = true) {
     if (!anzhiyu_musicFirst) {
-      anzhiyu.musicBindEvent();
+      PQCU.musicBindEvent();
       anzhiyu_musicFirst = true;
     }
     let msgPlay = '<i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span>';
@@ -712,12 +713,12 @@ const anzhiyu = {
   rewardShowConsole: function () {
     // 判断是否为赞赏打开控制台
     consoleEl.classList.add("reward-show");
-    anzhiyu.initConsoleState();
+    PQCU.initConsoleState();
   },
   // 显示中控台
   showConsole: function () {
     consoleEl.classList.add("show");
-    anzhiyu.initConsoleState();
+    PQCU.initConsoleState();
   },
 
   //隐藏中控台
@@ -750,7 +751,7 @@ const anzhiyu = {
       const currentTime = new Date().getTime();
       if (currentTime - data.timestamp < 24 * 60 * 60 * 1000) {
         // 如果缓存的数据没有过期，直接使用
-        anzhiyu.playMusic(data.songs);
+        PQCU.playMusic(data.songs);
         return;
       }
     }
@@ -764,7 +765,7 @@ const anzhiyu = {
           songs: songs,
         };
         localStorage.setItem("musicData", JSON.stringify(cacheData));
-        anzhiyu.playMusic(songs);
+        PQCU.playMusic(songs);
       });
   },
   // 播放音乐
@@ -824,16 +825,16 @@ const anzhiyu = {
         if (musiccover) {
           clearInterval(timer);
           // 绑定事件
-          anzhiyu.addEventListenerMusic();
+          PQCU.addEventListenerMusic();
           // 确保第一次能够正确替换背景
-          anzhiyu.changeMusicBg();
+          PQCU.changeMusicBg();
 
           // 暂停nav的音乐
           if (
             document.querySelector("#nav-music meting-js").aplayer &&
             !document.querySelector("#nav-music meting-js").aplayer.audio.paused
           ) {
-            anzhiyu.musicToggle();
+            PQCU.musicToggle();
           }
         }
       }, 100);
@@ -855,7 +856,7 @@ const anzhiyu = {
     } else {
       anMusicPageMeting.innerHTML = `<meting-js id="${userId}" server="${userServer}" type="playlist" mutex="true" preload="auto" theme="var(--anzhiyu-main)" order="list" list-max-height="calc(100vh - 169px)!important"></meting-js>`;
     }
-    anzhiyu.changeMusicBg(false);
+    PQCU.changeMusicBg(false);
   },
   //隐藏今日推荐
   hideTodayCard: function () {
@@ -880,7 +881,7 @@ const anzhiyu = {
     //初始化音量
     metingAplayer.volume(0.8, true);
     metingAplayer.on("loadeddata", function () {
-      anzhiyu.changeMusicBg();
+      PQCU.changeMusicBg();
     });
 
     aplayerIconMenu.addEventListener("click", function () {
@@ -910,20 +911,20 @@ const anzhiyu = {
         // 随机播放一首
         metingAplayer.list.switch(randomIndex);
       } else {
-        anzhiyu.cacheAndPlayMusic();
+        PQCU.cacheAndPlayMusic();
       }
     });
     anMusicRefreshBtn.addEventListener("click", () => {
       localStorage.removeItem("musicData");
-      anzhiyu.snackbarShow("已移除相关缓存歌曲");
+      PQCU.snackbarShow("已移除相关缓存歌曲");
     });
     anMusicSwitchingBtn.addEventListener("click", () => {
-      anzhiyu.changeMusicList();
+      PQCU.changeMusicList();
     });
 
     // 默认加载的歌单
     if (GLOBAL_CONFIG.music_page_default === "custom") {
-      anzhiyu.changeMusicList();
+      PQCU.changeMusicList();
     }
 
     // 监听键盘事件
@@ -1105,7 +1106,7 @@ const anzhiyu = {
 
   // 跳转开往
   totraveling: function () {
-    anzhiyu.snackbarShow(
+    PQCU.snackbarShow(
       "即将跳转到「开往」项目的成员博客，不保证跳转网站的安全性和可用性",
       element => {
         element.style.opacity = 0;
@@ -1127,10 +1128,10 @@ const anzhiyu = {
   // 音乐绑定事件
   musicBindEvent: function () {
     document.querySelector("#nav-music .aplayer-music").addEventListener("click", function () {
-      anzhiyu.musicTelescopic();
+      PQCU.musicTelescopic();
     });
     document.querySelector("#nav-music .aplayer-button").addEventListener("click", function () {
-      anzhiyu.musicToggle(false);
+      PQCU.musicToggle(false);
     });
   },
 
@@ -1438,3 +1439,272 @@ const anzhiyuPopupManager = {
     }, duration);
   },
 };
+
+const potato = {
+  // 欢迎语
+  setWelcome_info: async () => {
+    if ( !document.getElementById( "welcome-info" ) ) return;
+
+    let ipLoacation = saveToLocal.get( 'welcome-info' );
+
+    try {
+      if ( !ipLoacation ) {
+        return new Promise( ( resolve, reject ) => {
+          var script = document.createElement( 'script' );
+          var url = `https://apis.map.qq.com/ws/location/v1/ip?key=7KXBZ-WDU6V-KRKPZ-55HC7-EX3U5-AMFB4&output=jsonp`;
+          script.src = url;
+
+          window.QQmap = ( data ) => {
+            if ( data.status === 0 ) {
+              // console.info(data);
+              ipLoacation = data;
+              saveToLocal.set( 'welcome-info', ipLoacation, 0.5 );
+              NaoKuo.showWelcome( ipLoacation );
+              resolve();
+            } else {
+              reject( new Error( 'Failed to fetch location data' ) );
+            }
+            document.body.removeChild( script );
+            delete window.QQmap;
+          };
+          document.body.appendChild( script );
+        } );
+      } else {
+        await Promise.resolve(); // 确保在同步代码路径上也能保持异步风格
+        NaoKuo.showWelcome( ipLoacation );
+      }
+    } catch ( err ) {
+      console.error( "Error fetching data:", err );
+    }
+  },
+  //根据经纬度计算两点距离(点1经度,点1纬度,点2经度,点2纬度)
+  getDistance: ( e1, n1, e2, n2 ) => {
+    const R = 6371
+    const { sin, cos, asin, PI, hypot } = Math
+    let getPoint = ( e, n ) => {
+      e *= PI / 180
+      n *= PI / 180
+      return { x: cos( n ) * cos( e ), y: cos( n ) * sin( e ), z: sin( n ) }
+    }
+    let a = getPoint( e1, n1 )
+    let b = getPoint( e2, n2 )
+    let c = hypot( a.x - b.x, a.y - b.y, a.z - b.z )
+    let r = asin( c / 2 ) * 2 * R
+    return Math.round( r );
+  },
+  //根据国家、省份、城市信息自定义欢迎语
+  showWelcome: ( ipStore ) => {
+    const WelcomeInfo = document.getElementById( "welcome-info" ),
+      IP = ipStore.result.ip || "未知";
+    let dist = NaoKuo.getDistance( 113.39059699999996, 23.065117000000008, ipStore.result.location.lng, ipStore.result.location.lat ),
+      address,
+      welcome_info;
+    //根据国家、省份、城市信息自定义欢迎语
+    //海外地区不支持省份及城市信息
+    switch ( ipStore.result.ad_info.nation ) {
+      case "日本":
+        welcome_info = "こんにちは、日本から来た友達";
+        break;
+      case "美国":
+        welcome_info = "Hello, friend from the United States";
+        break;
+      case "英国":
+        welcome_info = "Hello, friend from the UK";
+        break;
+      case "俄罗斯":
+        welcome_info = "Здравствуйте, друзья из России.";
+        break;
+      case "法国":
+        welcome_info = "Bonjour amis de France";
+        break;
+      case "德国":
+        welcome_info = "Hallo, Freund aus Deutschland";
+        break;
+      case "澳大利亚":
+        welcome_info = "Hello, friend from Australia";
+        break;
+      case "加拿大":
+        welcome_info = "Hello, friend from Canada";
+        break;
+      case "中国":
+        address = ipStore.result.ad_info.province + " " + ipStore.result.ad_info.city;
+        switch ( ipStore.result.ad_info.province ) {
+          case "北京市":
+            address = "北京市";
+            welcome_info = "北——京——欢迎你~";
+            break;
+          case "天津市":
+            address = "天津市";
+            welcome_info = "讲段相声吧";
+            break;
+          case "重庆市":
+            address = "重庆市";
+            welcome_info = "高德地图:已到达重庆，下面交给百度地图导航"
+            break;
+          case "河北省":
+            welcome_info = "山势巍巍成壁垒，天下雄关。铁马金戈由此向，无限江山";
+            break;
+          case "山西省":
+            welcome_info = "展开坐具长三尺，已占山河五百余";
+            break;
+          case "内蒙古自治区":
+            welcome_info = "天苍苍，野茫茫，风吹草低见牛羊";
+            break;
+          case "辽宁省":
+            welcome_info = "我想吃烤鸡架";
+            break;
+          case "吉林省":
+            welcome_info = "状元阁就是东北烧烤之王";
+            break;
+          case "黑龙江省":
+            welcome_info = "很喜欢哈尔滨大剧院";
+            break;
+          case "上海市":
+            address = "上海市";
+            welcome_info = "众所周知，中国只有两个城市";
+            break;
+          case "江苏省":
+            switch ( ipStore.result.ad_info.city ) {
+              case "南京市":
+                welcome_info = "欢迎来自安徽省南京市的小伙伴";
+                break;
+              case "苏州市":
+                welcome_info = "上有天堂，下有苏杭";
+                break;
+              case "泰州市":
+                welcome_info = "欢迎~";
+                break;
+              default:
+                welcome_info = "散装是必须要散装的";
+                break;
+            }
+            break;
+          case "浙江省":
+            welcome_info = "东风渐绿西湖柳，雁已还人未南归";
+            break;
+          case "安徽省":
+            welcome_info = "蚌埠住了，芜湖起飞";
+            break;
+          case "福建省":
+            welcome_info = "井邑白云间，岩城远带山";
+            break;
+          case "江西省":
+            welcome_info = "落霞与孤鹜齐飞，秋水共长天一色";
+            break;
+          case "山东省":
+            welcome_info = "遥望齐州九点烟，一泓海水杯中泻";
+            break;
+          case "湖北省":
+            welcome_info = "来碗热干面";
+            break;
+          case "湖南省":
+            welcome_info = "74751，长沙斯塔克";
+            break;
+          case "广东省":
+            welcome_info = "老板来两斤福建人";
+            break;
+          case "广西壮族自治区":
+            welcome_info = "桂林山水甲天下";
+            break;
+          case "海南省":
+            welcome_info = "朝观日出逐白浪，夕看云起收霞光";
+            break;
+          case "四川省":
+            welcome_info = "康康川妹子";
+            break;
+          case "贵州省":
+            switch ( ipStore.result.ad_info.city ) {
+              case "六盘水市":
+                welcome_info = "凉都六盘水，您好";
+                break;
+              case "贵阳市":
+                welcome_info = "爽爽贵阳，您好";
+                break;
+              case "遵义市":
+                welcome_info = "遵义红城，您好";
+                break;
+              case "安顺市":
+                welcome_info = "安顺福地，您好";
+                break;
+              case "毕节市":
+                welcome_info = "毕节山水，您好";
+                break;
+              case "铜仁市":
+                welcome_info = "铜仁梵净，您好";
+                break;
+              case "黔西南布依族苗族自治州":
+                welcome_info = "黔西南风情，您好";
+                break;
+              case "黔东南苗族侗族自治州":
+                welcome_info = "黔东南歌舞，您好";
+                break;
+              case "黔南布依族苗族自治州":
+                welcome_info = "黔南美景，您好";
+                break;
+              default:
+                welcome_info = "茅台，学生，再塞200";
+                break;
+            }
+            break;
+          case "云南省":
+            welcome_info = "玉龙飞舞云缠绕，万仞冰川直耸天";
+            break;
+          case "西藏自治区":
+            welcome_info = "躺在茫茫草原上，仰望蓝天";
+            break;
+          case "陕西省":
+            welcome_info = "来份臊子面加馍";
+            break;
+          case "甘肃省":
+            welcome_info = "羌笛何须怨杨柳，春风不度玉门关";
+            break;
+          case "青海省":
+            welcome_info = "牛肉干和老酸奶都好好吃";
+            break;
+          case "宁夏回族自治区":
+            welcome_info = "大漠孤烟直，长河落日圆";
+            break;
+          case "新疆维吾尔自治区":
+            welcome_info = "驼铃古道丝绸路，胡马犹闻唐汉风";
+            break;
+          case "台湾省":
+            welcome_info = "我在这头，大陆在那头";
+            break;
+          case "香港特别行政区":
+            address = "香港特别行政区";
+            welcome_info = "永定贼有残留地鬼嚎，迎击光非岁玉";
+            break;
+          case "澳门特别行政区":
+            address = "澳门特别行政区";
+            welcome_info = "性感荷官，在线发牌";
+            break;
+          default:
+            welcome_info = "带我去你的城市逛逛吧";
+            break;
+        }
+        break;
+      default:
+        welcome_info = "带我去你的国家看看吧";
+        break;
+    }
+    //判断时间
+    let timeChange,
+      date = new Date();
+    if ( date.getHours() >= 5 && date.getHours() < 11 ) timeChange = "<span>🌤️上午好，一日之计在于晨</span>";
+    else if ( date.getHours() >= 11 && date.getHours() < 13 ) timeChange = "<span>☀️中午好，该摸鱼吃午饭了</span>";
+    else if ( date.getHours() >= 13 && date.getHours() < 15 ) timeChange = "<span>🕞下午好，懒懒地睡个午觉吧</span>";
+    else if ( date.getHours() >= 15 && date.getHours() < 16 ) timeChange = "<span>🍵三点几啦，饮茶先啦</span>";
+    else if ( date.getHours() >= 16 && date.getHours() < 19 ) timeChange = "<span>🌇夕阳无限好，只是近黄昏</span>";
+    else if ( date.getHours() >= 19 && date.getHours() < 24 ) timeChange = "<span>🌔晚上好，夜生活嗨起来</span>";
+    else timeChange = "🌌夜深了，早点休息，少熬夜";
+
+    //自定义文本需要放的位置
+    WelcomeInfo && ( WelcomeInfo.innerHTML = `🙋欢迎来自 <strong>${ address }</strong> 的小伙伴<br>
+    😊<strong>${ welcome_info }！</strong><br>
+    🗺️您距离 <strong>Naokuo</strong> 约有 <strong>${ dist }</strong> 公里！<br>
+    当前IP地址为：<br>
+    <strong style="font-size:12px;"><psw>${ IP }</psw></strong><br>
+    <strong>${ timeChange }！</strong>` );
+
+  },
+}
