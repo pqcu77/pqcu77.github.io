@@ -8,8 +8,8 @@
 <head>
   <meta charset="UTF-8">
 
-  <link rel="apple-touch-icon" sizes="76x76" href="../img/fluid.png">
-  <link rel="icon" href="../img/fluid.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/fluid.png">
+  <link rel="icon" href="../../../../img/fluid.png">
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
@@ -22,7 +22,7 @@
     <meta name="description" content="Introduction 单周期 CPU：本实验的目的是从零开始编写一个可以运行 RV32I 指令集程序的单周期 CPU，这个 CPU 将会是后续所有实验的基础。完成本实验之后，可以通过仿真的方式，加载运行 RV32I 程序，验证正确性。 中断机制：本实验在单周期 CPU 的基础上，添加了中断控制器以及中断控制流的内容，使单周期 CPU 可以处理来自外部设备的中断，响应 IO。完成本实验之后，CP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="YatCPU">
-<meta property="og:url" content="https://pqcu77.github.io/YatCPU/index.html">
+<meta property="og:url" content="https://pqcu77.github.io/2025/02/28/YatCPU/index.html">
 <meta property="og:site_name" content="linqt&#39;s blog">
 <meta property="og:description" content="Introduction 单周期 CPU：本实验的目的是从零开始编写一个可以运行 RV32I 指令集程序的单周期 CPU，这个 CPU 将会是后续所有实验的基础。完成本实验之后，可以通过仿真的方式，加载运行 RV32I 程序，验证正确性。 中断机制：本实验在单周期 CPU 的基础上，添加了中断控制器以及中断控制流的内容，使单周期 CPU 可以处理来自外部设备的中断，响应 IO。完成本实验之后，CP">
 <meta property="og:locale" content="zh_CN">
@@ -131,12 +131,12 @@
 <link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
 
 
-<link  rel="stylesheet" href="../css/main.css" />
+<link  rel="stylesheet" href="../../../../css/main.css" />
 
 
-  <link id="highlight-css" rel="stylesheet" href="../css/highlight.css" />
+  <link id="highlight-css" rel="stylesheet" href="../../../../css/highlight.css" />
   
-    <link id="highlight-css-dark" rel="stylesheet" href="../css/highlight-dark.css" />
+    <link id="highlight-css-dark" rel="stylesheet" href="../../../../css/highlight-dark.css" />
   
 
 
@@ -152,8 +152,8 @@
       Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
     }
   </script>
-  <script  src="../js/utils.js" ></script>
-  <script  src="../js/color-schema.js" ></script>
+  <script  src="../../../../js/utils.js" ></script>
+  <script  src="../../../../js/color-schema.js" ></script>
   
 
 
@@ -170,7 +170,7 @@
 <div class="header-inner" style="height: 70vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../../../index.html">
       <strong>PQCU&#39; blog</strong>
     </a>
 
@@ -189,7 +189,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="../index.html" target="_self">
+              <a class="nav-link" href="../../../../index.html" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -201,7 +201,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="../archives/" target="_self">
+              <a class="nav-link" href="../../../../archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -213,7 +213,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="../categories/" target="_self">
+              <a class="nav-link" href="../../../../categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -225,7 +225,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="../tags/" target="_self">
+              <a class="nav-link" href="../../../../tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -237,7 +237,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="../about/" target="_self">
+              <a class="nav-link" href="../../../../about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -267,7 +267,7 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('../img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('../../../../img/default.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
@@ -1087,7 +1087,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="../tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+        <a href="../../../../tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
       
     </div>
   
@@ -1100,7 +1100,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>YatCPU</div>
-      <div>https://pqcu77.github.io/YatCPU/</div>
+      <div>https://pqcu77.github.io/2025/02/28/YatCPU/</div>
     </div>
     <div class="license-meta">
       
@@ -1144,7 +1144,7 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="../%E7%88%AC%E8%99%AB/" title="爬虫">
+                      <a href="../../../03/02/%E7%88%AC%E8%99%AB/" title="爬虫">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">爬虫</span>
                         <span class="visible-mobile">上一篇</span>
@@ -1283,8 +1283,8 @@
 
 <script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
 <script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="../js/events.js" ></script>
-<script  src="../js/plugins.js" ></script>
+<script  src="../../../../js/events.js" ></script>
+<script  src="../../../../js/plugins.js" ></script>
 
 
   <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
@@ -1306,7 +1306,7 @@
 
 
   
-    <script  src="../js/img-lazyload.js" ></script>
+    <script  src="../../../../js/img-lazyload.js" ></script>
   
 
 
@@ -1432,7 +1432,7 @@
 
   <script>Fluid.plugins.imageCaption();</script>
 
-  <script  src="../js/local-search.js" ></script>
+  <script  src="../../../../js/local-search.js" ></script>
 
   <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
@@ -1442,7 +1442,7 @@
 
 <!-- 主题的启动项，将它保持在最底部 -->
 <!-- the boot of the theme, keep it at the bottom -->
-<script  src="../js/boot.js" ></script>
+<script  src="../../../../js/boot.js" ></script>
 
 
   
