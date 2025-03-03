@@ -8,8 +8,8 @@
 <head>
   <meta charset="UTF-8">
 
-  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/fluid.png">
-  <link rel="icon" href="../../../../img/fluid.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="../img/fluid.png">
+  <link rel="icon" href="../img/fluid.png">
   
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
@@ -19,24 +19,23 @@
   <meta name="author" content="linqt">
   <meta name="keywords" content="">
   
-    <meta name="description" content="使用包、Crate和模块管理不断增长的项目 包 （ Packages ）：Cargo 的一个功能，它允许你构建、测试和分享 crate。 Crates ：一个模块的树形结构，它形成了库或二进制项目。 模块 （ Modules ）和  use ：允许你控制作用域和路径的私有性。 路径 （ path ）：一个命名例如结构体、函数或模块等项的方式。 crate是rust在编译时的最小代码单位。如果使用r">
+    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Rust_包&#x2F;Crate">
-<meta property="og:url" content="https://pqcu77.github.io/2025/02/19/Rust-%E5%8C%85-Crate/index.html">
+<meta property="og:title" content="Hello World">
+<meta property="og:url" content="https://pqcu77.github.io/hello-world/index.html">
 <meta property="og:site_name" content="linqt&#39;s blog">
-<meta property="og:description" content="使用包、Crate和模块管理不断增长的项目 包 （ Packages ）：Cargo 的一个功能，它允许你构建、测试和分享 crate。 Crates ：一个模块的树形结构，它形成了库或二进制项目。 模块 （ Modules ）和  use ：允许你控制作用域和路径的私有性。 路径 （ path ）：一个命名例如结构体、函数或模块等项的方式。 crate是rust在编译时的最小代码单位。如果使用r">
+<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-02-19T03:54:35.000Z">
-<meta property="article:modified_time" content="2025-02-25T03:53:00.809Z">
+<meta property="article:published_time" content="2025-02-28T13:49:22.788Z">
+<meta property="article:modified_time" content="2025-02-28T13:49:22.788Z">
 <meta property="article:author" content="linqt">
-<meta property="article:tag" content="学习笔记">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Rust_包/Crate - linqt&#39;s blog</title>
+  <title>Hello World - linqt&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -60,12 +59,12 @@
 <link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
 
 
-<link  rel="stylesheet" href="../../../../css/main.css" />
+<link  rel="stylesheet" href="../css/main.css" />
 
 
-  <link id="highlight-css" rel="stylesheet" href="../../../../css/highlight.css" />
+  <link id="highlight-css" rel="stylesheet" href="../css/highlight.css" />
   
-    <link id="highlight-css-dark" rel="stylesheet" href="../../../../css/highlight-dark.css" />
+    <link id="highlight-css-dark" rel="stylesheet" href="../css/highlight-dark.css" />
   
 
 
@@ -81,8 +80,8 @@
       Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
     }
   </script>
-  <script  src="../../../../js/utils.js" ></script>
-  <script  src="../../../../js/color-schema.js" ></script>
+  <script  src="../js/utils.js" ></script>
+  <script  src="../js/color-schema.js" ></script>
   
 
 
@@ -99,7 +98,7 @@
 <div class="header-inner" style="height: 70vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
-    <a class="navbar-brand" href="../../../../index.html">
+    <a class="navbar-brand" href="../index.html">
       <strong>PQCU&#39; blog</strong>
     </a>
 
@@ -118,7 +117,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="../../../../index.html" target="_self">
+              <a class="nav-link" href="../index.html" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -130,7 +129,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="../../../../archives/" target="_self">
+              <a class="nav-link" href="../archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -142,7 +141,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="../../../../categories/" target="_self">
+              <a class="nav-link" href="../categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -154,7 +153,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="../../../../tags/" target="_self">
+              <a class="nav-link" href="../tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -166,7 +165,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="../../../../about/" target="_self">
+              <a class="nav-link" href="../about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -196,13 +195,13 @@
   
 
 <div id="banner" class="banner" parallax=true
-     style="background: url('../../../../img/default.png') no-repeat center center; background-size: cover;">
+     style="background: url('../img/default.png') no-repeat center center; background-size: cover;">
   <div class="full-bg-img">
     <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Rust_包/Crate"></span>
+            <span id="subtitle" data-typed-text="Hello World"></span>
           
         </div>
 
@@ -213,8 +212,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-02-19 11:54" pubdate>
-          2025年2月19日 中午
+        <time datetime="2025-02-28 21:49" pubdate>
+          2025年2月28日 晚上
         </time>
       </span>
     
@@ -226,7 +225,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          734 字
+          18 字
         
       </span>
     
@@ -238,7 +237,7 @@
         
         
           <!-- compatible with older versions-->
-          7 分钟
+          1 分钟
         
       </span>
     
@@ -284,64 +283,24 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Rust_包/Crate</h1>
-            
-              <p id="updated-time" class="note note-info" style="display: none">
-                
-                  
-                    本文最后更新于 2025-02-25T11:53:00+08:00
-                  
-                  
-
-                
-              </p>
+            <h1 id="seo-header">Hello World</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="使用包、Crate和模块管理不断增长的项目"><a href="#使用包、Crate和模块管理不断增长的项目" class="headerlink" title="使用包、Crate和模块管理不断增长的项目"></a>使用包、Crate和模块管理不断增长的项目</h1><ul>
-<li><strong>包</strong> （ <em>Packages</em> ）：Cargo 的一个功能，它允许你构建、测试和分享 crate。</li>
-<li><strong>Crates</strong> ：一个模块的树形结构，它形成了库或二进制项目。</li>
-<li><strong>模块</strong> （ <em>Modules</em> ）和  <strong>use</strong> ：允许你控制作用域和路径的私有性。</li>
-<li><strong>路径</strong> （ <em>path</em> ）：一个命名例如结构体、函数或模块等项的方式。</li>
-<li>crate是rust在编译时的最小代码单位。如果使用rustc来编译，编译器依然会将这个文件认作一个crate。</li>
-<li>crate的两种形式：二进制项和库</li>
-<li><em>包</em> （ <em>package</em> ）是提供一系列功能的一个或者多个 crate。</li>
-</ul>
-<h2 id="定义模块来控制作用域和私有域"><a href="#定义模块来控制作用域和私有域" class="headerlink" title="定义模块来控制作用域和私有域"></a>定义模块来控制作用域和私有域</h2><h3 id="工作方式："><a href="#工作方式：" class="headerlink" title="工作方式："></a>工作方式：</h3><p>从crate根节点开始（寻找需要被编译的代码）→声明模块→声明子模块</p>
-<ul>
-<li><strong>声明模块</strong> : 在 crate 根文件中，你可以声明一个新模块；比如，你用 <code>mod garden;</code>声明了一个叫做 <code>garden</code>的模块。编译器会在下列路径中寻找模块代码：</li>
-<li>内联，在大括号中，当 <code>mod garden</code>后方不是一个分号而是一个大括号</li>
-<li>在文件 <em>src&#x2F;garden.rs</em></li>
-<li>在文件 <em>src&#x2F;garden&#x2F;mod.rs</em></li>
-<li><strong>声明子模块</strong> : 在除了 crate 根节点以外的其他文件中，你可以定义子模块。比如，你可能在<em>src&#x2F;garden.rs</em>中定义了 <code>mod vegetables;</code>。编译器会在以父模块命名的目录中寻找子模块代码：</li>
-<li>内联，在大括号中，当 <code>mod vegetables</code>后方不是一个分号而是一个大括号</li>
-<li>在文件 <em>src&#x2F;garden&#x2F;vegetables.rs</em></li>
-<li>在文件 <em>src&#x2F;garden&#x2F;vegetables&#x2F;mod.rs</em></li>
-<li>模块中的 <strong>代码路径</strong> ：举例而言，一个 garden vegetables 模块下的 <code>Asparagus</code>类型可以在 <code>crate::garden::vegetables::Asparagus</code>被找到。</li>
-<li>公有（要加pub）和私有</li>
-<li><strong>使用use关键字引入</strong> <code>use crate::garden::vegetables::Asparagus;</code></li>
-</ul>
-<h2 id="引用模块项目的路径"><a href="#引用模块项目的路径" class="headerlink" title="引用模块项目的路径"></a>引用模块项目的路径</h2><ul>
-<li>绝对路径：从crate根开始</li>
-<li>相对路径：从当前模块开始，以 <code>self</code>、<code>super</code> 或定义在当前模块中的标识符开头。</li>
-</ul>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">mod</span> front_of_house &#123;<br>    <span class="hljs-keyword">mod</span> hosting &#123;<br>        <span class="hljs-keyword">fn</span> <span class="hljs-title function_">add_to_waitlist</span>() &#123;&#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">pub</span> <span class="hljs-keyword">fn</span> <span class="hljs-title function_">eat_at_restaurant</span>() &#123;<br>    <span class="hljs-comment">// 绝对路径</span><br>    crate::front_of_house::hosting::<span class="hljs-title function_ invoke__">add_to_waitlist</span>();<br><br>    <span class="hljs-comment">// 相对路径</span><br>    front_of_house::hosting::<span class="hljs-title function_ invoke__">add_to_waitlist</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo new <span class="hljs-string">&quot;My New Post&quot;</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="super开始的相对路径"><a href="#super开始的相对路径" class="headerlink" title="super开始的相对路径"></a>super开始的相对路径</h3><p>通过在路径的开头使用 <code>super</code> ，从父模块开始构建相对路径，而不是从当前模块或者 crate 根开始。</p>
-<h3 id="使用as关键字提供新的名称"><a href="#使用as关键字提供新的名称" class="headerlink" title="使用as关键字提供新的名称"></a>使用as关键字提供新的名称</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">use</span> std::fmt::<span class="hljs-type">Result</span>;<br><span class="hljs-keyword">use</span> std::io::<span class="hljs-type">Result</span> **<span class="hljs-keyword">as</span>** IoResult;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">function1</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">Result</span> &#123;<br>    <span class="hljs-comment">// --snip--</span><br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">function2</span>() <span class="hljs-punctuation">-&gt;</span> IoResult&lt;()&gt; &#123;<br>    <span class="hljs-comment">// --snip--</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo server<br></code></pre></td></tr></table></figure>
 
-<h3 id="使用pub-use重导出名称"><a href="#使用pub-use重导出名称" class="headerlink" title="使用pub use重导出名称"></a>使用pub use重导出名称</h3><ul>
-<li>使用 <code>use</code> 关键字，将某个名称导入当前作用域后，这个名称在此作用域中就可以使用了，但它对此作用域之外还是私有的。</li>
-<li>将 <code>pub</code> 和 <code>use</code> 合起来使用</li>
-</ul>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">mod</span> front_of_house &#123;<br>    <span class="hljs-keyword">pub</span> <span class="hljs-keyword">mod</span> hosting &#123;<br>        <span class="hljs-keyword">pub</span> <span class="hljs-keyword">fn</span> <span class="hljs-title function_">add_to_waitlist</span>() &#123;&#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">pub</span> <span class="hljs-keyword">use</span> crate::front_of_house::hosting;<br><br><span class="hljs-keyword">pub</span> <span class="hljs-keyword">fn</span> <span class="hljs-title function_">eat_at_restaurant</span>() &#123;<br>    hosting::<span class="hljs-title function_ invoke__">add_to_waitlist</span>();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo generate<br></code></pre></td></tr></table></figure>
 
-<h3 id="嵌套路径来消除大量的use行"><a href="#嵌套路径来消除大量的use行" class="headerlink" title="嵌套路径来消除大量的use行"></a>嵌套路径来消除大量的use行</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// --snip--</span><br><span class="hljs-keyword">use</span> std::cmp::Ordering;<br><span class="hljs-keyword">use</span> std::io;<br><span class="hljs-comment">// --snip--</span><br><br></code></pre></td></tr></table></figure>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ hexo deploy<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">// --snip--</span><br><span class="hljs-keyword">use</span> std::&#123;cmp::Ordering, io&#125;;<br><span class="hljs-comment">// --snip--</span><br><br></code></pre></td></tr></table></figure>
-
-<h3 id="通过glob运算符将所有的公有定义引入作用域"><a href="#通过glob运算符将所有的公有定义引入作用域" class="headerlink" title="通过glob运算符将所有的公有定义引入作用域"></a>通过glob运算符将所有的公有定义引入作用域</h3><p><code>use std::collections::*;</code></p>
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 
                 
               </div>
@@ -350,34 +309,6 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="../../../../categories/Rust/" class="category-chain-item">Rust</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="../../../../tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
-      
-    </div>
   
 </div>
 
@@ -387,8 +318,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Rust_包/Crate</div>
-      <div>https://pqcu77.github.io/2025/02/19/Rust-包-Crate/</div>
+      <div>Hello World</div>
+      <div>https://pqcu77.github.io/hello-world/</div>
     </div>
     <div class="license-meta">
       
@@ -400,7 +331,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年2月19日</div>
+          <div>2025年2月28日</div>
         </div>
       
       
@@ -432,9 +363,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="../Rust-iter/" title="Rust_iter">
+                      <a href="../YatCPU/" title="YatCPU">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Rust_iter</span>
+                        <span class="hidden-mobile">YatCPU</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -442,8 +373,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="../Rust-String/" title="Rust_String">
-                        <span class="hidden-mobile">Rust_String</span>
+                      <a href="../Rust-macro/" title="Rust_macro">
+                        <span class="hidden-mobile">Rust_macro</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -571,8 +502,8 @@
 
 <script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
 <script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="../../../../js/events.js" ></script>
-<script  src="../../../../js/plugins.js" ></script>
+<script  src="../js/events.js" ></script>
+<script  src="../js/plugins.js" ></script>
 
 
   <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
@@ -594,37 +525,10 @@
 
 
   
-    <script  src="../../../../js/img-lazyload.js" ></script>
+    <script  src="../js/img-lazyload.js" ></script>
   
 
 
-
-
-  
-<script>
-  var relativeDate = function() {
-    var updatedTime = document.getElementById('updated-time');
-    if (updatedTime) {
-      var text = updatedTime.textContent;
-      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
-      var matchs = text.match(reg);
-      if (matchs) {
-        var relativeTime = moment(matchs[0]).fromNow();
-        updatedTime.textContent = text.replace(reg, relativeTime);
-      }
-      updatedTime.style.display = '';
-    }
-  };
-  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
-    if (!'zh-cn'.startsWith('en')) {
-      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
-        relativeDate();
-      });
-    } else {
-      relativeDate();
-    }
-  });
-</script>
 
 
   
@@ -720,7 +624,7 @@
 
   <script>Fluid.plugins.imageCaption();</script>
 
-  <script  src="../../../../js/local-search.js" ></script>
+  <script  src="../js/local-search.js" ></script>
 
   <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
@@ -730,7 +634,7 @@
 
 <!-- 主题的启动项，将它保持在最底部 -->
 <!-- the boot of the theme, keep it at the bottom -->
-<script  src="../../../../js/boot.js" ></script>
+<script  src="../js/boot.js" ></script>
 
 
   
