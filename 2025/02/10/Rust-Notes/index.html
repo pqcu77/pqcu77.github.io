@@ -22,14 +22,14 @@
     <meta name="description" content="Resources：https:&#x2F;&#x2F;kaisery.github.io&#x2F;trpl-zh-cn&#x2F;ch01-02-hello-world.html 导学阶段： rust的更新和卸载： 更新：rustup update 卸载：rustup self uninstall    Hello World！第一个rust程序：123fn main() &#123;    println!(&quot;Hello">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rust_Notes">
-<meta property="og:url" content="https://github.com/pqcu77/2025/02/10/Rust-Notes/index.html">
+<meta property="og:url" content="https://pqcu77.github.io/2025/02/10/Rust-Notes/index.html">
 <meta property="og:site_name" content="linqt&#39;s blog">
 <meta property="og:description" content="Resources：https:&#x2F;&#x2F;kaisery.github.io&#x2F;trpl-zh-cn&#x2F;ch01-02-hello-world.html 导学阶段： rust的更新和卸载： 更新：rustup update 卸载：rustup self uninstall    Hello World！第一个rust程序：123fn main() &#123;    println!(&quot;Hello">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/88683d38-8c7e-4b4a-92dd-43c2040fe6ce/image.png">
-<meta property="og:image" content="https://github.com/pqcu77/pqcu77/2025/02/10/Rust-Notes/attachment:d36497e2-b2c3-4196-ac77-eac508ff047c:image.png">
-<meta property="og:image" content="https://github.com/pqcu77/pqcu77/2025/02/10/Rust-Notes/attachment:9a16ddaf-d30a-44c3-b87c-f696a04a71b4:image.png">
-<meta property="og:image" content="https://github.com/pqcu77/pqcu77/2025/02/10/Rust-Notes/attachment:e53bd69f-3268-4fe3-8087-a3ed10f1f452:image.png">
+<meta property="og:image" content="https://pqcu77.github.io/2025/02/10/Rust-Notes/attachment:d36497e2-b2c3-4196-ac77-eac508ff047c:image.png">
+<meta property="og:image" content="https://pqcu77.github.io/2025/02/10/Rust-Notes/attachment:9a16ddaf-d30a-44c3-b87c-f696a04a71b4:image.png">
+<meta property="og:image" content="https://pqcu77.github.io/2025/02/10/Rust-Notes/attachment:e53bd69f-3268-4fe3-8087-a3ed10f1f452:image.png">
 <meta property="article:published_time" content="2025-02-10T06:54:54.000Z">
 <meta property="article:modified_time" content="2025-02-25T03:53:17.419Z">
 <meta property="article:author" content="linqt">
@@ -79,7 +79,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"github.com","root":"/pqcu77/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/pqcu77/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -347,7 +347,7 @@
 <li>构建项目：<code>cargo build</code> —可以看到生成的可执行文件落在了debug文件夹下。</li>
 <li>运行：可以使用具体位置来运行，也可以直接输入 <code>cargo run</code> 来运行。推荐后者</li>
 </ol>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/88683d38-8c7e-4b4a-92dd-43c2040fe6ce/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/88683d38-8c7e-4b4a-92dd-43c2040fe6ce/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 </li>
 <li><p>快速检查代码确保其可以编译：<code>cargo check</code></p>
 </li>
@@ -386,11 +386,11 @@
 <h2 id="常见编程概念"><a href="#常见编程概念" class="headerlink" title="常见编程概念"></a>常见编程概念</h2><h3 id="变量与可变性"><a href="#变量与可变性" class="headerlink" title="变量与可变性"></a>变量与可变性</h3><ol>
 <li>变量<strong>默认</strong>是<strong>不可改变的</strong>。当变量不可变时，一旦值被绑定一个名称上，就不能改变这个值。</li>
 </ol>
-<p><img src="/pqcu77/pqcu77/2025/02/10/Rust-Notes/attachment:d36497e2-b2c3-4196-ac77-eac508ff047c:image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="/2025/02/10/Rust-Notes/attachment:d36497e2-b2c3-4196-ac77-eac508ff047c:image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>如果我们对同一个不可变的变量赋值两次，会出现报错。</p>
 <p>但如果我们修改一下，改成let mut x&#x3D;5；这样子是可变的变量，就可以赋值多次。</p>
-<p><img src="/pqcu77/pqcu77/2025/02/10/Rust-Notes/attachment:9a16ddaf-d30a-44c3-b87c-f696a04a71b4:image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="/pqcu77/pqcu77/2025/02/10/Rust-Notes/attachment:e53bd69f-3268-4fe3-8087-a3ed10f1f452:image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="/2025/02/10/Rust-Notes/attachment:9a16ddaf-d30a-44c3-b87c-f696a04a71b4:image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="/2025/02/10/Rust-Notes/attachment:e53bd69f-3268-4fe3-8087-a3ed10f1f452:image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><ul>
 <li>常量也是绑定到一个名称的不允许改变的值。（q：常量和不可变量的区别？<ul>
 <li>不允许对常量使用mut。常量总是不可变的。</li>
@@ -755,7 +755,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>Rust_Notes</div>
-      <div>https://github.com/pqcu77/2025/02/10/Rust-Notes/</div>
+      <div>https://pqcu77.github.io/2025/02/10/Rust-Notes/</div>
     </div>
     <div class="license-meta">
       

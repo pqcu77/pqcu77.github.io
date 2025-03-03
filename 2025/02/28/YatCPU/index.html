@@ -22,7 +22,7 @@
     <meta name="description" content="Introduction 单周期 CPU：本实验的目的是从零开始编写一个可以运行 RV32I 指令集程序的单周期 CPU，这个 CPU 将会是后续所有实验的基础。完成本实验之后，可以通过仿真的方式，加载运行 RV32I 程序，验证正确性。 中断机制：本实验在单周期 CPU 的基础上，添加了中断控制器以及中断控制流的内容，使单周期 CPU 可以处理来自外部设备的中断，响应 IO。完成本实验之后，CP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="YatCPU">
-<meta property="og:url" content="https://github.com/pqcu77/2025/02/28/YatCPU/index.html">
+<meta property="og:url" content="https://pqcu77.github.io/2025/02/28/YatCPU/index.html">
 <meta property="og:site_name" content="linqt&#39;s blog">
 <meta property="og:description" content="Introduction 单周期 CPU：本实验的目的是从零开始编写一个可以运行 RV32I 指令集程序的单周期 CPU，这个 CPU 将会是后续所有实验的基础。完成本实验之后，可以通过仿真的方式，加载运行 RV32I 程序，验证正确性。 中断机制：本实验在单周期 CPU 的基础上，添加了中断控制器以及中断控制流的内容，使单周期 CPU 可以处理来自外部设备的中断，响应 IO。完成本实验之后，CP">
 <meta property="og:locale" content="zh_CN">
@@ -145,7 +145,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"github.com","root":"/pqcu77/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/pqcu77/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -445,7 +445,7 @@
 </ul>
 <p>下面我们先按照上述步骤<strong>逐步构建数据通路部件</strong>，<strong>然后在 CPU 顶层模块将这些数据通路部件实例化并且连接起来</strong>。（下面涉及的代码都位于 <code>lab1/src/main/scala/riscv</code> 目录下）</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43681766/article/details/122860354">Chisel教程——02.Chisel环境配置和第一个Chisel模块的实现与测试-CSDN博客</a></p>
-<h3 id="取指："><a href="#取指：" class="headerlink" title="取指："></a>取指：</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1e02e04b-2e21-4de8-a487-b25c0b342f76/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="取指："><a href="#取指：" class="headerlink" title="取指："></a>取指：</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1e02e04b-2e21-4de8-a487-b25c0b342f76/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>重点：</p>
 <ul>
 <li>理解各个变量都是什么。，我们需要实现的是when指令有效时，先取出pc的当前指令，然后再判断是否需要jump—也就是判断jump_flag_id是否有效，如果有效就要把pc的值换成需要jump到的地址，否则就是顺序执行pc+4；</li>
@@ -457,7 +457,7 @@
 <li>多路选择器：Mux</li>
 </ul>
 <p><code>Mux</code>类似于传统的三元运算符，参数依次为 <code>(条件, 为真时的值, 为假时的值)</code>，建议用 <code>true.B</code>和 <code>false.B</code>来创建Chisel中的布尔值。</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c37be282-9bcc-4705-8144-c6416df8b2c7/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c37be282-9bcc-4705-8144-c6416df8b2c7/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>重点：</p>
 <ul>
 <li><p>对于ALUop2，我有个小疑惑，提供的图里是0的时候连接reg，而1连接immediate，但是实际写的时候反过来了。不太理解。<strong>已经理解了，看前面提供的代码发现，所提供的Aluop2source结构体里面，reg对应的值是0，immediate对应的是1，故要对应上。</strong></p>
@@ -485,16 +485,16 @@
 <p>seq表示有序集合&#x2F;序列。然后箭头左右表示的是一种映射关系。</p>
 </li>
 </ul>
-<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/cf433301-39de-45c2-96fe-9525ae145101/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/cf433301-39de-45c2-96fe-9525ae145101/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <ul>
 <li>目的：给ALU的输入端口赋值。</li>
 <li>我们要看到ALU.scala实现文件：</li>
 </ul>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/75f5ed2a-c27b-4143-b645-20e150da257d/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/75f5ed2a-c27b-4143-b645-20e150da257d/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>可以看到我们需要传入的是alu执行什么功能，op1和op2，然后他会计算出结果result。至于func的来源就是ALU_control，里面有一个output是会根据指令内容来输出alu_funct。</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/583e23ee-4823-4aea-8aa4-ca69b16a7691/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/583e23ee-4823-4aea-8aa4-ca69b16a7691/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>值得注意的是，我们在得到op1和op2时，op1_source和op2_source均是指示变量（类似于bool）表示输入来源，而没有运用我们上一个模块写的 如下：（或许是还没有到组合成一个完整单周期CPU的时候，尚且在一个周期一个周期实现，且各种数据来源比较割裂）</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/62affc69-210d-4c60-9ef5-9b57ae74a723/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/62affc69-210d-4c60-9ef5-9b57ae74a723/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h3 id="访存"><a href="#访存" class="headerlink" title="访存"></a>访存</h3><ul>
 <li>只有load和store才有访存阶段。数据从内存读到寄存器或者反过来。</li>
 <li>判断读还是写看 memory_read_enable使能，为1则read，反之write。</li>
@@ -512,24 +512,24 @@
 <p>注意：是在lab1内进行，然后z710v1_3这个包！不是z710v1.3!!!</p>
 </aside>
 
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/554ad192-24f8-471f-81f7-36771022fc8a/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/554ad192-24f8-471f-81f7-36771022fc8a/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <ol>
 <li><strong>生成 Vivado 项目</strong></li>
 </ol>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/259f6157-65c2-40b3-b8a5-b99a37013dba/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/259f6157-65c2-40b3-b8a5-b99a37013dba/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <ol>
 <li>生成比特流文件</li>
 </ol>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/53c8d9cd-8206-4f22-b174-1b87584763f5/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4e1943bf-e7f9-4359-a1fa-d8e922338b35/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/53c8d9cd-8206-4f22-b174-1b87584763f5/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4e1943bf-e7f9-4359-a1fa-d8e922338b35/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <ol>
 <li>烧录：由于是在wsl中进行的，会导致没有“驱动”的问题，然后发现了win上之前安装的vivado是可以连接到debian里面的，所以就直接在里面打开，根据program_device.tcl里面的指令（结合vivado中的烧录键），实际上只需要自己多输入最后那步 <code>close_hw_target</code> ，这样子能够保证vitis正常工作。</li>
 </ol>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c678f2ed-b03e-426e-a1bd-1d93015011d4/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c678f2ed-b03e-426e-a1bd-1d93015011d4/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>烧录结果：（后打开clock之后，会一闪一闪亮红灯）</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/789c4161-6b8e-4d97-bf31-954bcc9a8d27/be3cee1cacb047c90c08ad06a6b68ee.jpg" srcset="/pqcu77/img/loading.gif" lazyload alt="be3cee1cacb047c90c08ad06a6b68ee.jpg"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/789c4161-6b8e-4d97-bf31-954bcc9a8d27/be3cee1cacb047c90c08ad06a6b68ee.jpg" srcset="/img/loading.gif" lazyload alt="be3cee1cacb047c90c08ad06a6b68ee.jpg"></p>
 <p>vitis显示如下：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/03254c1f-b2a3-4380-9bb6-e23dc05ed7fe/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_17338008355682.png" srcset="/pqcu77/img/loading.gif" lazyload alt="企业微信截图_17338008355682.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/03254c1f-b2a3-4380-9bb6-e23dc05ed7fe/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_17338008355682.png" srcset="/img/loading.gif" lazyload alt="企业微信截图_17338008355682.png"></p>
 <h2 id="实验报告："><a href="#实验报告：" class="headerlink" title="实验报告："></a>实验报告：</h2><p>合规性测试部分：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">export</span> TARGET_SIM=~/YatCPU/yatcpu23_new/lab1/verilog/verilator/obj_dir/VTop<br><span class="hljs-keyword">export</span> TARGETDIR=~/YatCPU/yatcpu23_new/lab1/riscv-target<br><span class="hljs-keyword">export</span> RISCV_TARGET=yatcpu<br>make<br></code></pre></td></tr></table></figure>
 
@@ -546,16 +546,16 @@
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"># 测试 lab3 的 CPU<br><span class="hljs-keyword">export</span> TARGET_SIM=~/YatCPU/yatcpu23_new/lab3/verilog/verilator/obj_dir/VTop<br><span class="hljs-keyword">export</span> TARGETDIR=~/YatCPU/yatcpu23_new/lab3/riscv-target<br><span class="hljs-keyword">export</span> RISCV_TARGET=yatcpu<br></code></pre></td></tr></table></figure>
 
 <p>lab1的测试结果：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9152e9ef-2e5b-4ee9-be3c-650d1784d6bd/32d668896c5b7ecbacf247af766530d.png" srcset="/pqcu77/img/loading.gif" lazyload alt="32d668896c5b7ecbacf247af766530d.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9152e9ef-2e5b-4ee9-be3c-650d1784d6bd/32d668896c5b7ecbacf247af766530d.png" srcset="/pqcu77/img/loading.gif" lazyload alt="32d668896c5b7ecbacf247af766530d.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9152e9ef-2e5b-4ee9-be3c-650d1784d6bd/32d668896c5b7ecbacf247af766530d.png" srcset="/img/loading.gif" lazyload alt="32d668896c5b7ecbacf247af766530d.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9152e9ef-2e5b-4ee9-be3c-650d1784d6bd/32d668896c5b7ecbacf247af766530d.png" srcset="/img/loading.gif" lazyload alt="32d668896c5b7ecbacf247af766530d.png"></p>
 <h1 id="Lab2中断"><a href="#Lab2中断" class="headerlink" title="Lab2中断"></a>Lab2中断</h1><p>实验目的：</p>
 <ul>
 <li>学习CSR寄存器及其操作命令</li>
 <li>中断控制器的原理和设计</li>
 <li>编写一个简单的定时中断发生器</li>
 </ul>
-<h2 id="CSR寄存器的操作命令："><a href="#CSR寄存器的操作命令：" class="headerlink" title="CSR寄存器的操作命令："></a>CSR寄存器的操作命令：</h2><h3 id="回顾：中断和异常"><a href="#回顾：中断和异常" class="headerlink" title="回顾：中断和异常"></a>回顾：中断和异常</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/2d2dbece-9226-4a85-ad6a-28ff2a170cdb/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/7563df56-5735-4444-a001-17f6ca6ecd14/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<h2 id="CSR寄存器的操作命令："><a href="#CSR寄存器的操作命令：" class="headerlink" title="CSR寄存器的操作命令："></a>CSR寄存器的操作命令：</h2><h3 id="回顾：中断和异常"><a href="#回顾：中断和异常" class="headerlink" title="回顾：中断和异常"></a>回顾：中断和异常</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/2d2dbece-9226-4a85-ad6a-28ff2a170cdb/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/7563df56-5735-4444-a001-17f6ca6ecd14/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h3 id="CSR：用来控制和保存CPU的其他功能的状态。例如终端使能状态，特权等级等。"><a href="#CSR：用来控制和保存CPU的其他功能的状态。例如终端使能状态，特权等级等。" class="headerlink" title="CSR：用来控制和保存CPU的其他功能的状态。例如终端使能状态，特权等级等。"></a>CSR：用来控制和保存CPU的其他功能的状态。例如终端使能状态，特权等级等。</h3><ul>
 <li>mstatus寄存器：记录<strong>机器模式下的状态</strong>（status），如中断是否启用等。</li>
 <li>mepc寄存器：保存了<strong>终端返回后需要执行的指令地址</strong>，当 CPU 执行中断时，<code>mepc</code> 寄存器被自动设置为当前指令的地址，如果 <code>EX</code> 阶段正在执行跳转，则设置为跳转的目标地址。</li>
@@ -563,9 +563,9 @@
 <li>mtvec寄存器：保存了<strong>中断处理程序</strong>的地址。发生执行中断时会传给pc寄存器</li>
 <li>中断发生时，CPU需要清空并阻塞流水线，并在CSR寄存器写入中断相关的信息。由于CSR寄存器堆实现只有一个读写端口，故需要多个周期才能写入CSR寄存器。写完后，发出控制信号，开始处理。</li>
 </ul>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9f9ceea2-a7f4-4560-810d-ce43a10e3c71/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/00dc7cf5-97b3-424c-8922-a71d85ffb886/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<h3 id="中断处理程序：实现更加复杂的功能。"><a href="#中断处理程序：实现更加复杂的功能。" class="headerlink" title="中断处理程序：实现更加复杂的功能。"></a>中断处理程序：实现更加复杂的功能。</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/e0ec95e0-c34c-440a-a56a-0dfe2d089312/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9f9ceea2-a7f4-4560-810d-ce43a10e3c71/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/00dc7cf5-97b3-424c-8922-a71d85ffb886/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="中断处理程序：实现更加复杂的功能。"><a href="#中断处理程序：实现更加复杂的功能。" class="headerlink" title="中断处理程序：实现更加复杂的功能。"></a>中断处理程序：实现更加复杂的功能。</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/e0ec95e0-c34c-440a-a56a-0dfe2d089312/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <ul>
 <li>我们可以将CSR指令分解为：CSR寄存器组，ID译码单元，EX执行单元，WB写回单元。<ul>
 <li>CSR寄存器组需要根据<strong>ID模块译码后给出的控制信号</strong>和<strong>CSR寄存器地址</strong>来对内部寄存器进行寻址，获取其内容并修改。</li>
@@ -596,28 +596,28 @@
 <ul>
 <li><strong>注意注意注意：这里不是自己手动地将MPIE位设置为0，是将MIE位设置为0，然后硬件会自动的把MPIE位修改</strong>然后从 <code>mtvec</code> 获取中断处理程序的地址，跳转到该地址执行进一步的中断处理</li>
 </ul>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9f234702-1688-497c-8010-651f7dc53f7e/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/cd72c169-cbfe-45be-8a44-4989200794d3/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9f234702-1688-497c-8010-651f7dc53f7e/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/cd72c169-cbfe-45be-8a44-4989200794d3/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 </li>
 </ul>
 <p>该部分的代码截图：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/01c995c9-3901-4573-a576-d4f29ed0dba3/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/01c995c9-3901-4573-a576-d4f29ed0dba3/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>解释：disable_interrupt是用来修改MIE位的，并且让后续禁用中断（因为我们要保证不会发生中断嵌套）</p>
 <p>然后看到数据中的信号连接：</p>
 <ul>
 <li>着重提醒mcause的原因，我们在同一个文件的最上方看到了Status的结构体定义，了解到就这么几种，并没有把所有的原因都列举出来，所以暂时只需要这样子写。（更多的mcause原因可以查看后面的截图或者直接看特权手册第二卷）</li>
 </ul>
 <p><strong>mstatus的指令结构：</strong></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1f1384af-b7e5-4fe5-8998-67b49e091e5b/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/a2857746-2f3c-48b8-82ba-81bfe76bc25c/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/bf9f34e1-6e68-4368-8b05-842a2af9d624/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1f1384af-b7e5-4fe5-8998-67b49e091e5b/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/a2857746-2f3c-48b8-82ba-81bfe76bc25c/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/bf9f34e1-6e68-4368-8b05-842a2af9d624/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h3 id="（硬件）中断返回"><a href="#（硬件）中断返回" class="headerlink" title="（硬件）中断返回"></a>（硬件）中断返回</h3><p>需要写入的寄存器：mstatus</p>
 <p>从mepc中获取跳转目标地址（原本正常执行的下一条地址）</p>
 <p>把 <strong>MIE</strong> 位置为 <strong>MPIE 位</strong>，那么 MPIE 为 1 的话 <code>mret</code> 就会恢复中断，如果 MPIE 为 0 的话，<code>mret</code> 则不改变 <code>mstatus</code> 的值，这也导致了我们不支持中断嵌套。</p>
 <p>CLINT的实现：for简单—采用纯组合逻辑实现。</p>
 <p>CLINT 需要<strong>一个周期</strong>就<strong>把多个寄存器的内容修改</strong>的功能，而<strong>正常的 CSR 指令只能对一个</strong>寄存器读-修改-写（Read-Modify-Write, RMW）。所以 CLINT 和 CSR 之间有独立的优先级更高的通路，用来<strong>快速更新</strong> CSR 寄存器的值。</p>
 <p>一个好的解释：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/16c62b2d-399d-46fe-8508-9c953d559c9f/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/16c62b2d-399d-46fe-8508-9c953d559c9f/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h2 id="简单的定时中断发生器"><a href="#简单的定时中断发生器" class="headerlink" title="简单的定时中断发生器"></a>简单的定时中断发生器</h2><p>MMIO的定时中断发生器—Timer</p>
 <blockquote>
 <p>MMIO 简单来说就是：<strong>该外设用来和 CPU 交互的寄存器是与内存一起编址的</strong>，所以 CPU 可以通过<strong>访存指令</strong>（load&#x2F;store）来修改这些寄存器的值，从而达到 CPU 和外设交互的目的。</p>
@@ -630,30 +630,30 @@
 <li>CLINT 能够<strong>正确的响应中断</strong>并且<strong>在中断结束后回到原来的执行流</strong>。（done</li>
 </ol>
 <p>如果能够正确完成本次实验，那么你的 CPU 就可以运行更加复杂的程序了，可以运行一下俄罗斯方块程序试试，如果想要上手玩的话，也许需要一个串口转接板，这样就可以通过电脑的键盘通过 UART 串口给程序输入字符了。</p>
-<h3 id="任务1：EX-执行单元在处理-CSR-指令时能够正确地得到写入-CSR-寄存器的数据"><a href="#任务1：EX-执行单元在处理-CSR-指令时能够正确地得到写入-CSR-寄存器的数据" class="headerlink" title="任务1：EX 执行单元在处理 CSR 指令时能够正确地得到写入 CSR 寄存器的数据"></a>任务1：EX 执行单元在处理 CSR 指令时能够<strong>正确地得到写入 CSR 寄存器的数据</strong></h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4290bbb4-24b4-44c9-9160-13af9a9b6da6/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c3f7e361-4110-4940-aab4-ba28ad60defb/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/e585e7a2-a06a-4c05-aab6-e1dc23232281/0a3f20ee132b54699d4134c1320040d.png" srcset="/pqcu77/img/loading.gif" lazyload alt="0a3f20ee132b54699d4134c1320040d.png"></p>
+<h3 id="任务1：EX-执行单元在处理-CSR-指令时能够正确地得到写入-CSR-寄存器的数据"><a href="#任务1：EX-执行单元在处理-CSR-指令时能够正确地得到写入-CSR-寄存器的数据" class="headerlink" title="任务1：EX 执行单元在处理 CSR 指令时能够正确地得到写入 CSR 寄存器的数据"></a>任务1：EX 执行单元在处理 CSR 指令时能够<strong>正确地得到写入 CSR 寄存器的数据</strong></h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4290bbb4-24b4-44c9-9160-13af9a9b6da6/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c3f7e361-4110-4940-aab4-ba28ad60defb/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/e585e7a2-a06a-4c05-aab6-e1dc23232281/0a3f20ee132b54699d4134c1320040d.png" srcset="/img/loading.gif" lazyload alt="0a3f20ee132b54699d4134c1320040d.png"></p>
 <p>这个地方要注意，csr寄存器的立即数和之前译码阶段的立即数是不太一样的。译码阶段取立即数主要是针对立即数长度or位置不同于一般指令的进行获取。（如图）</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/918f657a-115b-4ba0-82d6-ed9486d52f0f/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/918f657a-115b-4ba0-82d6-ed9486d52f0f/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>从上方的指令划分的图中可以看到，crs寄存器的立即数和R指令寄存器指令取寄存器数是一样的（15-19）→ 在上图也是可以看到<strong>目标寄存器的值和立即数来源都是rs1</strong>，故后面只用在此处取值就行了。唯一的区别是第二个寄存器加上原本的func7组合在一起合成了crs寄存器的func7指示。（附上译码阶段的取指令的图：其中rs1对应的数据存储到reg1_data，rs2对应的数据存储到reg2_data—但此处是应该被忽略的，因为rs2部分的数据被合并到了func7中） <strong>mips的rs，rt的位置是确定的。</strong></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/41cd5ebf-b1d8-4c44-a4b1-550bebbc029c/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/8246c754-17b2-4c49-ace1-6581ed7d8f24/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/ce9f61ea-c7ce-4fd9-9e4e-9030d6b0f349/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/41cd5ebf-b1d8-4c44-a4b1-550bebbc029c/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/8246c754-17b2-4c49-ace1-6581ed7d8f24/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/ce9f61ea-c7ce-4fd9-9e4e-9030d6b0f349/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>要注意的是，uimm是15-19位的原码，而source是rs1里面的值</p>
 <p>任务一结果：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/8c80ac24-145b-4414-8515-263cf7038800/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<h3 id="任务2：CSR-寄存器组可以正确支持CLINT和来自CSR指令的读写操作。"><a href="#任务2：CSR-寄存器组可以正确支持CLINT和来自CSR指令的读写操作。" class="headerlink" title="任务2：CSR 寄存器组可以正确支持CLINT和来自CSR指令的读写操作。"></a>任务2：CSR 寄存器组可以<strong>正确支持CLINT和来自CSR指令的读写操作</strong>。</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c1ed0bf3-0f89-469a-89f3-10e24ee656b6/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4604f572-0a2d-4805-ab6e-a522ad2f8832/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/8c80ac24-145b-4414-8515-263cf7038800/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="任务2：CSR-寄存器组可以正确支持CLINT和来自CSR指令的读写操作。"><a href="#任务2：CSR-寄存器组可以正确支持CLINT和来自CSR指令的读写操作。" class="headerlink" title="任务2：CSR 寄存器组可以正确支持CLINT和来自CSR指令的读写操作。"></a>任务2：CSR 寄存器组可以<strong>正确支持CLINT和来自CSR指令的读写操作</strong>。</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c1ed0bf3-0f89-469a-89f3-10e24ee656b6/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4604f572-0a2d-4805-ab6e-a522ad2f8832/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <ul>
 <li><code>CSRRegister.CycleL</code> 和 <code>CSRRegister.CycleH</code> 这两个参数通常是用于访问或设置 CSR（Control and Status Registers）寄存器中的低位和高位的值。</li>
 </ul>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/0a3ec965-8a4a-46d3-be51-7b0073b5844a/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/0a3ec965-8a4a-46d3-be51-7b0073b5844a/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>首先我们看到CSR中需要我们实现的是可以正确读取CSR寄存器组的信息，并且可以正确与CLINT交互—将信息传到CLINT）</p>
 <p>然后我们看到提示写了：如果数据线与CLINT冲突了，我们需要优先进行数据更新，这样子保证了CLINT读到的数是最新的。</p>
 <p>我们可以借鉴已经写好的代码中判断条件的方法：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/26456738-a558-452b-b30f-c0748264ac9c/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/26456738-a558-452b-b30f-c0748264ac9c/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>可以看到如果需要进行数据更新，要判断reg_write_enable_id是否为1，然后判断对应的地址是哪一个—&gt;对应了需要更改的那一个寄存器的值。使用Mux来进行数据选择，如果条件满足，那么输入到CLINT中的值是reg_write_data_ex，若不满足则输入旧的值（也就是前面读取的寄存器组原本的值）</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/0337e759-5933-4113-884e-ff789094a897/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/0337e759-5933-4113-884e-ff789094a897/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h3 id="功能3：定时中断发生器可以正确产生中断信号，并且实现-Timer-寄存器的-MMIO"><a href="#功能3：定时中断发生器可以正确产生中断信号，并且实现-Timer-寄存器的-MMIO" class="headerlink" title="功能3：定时中断发生器可以正确产生中断信号，并且实现 Timer 寄存器的 MMIO"></a>功能3：定时中断发生器可以<strong>正确产生中断信号</strong>，并且<strong>实现 Timer 寄存器的 MMIO</strong></h3><p>实现一个MMIO的定时中断发生器—timer</p>
 <p>MMIO：该外设用来和CPU交互的寄存器一起编址，这样子CPU就可以通过访存指令来修改这些寄存器的值，从而实现CPU与外设交互。即内存映射。</p>
 <p>没有总线时可以使用<strong>多路选择器（即现在阶段用多路选择器实现）</strong></p>
@@ -662,7 +662,7 @@
 <li><code>enable</code> 寄存器：控制定时中断发生器的使能，为false则不产生中断，映射到地址空间的逻辑地址为0x80000008.</li>
 <li><code>limit</code> 寄存器：用来控制定时器的<strong>中断发生间隔</strong>。映射到地址空间逻辑地址：0x80000004。内部有个加一计数器，达到limit为标准的界限时，定时器会发生一次中断信号（enable使能）。注：产生中断信号的时长没有太大关系，但是至少应该大于一个 CPU 时钟周期，确保 CPU 能够正确捕捉到该信号即可。</li>
 </ul>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/3ff93292-0ed1-4ab4-9067-d05f7ce5f71d/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/3ff93292-0ed1-4ab4-9067-d05f7ce5f71d/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h3 id="任务4：CLINT-能够正确的响应中断并且在中断结束后回到原来的执行流（更多内容在前面中断概念处）"><a href="#任务4：CLINT-能够正确的响应中断并且在中断结束后回到原来的执行流（更多内容在前面中断概念处）" class="headerlink" title="任务4：CLINT 能够正确的响应中断并且在中断结束后回到原来的执行流（更多内容在前面中断概念处）"></a>任务4：CLINT 能够<strong>正确的响应中断</strong>并且<strong>在中断结束后回到原来的执行流（更多内容在前面中断概念处）</strong></h3><p><a target="_blank" rel="noopener" href="https://www.notion.so/13c279ae70e5804f81ddd90e124a9031?pvs=21"></a></p>
 <p>CLINT的一些理解概念：</p>
 <ol>
@@ -672,10 +672,10 @@
 </ul>
 </li>
 </ol>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c90f1260-7c99-43fe-a793-12f91fc1e8de/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c90f1260-7c99-43fe-a793-12f91fc1e8de/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <ol>
 <li><p>一些代码解释：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/014468d7-0c6f-4128-b775-3af358158014/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/014468d7-0c6f-4128-b775-3af358158014/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 </li>
 </ol>
 <p>InterruptStatus对象：</p>
@@ -709,14 +709,14 @@
 <li>mstatus寄存器和mcause寄存器</li>
 </ol>
 <p>mstatus指令结构：（我们使用到的是32位的</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/ac86d63c-db93-450c-af66-afca0d8b3780/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/ac86d63c-db93-450c-af66-afca0d8b3780/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>mcause指令相关：</p>
 <p>可能出现的机器级异常代码</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/352d620c-634d-4c50-bdf5-ebe48e1b9965/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/f6c30f66-840f-4f01-8bb3-dd88c86f1b68/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/dccae40f-4b27-4782-9a55-5e52cb8e85b2/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/352d620c-634d-4c50-bdf5-ebe48e1b9965/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/f6c30f66-840f-4f01-8bb3-dd88c86f1b68/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/dccae40f-4b27-4782-9a55-5e52cb8e85b2/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>mtvec</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/101d1622-416f-43d9-85f1-c51130896ea7/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/101d1622-416f-43d9-85f1-c51130896ea7/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h1 id="Lab3流水线CPU"><a href="#Lab3流水线CPU" class="headerlink" title="Lab3流水线CPU"></a>Lab3流水线CPU</h1><h2 id="内容简介："><a href="#内容简介：" class="headerlink" title="内容简介："></a>内容简介：</h2><ul>
 <li><strong>竞争冒险</strong>的处理是流水线 CPU 设计的难点和关键所在。</li>
 <li>设计一个简单的三级流水线 CPU（IF、ID 和 EX 三级），它只涉及<strong>分支和跳转指令</strong>带来的控制冒险，然后，我们再将三级流水线 CPU 的 EX 级<strong>继续切分为 EX、MEM 和 WB</strong>，形成经典的<strong>五级流水线</strong>，这样做带来的数据冒险需要使用<strong>阻塞和转发技术</strong>进行处理；最后，我们将<strong>分支和跳转提前到 ID 阶段，进一步缩短分支延迟。</strong></li>
@@ -739,12 +739,12 @@
 <h3 id="task0：补充完成PipelineRegister-scala"><a href="#task0：补充完成PipelineRegister-scala" class="headerlink" title="task0：补充完成PipelineRegister.scala"></a>task0：补充完成PipelineRegister.scala</h3><ul>
 <li><code>stall</code> 和 <code>flush</code> 分别为流水线寄存器的阻塞和清空信号，<code>in</code> 和 <code>out</code> 分别为要写入寄存器的值和寄存器的当前值。</li>
 </ul>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/fe542da7-c626-465f-b174-a1ee4cbf654d/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/fe542da7-c626-465f-b174-a1ee4cbf654d/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <ul>
 <li>解释：我们要存储结果，并且下一个阶段有可能还要用到前面那个阶段的状态信息，所以要用寄存器来传递、存储。</li>
 </ul>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/98781a7b-ca69-4696-9949-fd8e6da27fc3/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9205658e-ebfb-4015-857f-cbd9e11ccd76/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/98781a7b-ca69-4696-9949-fd8e6da27fc3/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9205658e-ebfb-4015-857f-cbd9e11ccd76/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h3 id="对比总结"><a href="#对比总结" class="headerlink" title="对比总结"></a><strong>对比总结</strong></h3><table>
 <thead>
 <tr>
@@ -779,7 +779,7 @@
 <td>描述硬件逻辑和状态存储</td>
 </tr>
 </tbody></table>
-<h1 id="三级流水线"><a href="#三级流水线" class="headerlink" title="三级流水线"></a>三级流水线</h1><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/77588407-9a56-4bfd-a311-c27e63aa638b/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<h1 id="三级流水线"><a href="#三级流水线" class="headerlink" title="三级流水线"></a>三级流水线</h1><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/77588407-9a56-4bfd-a311-c27e63aa638b/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <ul>
 <li>两组流水线寄存器：<code>IF2ID</code> 和 <code>ID2EX</code> 划分出三个阶段。（已写好）<ul>
 <li>取指（Instruction Fetch，IF）：根据 PC 中的指令地址从内存中取出指令码；</li>
@@ -799,12 +799,12 @@
 <li>我们用一个控制单元来检测控制冒险并清空流水线，模块定义在 <code>src/main/scala/riscv/core/threestage/Control.scala</code>，为了避免此题过于简单（呵呵，我们没有提供模块接口，请根据以上分析确定模块的输入输出，在 <code>// Lab3(Flush)</code> 处将代码补充完整，并在 <code>src/main/scala/riscv/core/threestage/CPU.scala</code> 的 <code>// Lab3(Flush)</code> 处补充相关连线，使其能够通过 <code>ThreeStageCPUTest</code> 测试。</li>
 </ul>
 <p>control：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/68544734-4bbe-4c2a-95a8-99741b0439af/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/68544734-4bbe-4c2a-95a8-99741b0439af/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>如果传入了要跳转的信号，那我们控制器需要输出信号，确保能把IF和ID两个阶段清空</p>
 <p>CPU：与control连线。</p>
 <p>首先要保证输入信息传入；注意的是Interrupt_flag 信号的来源</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/5a7c860b-c017-4301-a7ae-9eed85779f86/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
-<h2 id="五级流水线"><a href="#五级流水线" class="headerlink" title="五级流水线"></a>五级流水线</h2><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/e53ad942-ff47-49fa-8379-667fa1a0649c/five_stage_pipelined_CPU_structure.png" srcset="/pqcu77/img/loading.gif" lazyload alt="five_stage_pipelined_CPU_structure.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/5a7c860b-c017-4301-a7ae-9eed85779f86/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h2 id="五级流水线"><a href="#五级流水线" class="headerlink" title="五级流水线"></a>五级流水线</h2><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/e53ad942-ff47-49fa-8379-667fa1a0649c/five_stage_pipelined_CPU_structure.png" srcset="/img/loading.gif" lazyload alt="five_stage_pipelined_CPU_structure.png"></p>
 <blockquote>
 <p>注意，上面的 CPU 结构图是我们完成所有实验之后的结果，在完成“缩短分支延迟”实验之前，我们 CPU 的结构将与上图稍有不同。例如，我们紧接着讨论的五级流水线 CPU 在 EX 阶段判断程序是否发生跳转，而不是 ID 阶段。</p>
 </blockquote>
@@ -877,18 +877,18 @@
 </ul>
 </li>
 </ol>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/b390bac4-81eb-4f10-b142-8fff15dc4c84/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/b390bac4-81eb-4f10-b142-8fff15dc4c84/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h2 id="拓展：使用旁路（转发）减少阻塞"><a href="#拓展：使用旁路（转发）减少阻塞" class="headerlink" title="拓展：使用旁路（转发）减少阻塞"></a><strong>拓展：使用旁路（转发）减少阻塞</strong></h2><ul>
 <li>用一个<strong>控制单元</strong>来处理流水线的阻塞和清空</li>
 <li>用一个<strong>旁路单元</strong>来检测数据冒险并发出旁路控制信号</li>
 <li>在执行单元中根据旁路单元的控制信号使用对应的旁路数据</li>
 </ul>
 <p>Control：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/d00468fd-4e0c-4ba0-8f3d-423913238ec5/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/d00468fd-4e0c-4ba0-8f3d-423913238ec5/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>Forwarding：检测数据冒险（看是否存在冲突），发出转发信号。看是与那个寄存器冲突。</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/020768f4-d436-4200-b667-e990d2e82cfe/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/020768f4-d436-4200-b667-e990d2e82cfe/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>Execute：看CPU流程图，可以得知数据的来源有两类，直接得到（已经写回了的数据，直接从寄存器中得到），发生数据冒险的数据（看写到了哪个寄存器中，如果是ex2mem，则从mem转发，如果是mem2wb，就从wb转发</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/73fd5c72-194a-4538-ab08-de2d7e6b797d/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/73fd5c72-194a-4538-ab08-de2d7e6b797d/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h2 id="拓展：缩短分支延迟"><a href="#拓展：缩短分支延迟" class="headerlink" title="拓展：缩短分支延迟"></a><strong>拓展：缩短分支延迟</strong></h2><ul>
 <li>往cpu中加入少量硬件，将分支&#x2F;跳转指令的执行从EX段提前到ID段，进而把程序跳转的损失减少到一个时钟周期</li>
 </ul>
@@ -987,19 +987,19 @@
 <h2 id="总线前置知识："><a href="#总线前置知识：" class="headerlink" title="总线前置知识："></a>总线前置知识：</h2><blockquote>
 <p>AXI4-Lite总线通信协议</p>
 </blockquote>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/8ed1ed79-32e2-40bd-b47e-610a743bfed5/axi.png" srcset="/pqcu77/img/loading.gif" lazyload alt="axi.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/8ed1ed79-32e2-40bd-b47e-610a743bfed5/axi.png" srcset="/img/loading.gif" lazyload alt="axi.png"></p>
 <p>写地址通道：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/bd53bcaa-8b4a-4d82-8548-2cc7e7724220/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/bd53bcaa-8b4a-4d82-8548-2cc7e7724220/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>写数据通道：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1212ba2d-d2d2-4448-b215-48f548892a7f/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1212ba2d-d2d2-4448-b215-48f548892a7f/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>写响应通道</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/de6abdd7-cddb-41de-80ec-f0674748aeef/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/de6abdd7-cddb-41de-80ec-f0674748aeef/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>读地址通道：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4b332481-15c3-4cae-9152-42f3f9f751a9/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4b332481-15c3-4cae-9152-42f3f9f751a9/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>读数据通道：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/bc757076-2d7d-42b6-9a56-fc5623721789/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/bc757076-2d7d-42b6-9a56-fc5623721789/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>状态机：</p>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/158b0582-99d3-4e79-a174-8cfcf4599e93/axi-fsm.png" srcset="/pqcu77/img/loading.gif" lazyload alt="axi-fsm.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/158b0582-99d3-4e79-a174-8cfcf4599e93/axi-fsm.png" srcset="/img/loading.gif" lazyload alt="axi-fsm.png"></p>
 <ul>
 <li>总线仲裁：所有设备在通信之前都要检测总线是都占用。**每一个设备则需要增加总线请求线以及总线授权线，连接到总线仲裁器。**在设备需要通过总线传输数据前，需要先通过总线请求线请求总线的访问权限。<strong>总线仲裁器则通过总线授权线来授予访问权限</strong>，从而避免设备之间的冲突。</li>
 <li>总线交换机：类似于网络交换机的方式连接。不同对的设备之间可以通过交换机同时进行通信。</li>
@@ -1010,7 +1010,7 @@
 <li>从机（slave）开始准备需返回的数据（RDATA），读返回请求（RVALID），主机跳变到下一个<strong>读数据状态。</strong></li>
 <li>当主机的RVALID和RREADY完成握手，主机得到目标数据，则产生读完成的信号（RREADY），把数据返还给取值模块，就完成了一次读操作，此时主机跳转回空闲状态。</li>
 </ol>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/6d60b960-c91b-441e-8ae1-95e5787c8d29/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/6d60b960-c91b-441e-8ae1-95e5787c8d29/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h2 id="写操作："><a href="#写操作：" class="headerlink" title="写操作："></a>写操作：</h2><blockquote>
 <p>相比读多了一个接收<strong>写回复</strong>（如图）</p>
 </blockquote>
@@ -1042,7 +1042,7 @@
 </ul>
 </li>
 </ol>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/905731eb-29ea-45e5-a7ae-55ea468b63e8/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/905731eb-29ea-45e5-a7ae-55ea468b63e8/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <p>实现 AXI4Lite 主设备模块</p>
 <ol>
 <li><strong>实现状态机</strong>：<ul>
@@ -1062,7 +1062,7 @@
 </ul>
 </li>
 </ol>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/d9d252c5-393d-457b-abcf-f370d89f2ab8/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/d9d252c5-393d-457b-abcf-f370d89f2ab8/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 <h3 id="ps-一些chisel的知识："><a href="#ps-一些chisel的知识：" class="headerlink" title="ps:一些chisel的知识："></a>ps:一些chisel的知识：</h3><ul>
 <li>Bundle：用于将不同类型的信号划分为一组</li>
 <li>Vec用于表示一个<strong>可索引的、相同类型的</strong>信号的集合</li>
@@ -1074,7 +1074,7 @@
 <li>使用实验板上的 LED 或者数码管等外设，体现你的 CPU 可以响应定时器中断或者其他外部中断。</li>
 <li>在完成实验的过程中，遇到的关于实验指导不明确或者其他问题，或者改进的建议。</li>
 </ol>
-<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/31d55b13-b66a-44e0-a61a-e7ef62f59b8d/image.png" srcset="/pqcu77/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/31d55b13-b66a-44e0-a61a-e7ef62f59b8d/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
 
                 
               </div>
@@ -1100,7 +1100,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>YatCPU</div>
-      <div>https://github.com/pqcu77/2025/02/28/YatCPU/</div>
+      <div>https://pqcu77.github.io/2025/02/28/YatCPU/</div>
     </div>
     <div class="license-meta">
       
