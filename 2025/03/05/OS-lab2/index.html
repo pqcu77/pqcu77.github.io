@@ -29,14 +29,11 @@
 <meta property="og:image" content="https://pqcu77.github.io/2025/03/05/img/%E6%98%BE%E5%AD%98%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB-1741171509502-21.png">
 <meta property="og:image" content="https://pqcu77.github.io/2025/03/05/img/%E5%AD%97%E7%AC%A6%E5%B1%9E%E6%80%A7%E5%AF%B9%E5%BA%94%E8%A1%A8.png">
 <meta property="og:image" content="https://pqcu77.github.io/2025/03/05/img/image-20250305172419639.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/05/img/9cbfaf1fe8a7437aae3bc3d5cfd9aa9.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/05/img/image-20250305180142558.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/05/img/image-20250305180510397.png">
 <meta property="article:published_time" content="2025-03-05T06:18:47.000Z">
-<meta property="article:modified_time" content="2025-03-05T10:47:11.071Z">
+<meta property="article:modified_time" content="2025-03-05T11:01:55.366Z">
 <meta property="article:author" content="linqt">
-<meta property="article:tag" content="OS_Labs">
 <meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="OS_Labs">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://pqcu77.github.io/2025/03/05/img/%E6%98%BE%E5%AD%98%E5%AF%B9%E5%BA%94%E5%85%B3%E7%B3%BB-1741171509502-21.png">
   
@@ -250,7 +247,7 @@
         
         
           <!-- compatible with older versions-->
-          36 分钟
+          37 分钟
         
       </span>
     
@@ -301,7 +298,7 @@
               <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于 2025-03-05T18:47:11+08:00
+                    本文最后更新于 2025-03-05T19:01:55+08:00
                   
                   
 
@@ -313,7 +310,7 @@
                 
                 <h1 id="OS-Lab2"><a href="#OS-Lab2" class="headerlink" title="OS_Lab2"></a>OS_Lab2</h1><h2 id="实验概述"><a href="#实验概述" class="headerlink" title="实验概述"></a>实验概述</h2><p>在本次实验中，同学们会学习到x86汇编、计算机的启动过程、IA-32处理器架构和字符显存原理。根据所学的知识，同学们能自己编写程序，并且让计算机在启动后加载运行，增进对计算机启动过程的理解，为后面编写操作系统加载程序奠定基础。同时，同学们将学习使用gdb来调试程序的基本方法。</p>
 <h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><p>DDL：2025.3.23</p>
-<p>提交内容：将<strong>3+1（选做）个任务的代码</strong>和<strong>实验报告</strong>放到<strong>压缩包</strong>中，命名为“<strong>lab2-姓名-学号</strong>”，提交到实验课程邮箱：<a href="mailto:&#x6f;&#x73;&#95;&#x73;&#x79;&#115;&#117;&#95;&#108;&#x61;&#x62;&#64;&#49;&#x36;&#x33;&#x2e;&#99;&#x6f;&#109;">os_sysu_lab@163.com</a>。</p>
+<p>提交内容：将<strong>3+1（选做）个任务的代码</strong>和<strong>实验报告</strong>放到<strong>压缩包</strong>中，命名为“<strong>lab2-姓名-学号</strong>”，提交到实验课程邮箱：<a href="mailto:&#x6f;&#115;&#95;&#x73;&#121;&#x73;&#x75;&#95;&#108;&#x61;&#98;&#x40;&#49;&#x36;&#51;&#46;&#x63;&#x6f;&#109;">os_sysu_lab@163.com</a>。</p>
 <p>将实验报告的pdf提交至 <a target="_blank" rel="noopener" href="http://inbox.weiyun.com/zPIW1se1">http://inbox.weiyun.com/zPIW1se1</a></p>
 <h2 id="实验入门"><a href="#实验入门" class="headerlink" title="实验入门"></a>实验入门</h2><ul>
 <li>从汇编语言开始–汇编语言提供了一些特权指令，而高级指令并未提供对应的指令。</li>
@@ -541,7 +538,7 @@
 </tr>
 </tbody></table>
 <p>例子：</p>
-<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs smali">array dw 1024, 2048<br>      dw 4096, 8192<br>    <span class="hljs-built_in"></span><br><span class="hljs-built_in">array </span>dw 1024, 2048, 4096, 8192 ;和上面是同样的<br></code></pre></td></tr></table></figure>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs smali">array dw 1024, 2048<br>      dw 4096, 8192<br>  <span class="hljs-built_in"></span><br><span class="hljs-built_in">array </span>dw 1024, 2048, 4096, 8192 ;和上面是同样的<br></code></pre></td></tr></table></figure>
 
 <p>对应了：</p>
 <p>array[0] &#x3D; 1024<br>array[1] &#x3D; 2048<br>array[2] &#x3D; 4096<br>array[3] &#x3D; 8192</p>
@@ -675,14 +672,15 @@
 <p>字符的颜色属性的字节高四位为背景色，低四位为前景色，具体如下：</p>
 <p><img src="../img/%E5%AD%97%E7%AC%A6%E5%B1%9E%E6%80%A7%E5%AF%B9%E5%BA%94%E8%A1%A8.png" srcset="/img/loading.gif" lazyload alt="字符属性对应表"></p>
 <ul>
-<li><p>我们使用的是二维的点，但是在栈上是线性的 &#x3D;》转换为一维的点<br>$$<br>\text{显存起始位置}&#x3D;\text{0xB8000}+2\cdot(80\cdot x+y)<br>$$</p>
+<li><p>我们使用的是二维的点，但是在栈上是线性的 &#x3D;》转换为一维的点</p>
+<p>$$<br>\text{显存起始位置}&#x3D;\text{0xB8000}+2\cdot(80\cdot x+y)<br>$$</p>
 <p>(x,y)&#x3D;(row,col)，公式中的乘2是因为每个显示字符会使用两个字节表示</p>
 </li>
 </ul>
 <p>编写MBR：</p>
 <figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">org <span class="hljs-number">0x7c00</span> <span class="hljs-comment">; MBR被加载到内存地址0x7c00</span><br>[<span class="hljs-meta">bits</span> <span class="hljs-number">16</span>] <span class="hljs-comment">; 指定代码在16位实模式下运行</span><br><span class="hljs-keyword">xor</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">ax</span> <span class="hljs-comment">; eax = 0 相当于mov ax,0，但是前者机器码更短，执行更快</span><br><span class="hljs-comment">; 初始化段寄存器, 段地址全部设为0</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">ax</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ss</span>, <span class="hljs-built_in">ax</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>, <span class="hljs-built_in">ax</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">fs</span>, <span class="hljs-built_in">ax</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">gs</span>, <span class="hljs-built_in">ax</span><br><br><span class="hljs-comment">; 初始化栈指针</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">sp</span>, <span class="hljs-number">0x7c00</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">0xb800</span> <span class="hljs-comment">;0xb800是显存的段地址</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">gs</span>, <span class="hljs-built_in">ax</span><br><br><span class="hljs-comment">;ah高位，al低位</span><br><span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">0x01</span> <span class="hljs-comment">;蓝色--背景色是黑色，字是蓝色--0000 0001=0x01</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">&#x27;H&#x27;</span><br><span class="hljs-keyword">mov</span> [<span class="hljs-built_in">gs</span>:<span class="hljs-number">2</span> * <span class="hljs-number">0</span>], <span class="hljs-built_in">ax</span><br><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">&#x27;e&#x27;</span><br><span class="hljs-keyword">mov</span> [<span class="hljs-built_in">gs</span>:<span class="hljs-number">2</span> * <span class="hljs-number">1</span>], <span class="hljs-built_in">ax</span><br><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">&#x27;l&#x27;</span><br><span class="hljs-keyword">mov</span> [<span class="hljs-built_in">gs</span>:<span class="hljs-number">2</span> * <span class="hljs-number">2</span>], <span class="hljs-built_in">ax</span><br><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">&#x27;l&#x27;</span><br><span class="hljs-keyword">mov</span> [<span class="hljs-built_in">gs</span>:<span class="hljs-number">2</span> * <span class="hljs-number">3</span>], <span class="hljs-built_in">ax</span><br><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">&#x27;o&#x27;</span><br><span class="hljs-keyword">mov</span> [<span class="hljs-built_in">gs</span>:<span class="hljs-number">2</span> * <span class="hljs-number">4</span>], <span class="hljs-built_in">ax</span><br><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">&#x27; &#x27;</span><br><span class="hljs-keyword">mov</span> [<span class="hljs-built_in">gs</span>:<span class="hljs-number">2</span> * <span class="hljs-number">5</span>], <span class="hljs-built_in">ax</span><br><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">&#x27;W&#x27;</span><br><span class="hljs-keyword">mov</span> [<span class="hljs-built_in">gs</span>:<span class="hljs-number">2</span> * <span class="hljs-number">6</span>], <span class="hljs-built_in">ax</span><br><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">&#x27;o&#x27;</span><br><span class="hljs-keyword">mov</span> [<span class="hljs-built_in">gs</span>:<span class="hljs-number">2</span> * <span class="hljs-number">7</span>], <span class="hljs-built_in">ax</span><br><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">&#x27;r&#x27;</span><br><span class="hljs-keyword">mov</span> [<span class="hljs-built_in">gs</span>:<span class="hljs-number">2</span> * <span class="hljs-number">8</span>], <span class="hljs-built_in">ax</span><br><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">&#x27;l&#x27;</span><br><span class="hljs-keyword">mov</span> [<span class="hljs-built_in">gs</span>:<span class="hljs-number">2</span> * <span class="hljs-number">9</span>], <span class="hljs-built_in">ax</span><br><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-string">&#x27;d&#x27;</span><br><span class="hljs-keyword">mov</span> [<span class="hljs-built_in">gs</span>:<span class="hljs-number">2</span> * <span class="hljs-number">10</span>], <span class="hljs-built_in">ax</span><br><br><span class="hljs-keyword">jmp</span> $ <span class="hljs-comment">; 死循环</span><br><br><span class="hljs-built_in">times</span> <span class="hljs-number">510</span> - ($ - $$) <span class="hljs-built_in">db</span> <span class="hljs-number">0</span><br><span class="hljs-built_in">db</span> <span class="hljs-number">0x55</span>, <span class="hljs-number">0xaa</span><br></code></pre></td></tr></table></figure>
 
-<p><code>org</code>是汇编语言中的<strong>伪指令</strong>，用于指令程序<code>&lt;u&gt;</code>加载到内存中的起始地址<code>&lt;/u&gt;</code></p>
+<p><code>org</code>是汇编语言中的<strong>伪指令</strong>，用于指令程序 <code>&lt;u&gt;</code>加载到内存中的起始地址 <code>&lt;/u&gt;</code></p>
 <p><code>0x7c00</code> 是 BIOS 将引导扇区加载到内存中的固定地址。BIOS 在启动时会自动<strong>将磁盘的第一个扇区（512字节）加载到内存地址 <code>0x7c00</code> 处</strong>，然后从这里开始执行。</p>
 <p>6个<strong>段寄存器cs, ss, ds, es, fs, gs</strong></p>
 <p>由于汇编不允许使用立即数直接对段寄存器赋值，所以要借助ax，在第三行给ax赋值为0之后，再让ax给段寄存器赋值</p>
@@ -701,83 +699,23 @@
 <li><p>创建一个虚拟磁盘– <code>qemu-img create filename [size]</code></p>
 <ul>
 <li><pre><code class="hljs">qemu-img create hd.img 10m
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs routeros">- 将MBR写入 `hd.img`的首扇区--使用 `dd`命令<br><br>  - ```<br>    dd <span class="hljs-attribute">if</span>=mbr.bin <span class="hljs-attribute">of</span>=hd.img <span class="hljs-attribute">bs</span>=512 <span class="hljs-attribute">count</span>=1 <span class="hljs-attribute">seek</span>=0 <span class="hljs-attribute">conv</span>=notrunc<br></code></pre></td></tr></table></figure>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs markdown"><span class="hljs-bullet">  -</span> 将MBR写入 <span class="hljs-code">`hd.img`</span>的首扇区--使用 <span class="hljs-code">`dd`</span>命令<br><span class="hljs-code">    `dd if=mbr.bin of=hd.img bs=512 count=1 seek=0 conv=notrunc`</span><br><span class="hljs-code"></span><br><span class="hljs-bullet">    -</span> <span class="hljs-code">`if`</span>表示输入文件。<br><span class="hljs-bullet">    -</span> <span class="hljs-code">`of`</span>表示输出文件。<br><span class="hljs-bullet">    -</span> <span class="hljs-code">`bs`</span>表示块大小，以字节表示。<br><span class="hljs-bullet">    -</span> <span class="hljs-code">`count`</span>表示写入的块数目。<br><span class="hljs-bullet">    -</span> <span class="hljs-code">`seek`</span>表示越过输出文件中多少块之后再写入。<br><span class="hljs-bullet">    -</span> <span class="hljs-code">`conv=notrunc`</span>表示不截断输出文件，如果不加上这个参数，那么硬盘在写入后多余部份会被截断。<br><span class="hljs-bullet">  -</span> 启动qemu来模拟计算机启动：<br><br><span class="hljs-code">    `qemu-system-i386 -hda hd.img -serial null -parallel stdio`</span><br><span class="hljs-code"></span><br><span class="hljs-bullet">    -</span> <span class="hljs-code">`-hda hd.img`</span>表示将文件 <span class="hljs-code">`hd.img`</span>作为<span class="hljs-strong">**第0号磁盘映像**</span>。<br><span class="hljs-bullet">    -</span> <span class="hljs-code">`-serial dev`</span>表示重定向虚拟串口到空设备中。<br><span class="hljs-bullet">    -</span> <span class="hljs-code">`-parallel stdio `</span>表示重定向虚拟并口到主机标准输入输出设备中。<br><span class="hljs-bullet">    -</span> [<span class="hljs-string">GDB是什么？ - C语言中文网</span>](<span class="hljs-link">https://c.biancheng.net/view/8123.html</span>) 更多参数详见文档<br><br>![<span class="hljs-string">9cbfaf1fe8a7437aae3bc3d5cfd9aa9</span>](<span class="hljs-link">../img/9cbfaf1fe8a7437aae3bc3d5cfd9aa9.png</span>)<br><br><span class="hljs-section">## debug</span><br><br>使用gdb来配合qemu来进行debug，需要在qemu的启动命令中加入 <span class="hljs-code">`-s -S`</span>参数，举例：<br><br></code></pre></td></tr></table></figure>
 </code></pre>
 </li>
-<li><code>if</code>表示输入文件。</li>
-<li><code>of</code>表示输出文件。</li>
-<li><code>bs</code>表示块大小，以字节表示。</li>
-<li><code>count</code>表示写入的块数目。</li>
-<li><code>seek</code>表示越过输出文件中多少块之后再写入。</li>
-<li><code>conv=notrunc</code>表示不截断输出文件，如果不加上这个参数，那么硬盘在写入后多余部份会被截断。</li>
-</ul>
-</li>
-<li><p>启动qemu来模拟计算机启动：</p>
-<p><code>qemu-system-i386 -hda hd.img -serial null -parallel stdio</code></p>
-<ul>
-<li><code>-hda hd.img</code>表示将文件 <code>hd.img</code>作为<strong>第0号磁盘映像</strong>。</li>
-<li><code>-serial dev</code>表示重定向虚拟串口到空设备中。</li>
-<li><code>-parallel stdio </code>表示重定向虚拟并口到主机标准输入输出设备中。</li>
-<li><a target="_blank" rel="noopener" href="https://c.biancheng.net/view/8123.html">GDB是什么？ - C语言中文网</a> 更多参数详见文档</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-<p><img src="../img/9cbfaf1fe8a7437aae3bc3d5cfd9aa9.png" srcset="/img/loading.gif" lazyload alt="9cbfaf1fe8a7437aae3bc3d5cfd9aa9"></p>
-<h2 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h2><p>使用gdb来配合qemu来进行debug，需要在qemu的启动命令中加入 <code>-s -S</code>参数，举例：</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">qemu-<span class="hljs-keyword">system</span>-i386 -hda hd.img -s -S -parallel stdio -<span class="hljs-type">serial</span> <span class="hljs-keyword">null</span><br></code></pre></td></tr></table></figure>
+<p>qemu-system-i386 -hda hd.img -s -S -parallel stdio -serial null</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs gherkin"><br>在另一个终端进入gdb，让gdb连接上qemu：`target remote:1234`<br><br>[GDB是什么？ - C语言中文网](https://c.biancheng.net/view/8123.html)<br><br>本次实验会用到的指令：<br><br>|<span class="hljs-string"> gdb指令                      </span>|<span class="hljs-string"> 含义                                     </span>|<br>|<span class="hljs-string"> ---------------------------- </span>|<span class="hljs-string"> ---------------------------------------- </span>|<br>|<span class="hljs-string"> b *address                   </span>|<span class="hljs-string"> 在内存地址address中设置断点              </span>|<br>|<span class="hljs-string"> r                            </span>|<span class="hljs-string"> 运行程序                                 </span>|<br>|<span class="hljs-string"> c                            </span>|<span class="hljs-string"> 继续运行                                 </span>|<br>|<span class="hljs-string"> p *addr                      </span>|<span class="hljs-string"> 打印地址的值                             </span>|<br>|<span class="hljs-string"> info registers               </span>|<span class="hljs-string"> 查看寄存器                               </span>|<br>|<span class="hljs-string"> x/10i $pc                    </span>|<span class="hljs-string"> 显示从程序计数器的地址开始的10条汇编指令 </span>|<br>|<span class="hljs-string"> set disassembly-flavor intel </span>|<span class="hljs-string"> 设置gdb反汇编的语法为intel风格           </span>|<br><br><span class="hljs-comment">## 任务1 MBR</span><br><br><span class="hljs-comment">### 1.1 复现example1</span><br><br>done！<br><br><span class="hljs-comment">### 1.2 修改example1的代码</span><br><br>修改Example 1的代码，使得MBR被加载到0x7C00后在(12,12)处开始输出你的学号。注意，你的学号显示的前景色和背景色必须和教程中不同。说说你是怎么做的，并将结果截图。<br><br>![image-20250305180142558](../img/image-20250305180142558.png)<br><br>编译汇编文件：`nasm -f bin mbr.asm -o mbr2.bin`<br><br>创建虚拟磁盘：` qemu-img create hd.img 10m`<br><br>将MBR写入hd.img的首扇区： `dd if=mbr2.bin of=hd.img bs=512 count=1 seek=0 conv=notrunc`<br><br>启动qemu：<br><br></code></pre></td></tr></table></figure>
+<p>qemu-system-i386 -hda hd.img -serial null -parallel stdio</p>
+<pre><code class="hljs">
+结果：![pic](../img/image-20250305180510397.png)
 
-<p>在另一个终端进入gdb，让gdb连接上qemu：<code>target remote:1234</code></p>
-<p><a target="_blank" rel="noopener" href="https://c.biancheng.net/view/8123.html">GDB是什么？ - C语言中文网</a></p>
-<p>本次实验会用到的指令：</p>
-<table>
-<thead>
-<tr>
-<th>gdb指令</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>b *address</td>
-<td>在内存地址address中设置断点</td>
-</tr>
-<tr>
-<td>r</td>
-<td>运行程序</td>
-</tr>
-<tr>
-<td>c</td>
-<td>继续运行</td>
-</tr>
-<tr>
-<td>p *addr</td>
-<td>打印地址的值</td>
-</tr>
-<tr>
-<td>info registers</td>
-<td>查看寄存器</td>
-</tr>
-<tr>
-<td>x&#x2F;10i $pc</td>
-<td>显示从程序计数器的地址开始的10条汇编指令</td>
-</tr>
-<tr>
-<td>set disassembly-flavor intel</td>
-<td>设置gdb反汇编的语法为intel风格</td>
-</tr>
-</tbody></table>
-<h2 id="任务1-MBR"><a href="#任务1-MBR" class="headerlink" title="任务1 MBR"></a>任务1 MBR</h2><h3 id="1-1-复现example1"><a href="#1-1-复现example1" class="headerlink" title="1.1 复现example1"></a>1.1 复现example1</h3><p>done！</p>
-<h3 id="1-2-修改example1的代码"><a href="#1-2-修改example1的代码" class="headerlink" title="1.2 修改example1的代码"></a>1.2 修改example1的代码</h3><p>修改Example 1的代码，使得MBR被加载到0x7C00后在(12,12)处开始输出你的学号。注意，你的学号显示的前景色和背景色必须和教程中不同。说说你是怎么做的，并将结果截图。</p>
-<p><img src="../img/image-20250305180142558.png" srcset="/img/loading.gif" lazyload alt="image-20250305180142558"></p>
-<p>编译汇编文件：<code>nasm -f bin mbr.asm -o mbr2.bin</code></p>
-<p>创建虚拟磁盘：<code> qemu-img create hd.img 10m</code></p>
-<p>将MBR写入hd.img的首扇区： <code>dd if=mbr2.bin of=hd.img bs=512 count=1 seek=0 conv=notrunc</code></p>
-<p>启动qemu：</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">qemu-<span class="hljs-keyword">system</span>-i386 -hda hd.img -<span class="hljs-type">serial</span> <span class="hljs-keyword">null</span> -parallel stdio<br></code></pre></td></tr></table></figure>
+## 任务2 实模式中断
+</code></pre>
 
-<p>结果：<img src="../img/image-20250305180510397.png" srcset="/img/loading.gif" lazyload alt="pic"></p>
-<h2 id="任务2-实模式中断"><a href="#任务2-实模式中断" class="headerlink" title="任务2 实模式中断"></a>任务2 实模式中断</h2>
                 
               </div>
             
@@ -817,9 +755,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="../../../../tags/OS-Labs/" class="print-no-link">#OS_Labs</a>
-      
         <a href="../../../../tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="../../../../tags/OS-Labs/" class="print-no-link">#OS_Labs</a>
       
     </div>
   
