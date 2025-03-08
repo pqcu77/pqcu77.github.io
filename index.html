@@ -423,9 +423,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="tags/OS-Labs/">#OS_Labs</a>
-            
               <a href="tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">#学习笔记</a>
+            
+              <a href="tags/OS-Labs/">#OS_Labs</a>
             
           </div>
         
@@ -447,7 +447,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="2025/03/05/Fluid%E9%AD%94%E6%94%B9%E8%AE%B0%E5%BD%95/" target="_self">
         <div>
-          配置 创建custom文件夹以及.css和.js文件
+          配置 创建custom文件夹以及 .css和 .js文件  标签变化离开界面和处于界面有不同文字。 参考：Hexo&amp;Fluid魔改笔记 - Asteri5m的小破站 12345678910111213141516// 浏览器搞笑标题varOriginTitle = document.title;var titleTime;document.addEventListener(&#x27;vi
         </div>
       </a>
 
@@ -914,6 +914,8 @@
 <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
 <script src="/custom/custom.js"></script>
 <script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
 
 
 
@@ -929,4 +931,7 @@
   </noscript>
 </body>
 </html>
-<canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>
