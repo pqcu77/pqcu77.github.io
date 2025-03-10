@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://pqcu77.github.io/img/func.png">
 <meta property="article:published_time" content="2025-03-03T09:05:11.000Z">
-<meta property="article:modified_time" content="2025-03-03T16:11:40.469Z">
+<meta property="article:modified_time" content="2025-03-09T03:55:35.626Z">
 <meta property="article:author" content="linqt">
 <meta property="article:tag" content="python">
 <meta name="twitter:card" content="summary_large_image">
@@ -232,7 +232,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.1k 字
+          2.5k 字
         
       </span>
     
@@ -244,7 +244,7 @@
         
         
           <!-- compatible with older versions-->
-          18 分钟
+          21 分钟
         
       </span>
     
@@ -295,7 +295,7 @@
               <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于 2025-03-04T00:11:40+08:00
+                    本文最后更新于 2025-03-09T11:55:35+08:00
                   
                   
 
@@ -631,6 +631,67 @@
 <li>逐行读取 readlines()</li>
 <li>只能将字符串写入文件，如果需要换行，记得写换行符</li>
 </ul>
+<h3 id="file-对象"><a href="#file-对象" class="headerlink" title="file 对象"></a>file 对象</h3><p>file 对象使用 open 函数来创建，下表列出了 file 对象常用的函数：</p>
+<table>
+<thead>
+<tr>
+<th align="left">序号</th>
+<th align="left">方法及描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-close.html">file.close()</a>关闭文件。关闭后文件不能再进行读写操作。</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-flush.html">file.flush()</a>刷新文件内部缓冲，直接把内部缓冲区的数据立刻写入文件, 而不是被动的等待输出缓冲区写入。</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-fileno.html">file.fileno()</a>返回一个整型的文件描述符(file descriptor FD 整型), 可以用在如os模块的read方法等一些底层操作上。</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-isatty.html">file.isatty()</a>如果文件连接到一个终端设备返回 True，否则返回 False。</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-next.html">file.next()</a>**Python 3 中的 File 对象不支持 next() 方法。**返回文件下一行。</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left">[file.read(<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-read.html">size])</a>从文件读取指定的字节数，如果未给定或为负则读取所有。</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left">[file.readline(<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-readline.html">size])</a>读取整行，包括 “\n” 字符。</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left">[file.readlines(<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-readlines.html">sizeint])</a>读取所有行并返回列表，若给定sizeint&gt;0，返回总和大约为sizeint字节的行, 实际读取值可能比 sizeint 较大, 因为需要填充缓冲区。</td>
+</tr>
+<tr>
+<td align="left">9</td>
+<td align="left">[file.seek(offset<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-seek.html">, whence])</a>移动文件读取指针到指定位置</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-tell.html">file.tell()</a>返回文件当前位置。</td>
+</tr>
+<tr>
+<td align="left">11</td>
+<td align="left">[file.truncate(<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-truncate.html">size])</a>从文件的首行首字符开始截断，截断文件为 size 个字符，无 size 表示从当前位置截断；截断之后后面的所有字符被删除，其中 windows 系统下的换行代表2个字符大小。</td>
+</tr>
+<tr>
+<td align="left">12</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-write.html">file.write(str)</a>将字符串写入文件，返回的是写入的字符长度。</td>
+</tr>
+<tr>
+<td align="left">13</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-writelines.html">file.writelines(sequence)</a>向文件写入一个序列字符串列表，如果需要换行则要自己加入每行的换行符。</td>
+</tr>
+</tbody></table>
 <p>举例：</p>
 <ul>
 <li>读取文件：</li>
