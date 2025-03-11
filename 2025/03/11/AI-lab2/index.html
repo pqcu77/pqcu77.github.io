@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="../../../../img/fluid.png">
+  <link rel="icon" href="../../../../img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="基本概念 常量：任何类型的实体  变量：x,y未知量  项：谓词、变量的参数项，由递归定义  变量是项（可以看成是0元函数） t1，t2，t3……tn是项，f是n元函数，则f(t1,t2,,,,tn)也是项 一阶逻辑中谓词不是项，即不能作为函数&#x2F;谓词的参数，也就是不存在f(P(x))这种复合方式，但是二阶逻辑中是可以的   谓词：谓词是对其参数的  零元谓词：退化为命题 单元谓词：只有一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI-Lab2">
+<meta property="og:url" content="https://pqcu77.github.io/2025/03/11/AI-lab2/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="基本概念 常量：任何类型的实体  变量：x,y未知量  项：谓词、变量的参数项，由递归定义  变量是项（可以看成是0元函数） t1，t2，t3……tn是项，f是n元函数，则f(t1,t2,,,,tn)也是项 一阶逻辑中谓词不是项，即不能作为函数&#x2F;谓词的参数，也就是不存在f(P(x))这种复合方式，但是二阶逻辑中是可以的   谓词：谓词是对其参数的  零元谓词：退化为命题 单元谓词：只有一">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250310164756545.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250310165405419.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250310165631716.png">
+<meta property="article:published_time" content="2025-03-11T14:29:07.000Z">
+<meta property="article:modified_time" content="2025-03-11T15:57:02.311Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/image-20250310164756545.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>AI-Lab2 - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="../../../../css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="../../../../css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="../../../../css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="../../../../custom/custom.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="../../../../js/utils.js" ></script>
+  <script  src="../../../../js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="../../../../index.html">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../index.html" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="../../../../about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('../../../../img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AI-Lab2"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-11 22:29" pubdate>
+          2025年3月11日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AI-Lab2</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-03-11T23:57:02+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><ul>
+<li><p>常量：任何类型的实体</p>
+</li>
+<li><p>变量：x,y未知量</p>
+</li>
+<li><p>项：谓词、变量的参数项，由递归定义</p>
+<ul>
+<li>变量是项（可以看成是0元函数）</li>
+<li>t1，t2，t3……tn是项，f是n元函数，则f(t1,t2,,,,tn)也是项</li>
+<li>一阶逻辑中<strong>谓词不是项</strong>，即不能作为函数&#x2F;谓词的参数，也就是不存在f(P(x))这种复合方式，但是二阶逻辑中是可以的</li>
+</ul>
+</li>
+<li><p>谓词：谓词是对其参数的</p>
+<ul>
+<li>零元谓词：退化为命题</li>
+<li>单元谓词：只有一个参数，表示参数具备某种属性</li>
+<li>多元谓词：多个参数，表示参数之间的关系</li>
+</ul>
+</li>
+<li><p>事实：谓词中变量实例化后得到的事实</p>
+</li>
+<li><p>规则：公式，通过递归定义</p>
+</li>
+<li><p>可满足性：对该可满足性问题，只要能找到一组赋值，使得这个公式成立，这个公式就是可满足的</p>
+</li>
+<li><p>逻辑蕴含和逻辑推论</p>
+<ul>
+<li>逻辑蕴含S |&#x3D; α指对于<strong>任意变量赋值</strong>，如果S正确，则α也正确</li>
+<li>逻辑推论S |- α指<strong>存在一条推理路径</strong>，从S出发，推导证明α</li>
+</ul>
+</li>
+<li><p>一阶逻辑中谓词不是项，即不能作为函数&#x2F;谓词的参数，也就是不存在f(P(x))这种复合方式，但是二阶逻辑中是可以的</p>
+</li>
+</ul>
+<h2 id="归结算法"><a href="#归结算法" class="headerlink" title="归结算法"></a>归结算法</h2><h3 id="归结反演："><a href="#归结反演：" class="headerlink" title="归结反演："></a>归结反演：</h3><p>steps:</p>
+<ol>
+<li>将α取否定，放到KB中</li>
+<li>将更新的KB转换为clausal form得到新的子句集S</li>
+<li>反复调用单步归结<ul>
+<li>如果得到空子句，即S|- ()，说明KB ∧¬α 不可满足，算法终止，可得KB |&#x3D; α</li>
+<li>如果一直归结直到不产生新的子句，在这个过程中没有得到空子句，则KB |&#x3D; α不成立</li>
+</ul>
+</li>
+</ol>
+<p><strong>clausal form–便于计算机处理的形式</strong></p>
+<ul>
+<li>每一个子句对应一个<strong>元组</strong>，元组中的每一个元素是一个原子公式或原子公式的否定，元素之间的关系是<strong>析取关系</strong>，表示只要一个原子成立，即子句成立。<ul>
+<li>ps：元组是用<strong>逗号</strong>分隔的，<u>即使只有一个元素，也需要在元素后面加上逗号</u>，以区分它与普通变量的不同</li>
+<li>元组的集合组合子句集S，子句集中的每个句子之间是<strong>合取关系</strong></li>
+</ul>
+</li>
+<li>单步归结：<ul>
+<li>从两个子句中分贝寻找相同的原子及其对应的原子否定（只能找其中一组，如果出现两组互补对不可以同时归结）</li>
+<li>去掉该互补对，并将剩余元素合并为新子句</li>
+</ul>
+</li>
+</ul>
+<p>举例：<img src="/img/image-20250310164756545.png" srcset="/img/loading.gif" lazyload alt="example_归结"></p>
+<h2 id="最一般合一算法"><a href="#最一般合一算法" class="headerlink" title="最一般合一算法"></a>最一般合一算法</h2><h3 id="合一"><a href="#合一" class="headerlink" title="合一"></a>合一</h3><ul>
+<li><p>通过<strong>变量替换</strong>使得两个子句能够被归结（有相同的原子），所以合一也被定义为使得两个原子公式等价的一组变量替换&#x2F;赋值</p>
+</li>
+<li><p>由于一阶逻辑中存在变量，所以归结之前需要进行合一，如<code>(P(john),Q(fred),R(x))</code>和<code>(¬P(y),R(susan),R(y))</code>两个子句中，我们无法找到一样的原子及其对应的否定，但是不代表它们不能够归结</p>
+</li>
+<li><p>通过将y替换为john（替换一定要<strong>全部替换</strong>），我们得到了<code>(P(john),Q(fred),R(x))</code>和<code>(¬P(john),R(susan),R(john))</code>，此时我们两个子句分别存在原子P(john)和它的否定<code>¬P(john)</code>，可以进行归结</p>
+</li>
+</ul>
+<h3 id="最一般合一"><a href="#最一般合一" class="headerlink" title="最一般合一"></a>最一般合一</h3><p>指使得两个原子公式等价，最简单的一组变量替换</p>
+<ul>
+<li>输入：两个原子公式，它们有相同的谓词，不同的参数项和‘’¬“</li>
+<li>输出：一组变量替换&#x2F;赋值</li>
+<li>流程：<img src="/img/image-20250310165405419.png" srcset="/img/loading.gif" lazyload alt="最一般合一算法流程"></li>
+</ul>
+<p><strong>Tips:变量替换是从两个原子公式中找到的，但是最后要施加给整个子句的</strong></p>
+<p><strong>一阶逻辑归结算法：</strong></p>
+<p><img src="/img/image-20250310165631716.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h1><p>存储<strong>公式</strong>的python数据结构</p>
+<ul>
+<li><p>用字符串存储</p>
+</li>
+<li><p>符号¬用‘~’代替</p>
+</li>
+<li><p><strong>谓词</strong>的<strong>首字母大写</strong>, 例如用A, B, C, P1, P2, Student等表示; 谓词的每个参数之间用逗号“,”间隔且不加空格</p>
+</li>
+<li><p><strong>常量</strong>用小写单词或a, b, c等小写字母表示;</p>
+</li>
+<li><p>本次作业的公式中不含∃,∀量词符号</p>
+<ul>
+<li><p>例子: ¬child存储为 “~child” boy存储为“boy”</p>
+</li>
+<li><p>几个公式: “R(a)”, “~P(a,zz)”, “Student(tony)”. 这里应该将a,tony看做常量,将zz看做变量</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>存储<strong>子句</strong>的python数据结构</p>
+<ul>
+<li>用tuple的方式存储<ul>
+<li>例子: </li>
+<li>¬child˅¬male˅boy存储为(‘<del>child’, ‘</del>male’, ‘boy’)</li>
+<li>¬S(z) ˅ L(z, snow)存储为(‘~S(z)’, ‘L(z,snow)’)</li>
+</ul>
+</li>
+</ul>
+<p>存储<strong>子句集</strong>的python数据结构</p>
+<ul>
+<li><p>子句集用<strong>set</strong>（可以去重）的方式存储, 每个元素是子句(元组)</p>
+</li>
+<li><p>小心归结的时候重复生成一样的子句</p>
+</li>
+</ul>
+<h1 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h1><h2 id="实验一：命题逻辑的归结推理"><a href="#实验一：命题逻辑的归结推理" class="headerlink" title="实验一：命题逻辑的归结推理"></a>实验一：命题逻辑的归结推理</h2><h3 id="内容："><a href="#内容：" class="headerlink" title="内容："></a>内容：</h3><p>编写函数<code>ResolutionProp</code>实现命题逻辑的归结推理，函数要点如下：</p>
+<ul>
+<li>输入为子句集, 每个子句中的元素是原子命题或其否定.</li>
+</ul>
+<ul>
+<li>输出归结推理的过程, <strong>每个归结步骤存为字符串</strong>, 将所有归结步骤按序存到一个列表中并返回, 即返回的数据类型为 <code>list[str]</code>.</li>
+<li>一个归结步骤的格式为 <code>步骤编号 R[用到的子句编号] = 子句</code>. 如果一个字句包含多个公式，则每个公式用编号 <code>a,b,c...</code>区分，如果一个字句仅包含一个公式，则不用编号区分.（见课件和例题）</li>
+</ul>
+<p>例子: 输入子句集</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">KB</span> = &#123;(FirstGrade,), (~FirstGrade,Child), (~Child,)&#125;<br></code></pre></td></tr></table></figure>
+
+<p>则调用 <code>ResolutionProp(KB)</code>后返回推理过程的列表如下:</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>(FirstGrade,),<br><span class="hljs-symbol">2 </span>(~FirstGrade,Child)<br><span class="hljs-symbol">3 </span>(~Child,),<br><span class="hljs-symbol">4 </span>R[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>a] = (Child,),<br><span class="hljs-symbol">5 </span>R[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>] = ()<br></code></pre></td></tr></table></figure>
+
+<h3 id="ResolutionProp-函数"><a href="#ResolutionProp-函数" class="headerlink" title="ResolutionProp()函数"></a><code>ResolutionProp()</code>函数</h3><p>working on…</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">ResolutionProp</span>(<span class="hljs-params">KB</span>):<br>    steps = []<br>    k = <span class="hljs-number">1</span><br>    clause_dict = &#123;&#125;  <span class="hljs-comment"># 记录子句及其编号--同时加入新增语句</span><br>    clause_labels = &#123;&#125;  <span class="hljs-comment"># 记录子句内元素的编号</span><br>    <br>    <span class="hljs-comment"># 初始化子句编号,同时将子句集列举出来</span><br>    <span class="hljs-keyword">for</span> clause <span class="hljs-keyword">in</span> KB:<br>        clause_dict[clause] = k<br>        steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> <span class="hljs-subst">&#123;clause&#125;</span>&quot;</span>)<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(clause) &gt; <span class="hljs-number">1</span>: <span class="hljs-comment">#有多个元素的子句编号a,b...</span><br>            clause_labels[clause] = &#123;ele: <span class="hljs-built_in">chr</span>(<span class="hljs-number">97</span> + i) <span class="hljs-keyword">for</span> i, ele <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(clause)&#125; <br>        k += <span class="hljs-number">1</span><br>    <br>    clauses = <span class="hljs-built_in">list</span>(KB)<br>    processed_KB = <span class="hljs-built_in">set</span>()  <span class="hljs-comment"># 记录已经归结过的子句--保证不会重复归结</span><br>    new_KB = <span class="hljs-built_in">set</span>(clauses)  <span class="hljs-comment"># 初始子句集--需要进行更新</span><br>    <br>    <span class="hljs-keyword">while</span> new_KB:<br>        current_clauses = <span class="hljs-built_in">list</span>(new_KB)  <span class="hljs-comment"># 当前需要归结的新子句--上一轮生成的语句</span><br>        new_KB.clear() <br>        <br>            <br>        <br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(current_clauses)):<br>            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(clauses)):  <span class="hljs-comment"># 之前的子句 + 新生成的子句</span><br>                <span class="hljs-keyword">if</span> current_clauses[i] == clauses[j]:  <span class="hljs-comment"># 避免自身归结</span><br>                    <span class="hljs-keyword">continue</span><br>                <span class="hljs-keyword">if</span> current_clauses[i] <span class="hljs-keyword">in</span> processed_KB : <span class="hljs-comment"># 这里是防止出现重复归结</span><br>                    <span class="hljs-keyword">continue</span><br>                <span class="hljs-keyword">if</span> clauses[j] <span class="hljs-keyword">in</span> processed_KB :<br>                    <span class="hljs-keyword">continue</span><br>                <br>                res, resolved_literals = resolve(current_clauses[i], clauses[j])<br>                <span class="hljs-keyword">if</span> res <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>                    clause1_id = <span class="hljs-built_in">str</span>(clause_dict[current_clauses[i]])<br>                    clause2_id = <span class="hljs-built_in">str</span>(clause_dict[clauses[j]])<br>                    <br>                    <span class="hljs-comment"># 处理字句编号</span><br>                    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(current_clauses[i]) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> resolved_literals[<span class="hljs-number">0</span>] <span class="hljs-keyword">in</span> clause_labels[current_clauses[i]]:<br>                        clause1_id += clause_labels[current_clauses[i]][resolved_literals[<span class="hljs-number">0</span>]]<br>                    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(clauses[j]) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> resolved_literals[<span class="hljs-number">1</span>] <span class="hljs-keyword">in</span> clause_labels[clauses[j]]:<br>                        clause2_id += clause_labels[clauses[j]][resolved_literals[<span class="hljs-number">1</span>]]<br>                    <span class="hljs-comment">#在这里把已经归结的加入</span><br>                    processed_KB.add(current_clauses[i])<br>                    processed_KB.add(clauses[j])<br>                    <br>                    <span class="hljs-keyword">if</span> res == ():<span class="hljs-comment">#空子句</span><br>                        steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> R[<span class="hljs-subst">&#123;clause1_id&#125;</span>,<span class="hljs-subst">&#123;clause2_id&#125;</span>] = ()&quot;</span>)<br>                        <span class="hljs-keyword">return</span> steps<br>                    <br>                    <span class="hljs-keyword">if</span> res <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> clause_dict:<br>                        clause_dict[res] = k<br>                        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span>:<br>                            clause_labels[res] = &#123;lit: <span class="hljs-built_in">chr</span>(<span class="hljs-number">97</span> + i) <span class="hljs-keyword">for</span> i, lit <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(res)&#125;<br>                        new_KB.add(res)<br>                        clauses.append(res)<br>                        steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> R[<span class="hljs-subst">&#123;clause1_id&#125;</span>,<span class="hljs-subst">&#123;clause2_id&#125;</span>] = <span class="hljs-subst">&#123;res&#125;</span>&quot;</span>)<br>                        k += <span class="hljs-number">1</span><br>        <br>            <br>        <span class="hljs-comment">#clauses.extend(current_clauses)  # 将新子句加入原始子句集中</span><br><br>    <br>    <span class="hljs-keyword">return</span> steps<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="resolve-函数"><a href="#resolve-函数" class="headerlink" title="resolve()函数"></a><strong><code>resolve()</code>函数</strong></h3><p>！这个函数主要用于做<strong>单步归结</strong> ！</p>
+<p>思路：</p>
+<ul>
+<li>遍历子句1中的所有元素，对每一个元素都取反，查看这个取反的元素是否在子句2中，如果存在，说明找到了一组互补对，进行归结，并返回新的子句集（合并并去掉互补对）以及互补对；如果取反的元素不在子句2中继续遍历。</li>
+<li>如果遍历到结尾都没有找到，说明这两句无法进行归结，返回空。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">resolve</span>(<span class="hljs-params">clause1, clause2</span>):<br>    <span class="hljs-keyword">for</span> literal <span class="hljs-keyword">in</span> clause1:<br>        complement = <span class="hljs-string">f&quot;~<span class="hljs-subst">&#123;literal&#125;</span>&quot;</span> <span class="hljs-keyword">if</span> literal[<span class="hljs-number">0</span>] != <span class="hljs-string">&#x27;~&#x27;</span> <span class="hljs-keyword">else</span> literal[<span class="hljs-number">1</span>:]<br>        <span class="hljs-keyword">if</span> complement <span class="hljs-keyword">in</span> clause2:<br>            <span class="hljs-comment"># 新的子句应该去除字面量和互补字面量</span><br>            new_clause = <span class="hljs-built_in">tuple</span>(<span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>(clause1).union(<span class="hljs-built_in">set</span>(clause2)) - &#123;literal, complement&#125;))<br>            <br>            <span class="hljs-comment"># 如果新子句为空，返回空子句</span><br>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> new_clause:<br>                <span class="hljs-keyword">return</span> (), (literal, complement)<br>            <span class="hljs-keyword">return</span> new_clause, (literal, complement)<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span><br></code></pre></td></tr></table></figure>
+
+<p>其他注意点：</p>
+<ul>
+<li>子句是元组，但由于元组是一种不可修改的数据结构，我们需要在合并子句集的时候就去除互补对。</li>
+</ul>
+<h3 id="main函数"><a href="#main函数" class="headerlink" title="main函数"></a><code>main</code>函数</h3><p>main函数比较简单，只需要设置好子句集，然后调用<code>ResolutionProp</code>函数，再输出steps这个字符串列表就好了。可以增加一些新例子。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    KB = &#123;<br>        (<span class="hljs-string">&#x27;FirstGrade&#x27;</span>,), <br>        (<span class="hljs-string">&#x27;~FirstGrade&#x27;</span>, <span class="hljs-string">&#x27;Child&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~Child&#x27;</span>,)<br>    &#125;<br>    KB1=&#123;<br>        (<span class="hljs-string">&#x27;a&#x27;</span>,),<br>        (<span class="hljs-string">&#x27;b&#x27;</span>,)<br>    &#125;<br>    KB2 = &#123;<br>        (<span class="hljs-string">&#x27;A&#x27;</span>,), <br>        (<span class="hljs-string">&#x27;~A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~B&#x27;</span>,)<br>    &#125;<br>    KB3 = &#123;<br>        (<span class="hljs-string">&#x27;P&#x27;</span>, <span class="hljs-string">&#x27;Q&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~P&#x27;</span>, <span class="hljs-string">&#x27;R&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~Q&#x27;</span>, <span class="hljs-string">&#x27;R&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~R&#x27;</span>,)<br>    &#125;<br>    KB4 = &#123;<br>        (<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~A&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~B&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~C&#x27;</span>, <span class="hljs-string">&#x27;~D&#x27;</span>)<br>    &#125;<br>    steps = ResolutionProp(KB)<br>    <span class="hljs-keyword">for</span> step <span class="hljs-keyword">in</span> steps:<br>        <span class="hljs-built_in">print</span>(step)<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="../../../../categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="../../../../categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/" class="category-chain-item">AI</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="../../../../tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="../../../../tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AI-Lab2</div>
+      <div>https://pqcu77.github.io/2025/03/11/AI-lab2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="../../10/%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="../../../../js/events.js" ></script>
+<script  src="../../../../js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="../../../../js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="../../../../js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="../../../../custom/custom.js"></script>
+<script src="../../../../custom/firework.js"></script>
+<script src="../../../../custom/label-page.js"></script>
+<script src="../../../../custom/moving.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="../../../../js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>
