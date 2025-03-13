@@ -30,7 +30,7 @@
 <meta property="og:image" content="https://pqcu77.github.io/img/image-20250310165405419.png">
 <meta property="og:image" content="https://pqcu77.github.io/img/image-20250310165631716.png">
 <meta property="article:published_time" content="2025-03-11T14:29:07.000Z">
-<meta property="article:modified_time" content="2025-03-11T15:57:02.311Z">
+<meta property="article:modified_time" content="2025-03-13T01:21:39.535Z">
 <meta property="article:author" content="linqt">
 <meta property="article:tag" content="AI">
 <meta property="article:tag" content="学习笔记">
@@ -235,7 +235,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.2k 字
+          2.6k 字
         
       </span>
     
@@ -247,7 +247,7 @@
         
         
           <!-- compatible with older versions-->
-          18 分钟
+          22 分钟
         
       </span>
     
@@ -298,7 +298,7 @@
               <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于 2025-03-11T23:57:02+08:00
+                    本文最后更新于 2025-03-13T09:21:39+08:00
                   
                   
 
@@ -433,6 +433,11 @@
 <figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>(FirstGrade,),<br><span class="hljs-symbol">2 </span>(~FirstGrade,Child)<br><span class="hljs-symbol">3 </span>(~Child,),<br><span class="hljs-symbol">4 </span>R[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>a] = (Child,),<br><span class="hljs-symbol">5 </span>R[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>] = ()<br></code></pre></td></tr></table></figure>
 
 <h3 id="ResolutionProp-函数"><a href="#ResolutionProp-函数" class="headerlink" title="ResolutionProp()函数"></a><code>ResolutionProp()</code>函数</h3><p>working on…</p>
+<ul>
+<li>这里我们设置了两个字典用于存储子句的编号以及子句中元素的编号，方便后续打印；同时先将基本的子句集列举出来</li>
+<li>设置<code>processed_KB</code>用于记录已经归结过的子句，同时建立一个<code>new_KB</code>用于记录每轮新增子句，原KB用于不断更新–保存旧子句和加入新子句</li>
+<li>在进行归结时，需要将完整子句集与新增子句集进行归结，进行归结的子句需要没被归结过–也就是不在processed_KB之中。</li>
+</ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">ResolutionProp</span>(<span class="hljs-params">KB</span>):<br>    steps = []<br>    k = <span class="hljs-number">1</span><br>    clause_dict = &#123;&#125;  <span class="hljs-comment"># 记录子句及其编号--同时加入新增语句</span><br>    clause_labels = &#123;&#125;  <span class="hljs-comment"># 记录子句内元素的编号</span><br>    <br>    <span class="hljs-comment"># 初始化子句编号,同时将子句集列举出来</span><br>    <span class="hljs-keyword">for</span> clause <span class="hljs-keyword">in</span> KB:<br>        clause_dict[clause] = k<br>        steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> <span class="hljs-subst">&#123;clause&#125;</span>&quot;</span>)<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(clause) &gt; <span class="hljs-number">1</span>: <span class="hljs-comment">#有多个元素的子句编号a,b...</span><br>            clause_labels[clause] = &#123;ele: <span class="hljs-built_in">chr</span>(<span class="hljs-number">97</span> + i) <span class="hljs-keyword">for</span> i, ele <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(clause)&#125; <br>        k += <span class="hljs-number">1</span><br>    <br>    clauses = <span class="hljs-built_in">list</span>(KB)<br>    processed_KB = <span class="hljs-built_in">set</span>()  <span class="hljs-comment"># 记录已经归结过的子句--保证不会重复归结</span><br>    new_KB = <span class="hljs-built_in">set</span>(clauses)  <span class="hljs-comment"># 初始子句集--需要进行更新</span><br>    <br>    <span class="hljs-keyword">while</span> new_KB:<br>        current_clauses = <span class="hljs-built_in">list</span>(new_KB)  <span class="hljs-comment"># 当前需要归结的新子句--上一轮生成的语句</span><br>        new_KB.clear() <br>        <br>            <br>        <br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(current_clauses)):<br>            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(clauses)):  <span class="hljs-comment"># 之前的子句 + 新生成的子句</span><br>                <span class="hljs-keyword">if</span> current_clauses[i] == clauses[j]:  <span class="hljs-comment"># 避免自身归结</span><br>                    <span class="hljs-keyword">continue</span><br>                <span class="hljs-keyword">if</span> current_clauses[i] <span class="hljs-keyword">in</span> processed_KB : <span class="hljs-comment"># 这里是防止出现重复归结</span><br>                    <span class="hljs-keyword">continue</span><br>                <span class="hljs-keyword">if</span> clauses[j] <span class="hljs-keyword">in</span> processed_KB :<br>                    <span class="hljs-keyword">continue</span><br>                <br>                res, resolved_literals = resolve(current_clauses[i], clauses[j])<br>                <span class="hljs-keyword">if</span> res <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>                    clause1_id = <span class="hljs-built_in">str</span>(clause_dict[current_clauses[i]])<br>                    clause2_id = <span class="hljs-built_in">str</span>(clause_dict[clauses[j]])<br>                    <br>                    <span class="hljs-comment"># 处理字句编号</span><br>                    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(current_clauses[i]) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> resolved_literals[<span class="hljs-number">0</span>] <span class="hljs-keyword">in</span> clause_labels[current_clauses[i]]:<br>                        clause1_id += clause_labels[current_clauses[i]][resolved_literals[<span class="hljs-number">0</span>]]<br>                    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(clauses[j]) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> resolved_literals[<span class="hljs-number">1</span>] <span class="hljs-keyword">in</span> clause_labels[clauses[j]]:<br>                        clause2_id += clause_labels[clauses[j]][resolved_literals[<span class="hljs-number">1</span>]]<br>                    <span class="hljs-comment">#在这里把已经归结的加入</span><br>                    processed_KB.add(current_clauses[i])<br>                    processed_KB.add(clauses[j])<br>                    <br>                    <span class="hljs-keyword">if</span> res == ():<span class="hljs-comment">#空子句</span><br>                        steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> R[<span class="hljs-subst">&#123;clause1_id&#125;</span>,<span class="hljs-subst">&#123;clause2_id&#125;</span>] = ()&quot;</span>)<br>                        <span class="hljs-keyword">return</span> steps<br>                    <br>                    <span class="hljs-keyword">if</span> res <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> clause_dict:<br>                        clause_dict[res] = k<br>                        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span>:<br>                            clause_labels[res] = &#123;lit: <span class="hljs-built_in">chr</span>(<span class="hljs-number">97</span> + i) <span class="hljs-keyword">for</span> i, lit <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(res)&#125;<br>                        new_KB.add(res)<br>                        clauses.append(res)<br>                        steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> R[<span class="hljs-subst">&#123;clause1_id&#125;</span>,<span class="hljs-subst">&#123;clause2_id&#125;</span>] = <span class="hljs-subst">&#123;res&#125;</span>&quot;</span>)<br>                        k += <span class="hljs-number">1</span><br>        <br>            <br>        <span class="hljs-comment">#clauses.extend(current_clauses)  # 将新子句加入原始子句集中</span><br><br>    <br>    <span class="hljs-keyword">return</span> steps<br></code></pre></td></tr></table></figure>
 
 
@@ -452,42 +457,19 @@
 <h3 id="main函数"><a href="#main函数" class="headerlink" title="main函数"></a><code>main</code>函数</h3><p>main函数比较简单，只需要设置好子句集，然后调用<code>ResolutionProp</code>函数，再输出steps这个字符串列表就好了。可以增加一些新例子。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    KB = &#123;<br>        (<span class="hljs-string">&#x27;FirstGrade&#x27;</span>,), <br>        (<span class="hljs-string">&#x27;~FirstGrade&#x27;</span>, <span class="hljs-string">&#x27;Child&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~Child&#x27;</span>,)<br>    &#125;<br>    KB1=&#123;<br>        (<span class="hljs-string">&#x27;a&#x27;</span>,),<br>        (<span class="hljs-string">&#x27;b&#x27;</span>,)<br>    &#125;<br>    KB2 = &#123;<br>        (<span class="hljs-string">&#x27;A&#x27;</span>,), <br>        (<span class="hljs-string">&#x27;~A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~B&#x27;</span>,)<br>    &#125;<br>    KB3 = &#123;<br>        (<span class="hljs-string">&#x27;P&#x27;</span>, <span class="hljs-string">&#x27;Q&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~P&#x27;</span>, <span class="hljs-string">&#x27;R&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~Q&#x27;</span>, <span class="hljs-string">&#x27;R&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~R&#x27;</span>,)<br>    &#125;<br>    KB4 = &#123;<br>        (<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~A&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~B&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~C&#x27;</span>, <span class="hljs-string">&#x27;~D&#x27;</span>)<br>    &#125;<br>    steps = ResolutionProp(KB)<br>    <span class="hljs-keyword">for</span> step <span class="hljs-keyword">in</span> steps:<br>        <span class="hljs-built_in">print</span>(step)<br></code></pre></td></tr></table></figure>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<h2 id="实验二：最一般合一算法"><a href="#实验二：最一般合一算法" class="headerlink" title="实验二：最一般合一算法"></a>实验二：最一般合一算法</h2><p>编写函数 <code>MGU</code>实现最一般合一算法. 该函数要点如下:</p>
+<ul>
+<li>输入为两个原子公式, 它们的<strong>谓词相同</strong>. 其数据类型为 <code>str</code>, 格式详见课件.</li>
+<li>输出最一般合一的结果, 数据类型为 <code>dict</code>, 格式形如**{变量: 项, 变量: 项}**, 其中的变量和项均为字符串.</li>
+<li>若不存在合一, 则返回空字典.</li>
+</ul>
+<p>例子:</p>
+<p>调用 <code>MGU(&#39;P(xx,a)&#39;, &#39;P(b,yy)&#39;)</code>后返回字典 <code>&#123;&#39;xx&#39;:&#39;b&#39;, &#39;yy&#39;:&#39;a&#39;&#125;</code>.</p>
+<p>调用 <code>MGU(&#39;P(a,xx,f(g(yy)))&#39;, &#39;P(zz,f(zz),f(uu))&#39;)</code>后返回字典 <code>&#123;&#39;zz&#39;:&#39;a&#39;, &#39;xx&#39;:&#39;f(a)&#39;, &#39;uu&#39;:&#39;g(yy)&#39;&#125;</code>.</p>
+<h3 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h3><ol>
+<li>只含一个元素的 <code>tuple</code>类型要在末尾加 <code>,</code>. 例如 <code>(&#39;a&#39;)</code>是错误的写法, 而正确的写法是 <code>(&#39;a&#39;,)</code>.</li>
+<li><code>&#123;&#125;</code>会被解释成空字典. 若要定义空集合请用 <code>set()</code>.</li>
+</ol>
 
                 
               </div>
@@ -586,6 +568,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="../../12/OS-lab3/" title="OS_lab3">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OS_lab3</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
