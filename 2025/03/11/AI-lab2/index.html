@@ -30,10 +30,10 @@
 <meta property="og:image" content="https://pqcu77.github.io/img/image-20250310165405419.png">
 <meta property="og:image" content="https://pqcu77.github.io/img/image-20250310165631716.png">
 <meta property="article:published_time" content="2025-03-11T14:29:07.000Z">
-<meta property="article:modified_time" content="2025-03-13T01:21:39.535Z">
+<meta property="article:modified_time" content="2025-03-14T07:16:00.852Z">
 <meta property="article:author" content="linqt">
-<meta property="article:tag" content="AI">
 <meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="AI">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://pqcu77.github.io/img/image-20250310164756545.png">
   
@@ -235,7 +235,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.6k 字
+          3.3k 字
         
       </span>
     
@@ -247,7 +247,7 @@
         
         
           <!-- compatible with older versions-->
-          22 分钟
+          28 分钟
         
       </span>
     
@@ -298,7 +298,7 @@
               <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于 2025-03-13T09:21:39+08:00
+                    本文最后更新于 2025-03-14T15:16:00+08:00
                   
                   
 
@@ -470,6 +470,59 @@
 <li>只含一个元素的 <code>tuple</code>类型要在末尾加 <code>,</code>. 例如 <code>(&#39;a&#39;)</code>是错误的写法, 而正确的写法是 <code>(&#39;a&#39;,)</code>.</li>
 <li><code>&#123;&#125;</code>会被解释成空字典. 若要定义空集合请用 <code>set()</code>.</li>
 </ol>
+<p>这一部分只写了一个函数（MGU）和一个辅助函数（用于判断是否含有变量）</p>
+<h3 id="MGU-literal1-literal2"><a href="#MGU-literal1-literal2" class="headerlink" title="MGU(literal1,literal2)"></a>MGU(literal1,literal2)</h3><p>实现思路：</p>
+<ul>
+<li>输入：两个谓词相同的原子公式（字符串类型）；</li>
+<li>返回&#x2F;输出：字典，格式：{变量: 项, 变量: 项}</li>
+</ul>
+<ol>
+<li>首先处理原子公式，我们需要对各个位置的变量or项进行比较，在此之前，我们可以去掉谓词<code>P()</code>，然后再使用分词器<code>split</code>来将字符串分割成列表元素。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#其实这部分可以直接使用find()来查找第一个左括号，再使用切片</span><br>i=<span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(literal1)):<br>    <span class="hljs-keyword">if</span> literal1[i]!=<span class="hljs-string">&#x27;(&#x27;</span>:<br>        i+=<span class="hljs-number">1</span><br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">break</span><br><br><span class="hljs-comment"># 去掉P(),然后使用split以逗号划分项</span><br>lit1=literal1[i+<span class="hljs-number">1</span>:-<span class="hljs-number">1</span>].split(<span class="hljs-string">&#x27;,&#x27;</span>)<br>lit2=literal2[i+<span class="hljs-number">1</span>:-<span class="hljs-number">1</span>].split(<span class="hljs-string">&#x27;,&#x27;</span>)<br><br><span class="hljs-comment">#不等长无法合并--特殊情况</span><br><span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(lit1)!=<span class="hljs-built_in">len</span>(lit2):<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>最重要的处理部分–主要思想就是一个个元素比较，分<strong>三类</strong>：<ul>
+<li>两个元素都是变量–无法合一，返回None</li>
+<li>一个元素是变量，另一个是项–用项替代变量，并加入到res字典中，同时把式子中所有相同变量用项替代</li>
+<li>两个元素都是项–分析是不是f()或f(g())这种函数嵌套的项，如果都含有f()，需要进行<strong>递归</strong>判断（递归调用<strong>MGU()</strong>）</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#遍历两个集合</span><br>   <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(lit1)):<br>       <span class="hljs-keyword">if</span> lit1[i]==lit2[i]:<br>           <span class="hljs-keyword">continue</span><br>       <br>       <span class="hljs-keyword">if</span> lit1[i] != lit2[i]:<br>           <span class="hljs-comment"># 查看字符串里是否存在变量？如果都是变量无法合一--单独一个变量，不是项</span><br>           v1=Check_Var(lit1[i])<br>           v2=Check_Var(lit2[i])<br>           <span class="hljs-comment">#全都含有变量，无法合一</span><br>           <span class="hljs-keyword">if</span> v1 <span class="hljs-keyword">and</span> v2:<br>              <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <br>           <span class="hljs-keyword">elif</span> v1 <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">and</span> v2 <span class="hljs-keyword">is</span> <span class="hljs-literal">False</span>:<br>               <span class="hljs-keyword">if</span> v1 <span class="hljs-keyword">in</span> res:<br>                   <span class="hljs-comment">#如果v1在res中已经进行了项的替换，不能再替换成其他的</span><br>                   <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <br>               <span class="hljs-comment">#v1是变量，v2是项</span><br>               res[lit1[i]]=lit2[i]<br>               <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i+<span class="hljs-number">1</span>,<span class="hljs-built_in">len</span>(lit1)):<br>                   lit1[j]=lit1[j].replace(lit1[i],lit2[i])<br>                   lit2[j]=lit2[j].replace(lit1[i],lit2[i])<br>           <span class="hljs-keyword">elif</span> v2 <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">and</span> v1 <span class="hljs-keyword">is</span> <span class="hljs-literal">False</span>:<br>               <span class="hljs-keyword">if</span> v2 <span class="hljs-keyword">in</span> res:<br>                   <span class="hljs-comment">#如果v1在res中已经进行了项的替换，不能再替换成其他的</span><br>                   <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <br>               <span class="hljs-comment">#v1是变量，v2是项</span><br>               res[lit2[i]]=lit1[i]<br>               <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i+<span class="hljs-number">1</span>,<span class="hljs-built_in">len</span>(lit1)):<br>                   lit1[j]=lit1[j].replace(lit2[i],lit1[i])<br>                   lit2[j]=lit2[j].replace(lit2[i],lit1[i])<br>           <span class="hljs-keyword">else</span>:<br>               <span class="hljs-comment">#单独判断--可能存在嵌套的函数项</span><br>               <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;(&#x27;</span> <span class="hljs-keyword">in</span> lit1[i] <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;(&#x27;</span> <span class="hljs-keyword">in</span> lit2[i]:<br>                   sub_res=MGU(lit1[i],lit2[i])<br>                   <span class="hljs-keyword">if</span> sub_res <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>                       <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br>                   <span class="hljs-keyword">else</span>: <br>                       res.update(sub_res)<br>               <span class="hljs-keyword">else</span>:   <br>                   <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <br><br></code></pre></td></tr></table></figure>
+
+<h3 id="Check-Var"><a href="#Check-Var" class="headerlink" title="Check_Var()"></a>Check_Var()</h3><p>很普通的一个函数，这里我只判断了是否存在x，y，z，u这几个变量，如果有更多函数符号可以添加，或者后面修改成传递变量集（but…lazy）</p>
+<h3 id="简单测试一下："><a href="#简单测试一下：" class="headerlink" title="简单测试一下："></a>简单测试一下：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-comment"># literal1=&#x27;P(f(zz))&#x27;</span><br>    <span class="hljs-comment"># literal2=&#x27;P(f(f(u)))&#x27;</span><br>    <span class="hljs-comment"># literal1=&#x27;P(xx,a)&#x27;</span><br>    <span class="hljs-comment"># literal2=&#x27;P(b,yy)&#x27;</span><br>    <span class="hljs-comment"># literal1=&#x27;P(zz,xx)&#x27;</span><br>    <span class="hljs-comment"># literal2=&#x27;P(a,f(zz))&#x27;</span><br>    literal1=<span class="hljs-string">&#x27;P(a,xx,f(g(yy)))&#x27;</span><br>    literal2=<span class="hljs-string">&#x27;P(zz,f(zz),f(uu))&#x27;</span><br>    res=MGU(literal1,literal2)<br>    <span class="hljs-keyword">if</span> res <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>        <span class="hljs-keyword">for</span> key,value <span class="hljs-keyword">in</span> res.items():<br>            <span class="hljs-built_in">print</span>(key,<span class="hljs-string">&quot;:&quot;</span>,value)<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;NO MGU found&quot;</span>)<br>        <br></code></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs isbl"><span class="hljs-variable">zz</span> : <span class="hljs-variable">a</span><br><span class="hljs-variable">xx</span> : <span class="hljs-function"><span class="hljs-title">f</span>(<span class="hljs-variable">a</span>)</span><br><span class="hljs-variable">uu</span> : <span class="hljs-function"><span class="hljs-title">g</span>(<span class="hljs-variable">yy</span>)</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 
               </div>
@@ -510,9 +563,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="../../../../tags/AI/" class="print-no-link">#AI</a>
-      
         <a href="../../../../tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="../../../../tags/AI/" class="print-no-link">#AI</a>
       
     </div>
   
