@@ -19,24 +19,25 @@
   <meta name="author" content="linqt">
   <meta name="keywords" content="">
   
-    <meta name="description" content="迭代器什么是迭代器？ 迭代器是rust用于遍历集合的一种抽象，提供了一种统一的方式来访问集合中的元素，而不需要关心集合的具体实现 rust的迭代器是惰性的，只会在真正需要时才回进行计算  迭代器的核心trait：IteratorIterator trait的定义：1234pub trait Iterator&#123;	type Item;&#x2F;&#x2F;迭代器产生的值的类型	fn next(&amp;mut">
+    <meta name="description" content="借助AI实现-款完整软件的开发作业内容： 借助DeepSeek、kimi、豆包或cursor等AI编程助手，实现一款完整软件的开发要求:   具备至少4个功能，例如增、删、改、查。  具备图形化界面，非控制台程序，可以是Web应用、手机应用、微信小程序等等。 主题不限，语言不限，例如可以是课程表应用、ToDo任务列表应用、游戏软件等等。的完整过程，4项功能分别如何实现，文档中需呈现最终软件运行效果">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Rust_iter">
-<meta property="og:url" content="https://pqcu77.github.io/2025/02/19/Rust-iter/index.html">
+<meta property="og:title" content="Software_with_ai">
+<meta property="og:url" content="https://pqcu77.github.io/2025/03/17/software-with-ai/index.html">
 <meta property="og:site_name" content="linqt&#39;s blog">
-<meta property="og:description" content="迭代器什么是迭代器？ 迭代器是rust用于遍历集合的一种抽象，提供了一种统一的方式来访问集合中的元素，而不需要关心集合的具体实现 rust的迭代器是惰性的，只会在真正需要时才回进行计算  迭代器的核心trait：IteratorIterator trait的定义：1234pub trait Iterator&#123;	type Item;&#x2F;&#x2F;迭代器产生的值的类型	fn next(&amp;mut">
+<meta property="og:description" content="借助AI实现-款完整软件的开发作业内容： 借助DeepSeek、kimi、豆包或cursor等AI编程助手，实现一款完整软件的开发要求:   具备至少4个功能，例如增、删、改、查。  具备图形化界面，非控制台程序，可以是Web应用、手机应用、微信小程序等等。 主题不限，语言不限，例如可以是课程表应用、ToDo任务列表应用、游戏软件等等。的完整过程，4项功能分别如何实现，文档中需呈现最终软件运行效果">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-02-19T03:55:59.000Z">
-<meta property="article:modified_time" content="2025-02-25T03:53:09.420Z">
+<meta property="article:published_time" content="2025-03-17T02:33:45.000Z">
+<meta property="article:modified_time" content="2025-03-17T02:51:10.386Z">
 <meta property="article:author" content="linqt">
-<meta property="article:tag" content="Rust">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="software">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>Rust_iter - linqt&#39;s blog</title>
+  <title>Software_with_ai - linqt&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -91,7 +92,7 @@
 
 
   
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -206,7 +207,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Rust_iter"></span>
+            <span id="subtitle" data-typed-text="Software_with_ai"></span>
           
         </div>
 
@@ -217,8 +218,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-02-19 11:55" pubdate>
-          2025年2月19日 中午
+        <time datetime="2025-03-17 10:33" pubdate>
+          2025年3月17日 上午
         </time>
       </span>
     
@@ -230,7 +231,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          624 字
+          462 字
         
       </span>
     
@@ -242,7 +243,7 @@
         
         
           <!-- compatible with older versions-->
-          6 分钟
+          4 分钟
         
       </span>
     
@@ -288,12 +289,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">Rust_iter</h1>
+            <h1 id="seo-header">Software_with_ai</h1>
             
               <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于 2025-02-25T11:53:09+08:00
+                    本文最后更新于 2025-03-17T10:51:10+08:00
                   
                   
 
@@ -303,50 +304,33 @@
             
               <div class="markdown-body">
                 
-                <h1 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h1><h2 id="什么是迭代器？"><a href="#什么是迭代器？" class="headerlink" title="什么是迭代器？"></a>什么是迭代器？</h2><ul>
-<li>迭代器是rust用于遍历集合的一种抽象，提供了一种统一的方式来访问集合中的元素，而不需要关心集合的具体实现</li>
-<li>rust的迭代器是<strong>惰性</strong>的，只会在真正需要时才回进行计算</li>
-</ul>
-<h2 id="迭代器的核心trait：Iterator"><a href="#迭代器的核心trait：Iterator" class="headerlink" title="迭代器的核心trait：Iterator"></a>迭代器的核心trait：Iterator</h2><h3 id="Iterator-trait的定义："><a href="#Iterator-trait的定义：" class="headerlink" title="Iterator trait的定义："></a><code>Iterator</code> trait的定义：</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">pub</span> <span class="hljs-keyword">trait</span> <span class="hljs-title class_">Iterator</span>&#123;<br>	<span class="hljs-keyword">type</span> <span class="hljs-title class_">Item</span>;<span class="hljs-comment">//迭代器产生的值的类型</span><br>	<span class="hljs-keyword">fn</span> <span class="hljs-title function_">next</span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>)<span class="hljs-punctuation">-&gt;</span><span class="hljs-type">Option</span>&lt;<span class="hljs-keyword">Self</span>::Item&gt;;<span class="hljs-comment">//获取下一个元素 </span><br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h2 id="创建迭代器："><a href="#创建迭代器：" class="headerlink" title="创建迭代器："></a>创建迭代器：</h2><ul>
-<li><code>iter()</code>：生成一个<strong>不可变引用</strong>的迭代器。</li>
-<li><code>iter_mut()</code>：生成一个<strong>可变引用</strong>的迭代器。</li>
-<li><code>into_iter()</code>：生成一个<strong>获取所有权</strong>的迭代器。</li>
-</ul>
-<h2 id="使用迭代器："><a href="#使用迭代器：" class="headerlink" title="使用迭代器："></a>使用迭代器：</h2><p>常用的方法：</p>
+                <h1 id="借助AI实现-款完整软件的开发"><a href="#借助AI实现-款完整软件的开发" class="headerlink" title="借助AI实现-款完整软件的开发"></a>借助AI实现-款完整软件的开发</h1><p>作业内容：</p>
+<p>借助DeepSeek、kimi、豆包或cursor等AI编程助手，实现一款完整软件的开发要求: </p>
 <ol>
-<li><code>map</code> ：对每个元素进行<strong>转换</strong></li>
+<li>具备至少4个功能，例如增、删、改、查。 </li>
+<li>具备图形化界面，非控制台程序，可以是Web应用、手机应用、微信小程序等等。</li>
+<li>主题不限，语言不限，例如可以是课程表应用、ToDo任务列表应用、游戏软件等等。的完整过程，4项功能分别如何实现，文档中需呈现最终软件运行效果截图。</li>
+<li>提交完整代码或github&#x2F;gitee链接，附详细说明文档，说明使用AI及个人实</li>
+<li>严禁抄袭，体现个人创意及独立思考能力。</li>
 </ol>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">map</span>&lt;B, F&gt;(<span class="hljs-keyword">self</span>, f: F) <span class="hljs-punctuation">-&gt;</span> Map&lt;<span class="hljs-keyword">Self</span>, F&gt;<br><span class="hljs-keyword">where</span><br>    F: <span class="hljs-title function_ invoke__">FnMut</span>(<span class="hljs-keyword">Self</span>::Item) <span class="hljs-punctuation">-&gt;</span> B,<br></code></pre></td></tr></table></figure>
-
-<p>map方法接受一个闭包f，该闭包会对迭代器中的每个元素进行转换， <strong>返回一个新的迭代器</strong> ，产生转换后的值</p>
-<p>【例子】</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">v</span>=<span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>];<br><span class="hljs-keyword">let</span> <span class="hljs-variable">doubled</span>:<span class="hljs-type">Vec</span>&lt;_&gt;=v.<span class="hljs-title function_ invoke__">iter</span>().<span class="hljs-title function_ invoke__">map</span>(|x| x*<span class="hljs-number">2</span>).<span class="hljs-title function_ invoke__">collect</span>();<br><span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;,doubled);</span><br></code></pre></td></tr></table></figure>
-
+<h1 id="resources："><a href="#resources：" class="headerlink" title="resources："></a>resources：</h1><p>vercel:  <a target="_blank" rel="noopener" href="https://www.cnblogs.com/echolun/p/17524216.html">快速上手 vercel，手把手教你白嫖部署上线你的个人项目 - 听风是风 - 博客园</a></p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><h3 id="1-确定功能和需求"><a href="#1-确定功能和需求" class="headerlink" title="1. 确定功能和需求"></a><strong>1. 确定功能和需求</strong></h3><p>首先，明确你的TODO软件需要实现的功能：</p>
+<ol>
+<li><strong>添加任务</strong>：用户可以输入任务内容并添加到列表中。</li>
+<li><strong>删除任务</strong>：用户可以删除已完成或不需要的任务。</li>
+<li><strong>修改任务</strong>：用户可以编辑任务内容。</li>
+<li><strong>标记完成</strong>：用户可以标记任务为已完成。</li>
+<li><strong>查看任务</strong>：用户可以查看所有任务，并支持筛选（如“全部”、“未完成”、“已完成”）。</li>
+</ol>
+<hr>
+<h3 id="2-选择技术栈"><a href="#2-选择技术栈" class="headerlink" title="2. 选择技术栈"></a><strong>2. 选择技术栈</strong></h3><p>根据你的需求，选择合适的技术栈：</p>
 <ul>
-<li>由于返回的是一个迭代器，需要使用 <code>collect()</code> 方法来将迭代器转换成集合</li>
-<li><code>Vec&lt;_&gt;</code>：<code>_</code> 是一个占位符，表示让 Rust 编译器推断集合的类型。</li>
+<li><strong>前端</strong>：HTML、CSS、JavaScript（可以使用React、Vue.js等框架）。</li>
+<li><strong>后端</strong>（可选）：如果需要保存数据，可以使用Node.js、Python Flask&#x2F;Django等。</li>
+<li><strong>数据库</strong>（可选）：SQLite、MongoDB等。</li>
+<li><strong>部署</strong>：Vercel、Netlify（前端），Heroku、Render（后端）。</li>
 </ul>
-<ol>
-<li><p><code>filter</code> ：过滤元素</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">filter</span>&lt;P&gt;(<span class="hljs-keyword">self</span>, predicate: P) <span class="hljs-punctuation">-&gt;</span> Filter&lt;<span class="hljs-keyword">Self</span>, P&gt;<br><span class="hljs-keyword">where</span><br>    P: <span class="hljs-title function_ invoke__">FnMut</span>(&amp;<span class="hljs-keyword">Self</span>::Item) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">bool</span>,<br></code></pre></td></tr></table></figure>
-<p>filter方法接受一个闭包，该闭包会对每个元素进行判断，如果闭包返回true，则保留，否则丢弃；</p>
-<p>返回一个新的得带起，只包含满足闭包的元素</p>
-<p>【例子】</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">v</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>];<br><span class="hljs-keyword">let</span> <span class="hljs-variable">evens</span>: <span class="hljs-type">Vec</span>&lt;_&gt; = v.<span class="hljs-title function_ invoke__">iter</span>().<span class="hljs-title function_ invoke__">filter</span>(|&amp;x| x % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>).<span class="hljs-title function_ invoke__">collect</span>();<br><span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;&quot;</span>, evens); <span class="hljs-comment">// 输出 [2, 4]</span><br></code></pre></td></tr></table></figure></li>
-<li><p><code>fold</code> ：累积计算</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">fold</span>&lt;B, F&gt;(<span class="hljs-keyword">self</span>, init: B, f: F) <span class="hljs-punctuation">-&gt;</span> B<br><span class="hljs-keyword">where</span><br>    F: <span class="hljs-title function_ invoke__">FnMut</span>(B, <span class="hljs-keyword">Self</span>::Item) <span class="hljs-punctuation">-&gt;</span> B,<br></code></pre></td></tr></table></figure>
-<p>fold方法接受一个初始值init和一个闭包f；闭包会对每个元素进行累积计算；返回最终的累积结果</p>
-<p>【例子】</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">v</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br><span class="hljs-keyword">let</span> <span class="hljs-variable">sum</span>: <span class="hljs-type">i32</span> = v.<span class="hljs-title function_ invoke__">iter</span>().<span class="hljs-title function_ invoke__">fold</span>(<span class="hljs-number">0</span>, |acc, &amp;x| acc + x);<br><span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, sum); <span class="hljs-comment">// 输出 6</span><br></code></pre></td></tr></table></figure></li>
-<li><p><code>collect</code> ：将迭代器转换为集合</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">collect</span>&lt;B&gt;(<span class="hljs-keyword">self</span>) <span class="hljs-punctuation">-&gt;</span> B<br><span class="hljs-keyword">where</span><br>    B: FromIterator&lt;<span class="hljs-keyword">Self</span>::Item&gt;,<br></code></pre></td></tr></table></figure>
-<p>【例子】</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">v</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br><span class="hljs-keyword">let</span> <span class="hljs-variable">doubled</span>: <span class="hljs-type">Vec</span>&lt;_&gt; = v.<span class="hljs-title function_ invoke__">iter</span>().<span class="hljs-title function_ invoke__">map</span>(|&amp;x| x * <span class="hljs-number">2</span>).<span class="hljs-title function_ invoke__">collect</span>();<br><span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;:?&#125;&quot;</span>, doubled); <span class="hljs-comment">// 输出 [2, 4, 6]</span><br></code></pre></td></tr></table></figure></li>
-<li><p><code>enumerate</code> ：获取索引和值<br>【例子】</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">v</span> = <span class="hljs-built_in">vec!</span>[<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>];<br><span class="hljs-keyword">for</span> (index, value) <span class="hljs-keyword">in</span> v.<span class="hljs-title function_ invoke__">iter</span>().<span class="hljs-title function_ invoke__">enumerate</span>() &#123;<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;: &#123;&#125;&quot;</span>, index, value);<br>&#125;<br><span class="hljs-comment">// 输出：</span><br><span class="hljs-comment">// 0: a</span><br><span class="hljs-comment">// 1: b</span><br><span class="hljs-comment">// 2: c</span><br></code></pre></td></tr></table></figure></li>
-</ol>
+<p>如果你只想做一个简单的单页面应用（SPA），可以完全用前端实现，数据存储在浏览器的<code>localStorage</code>中。</p>
 
                 
               </div>
@@ -365,8 +349,15 @@
     
       <span class="category-chain">
         
-  <a href="../../../../categories/Rust/" class="category-chain-item">Rust</a>
+  <a href="../../../../categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
   
+  
+    <span>></span>
+    
+  <a href="../../../../categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/software/" class="category-chain-item">software</a>
+  
+  
+
   
 
       </span>
@@ -380,7 +371,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="../../../../tags/Rust/" class="print-no-link">#Rust</a>
+        <a href="../../../../tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="../../../../tags/software/" class="print-no-link">#software</a>
       
     </div>
   
@@ -392,8 +385,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Rust_iter</div>
-      <div>https://pqcu77.github.io/2025/02/19/Rust-iter/</div>
+      <div>Software_with_ai</div>
+      <div>https://pqcu77.github.io/2025/03/17/software-with-ai/</div>
     </div>
     <div class="license-meta">
       
@@ -405,7 +398,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年2月19日</div>
+          <div>2025年3月17日</div>
         </div>
       
       
@@ -437,18 +430,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="../Rust-smart-pointer/" title="Rust_smart_pointer">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Rust_smart_pointer</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="../Rust-%E5%8C%85-Crate/" title="Rust_包/Crate">
-                        <span class="hidden-mobile">Rust_包/Crate</span>
+                      <a href="../../16/HTML-Notes/" title="HTML_Notes">
+                        <span class="hidden-mobile">HTML_Notes</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
