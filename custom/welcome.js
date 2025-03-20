@@ -1,5 +1,5 @@
 // 进行 fetch 请求
-fetch('https://api.nsmao.net/api/ip/query?key=你的key') // 申请地址：https://api.nsmao.net
+fetch('https://api.nsmao.net/api/ip/query?key=7KXBZ-WDU6V-KRKPZ-55HC7-EX3U5-AMFB4') // 申请地址：https://api.nsmao.net
     .then(response => {
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -36,7 +36,7 @@ function showWelcome() {
         return;
     }
 
-    let dist = getDistance(121.413921, 31.089290, ipLocation.data.lng, ipLocation.data.lat); // 修改自己的经度（121.413921）纬度（31.089290）
+    let dist = getDistance(113.39059699999996, 23.065117000000008, ipLocation.data.lng, ipLocation.data.lat); // 修改自己的经度（121.413921）纬度（31.089290）
     let pos = ipLocation.data.country;
     let ip = ipLocation.ip;
     let posdesc;
