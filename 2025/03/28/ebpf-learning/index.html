@@ -19,27 +19,30 @@
   <meta name="author" content="linqt">
   <meta name="keywords" content="">
   
-    <meta name="description" content="AI-Lab3–搜索算法任务List 利用盲目搜索解决迷宫问题（无需提交） 利用启发式搜索解决15-Puzzle问题 利用博弈树搜索实现象棋AI（无需提交 利用遗传算法求解TSP问题  任务1：利用盲目搜索解决迷宫问题尝试利用DFS、BFS、深度受限算法、迭代加深算法、双向搜索算法解决迷宫问题:  S表示起点; E表示终点; 1表示墙; 0是可通行。迷宫样例图：  1234567891011121">
+    <meta name="description" content="什么是eBPF eBPF可以在特权上下文中（如kernel）运行&#x3D;&#x3D;沙盒&#x3D;&#x3D;程序。用于安全有效地扩展内核的功能，而无需通过更改内核源代码或加载内核模块的方式来实现。  eBPF从根本上改变了这个方式，通过允许在操作系统中运行沙盒程序的方式，应用程序开发人员可以运行eBPF程序，以便在运行时向操作系统添加额外的功能。然后在JIT编译器和验证引擎的帮助下，操作系">
 <meta property="og:type" content="article">
-<meta property="og:title" content="AI-Lab3">
-<meta property="og:url" content="https://pqcu77.github.io/2025/03/24/AI-lab3/index.html">
+<meta property="og:title" content="Ebpf_learning">
+<meta property="og:url" content="https://pqcu77.github.io/2025/03/28/ebpf-learning/index.html">
 <meta property="og:site_name" content="linqt&#39;s blog">
-<meta property="og:description" content="AI-Lab3–搜索算法任务List 利用盲目搜索解决迷宫问题（无需提交） 利用启发式搜索解决15-Puzzle问题 利用博弈树搜索实现象棋AI（无需提交 利用遗传算法求解TSP问题  任务1：利用盲目搜索解决迷宫问题尝试利用DFS、BFS、深度受限算法、迭代加深算法、双向搜索算法解决迷宫问题:  S表示起点; E表示终点; 1表示墙; 0是可通行。迷宫样例图：  1234567891011121">
+<meta property="og:description" content="什么是eBPF eBPF可以在特权上下文中（如kernel）运行&#x3D;&#x3D;沙盒&#x3D;&#x3D;程序。用于安全有效地扩展内核的功能，而无需通过更改内核源代码或加载内核模块的方式来实现。  eBPF从根本上改变了这个方式，通过允许在操作系统中运行沙盒程序的方式，应用程序开发人员可以运行eBPF程序，以便在运行时向操作系统添加额外的功能。然后在JIT编译器和验证引擎的帮助下，操作系">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://pqcu77.github.io/img/image-20250324172954172.png">
-<meta property="article:published_time" content="2025-03-24T09:07:32.000Z">
-<meta property="article:modified_time" content="2025-03-27T02:38:27.894Z">
+<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/img/Pasted%20image%2020250328231557.png">
+<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/img/Pasted%20image%2020250328234202.png">
+<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/img/Pasted%20image%2020250328234616.png">
+<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/img/go.webp">
+<meta property="article:published_time" content="2025-03-28T15:07:16.000Z">
+<meta property="article:modified_time" content="2025-03-28T15:52:09.363Z">
 <meta property="article:author" content="linqt">
-<meta property="article:tag" content="AI">
 <meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="OS">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://pqcu77.github.io/img/image-20250324172954172.png">
+<meta name="twitter:image" content="https://pqcu77.github.io/2025/03/28/img/Pasted%20image%2020250328231557.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>AI-Lab3 - linqt&#39;s blog</title>
+  <title>Ebpf_learning - linqt&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -210,7 +213,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="AI-Lab3"></span>
+            <span id="subtitle" data-typed-text="Ebpf_learning"></span>
           
         </div>
 
@@ -221,8 +224,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-03-24 17:07" pubdate>
-          2025年3月24日 下午
+        <time datetime="2025-03-28 23:07" pubdate>
+          2025年3月28日 晚上
         </time>
       </span>
     
@@ -234,7 +237,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1k 字
+          471 字
         
       </span>
     
@@ -246,7 +249,7 @@
         
         
           <!-- compatible with older versions-->
-          9 分钟
+          4 分钟
         
       </span>
     
@@ -292,12 +295,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">AI-Lab3</h1>
+            <h1 id="seo-header">Ebpf_learning</h1>
             
               <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于 2025-03-27T10:38:27+08:00
+                    本文最后更新于 2025-03-28T23:52:09+08:00
                   
                   
 
@@ -307,68 +310,18 @@
             
               <div class="markdown-body">
                 
-                <h1 id="AI-Lab3–搜索算法"><a href="#AI-Lab3–搜索算法" class="headerlink" title="AI-Lab3–搜索算法"></a>AI-Lab3–搜索算法</h1><h2 id="任务List"><a href="#任务List" class="headerlink" title="任务List"></a>任务List</h2><ol>
-<li>利用盲目搜索解决迷宫问题（无需提交）</li>
-<li>利用启发式搜索解决15-Puzzle问题</li>
-<li>利用博弈树搜索实现象棋AI（无需提交</li>
-<li>利用遗传算法求解TSP问题</li>
-</ol>
-<h2 id="任务1：利用盲目搜索解决迷宫问题"><a href="#任务1：利用盲目搜索解决迷宫问题" class="headerlink" title="任务1：利用盲目搜索解决迷宫问题"></a>任务1：利用盲目搜索解决迷宫问题</h2><p>尝试利用DFS、BFS、深度受限算法、迭代加深算法、双向搜索算法解决迷宫问题:</p>
-<ul>
-<li>S表示起点;</li>
-<li>E表示终点;</li>
-<li>1表示墙;</li>
-<li>0是可通行。<br>迷宫样例图：</li>
-</ul>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-number">111111111111111111111111111111111111</span><br><span class="hljs-number">1000000000000000000000000000000000</span><span class="hljs-built_in">S1</span><br><span class="hljs-number">101111111111111111111111101111111101</span><br><span class="hljs-number">101100010001000000111111100011000001</span><br><span class="hljs-number">101101010101011110111111111011011111</span><br><span class="hljs-number">101101010101000000000000011011000001</span><br><span class="hljs-number">101101010101010111100111000011111101</span><br><span class="hljs-number">101001010100010000110111111110000001</span><br><span class="hljs-number">101101010111111110110000000011011111</span><br><span class="hljs-number">101101000110000000111111111011000001</span><br><span class="hljs-number">100001111110111111100000011011111101</span><br><span class="hljs-number">111111000000100000001111011010000001</span><br><span class="hljs-number">100000011111101111101000011011011111</span><br><span class="hljs-number">101111110000001000000011111011000001</span><br><span class="hljs-number">100000000111111011111111111011001101</span><br><span class="hljs-number">111111111100000000000000000011111101</span><br><span class="hljs-number">1</span>E0000000001111111111111111000000001<br><span class="hljs-number">111111111111111111111111111111111111</span><br></code></pre></td></tr></table></figure>
-
-
-
-<h2 id="任务2：利用启发式搜索解决15-Puzzle问题"><a href="#任务2：利用启发式搜索解决15-Puzzle问题" class="headerlink" title="任务2：利用启发式搜索解决15-Puzzle问题"></a>任务2：利用启发式搜索解决15-Puzzle问题</h2><p>尝试使用<code>A*</code>与<code>IDA*</code>算法解决15-Puzzle问题，启发式函数可以自己选取，最好多尝试几种不同的启发式函数</p>
-<p><img src="/img/image-20250324172954172.png" srcset="/img/loading.gif" lazyload alt="样例_15puzzle"></p>
-<p>利用A*算法和IDA*算法解决15-Puzzle问题, 可自定义启发式函数. Puzzle问题的输入数据类型为二维嵌套list, 空位置用 <code>0</code>表示. 输出的解数据类型为 <code>list</code>, 是移动数字方块的次序.</p>
-<p>若选择A*算法, 则函数名为 <code>A_star</code>; 若选择IDA*算法, 则函数名为 <code>IDA_star</code>.</p>
-<p>例子: 输入</p>
-<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">puzzle = <span class="hljs-comment">[<span class="hljs-comment">[1,2,3,4]</span>,<span class="hljs-comment">[5,6,7,8]</span>,<span class="hljs-comment">[9,10,11,12]</span>,<span class="hljs-comment">[0,13,14,15]</span>]</span><br></code></pre></td></tr></table></figure>
-
-<p>则调用 <code>A_star(puzzle)</code>或 <code>IDA_star(puzzle)</code>后输出解</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-string">[13,14,15]</span><br></code></pre></td></tr></table></figure>
-
-<p>相关知识：<br><code>A*</code>算法的必要知识点：<br>&#x3D;&#x3D;算法描述&#x3D;&#x3D;：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs text">* 初始化open_set和close_set；<br>* 将起点加入open_set中，并设置优先级为0（优先级最高）；<br>* 如果open_set不为空，则从open_set中选取优先级最高的节点n：<br>    * 如果节点n为终点，则：<br>        * 从终点开始逐步追踪parent节点，一直达到起点；<br>        * 返回找到的结果路径，算法结束；<br>    * 如果节点n不是终点，则：<br>        * 将节点n从open_set中删除，并加入close_set中；<br>        * 遍历节点n所有的邻近节点：<br>            * 如果邻近节点m在close_set中，则：<br>                * 跳过，选取下一个邻近节点<br>            * 如果邻近节点m也不在open_set中，则：<br>                * 设置节点m的parent为节点n<br>                * 计算节点m的优先级<br>                * 将节点m加入open_set中<br></code></pre></td></tr></table></figure>
-<p>&#x3D;&#x3D;启发式函数：&#x3D;&#x3D; <code>f(n)=g(n)+h(n)</code></p>
-<ul>
-<li>f(n)是节点n的<strong>综合</strong>优先级。（每次选择会选择总和优先级最高，也就是<strong>f(n)值最小</strong>的节点&#x3D;&gt;维护一个优先队列）</li>
-<li>g(n)是节点n距离<strong>起点</strong>的代价</li>
-<li>h(n)是节点n距离<strong>终点</strong>的预估代价</li>
-</ul>
-<p>&#x3D;&gt;启发函数的选取：（网格形式的图）</p>
-<ul>
-<li>曼哈顿距离–适用于只允许&#x3D;&#x3D;上下左右&#x3D;&#x3D;四个方向移动  √</li>
-<li>对角距离–适用于允许朝八个方向移动</li>
-<li>欧几里得距离–适用于允许朝任何方向移动</li>
-</ul>
-<p>&#x3D;&gt;计算曼哈顿距离的函数：</p>
-<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gml">def heuristic(node):<br>	dx=<span class="hljs-built_in">abs</span>(node.<span class="hljs-variable language_">x</span>-goal.<span class="hljs-variable language_">x</span>)<br>	dy=<span class="hljs-built_in">abs</span>(node.<span class="hljs-variable language_">y</span>-goal.<span class="hljs-variable language_">y</span>)<br>	<span class="hljs-keyword">return</span> cost*(dx+dy)<br></code></pre></td></tr></table></figure>
-
-
-<h3 id="Resources"><a href="#Resources" class="headerlink" title="Resources:"></a>Resources:</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54510444">路径规划之 A* 算法 - 知乎</a><br><a target="_blank" rel="noopener" href="https://witchpuff.github.io/posts/astar/#2-%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81%E5%B1%95%E7%A4%BA">Solving 15-Puzzle with A* and IDA* | CyberWitch</a></p>
-<h2 id="任务3：利用博弈树搜索实现象棋AI"><a href="#任务3：利用博弈树搜索实现象棋AI" class="headerlink" title="任务3：利用博弈树搜索实现象棋AI"></a>任务3：利用博弈树搜索实现象棋AI</h2><p>编写一个中国象棋博弈程序，要求用alpha-beta剪枝算法，可以实现两个AI对弈。</p>
-<ul>
-<li>一方由人类点击或者AI算法控制。</li>
-<li>一方由内置规则AI控制。</li>
-<li>算法支持红黑双方互换</li>
-</ul>
-<h2 id="任务4：利用遗传算法求解TSP问题利用遗传算法求解-TSP-问题"><a href="#任务4：利用遗传算法求解TSP问题利用遗传算法求解-TSP-问题" class="headerlink" title="任务4：利用遗传算法求解TSP问题利用遗传算法求解 TSP 问题"></a>任务4：利用遗传算法求解TSP问题利用遗传算法求解 TSP 问题</h2><ul>
-<li>在National Traveling Salesman Problems（uwaterloo.ca)（<a target="_blank" rel="noopener" href="https://www.math.uwaterloo.ca/tsp/world/countries.html%EF%BC%89">https://www.math.uwaterloo.ca/tsp/world/countries.html）</a> 中任选两个TSP问题的数据集。</li>
-<li>建议：<ul>
-<li><p>对于规模较大的TSP问题, 遗传算法可能需要运行几分钟甚至几个小时的时间才能得到一个比较好的结果. 因此建议先用城市数较小的数据集测试算法正确与否, 再用城市数较大的数据集来评估算法性能。</p>
+                <h1 id="什么是eBPF"><a href="#什么是eBPF" class="headerlink" title="什么是eBPF"></a>什么是eBPF</h1><ul>
+<li><p>eBPF可以在特权上下文中（如kernel）运行&#x3D;&#x3D;沙盒&#x3D;&#x3D;程序。用于<strong>安全有效地扩展内核的功能</strong>，而无需通过更改内核源代码或加载内核模块的方式来实现。<br><img src="../img/Pasted%20image%2020250328231557.png" srcset="/img/loading.gif" lazyload></p>
 </li>
-<li><p>由于遗传算法是基于随机搜索的算法, 只运行一次算法的结果并不能反映算法的性能. 为了更好地分析遗传算法的性能, 应该以不同的初始随机种子或用不同的参数(例如种群数量, 变异概率等)多次运行算法, 这些需要在实验报告中呈现.</p>
+<li><p>eBPF从根本上改变了这个方式，通过允许<strong>在操作系统中运行沙盒程序</strong>的方式，应用程序开发人员可以<strong>运行eBPF程序</strong>，以便在运行时向操作系统<strong>添加额外的功能</strong>。然后在<strong>JIT编译器</strong>和<strong>验证引擎</strong>的帮助下，操作系统确保它像本地编译的程序一样具备安全性和执行效率</p>
+</li>
+<li><p>eBPF最初代表了<strong>伯克利包过滤器 (Berkeley Packet Filter)</strong>，但现在能做的更多了，缩写不再有意义。最初的eBPF有时候被称为cBPF（经典BPF）。</p>
 </li>
 </ul>
-</li>
-</ul>
+<h1 id="eBPF简介"><a href="#eBPF简介" class="headerlink" title="eBPF简介"></a>eBPF简介</h1><h2 id="resources："><a href="#resources：" class="headerlink" title="resources："></a>resources：</h2><p><a target="_blank" rel="noopener" href="https://docs.cilium.io/en/stable/reference-guides/bpf/index.html">BPF 和 XDP 参考指南 — Cilium 1.17.2 文档</a><br><a target="_blank" rel="noopener" href="https://ebpf.io/zh-hans/what-is-ebpf/#%E4%BB%80%E4%B9%88%E6%98%AF-ebpf-">什么是 eBPF ? An Introduction and Deep Dive into the eBPF Technology</a>（中文版）</p>
+<h2 id="钩子概览"><a href="#钩子概览" class="headerlink" title="钩子概览"></a>钩子概览</h2><p>eBPF 程序是<strong>事件驱动</strong>的，当内核或应用程序<em>通过某个钩子点</em>时运行。<strong>预定义的钩子</strong>包括系统调用、函数入口&#x2F;退出、内核跟踪点、网络事件等。<br><img src="../img/Pasted%20image%2020250328234202.png" srcset="/img/loading.gif" lazyload><br>如果预定义的钩子不能满足特定需求，则可以<strong>创建内核探针</strong>（kprobe）或<strong>用户探针</strong>（uprobe），以便在内核或用户应用程序的<strong>几乎任何位置附加 eBPF 程序</strong>。<br><img src="../img/Pasted%20image%2020250328234616.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="如何编写eBPF程序"><a href="#如何编写eBPF程序" class="headerlink" title="如何编写eBPF程序"></a>如何编写eBPF程序</h1><p>使用<strong>cilium、bcc或bpftrace</strong>这样子的项目间接使用，这些项目提供了 eBPF 之上的抽象，不需要直接编写程序，而是提供了指定基于意图的来定义实现的能力，然后用 eBPF 实现。</p>
+<h1 id="加载器和校验架构"><a href="#加载器和校验架构" class="headerlink" title="加载器和校验架构"></a>加载器和校验架构</h1><p>确定所需的钩子后，可以使用 bpf 系统调用将 eBPF 程序加载到 Linux 内核中。这通常是使用一个可用的 eBPF 库来完成的。<br><img src="../img/go.webp" srcset="/img/loading.gif" lazyload></p>
 
                 
               </div>
@@ -392,7 +345,7 @@
   
     <span>></span>
     
-  <a href="../../../../categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/" class="category-chain-item">AI</a>
+  <a href="../../../../categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS/" class="category-chain-item">OS</a>
   
   
 
@@ -409,9 +362,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="../../../../tags/AI/" class="print-no-link">#AI</a>
-      
         <a href="../../../../tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="../../../../tags/OS/" class="print-no-link">#OS</a>
       
     </div>
   
@@ -423,8 +376,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>AI-Lab3</div>
-      <div>https://pqcu77.github.io/2025/03/24/AI-lab3/</div>
+      <div>Ebpf_learning</div>
+      <div>https://pqcu77.github.io/2025/03/28/ebpf-learning/</div>
     </div>
     <div class="license-meta">
       
@@ -436,7 +389,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年3月24日</div>
+          <div>2025年3月28日</div>
         </div>
       
       
@@ -468,18 +421,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="../../28/ebpf-learning/" title="Ebpf_learning">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Ebpf_learning</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="../../17/software-with-ai/" title="Software_with_ai">
-                        <span class="hidden-mobile">Software_with_ai</span>
+                      <a href="../../24/AI-lab3/" title="AI-Lab3">
+                        <span class="hidden-mobile">AI-Lab3</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
