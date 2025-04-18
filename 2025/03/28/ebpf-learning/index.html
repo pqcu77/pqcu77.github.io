@@ -26,25 +26,25 @@
 <meta property="og:site_name" content="linqt&#39;s blog">
 <meta property="og:description" content="Chapter1 Introduction什么是eBPF eBPF可以在特权上下文中（如kernel）运行&#x3D;&#x3D;沙盒&#x3D;&#x3D;程序。用于安全有效地扩展内核的功能，而无需通过更改内核源代码或加载内核模块的方式来实现。  eBPF从根本上改变了这个方式，通过允许在操作系统中运行沙盒程序的方式，应用程序开发人员可以运行eBPF程序，以便在运行时向操作系统添加额外的功能。然">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/img/Pasted%20image%2020250328231557.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/img/Pasted%20image%2020250328234202.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/img/Pasted%20image%2020250328234616.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/img/go.webp">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/img/file-20250329153804831.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/Pasted%20image%2020250328231557.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/Pasted%20image%2020250328234202.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/Pasted%20image%2020250328234616.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/go.webp">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250329153804831.png">
 <meta property="og:image" content="https://ebpf.io/static/6e18b76323d8520107fab90c033edaf4/b14d5/helper.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/img/file-20250329153901010.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/img/file-20250405102033975.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/img/file-20250405121158545.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/img/file-20250405113648981.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/img/file-20250405123905949.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/img/file-20250405123948939.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250329153901010.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405102033975.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405121158545.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405113648981.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405123905949.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405123948939.png">
 <meta property="article:published_time" content="2025-03-28T15:07:16.000Z">
 <meta property="article:modified_time" content="2025-04-05T04:55:40.493Z">
 <meta property="article:author" content="linqt">
 <meta property="article:tag" content="学习笔记">
 <meta property="article:tag" content="OS">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/img/Pasted%20image%2020250328231557.png">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/Pasted%20image%2020250328231557.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -319,7 +319,7 @@
               <div class="markdown-body">
                 
                 <h1 id="Chapter1-Introduction"><a href="#Chapter1-Introduction" class="headerlink" title="Chapter1 Introduction"></a>Chapter1 Introduction</h1><h2 id="什么是eBPF"><a href="#什么是eBPF" class="headerlink" title="什么是eBPF"></a>什么是eBPF</h2><ul>
-<li><p>eBPF可以在特权上下文中（如kernel）运行&#x3D;&#x3D;沙盒&#x3D;&#x3D;程序。用于<strong>安全有效地扩展内核的功能</strong>，而无需通过更改内核源代码或加载内核模块的方式来实现。<br><img src="img/Pasted%20image%2020250328231557.png" srcset="/img/loading.gif" lazyload></p>
+<li><p>eBPF可以在特权上下文中（如kernel）运行&#x3D;&#x3D;沙盒&#x3D;&#x3D;程序。用于<strong>安全有效地扩展内核的功能</strong>，而无需通过更改内核源代码或加载内核模块的方式来实现。<br><img src="/img/Pasted%20image%2020250328231557.png" srcset="/img/loading.gif" lazyload></p>
 </li>
 <li><p>eBPF从根本上改变了这个方式，通过允许<strong>在操作系统中运行沙盒程序</strong>的方式，应用程序开发人员可以<strong>运行eBPF程序</strong>，以便在运行时向操作系统<strong>添加额外的功能</strong>。然后在<strong>JIT编译器</strong>和<strong>验证引擎</strong>的帮助下，操作系统确保它像本地编译的程序一样具备安全性和执行效率</p>
 </li>
@@ -327,7 +327,7 @@
 </li>
 </ul>
 <h2 id="eBPF简介"><a href="#eBPF简介" class="headerlink" title="eBPF简介"></a>eBPF简介</h2><h2 id="resources："><a href="#resources：" class="headerlink" title="resources："></a>resources：</h2><p><a target="_blank" rel="noopener" href="https://docs.cilium.io/en/stable/reference-guides/bpf/index.html">BPF 和 XDP 参考指南 — Cilium 1.17.2 文档</a><br><a target="_blank" rel="noopener" href="https://ebpf.io/zh-hans/what-is-ebpf/#%E4%BB%80%E4%B9%88%E6%98%AF-ebpf-">什么是 eBPF ? An Introduction and Deep Dive into the eBPF Technology</a>（中文版）</p>
-<h2 id="钩子概览"><a href="#钩子概览" class="headerlink" title="钩子概览"></a>钩子概览</h2><p>eBPF 程序是<strong>事件驱动</strong>的，当内核或应用程序<em>通过某个钩子点</em>时运行。<strong>预定义的钩子</strong>包括系统调用、函数入口&#x2F;退出、内核跟踪点、网络事件等。<br><img src="img/Pasted%20image%2020250328234202.png" srcset="/img/loading.gif" lazyload><br>如果预定义的钩子不能满足特定需求，则可以<strong>创建内核探针</strong>（kprobe）或<strong>用户探针</strong>（uprobe），以便在内核或用户应用程序的<strong>几乎任何位置附加 eBPF 程序</strong>。<br><img src="img/Pasted%20image%2020250328234616.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="钩子概览"><a href="#钩子概览" class="headerlink" title="钩子概览"></a>钩子概览</h2><p>eBPF 程序是<strong>事件驱动</strong>的，当内核或应用程序<em>通过某个钩子点</em>时运行。<strong>预定义的钩子</strong>包括系统调用、函数入口&#x2F;退出、内核跟踪点、网络事件等。<br><img src="/img/Pasted%20image%2020250328234202.png" srcset="/img/loading.gif" lazyload><br>如果预定义的钩子不能满足特定需求，则可以<strong>创建内核探针</strong>（kprobe）或<strong>用户探针</strong>（uprobe），以便在内核或用户应用程序的<strong>几乎任何位置附加 eBPF 程序</strong>。<br><img src="/img/Pasted%20image%2020250328234616.png" srcset="/img/loading.gif" lazyload></p>
 <p>eBPF的核心钩子位置：<br>eBPF程序通常通过以下的内核钩子注入并执行：</p>
 <ul>
 <li><strong>Kprobes&#x2F;Uprobes</strong>：动态跟踪内核或用户空间函数调用</li>
@@ -336,7 +336,7 @@
 <li><strong>Socket Filters</strong>：过滤或监控套接字数据</li>
 </ul>
 <h2 id="如何编写eBPF程序"><a href="#如何编写eBPF程序" class="headerlink" title="如何编写eBPF程序"></a>如何编写eBPF程序</h2><p>使用<strong>cilium、bcc或bpftrace</strong>这样子的项目间接使用，这些项目提供了 eBPF 之上的抽象，不需要直接编写程序，而是提供了指定基于意图的来定义实现的能力，然后用 eBPF 实现。</p>
-<h2 id="加载器和校验架构"><a href="#加载器和校验架构" class="headerlink" title="加载器和校验架构"></a>加载器和校验架构</h2><p>确定所需的钩子后，可以使用 <strong>bpf 系统调用</strong>将 eBPF 程序加载到 Linux 内核中。这通常是使用一个可用的 eBPF 库来完成的。<br><img src="img/go.webp" srcset="/img/loading.gif" lazyload></p>
+<h2 id="加载器和校验架构"><a href="#加载器和校验架构" class="headerlink" title="加载器和校验架构"></a>加载器和校验架构</h2><p>确定所需的钩子后，可以使用 <strong>bpf 系统调用</strong>将 eBPF 程序加载到 Linux 内核中。这通常是使用一个可用的 eBPF 库来完成的。<br><img src="/img/go.webp" srcset="/img/loading.gif" lazyload></p>
 <p>当层序被加载到Linux内核中时，它在被附加到所请求的钩子上之前要经过两个步骤：</p>
 <ul>
 <li>验证：验证步骤用来确保eBPF程序可以安全运行<ul>
@@ -350,7 +350,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="Maps"><a href="#Maps" class="headerlink" title="Maps"></a>Maps</h2><p>eBPF 程序的其中一个重要方面是<strong>共享和存储</strong>所收集的信息和状态的能力。<br>为此，eBPF 程序可以利用 eBPF maps 的概念来存储和检索各种数据结构中的数据。eBPF maps 既可以<strong>从 eBPF 程序访问</strong>，也可以通过<strong>系统调用</strong>从<strong>用户空间中的应用程序访问</strong>。<br><img src="img/file-20250329153804831.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Maps"><a href="#Maps" class="headerlink" title="Maps"></a>Maps</h2><p>eBPF 程序的其中一个重要方面是<strong>共享和存储</strong>所收集的信息和状态的能力。<br>为此，eBPF 程序可以利用 eBPF maps 的概念来存储和检索各种数据结构中的数据。eBPF maps 既可以<strong>从 eBPF 程序访问</strong>，也可以通过<strong>系统调用</strong>从<strong>用户空间中的应用程序访问</strong>。<br><img src="/img/file-20250329153804831.png" srcset="/img/loading.gif" lazyload></p>
 <h2 id="Helper调用"><a href="#Helper调用" class="headerlink" title="Helper调用"></a>Helper调用</h2><p>eBPF 程序不直接调用内核函数。这样做会将 eBPF 程序绑定到特定的内核版本，会使程序的兼容性复杂化。而对应地，eBPF 程序改为调用 helper 函数达到效果，这是内核提供的通用且稳定的 API。</p>
 <p><a target="_blank" rel="noopener" href="https://ebpf.io/static/6e18b76323d8520107fab90c033edaf4/01295/helper.png"><img src="https://ebpf.io/static/6e18b76323d8520107fab90c033edaf4/b14d5/helper.png" srcset="/img/loading.gif" lazyload alt="Helper"></a></p>
 <p>可用的 helper 调用集也在不断发展迭代中。一些 helper 调用的示例:</p>
@@ -361,7 +361,7 @@
 <li>获取进程 &#x2F; cgroup 上下文</li>
 <li>操作网络数据包及其转发逻辑</li>
 </ul>
-<h2 id="尾调用和函数调用"><a href="#尾调用和函数调用" class="headerlink" title="尾调用和函数调用"></a>尾调用和函数调用</h2><p>eBPF 程序可以通过尾调用和函数调用的概念来组合。函数调用允许在 eBPF 程序内部完成定义和调用函数。尾调用可以调用和执行另一个 eBPF 程序并替换执行上下文，类似于 execve() 系统调用对常规进程的操作方式。<br><img src="img/file-20250329153901010.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="尾调用和函数调用"><a href="#尾调用和函数调用" class="headerlink" title="尾调用和函数调用"></a>尾调用和函数调用</h2><p>eBPF 程序可以通过尾调用和函数调用的概念来组合。函数调用允许在 eBPF 程序内部完成定义和调用函数。尾调用可以调用和执行另一个 eBPF 程序并替换执行上下文，类似于 execve() 系统调用对常规进程的操作方式。<br><img src="/img/file-20250329153901010.png" srcset="/img/loading.gif" lazyload></p>
 <h1 id="Chapter-2：简单运行Hello-World"><a href="#Chapter-2：简单运行Hello-World" class="headerlink" title="Chapter 2：简单运行Hello World"></a>Chapter 2：简单运行Hello World</h1><h2 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h2><p>code：</p>
 <figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs d"><span class="hljs-meta">#!/usr/bin/python3</span><br>from bcc <span class="hljs-keyword">import</span> BPF<br><br>program = <span class="hljs-string">r&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">int hello(void *ctx) &#123;</span><br><span class="hljs-string">    bpf_trace_printk(&quot;</span>Hello World!<span class="hljs-string">&quot;);</span><br><span class="hljs-string">    return 0;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string">&quot;</span><span class="hljs-string">&quot;&quot;</span><br><br>b = BPF(text=program)<br>syscall = b.get_syscall_fnname(<span class="hljs-string">&quot;execve&quot;</span>)<br>b.attach_kprobe(event=syscall, fn_name=<span class="hljs-string">&quot;hello&quot;</span>)<br>b.trace_print()<br></code></pre></td></tr></table></figure>
 
@@ -369,7 +369,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 1. 给予执行权限</span><br><span class="hljs-built_in">chmod</span> +x ~/ebpf-programs/hello.py<br><br><span class="hljs-comment"># 2. 使用sudo运行（eBPF需要root权限）</span><br><span class="hljs-built_in">sudo</span> ~/ebpf-programs/hello.py<br><br><span class="hljs-comment"># 或者</span><br><span class="hljs-built_in">sudo</span> python3 ~/ebpf-programs/hello.py<br></code></pre></td></tr></table></figure>
 
 <h3 id="解读"><a href="#解读" class="headerlink" title="解读"></a>解读</h3><p>这段代码由两部分组成：运行在内核中的<strong>eBPF程序</strong>（被””” “””包住的部分)本身，以及<strong>将eBPF程序加载到内核并读取其生成的跟踪的用户空间代码</strong></p>
-<p>hello.py是用户空间，hello()是运行在内核中的eBPF程序。<br><img src="img/file-20250405102033975.png" srcset="/img/loading.gif" lazyload></p>
+<p>hello.py是用户空间，hello()是运行在内核中的eBPF程序。<br><img src="/img/file-20250405102033975.png" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>[!NOTE]<br>整个代码是用python写的，但是eBPF程序本身是用C写的</p>
 </blockquote>
@@ -403,10 +403,10 @@
 <p>bcc framework部分和前面helloworld基本相同，读取信息部分需要修改为从哈希表中读取<br>code：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/python3  </span><br><span class="hljs-keyword">from</span> bcc <span class="hljs-keyword">import</span> BPF<br><span class="hljs-keyword">from</span> time <span class="hljs-keyword">import</span> sleep<br><br>program = <span class="hljs-string">r&quot;&quot;&quot;</span><br><span class="hljs-string">BPF_HASH(counter_table);</span><br><span class="hljs-string"></span><br><span class="hljs-string">int hello(void *ctx) &#123;</span><br><span class="hljs-string">   u64 uid;</span><br><span class="hljs-string">   u64 counter = 0;</span><br><span class="hljs-string">   u64 *p;</span><br><span class="hljs-string"></span><br><span class="hljs-string">   uid = bpf_get_current_uid_gid() &amp; 0xFFFFFFFF;</span><br><span class="hljs-string">   p = counter_table.lookup(&amp;uid);</span><br><span class="hljs-string">   if (p != 0) &#123;</span><br><span class="hljs-string">      counter = *p;</span><br><span class="hljs-string">   &#125;</span><br><span class="hljs-string">   counter++;</span><br><span class="hljs-string">   counter_table.update(&amp;uid, &amp;counter);</span><br><span class="hljs-string">   return 0;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><br>b = BPF(text=program)<br>syscall = b.get_syscall_fnname(<span class="hljs-string">&quot;execve&quot;</span>)<br>b.attach_kprobe(event=syscall, fn_name=<span class="hljs-string">&quot;hello&quot;</span>)<br><br><span class="hljs-comment"># Attach to a tracepoint that gets hit for all syscalls </span><br><span class="hljs-comment"># b.attach_raw_tracepoint(tp=&quot;sys_enter&quot;, fn_name=&quot;hello&quot;)</span><br><br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>    sleep(<span class="hljs-number">2</span>)<br>    s = <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-keyword">for</span> k,v <span class="hljs-keyword">in</span> b[<span class="hljs-string">&quot;counter_table&quot;</span>].items():<br>        s += <span class="hljs-string">f&quot;ID <span class="hljs-subst">&#123;k.value&#125;</span>: <span class="hljs-subst">&#123;v.value&#125;</span>\t&quot;</span><br>    <span class="hljs-built_in">print</span>(s)<br></code></pre></td></tr></table></figure>
 
-<p>运行结果:<br><img src="img/file-20250405121158545.png" srcset="/img/loading.gif" lazyload><br>在调用ls时，只会增加一个count，而运行sudo ls时由于会执行sudo和ls，会增加两个count</p>
+<p>运行结果:<br><img src="/img/file-20250405121158545.png" srcset="/img/loading.gif" lazyload><br>在调用ls时，只会增加一个count，而运行sudo ls时由于会执行sudo和ls，会增加两个count</p>
 <h3 id="Perf-and-Ring-Buffer-Maps"><a href="#Perf-and-Ring-Buffer-Maps" class="headerlink" title="Perf and Ring Buffer Maps"></a>Perf and Ring Buffer Maps</h3><ul>
 <li>允许以我们选择的结构将数据写入到perf环缓冲区映射中</li>
-<li>环缓冲区可以看做是逻辑组织在环中的内存，由单独的写、读指针。任意长度的数据被写入指针的任何位置，<strong>长度信息包含在该数据的头</strong>中。对于读取操作，从读取指针所在的任何位置读取数据，使用头来确定要读取多少数据<br><img src="img/file-20250405113648981.png" srcset="/img/loading.gif" lazyload></li>
+<li>环缓冲区可以看做是逻辑组织在环中的内存，由单独的写、读指针。任意长度的数据被写入指针的任何位置，<strong>长度信息包含在该数据的头</strong>中。对于读取操作，从读取指针所在的任何位置读取数据，使用头来确定要读取多少数据<br><img src="/img/file-20250405113648981.png" srcset="/img/loading.gif" lazyload></li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/python3  </span><br><span class="hljs-keyword">from</span> bcc <span class="hljs-keyword">import</span> BPF<br><br>program = <span class="hljs-string">r&quot;&quot;&quot;</span><br><span class="hljs-string">BPF_PERF_OUTPUT(output); </span><br><span class="hljs-string"> </span><br><span class="hljs-string">struct data_t &#123;     </span><br><span class="hljs-string">   int pid;</span><br><span class="hljs-string">   int uid;</span><br><span class="hljs-string">   char command[16];</span><br><span class="hljs-string">   char message[12];</span><br><span class="hljs-string">&#125;;</span><br><span class="hljs-string"> </span><br><span class="hljs-string">int hello(void *ctx) &#123;</span><br><span class="hljs-string">   struct data_t data = &#123;&#125;; </span><br><span class="hljs-string">   char message[12] = &quot;Hello World&quot;;</span><br><span class="hljs-string"> </span><br><span class="hljs-string">   data.pid = bpf_get_current_pid_tgid() &gt;&gt; 32;</span><br><span class="hljs-string">   data.uid = bpf_get_current_uid_gid() &amp; 0xFFFFFFFF;</span><br><span class="hljs-string">   </span><br><span class="hljs-string">   bpf_get_current_comm(&amp;data.command, sizeof(data.command));</span><br><span class="hljs-string">   bpf_probe_read_kernel(&amp;data.message, sizeof(data.message), message); </span><br><span class="hljs-string"> </span><br><span class="hljs-string">   output.perf_submit(ctx, &amp;data, sizeof(data)); </span><br><span class="hljs-string"> </span><br><span class="hljs-string">   return 0;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><br>b = BPF(text=program) <br>syscall = b.get_syscall_fnname(<span class="hljs-string">&quot;execve&quot;</span>)<br>b.attach_kprobe(event=syscall, fn_name=<span class="hljs-string">&quot;hello&quot;</span>)<br> <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">print_event</span>(<span class="hljs-params">cpu, data, size</span>):  <br>   data = b[<span class="hljs-string">&quot;output&quot;</span>].event(data)<br>   <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;data.pid&#125;</span> <span class="hljs-subst">&#123;data.uid&#125;</span> <span class="hljs-subst">&#123;data.command.decode()&#125;</span> <span class="hljs-subst">&#123;data.message.decode()&#125;</span>&quot;</span>)<br> <br>b[<span class="hljs-string">&quot;output&quot;</span>].open_perf_buffer(print_event) <br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:   <br>   b.perf_buffer_poll()<br></code></pre></td></tr></table></figure>
 <ul>
@@ -414,7 +414,7 @@
 <li><code>bpf_get_current_pid_tgid()</code>：获取触发词eBPF程序的进程ID</li>
 <li><code>bpf_get_current_comm()</code>：用于获取在创建execve系统共享的进程中运行的可执行文件；这是一个字符串，传递参数方法不太一样（要传递地址和长度）</li>
 </ul>
-<p><img src="img/file-20250405123905949.png" srcset="/img/loading.gif" lazyload><br><img src="img/file-20250405123948939.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/file-20250405123905949.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250405123948939.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="Tail-Calls"><a href="#Tail-Calls" class="headerlink" title="Tail Calls"></a>Tail Calls</h3><ul>
 <li>尾调用可以调用并执行另一个eBPF程序，并替换执行上下文，且不会返回原始位置</li>
 <li><code>long bpf_tail_call(void *ctx, struct bpf_map *prog_array_map, u32 index)</code><ul>

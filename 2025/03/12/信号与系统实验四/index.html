@@ -26,21 +26,21 @@
 <meta property="og:site_name" content="linqt&#39;s blog">
 <meta property="og:description" content="conda指令 创建python虚拟环境conda create -n py36 python&#x3D;3.6.5 进入某个python虚拟环境conda activate xxx 在虚拟环境中安装conda install numpy或pip install numpy  Anaconda环境管理-CSDN博客 实验四 实验目的（1）深入理解和掌握离散时间非周期信号的傅里叶变换及计算方法；（2）熟悉离散">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/12/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E5%9B%9B/img/file-20250413093659825.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/12/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E5%9B%9B/img/file-20250413105048333.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/12/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E5%9B%9B/img/file-20250413105117697.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/12/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E5%9B%9B/img/file-20250413105354392.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/12/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E5%9B%9B/img/file-20250414105151886.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/12/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E5%9B%9B/img/file-20250414113453654.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/12/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E5%9B%9B/img/file-20250414112640663.png">
-<meta property="og:image" content="https://pqcu77.github.io/2025/03/12/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E5%9B%9B/img/file-20250414112651331.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250413093659825.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250413105048333.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250413105117697.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250413105354392.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250414105151886.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250414113453654.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250414112640663.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250414112651331.png">
 <meta property="article:published_time" content="2025-03-12T14:29:07.000Z">
 <meta property="article:modified_time" content="2025-04-14T03:34:55.712Z">
 <meta property="article:author" content="linqt">
 <meta property="article:tag" content="学习笔记">
 <meta property="article:tag" content="信号与系统">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://pqcu77.github.io/2025/03/12/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E5%9B%9B/img/file-20250413093659825.png">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250413093659825.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -323,18 +323,18 @@
 <h1 id="实验四"><a href="#实验四" class="headerlink" title="实验四"></a>实验四</h1><ol>
 <li><p>实验目的<br>（1）深入理解和掌握<strong>离散时间非周期信号的傅里叶变换</strong>及计算方法；<br>（2）熟悉离散时间傅里叶变换的性质；<br>（3）理解离散时间 LTI 系统的频域分析原理和方法，掌握离散时间 LTI 系统的频率响应求解方法，并能编程绘制相应的幅频、相频响应曲线。</p>
 </li>
-<li><p>实验原理<br><img src="img/file-20250413093659825.png" srcset="/img/loading.gif" lazyload></p>
+<li><p>实验原理<br><img src="/img/file-20250413093659825.png" srcset="/img/loading.gif" lazyload></p>
 </li>
 </ol>
 <p>python提供的 <code>scipy.signal.freqz()</code>函数可以近似求解离散时间傅里叶变换。<br>无穷级数求和：SymPy符号函数求和方法： <code>sum()</code> <code>summation()</code> <code>gosper_sum()</code>等函数都可以用于级数求和操作。<br>SymPy符号函数积分的方法：<code>integrate()</code><br>通过numpy库和scipy库可以产生<strong>基本的信号</strong>，如阶跃信号、指数信号、脉冲信号等等，其中<strong>scipy.signal可用于计算信号的卷积</strong><br><a target="_blank" rel="noopener" href="https://docs.scipy.org/doc/scipy/reference/signal.html#module-scipy.signal">Signal processing (scipy.signal) — SciPy v1.15.2 Manual</a></p>
 <ol start="3">
-<li><p>性质<br><img src="img/file-20250413105048333.png" srcset="/img/loading.gif" lazyload><br><img src="img/file-20250413105117697.png" srcset="/img/loading.gif" lazyload><br><img src="img/file-20250413105354392.png" srcset="/img/loading.gif" lazyload></p>
+<li><p>性质<br><img src="/img/file-20250413105048333.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250413105117697.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250413105354392.png" srcset="/img/loading.gif" lazyload></p>
 </li>
-<li><p>实验任务<br>（1）编程计算双边指数衰减信号$𝑥[𝑛] &#x3D; e^{−2|𝑛|}$的离散时间傅里叶变换，并验证其时域内插，即<br>$$<br>\begin{cases}<br> \begin{split}<br> x[n&#x2F;k],n为k的整数倍\<br> 0, 其他n<br> \end{split}<br>\end{cases}<br>$$<br>的离散时间傅里叶变换，取𝑘 &#x3D; 3。请分别绘制$𝑥[𝑛]$和$𝑥_{k}[𝑛]$的幅频曲线和相频曲线。<br><img src="img/file-20250414105151886.png" srcset="/img/loading.gif" lazyload></p>
+<li><p>实验任务<br>（1）编程计算双边指数衰减信号$𝑥[𝑛] &#x3D; e^{−2|𝑛|}$的离散时间傅里叶变换，并验证其时域内插，即<br>$$<br>\begin{cases}<br> \begin{split}<br> x[n&#x2F;k],n为k的整数倍\<br> 0, 其他n<br> \end{split}<br>\end{cases}<br>$$<br>的离散时间傅里叶变换，取𝑘 &#x3D; 3。请分别绘制$𝑥[𝑛]$和$𝑥_{k}[𝑛]$的幅频曲线和相频曲线。<br><img src="/img/file-20250414105151886.png" srcset="/img/loading.gif" lazyload></p>
 </li>
 </ol>
-<p><img src="img/file-20250414113453654.png" srcset="/img/loading.gif" lazyload><br>（2）考虑差分方程$𝑦[𝑛] − 𝑎𝑦[𝑛 − 1] &#x3D; 𝑥[𝑛]$，其中|𝑎| &lt; 1。取𝑎 &#x3D;0.2，编程求解该方程所描述系统的频率响应，并：<br>（a）画出系统的幅频和相频特性曲线；<br>（b）求解系统的单位脉冲响应并绘制出图形</p>
-<p><img src="img/file-20250414112640663.png" srcset="/img/loading.gif" lazyload><br><img src="img/file-20250414112651331.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/file-20250414113453654.png" srcset="/img/loading.gif" lazyload><br>（2）考虑差分方程$𝑦[𝑛] − 𝑎𝑦[𝑛 − 1] &#x3D; 𝑥[𝑛]$，其中|𝑎| &lt; 1。取𝑎 &#x3D;0.2，编程求解该方程所描述系统的频率响应，并：<br>（a）画出系统的幅频和相频特性曲线；<br>（b）求解系统的单位脉冲响应并绘制出图形</p>
+<p><img src="/img/file-20250414112640663.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250414112651331.png" srcset="/img/loading.gif" lazyload></p>
 <p>（3）设离散时间双边指数衰减信号$𝑥[𝑛] &#x3D; e^{−2|𝑛|}, 𝑦[𝑛] &#x3D; 𝑥[𝑛] ∗ 𝑥[𝑛]$，请<br>（a）编程用卷积性质求解$𝑌(e^{j𝜔})$与$𝑦[𝑛]$，并绘制$𝑥[𝑛]$、$|𝑌(e^{j𝜔})|$和$𝑦[𝑛]$的图像；<br>（b）编程用时域卷积求解$𝑦[𝑛]$，绘制$𝑦[𝑛]$的图像，并与（a）的结果比较</p>
 
                 
