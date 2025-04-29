@@ -1,0 +1,981 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="爬虫 简单概念网络爬虫：模拟浏览器发送网络请求，接受请求响应，一种按一定规则，自动地抓取互联网信息的程序  可以用于自动地从网络上获取信息，节省人工  Preparation 可以使用python 一些可能使用到的库：1234567# -*- codeing &#x3D; utf-8 -*-from bs4 import BeautifulSoup  # 网页解析，获取数据import re  # 正则表达">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫">
+<meta property="og:url" content="https://pqcu77.github.io/2025/03/02/%E7%88%AC%E8%99%AB/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="爬虫 简单概念网络爬虫：模拟浏览器发送网络请求，接受请求响应，一种按一定规则，自动地抓取互联网信息的程序  可以用于自动地从网络上获取信息，节省人工  Preparation 可以使用python 一些可能使用到的库：1234567# -*- codeing &#x3D; utf-8 -*-from bs4 import BeautifulSoup  # 网页解析，获取数据import re  # 正则表达">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-03-02T06:59:16.000Z">
+<meta property="article:modified_time" content="2025-04-29T03:40:05.126Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="extra learning">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>爬虫 - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="爬虫"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-02 14:59" pubdate>
+          2025年3月2日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">爬虫</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-04-29T11:40:05+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="爬虫"><a href="#爬虫" class="headerlink" title="爬虫"></a>爬虫</h1><hr>
+<h2 id="简单概念"><a href="#简单概念" class="headerlink" title="简单概念"></a>简单概念</h2><p>网络爬虫：模拟浏览器发送网络请求，接受请求响应，一种按一定规则，自动地抓取互联网信息的程序</p>
+<ul>
+<li>可以用于自动地从网络上获取信息，节省人工</li>
+</ul>
+<h2 id="Preparation"><a href="#Preparation" class="headerlink" title="Preparation"></a>Preparation</h2><ul>
+<li>可以使用python</li>
+<li>一些可能使用到的库：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># -*- codeing = utf-8 -*-</span><br><span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup  <span class="hljs-comment"># 网页解析，获取数据</span><br><span class="hljs-keyword">import</span> re  <span class="hljs-comment"># 正则表达式，进行文字匹配`</span><br><span class="hljs-keyword">import</span> urllib.request, urllib.error  <span class="hljs-comment"># 制定URL，获取网页数据</span><br><span class="hljs-keyword">import</span> xlwt  <span class="hljs-comment"># 进行excel操作</span><br><span class="hljs-comment">#import sqlite3  # 进行SQLite数据库操作</span><br><br></code></pre></td></tr></table></figure></li>
+<li><code># coding=utf-8</code> 或 <code># -*- coding: utf-8 -*-</code> 来指定源代码的编码方式，防止乱码</li>
+</ul>
+<h3 id="大体流程"><a href="#大体流程" class="headerlink" title="大体流程"></a>大体流程</h3><ol>
+<li>爬取网页</li>
+<li>逐一解析数据</li>
+<li>保存网页</li>
+</ol>
+<h3 id="详细展开"><a href="#详细展开" class="headerlink" title="详细展开"></a>详细展开</h3><p><strong>爬取网页：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>):  <span class="hljs-comment"># 调用获取页面信息的函数，10次</span><br>      url = baseurl + <span class="hljs-built_in">str</span>(i * <span class="hljs-number">25</span>)<br></code></pre></td></tr></table></figure>
+
+<p>baseurl是要爬虫的网址，加上的str(i*25)是用于 <strong>翻页</strong> ，通过这样子设置可以跳转到不同的界面</p>
+<p><code>askURL()</code>用于请求网页</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">askURL</span>(<span class="hljs-params">url</span>):<br>    head = &#123;  <span class="hljs-comment"># 模拟浏览器头部信息，向豆瓣服务器发送消息</span><br>        <span class="hljs-string">&quot;User-Agent&quot;</span>: <span class="hljs-string">&quot;Mozilla / 5.0(Windows NT 10.0; Win64; x64) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 80.0.3987.122  Safari / 537.36&quot;</span><br>    &#125;<br>    <span class="hljs-comment"># 用户代理，表示告诉豆瓣服务器，我们是什么类型的机器、浏览器（本质上是告诉浏览器，我们可以接收什么水平的文件内容）</span><br><br>    request = urllib.request.Request(url, headers=head)<br>    html = <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-keyword">try</span>:<br>        response = urllib.request.urlopen(request)<br>        html = response.read().decode(<span class="hljs-string">&quot;utf-8&quot;</span>)<br>    <span class="hljs-keyword">except</span> urllib.error.URLError <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">hasattr</span>(e, <span class="hljs-string">&quot;code&quot;</span>):<br>            <span class="hljs-built_in">print</span>(e.code)<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">hasattr</span>(e, <span class="hljs-string">&quot;reason&quot;</span>):<br>            <span class="hljs-built_in">print</span>(e.reason)<br>    <span class="hljs-keyword">return</span> html<br><br></code></pre></td></tr></table></figure>
+
+<p>head用于模拟浏览器头部信息，相当于我们在模拟人工查询网页时目标服务器会接受到的信息</p>
+<p>如果不写head可能会被认出来是爬虫，导致错误</p>
+<p><strong>逐一解析数据：</strong></p>
+<p>解析数据用到了BeautifulSoup这个库（爬虫必备库）</p>
+<p>用正则表达式去匹配：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">findLink = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;&lt;a href=&quot;(.*?)&quot;&gt;&#x27;</span>)  <span class="hljs-comment"># 创建正则表达式对象，标售规则   影片详情链接的规则</span><br>findImgSrc = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;&lt;img.*src=&quot;(.*?)&quot;&#x27;</span>, re.S)<br>findTitle = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;&lt;span class=&quot;title&quot;&gt;(.*)&lt;/span&gt;&#x27;</span>)<br>findRating = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;&lt;span class=&quot;rating_num&quot; property=&quot;v:average&quot;&gt;(.*)&lt;/span&gt;&#x27;</span>)<br>findJudge = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;&lt;span&gt;(\\d*)人评价&lt;/span&gt;&#x27;</span>)<br>findInq = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;&lt;span class=&quot;inq&quot;&gt;(.*)&lt;/span&gt;&#x27;</span>)<br>findBd = re.<span class="hljs-built_in">compile</span>(<span class="hljs-string">r&#x27;&lt;p class=&quot;&quot;&gt;(.*?)&lt;/p&gt;&#x27;</span>, re.S)<br></code></pre></td></tr></table></figure>
+
+<p>一些解释：</p>
+<ul>
+<li><code>r&#39;&#39;</code> ：用于表示python的原始字符串，避免 <code>\\</code> 作为转义符干扰，让正则表达式更易读</li>
+<li><code>&lt;p class=&quot;&quot;&gt;</code><ul>
+<li>这里匹配 <code>&lt;p&gt;</code>标签，要求 <code>class</code>属性为空</li>
+<li>如果网页class属性省略了，还需要调整匹配方式</li>
+</ul>
+</li>
+<li><code>(.*?)</code><ul>
+<li>小括号表示一个捕获组，可以提取匹配到的内容</li>
+<li><code>.*?</code> ：<ul>
+<li><code>.</code> 匹配任意字符</li>
+<li><code>*?</code> 非贪婪匹配，匹配尽可能少的字符，遇到 <code>&lt;/p&gt;</code>（结束标签）就停止</li>
+<li><code>*</code> 表示匹配任意次数，但 <code>?</code> 让它变成非贪婪模式</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>re.S</code> (<code>re.DOTALL</code>)<ul>
+<li>让 <code>.</code> 可以匹配换行符，<code>&lt;p&gt;</code>标签内部文本可以是多行的</li>
+<li>如果没有 <code>re.S</code>，换行符 <code>\\n</code>可能会导致匹配失败</li>
+</ul>
+</li>
+</ul>
+<p><strong>保存数据：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">saveData(datalist,savepath)      <span class="hljs-comment">#2种存储方式可以只选择一种</span><br><span class="hljs-comment"># saveData2DB(datalist,dbpath)</span><br></code></pre></td></tr></table></figure>
+
+<p>保存数据可以选择保存到 xls表（xlwt库支持），或者保存到sqlite数据库（sqlite3库支持）</p>
+<ul>
+<li>保存到xls：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">saveData</span>(<span class="hljs-params">datalist,savepath</span>):<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;save.......&quot;</span>)<br>    book = xlwt.Workbook(encoding=<span class="hljs-string">&quot;utf-8&quot;</span>,style_compression=<span class="hljs-number">0</span>) <span class="hljs-comment">#创建workbook对象</span><br>    sheet = book.add_sheet(<span class="hljs-string">&#x27;豆瓣电影Top250&#x27;</span>, cell_overwrite_ok=<span class="hljs-literal">True</span>) <span class="hljs-comment">#创建工作表</span><br>    col = (<span class="hljs-string">&quot;电影详情链接&quot;</span>,<span class="hljs-string">&quot;图片链接&quot;</span>,<span class="hljs-string">&quot;影片中文名&quot;</span>,<span class="hljs-string">&quot;影片外国名&quot;</span>,<span class="hljs-string">&quot;评分&quot;</span>,<span class="hljs-string">&quot;评价数&quot;</span>,<span class="hljs-string">&quot;概况&quot;</span>,<span class="hljs-string">&quot;相关信息&quot;</span>)<br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-number">8</span>):<br>        sheet.write(<span class="hljs-number">0</span>,i,col[i])  <span class="hljs-comment">#列名</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-number">250</span>):<br>        <span class="hljs-comment"># print(&quot;第%d条&quot; %(i+1))       #输出语句，用来测试</span><br>        data = datalist[i]<br>        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-number">8</span>):<br>            sheet.write(i+<span class="hljs-number">1</span>,j,data[j])  <span class="hljs-comment">#数据</span><br>    book.save(savepath) <span class="hljs-comment">#保存</span><br></code></pre></td></tr></table></figure>
+
+<p><code>sheet = book.add_sheet(&#39;豆瓣电影Top250&#39;, cell_overwrite_ok=True) #创建工作表</code></p>
+<p>创建工作表</p>
+<p><code>col = (&quot;电影详情链接&quot;,&quot;图片链接&quot;,&quot;影片中文名&quot;,&quot;影片外国名&quot;,&quot;评分&quot;,&quot;评价数&quot;,&quot;概况&quot;,&quot;相关信息&quot;)</code></p>
+<p>创建列</p>
+<p>But!这个xls有点老旧的样子，在vscode和wps都没办法打开文件，所以叫ai重写了一下。改为使用openpyxl库</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">saveData</span>(<span class="hljs-params">datalist, savepath</span>):<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;正在保存数据......&quot;</span>)<br>    wb = openpyxl.Workbook()<br>    sheet = wb.active<br>    sheet.title = <span class="hljs-string">&quot;豆瓣电影Top250&quot;</span><br>    col = [<span class="hljs-string">&quot;电影详情链接&quot;</span>, <span class="hljs-string">&quot;图片链接&quot;</span>, <span class="hljs-string">&quot;影片中文名&quot;</span>, <span class="hljs-string">&quot;影片外国名&quot;</span>, <span class="hljs-string">&quot;评分&quot;</span>, <span class="hljs-string">&quot;评价数&quot;</span>, <span class="hljs-string">&quot;概况&quot;</span>, <span class="hljs-string">&quot;相关信息&quot;</span>]<br>    sheet.append(col)<br>  <br>    <span class="hljs-keyword">for</span> data <span class="hljs-keyword">in</span> datalist:<br>        sheet.append(data)<br><br>    wb.save(savepath)<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="开展："><a href="#开展：" class="headerlink" title="开展："></a>开展：</h2><p>（一）分析目标网站</p>
+<p>在编写爬虫前，先查看目标网站的robots.txt文件，了解网站允许的爬取范围。同时，使用浏览器开发者工具（F12）检查页面结构，分析数据所在位置和标签特征。</p>
+<p>（二）发送请求</p>
+<p>利用工具向目标网站发送HTTP请求，获取网页内容。在发送请求时，要注意设置合适的请求头，模拟真实浏览器行为，避免被网站识别为爬虫。</p>
+<p>（三）解析内容</p>
+<p>将获取到的网页内容进行解析，提取所需数据。根据网页结构和数据特点，选择合适的解析工具和方法。</p>
+<p>（四）存储数据</p>
+<p>将提取到的数据存储到本地文件或数据库中，方便后续使用和分析。根据数据量和使用需求，选择合适的存储方式。</p>
+<p>（五）处理动态内容</p>
+<p>对于动态生成的网页内容，需要使用专门的工具模拟浏览器操作，获取完整的页面数据。在处理动态内容时，要注意页面加载时间和操作的稳定性。</p>
+<p>（六）反爬策略应对</p>
+<p>网站为了保护自身数据，会采取各种反爬措施。可以通过设置请求头、使用代理IP、添加延迟等方式应对反爬策略，确保爬虫的稳定运行。</p>
+<h2 id="Requests库"><a href="#Requests库" class="headerlink" title="Requests库"></a>Requests库</h2><h3 id="七个主要方法"><a href="#七个主要方法" class="headerlink" title="七个主要方法"></a>七个主要方法</h3><p><code>req.request()</code> 构造一个请求</p>
+<p><code>req.get()</code> 获取HTML网页</p>
+<p><code>req.head()</code> 获取HTML网页头信息</p>
+<p><code>req.post()</code> 向HTML网页提交POST请求</p>
+<p><code>req.put()</code> 提交PUT请求</p>
+<p><code>req.patch()</code> 提交局部修改请求</p>
+<p><code>req.delete()</code> 提交删除请求</p>
+<h1 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h1><p><strong>$ 表示结束匹配</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>元字符</strong></th>
+<th><strong>含义</strong></th>
+<th><strong>示例</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>.</code></td>
+<td>匹配<strong>任意</strong>一个字符（除了换行符 <code>\\n</code>）</td>
+<td><code>a.b</code>匹配 <code>&quot;acb&quot;</code>、<code>&quot;a2b&quot;</code></td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>匹配<strong>行首</strong></td>
+<td><code>^abc</code>只能匹配 <code>&quot;abc&quot;</code>在字符串开头的情况</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>匹配<strong>行尾</strong></td>
+<td><code>xyz$</code>只能匹配 <code>&quot;xyz&quot;</code>在字符串结尾的情况</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>匹配<strong>0 或多次</strong>前面的字符</td>
+<td><code>ab*c</code>匹配 <code>&quot;ac&quot;</code>、<code>&quot;abc&quot;</code>、<code>&quot;abbc&quot;</code></td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>匹配<strong>1 或多次</strong>前面的字符</td>
+<td><code>ab+c</code>匹配 <code>&quot;abc&quot;</code>、<code>&quot;abbc&quot;</code>，但不匹配 <code>&quot;ac&quot;</code></td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>匹配<strong>0 或 1 次</strong>前面的字符</td>
+<td><code>ab?c</code>匹配 <code>&quot;ac&quot;</code>和 <code>&quot;abc&quot;</code></td>
+</tr>
+<tr>
+<td><code>&#123;m,n&#125;</code></td>
+<td>匹配<strong>m 到 n 次</strong>前面的字符</td>
+<td><code>ab&#123;1,3&#125;c</code>匹配 <code>&quot;abc&quot;</code>、<code>&quot;abbc&quot;</code>、<code>&quot;abbbc&quot;</code></td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>符号</strong></th>
+<th><strong>含义</strong></th>
+<th><strong>示例</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>\\d</code></td>
+<td>匹配<strong>数字</strong> （等价于 <code>[0-9]</code>）</td>
+<td><code>\\d+</code>匹配 <code>&quot;123&quot;</code></td>
+</tr>
+<tr>
+<td><code>\\D</code></td>
+<td>匹配<strong>非数字</strong> （等价于 <code>[^0-9]</code>）</td>
+<td><code>\\D+</code>匹配 <code>&quot;abc&quot;</code></td>
+</tr>
+<tr>
+<td><code>\\w</code></td>
+<td>匹配<strong>单词字符</strong> （字母、数字、下划线 <code>a-zA-Z0-9_</code>）</td>
+<td><code>\\w+</code>匹配 <code>&quot;hello123&quot;</code></td>
+</tr>
+<tr>
+<td><code>\\W</code></td>
+<td>匹配<strong>非单词字符</strong> （等价于 <code>[^a-zA-Z0-9_]</code>）</td>
+<td><code>\\W+</code>匹配 <code>&quot;$#@&quot;</code></td>
+</tr>
+<tr>
+<td><code>\\s</code></td>
+<td>匹配<strong>空白字符</strong> （空格、Tab、换行）</td>
+<td><code>\\s+</code>匹配 <code>&quot; &quot;</code></td>
+</tr>
+<tr>
+<td><code>\\S</code></td>
+<td>匹配<strong>非空白字符</strong></td>
+<td><code>\\S+</code>匹配 <code>&quot;hello&quot;</code></td>
+</tr>
+</tbody></table>
+<p><code>.*</code> 默认匹配<strong>尽可能多</strong>的字符：默认为贪婪匹配</p>
+<p>使用 <code>*?</code> 或 <code>+?</code> 让匹配 <strong>尽可能少</strong> ：非贪婪匹配</p>
+<h3 id="Python-正则表达式常用方法"><a href="#Python-正则表达式常用方法" class="headerlink" title="Python 正则表达式常用方法"></a><strong>Python 正则表达式常用方法</strong></h3><table>
+<thead>
+<tr>
+<th><strong>方法</strong></th>
+<th><strong>功能</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>re.match(pattern, string)</code></td>
+<td><strong>从头</strong>匹配字符串</td>
+</tr>
+<tr>
+<td><code>re.search(pattern, string)</code></td>
+<td><strong>搜索</strong>第一个匹配项</td>
+</tr>
+<tr>
+<td><code>re.findall(pattern, string)</code></td>
+<td>返回<strong>所有匹配项</strong> （列表）</td>
+</tr>
+<tr>
+<td><code>re.finditer(pattern, string)</code></td>
+<td>以迭代器返回所有匹配项</td>
+</tr>
+<tr>
+<td><code>re.sub(pattern, repl, string)</code></td>
+<td><strong>替换</strong>匹配项</td>
+</tr>
+<tr>
+<td><code>re.split(pattern, string)</code></td>
+<td><strong>分割</strong>字符串</td>
+</tr>
+</tbody></table>
+<h1 id="用爬虫爬idol的照片"><a href="#用爬虫爬idol的照片" class="headerlink" title="用爬虫爬idol的照片"></a>用爬虫爬idol的照片</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> requests<br><span class="hljs-keyword">from</span> bs4 <span class="hljs-keyword">import</span> BeautifulSoup<br><span class="hljs-keyword">import</span> time<br><span class="hljs-keyword">import</span> random<br><span class="hljs-keyword">import</span> os<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">fetch_images</span>(<span class="hljs-params">keyword, num_images=<span class="hljs-number">10</span></span>):<br>    <span class="hljs-comment"># 随机 User-Agent 列表</span><br>    user_agents = [<br>        <span class="hljs-string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36&#x27;</span>,<br>        <span class="hljs-string">&#x27;Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Safari/605.1.15&#x27;</span>,<br>        <span class="hljs-string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0&#x27;</span>,<br>        <span class="hljs-string">&#x27;Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1&#x27;</span><br>    ]<br><br>    <span class="hljs-comment"># 创建会话</span><br>    session = requests.Session()<br><br>    <span class="hljs-comment"># Bing图片搜索URL</span><br>    url = <span class="hljs-string">f&#x27;&lt;https://cn.bing.com/images/search?q=<span class="hljs-subst">&#123;keyword&#125;</span>&amp;form=HDRSC2&amp;first=1&gt;&#x27;</span><br><br>    <span class="hljs-comment"># 随机选择一个 User-Agent</span><br>    headers = &#123;<br>        <span class="hljs-string">&#x27;User-Agent&#x27;</span>: random.choice(user_agents),<br>        <span class="hljs-string">&#x27;Referer&#x27;</span>: <span class="hljs-string">&#x27;&lt;https://cn.bing.com/&gt;&#x27;</span><br>    &#125;<br><br>    <span class="hljs-comment"># 发送请求</span><br>    <span class="hljs-keyword">try</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;开始发送请求...&quot;</span>)<br>        response = session.get(url, headers=headers, timeout=<span class="hljs-number">10</span>)<br>        response.raise_for_status()  <span class="hljs-comment"># 检查请求是否成功</span><br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;请求成功，状态码:&quot;</span>, response.status_code)<br>    <span class="hljs-keyword">except</span> requests.exceptions.RequestException <span class="hljs-keyword">as</span> e:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;请求失败: <span class="hljs-subst">&#123;e&#125;</span>&#x27;</span>)<br>        <span class="hljs-keyword">return</span><br><br>    <span class="hljs-comment"># 解析页面</span><br>    soup = BeautifulSoup(response.text, <span class="hljs-string">&#x27;html.parser&#x27;</span>)<br><br>    <span class="hljs-comment"># 提取图片URL</span><br>    image_urls = []<br>    <span class="hljs-keyword">for</span> img <span class="hljs-keyword">in</span> soup.find_all(<span class="hljs-string">&#x27;img&#x27;</span>, class_=<span class="hljs-string">&#x27;mimg&#x27;</span>):<br>        img_url = img.get(<span class="hljs-string">&#x27;src&#x27;</span>)<br>        <span class="hljs-keyword">if</span> img_url <span class="hljs-keyword">and</span> img_url.startswith((<span class="hljs-string">&#x27;http://&#x27;</span>, <span class="hljs-string">&#x27;https://&#x27;</span>)):  <span class="hljs-comment"># 过滤无效 URL</span><br>            image_urls.append(img_url)<br><br>    <span class="hljs-comment"># 创建保存图片的文件夹</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> os.path.exists(<span class="hljs-string">&#x27;images&#x27;</span>):<br>        os.makedirs(<span class="hljs-string">&#x27;images&#x27;</span>)<br><br>    <span class="hljs-comment"># 下载图片</span><br>    <span class="hljs-keyword">for</span> i, img_url <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(image_urls[:num_images]):  <span class="hljs-comment"># 只取前 num_images 张</span><br>        <span class="hljs-keyword">try</span>:<br>            <span class="hljs-comment"># 随机延时 2~5 秒</span><br>            time.sleep(random.uniform(<span class="hljs-number">2</span>, <span class="hljs-number">5</span>))<br><br>            <span class="hljs-comment"># 随机选择一个 User-Agent</span><br>            headers[<span class="hljs-string">&#x27;User-Agent&#x27;</span>] = random.choice(user_agents)<br><br>            <span class="hljs-comment"># 发送请求</span><br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;开始下载图片 <span class="hljs-subst">&#123;i+<span class="hljs-number">1</span>&#125;</span>: <span class="hljs-subst">&#123;img_url&#125;</span>&quot;</span>)<br>            response = session.get(img_url, headers=headers, timeout=<span class="hljs-number">10</span>)<br>            response.raise_for_status()<br><br>            <span class="hljs-comment"># 保存图片</span><br>            <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">f&#x27;images/image_<span class="hljs-subst">&#123;i&#125;</span>.jpg&#x27;</span>, <span class="hljs-string">&#x27;wb&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>                f.write(response.content)<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;下载完成: image_<span class="hljs-subst">&#123;i&#125;</span>.jpg&#x27;</span>)<br>        <span class="hljs-keyword">except</span> requests.exceptions.RequestException <span class="hljs-keyword">as</span> e:<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">f&#x27;下载失败: <span class="hljs-subst">&#123;e&#125;</span>&#x27;</span>)<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    keyword = <span class="hljs-string">&#x27;姚琛&#x27;</span><br>    num_images = <span class="hljs-number">10</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;开始抓取 <span class="hljs-subst">&#123;num_images&#125;</span> 张 &#x27;<span class="hljs-subst">&#123;keyword&#125;</span>&#x27; 的图片...&quot;</span>)<br>    fetch_images(keyword, num_images)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;程序运行结束。&quot;</span>)<br><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    main()<br></code></pre></td></tr></table></figure>
+
+<p>结果：</p>
+
+
+<p>笔记参考&amp;资料：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/bookssea/article/details/107309591">https://blog.csdn.net/bookssea/article/details/107309591</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python-spider-beautifulsoup.html">https://www.runoob.com/python3/python-spider-beautifulsoup.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Ehco1996/Python-crawler?tab=readme-ov-file">https://github.com/Ehco1996/Python-crawler?tab=readme-ov-file</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/python/" class="category-chain-item">python</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/extra-learning/" class="print-no-link">#extra learning</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>爬虫</div>
+      <div>https://pqcu77.github.io/2025/03/02/爬虫/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/03/python-basic/" title="Python_basic">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Python_basic</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/28/YatCPU/" title="YatCPU">
+                        <span class="hidden-mobile">YatCPU</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

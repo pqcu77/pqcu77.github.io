@@ -1,0 +1,1521 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Introduction 单周期 CPU：本实验的目的是从零开始编写一个可以运行 RV32I 指令集程序的单周期 CPU，这个 CPU 将会是后续所有实验的基础。完成本实验之后，可以通过仿真的方式，加载运行 RV32I 程序，验证正确性。 中断机制：本实验在单周期 CPU 的基础上，添加了中断控制器以及中断控制流的内容，使单周期 CPU 可以处理来自外部设备的中断，响应 IO。完成本实验之后，CP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YatCPU">
+<meta property="og:url" content="https://pqcu77.github.io/2025/02/28/YatCPU/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="Introduction 单周期 CPU：本实验的目的是从零开始编写一个可以运行 RV32I 指令集程序的单周期 CPU，这个 CPU 将会是后续所有实验的基础。完成本实验之后，可以通过仿真的方式，加载运行 RV32I 程序，验证正确性。 中断机制：本实验在单周期 CPU 的基础上，添加了中断控制器以及中断控制流的内容，使单周期 CPU 可以处理来自外部设备的中断，响应 IO。完成本实验之后，CP">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1e02e04b-2e21-4de8-a487-b25c0b342f76/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c37be282-9bcc-4705-8144-c6416df8b2c7/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/cf433301-39de-45c2-96fe-9525ae145101/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/75f5ed2a-c27b-4143-b645-20e150da257d/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/583e23ee-4823-4aea-8aa4-ca69b16a7691/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/62affc69-210d-4c60-9ef5-9b57ae74a723/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/554ad192-24f8-471f-81f7-36771022fc8a/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/259f6157-65c2-40b3-b8a5-b99a37013dba/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/53c8d9cd-8206-4f22-b174-1b87584763f5/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4e1943bf-e7f9-4359-a1fa-d8e922338b35/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c678f2ed-b03e-426e-a1bd-1d93015011d4/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/789c4161-6b8e-4d97-bf31-954bcc9a8d27/be3cee1cacb047c90c08ad06a6b68ee.jpg">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/03254c1f-b2a3-4380-9bb6-e23dc05ed7fe/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_17338008355682.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9152e9ef-2e5b-4ee9-be3c-650d1784d6bd/32d668896c5b7ecbacf247af766530d.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9152e9ef-2e5b-4ee9-be3c-650d1784d6bd/32d668896c5b7ecbacf247af766530d.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/2d2dbece-9226-4a85-ad6a-28ff2a170cdb/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/7563df56-5735-4444-a001-17f6ca6ecd14/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9f9ceea2-a7f4-4560-810d-ce43a10e3c71/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/00dc7cf5-97b3-424c-8922-a71d85ffb886/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/e0ec95e0-c34c-440a-a56a-0dfe2d089312/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9f234702-1688-497c-8010-651f7dc53f7e/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/cd72c169-cbfe-45be-8a44-4989200794d3/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/01c995c9-3901-4573-a576-d4f29ed0dba3/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1f1384af-b7e5-4fe5-8998-67b49e091e5b/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/a2857746-2f3c-48b8-82ba-81bfe76bc25c/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/bf9f34e1-6e68-4368-8b05-842a2af9d624/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/16c62b2d-399d-46fe-8508-9c953d559c9f/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4290bbb4-24b4-44c9-9160-13af9a9b6da6/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c3f7e361-4110-4940-aab4-ba28ad60defb/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/e585e7a2-a06a-4c05-aab6-e1dc23232281/0a3f20ee132b54699d4134c1320040d.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/918f657a-115b-4ba0-82d6-ed9486d52f0f/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/41cd5ebf-b1d8-4c44-a4b1-550bebbc029c/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/8246c754-17b2-4c49-ace1-6581ed7d8f24/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/ce9f61ea-c7ce-4fd9-9e4e-9030d6b0f349/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/8c80ac24-145b-4414-8515-263cf7038800/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c1ed0bf3-0f89-469a-89f3-10e24ee656b6/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4604f572-0a2d-4805-ab6e-a522ad2f8832/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/0a3ec965-8a4a-46d3-be51-7b0073b5844a/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/26456738-a558-452b-b30f-c0748264ac9c/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/0337e759-5933-4113-884e-ff789094a897/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/3ff93292-0ed1-4ab4-9067-d05f7ce5f71d/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c90f1260-7c99-43fe-a793-12f91fc1e8de/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/014468d7-0c6f-4128-b775-3af358158014/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/ac86d63c-db93-450c-af66-afca0d8b3780/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/352d620c-634d-4c50-bdf5-ebe48e1b9965/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/f6c30f66-840f-4f01-8bb3-dd88c86f1b68/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/dccae40f-4b27-4782-9a55-5e52cb8e85b2/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/101d1622-416f-43d9-85f1-c51130896ea7/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/fe542da7-c626-465f-b174-a1ee4cbf654d/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/98781a7b-ca69-4696-9949-fd8e6da27fc3/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9205658e-ebfb-4015-857f-cbd9e11ccd76/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/77588407-9a56-4bfd-a311-c27e63aa638b/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/68544734-4bbe-4c2a-95a8-99741b0439af/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/5a7c860b-c017-4301-a7ae-9eed85779f86/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/e53ad942-ff47-49fa-8379-667fa1a0649c/five_stage_pipelined_CPU_structure.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/b390bac4-81eb-4f10-b142-8fff15dc4c84/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/d00468fd-4e0c-4ba0-8f3d-423913238ec5/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/020768f4-d436-4200-b667-e990d2e82cfe/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/73fd5c72-194a-4538-ab08-de2d7e6b797d/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/8ed1ed79-32e2-40bd-b47e-610a743bfed5/axi.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/bd53bcaa-8b4a-4d82-8548-2cc7e7724220/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1212ba2d-d2d2-4448-b215-48f548892a7f/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/de6abdd7-cddb-41de-80ec-f0674748aeef/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4b332481-15c3-4cae-9152-42f3f9f751a9/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/bc757076-2d7d-42b6-9a56-fc5623721789/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/158b0582-99d3-4e79-a174-8cfcf4599e93/axi-fsm.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/6d60b960-c91b-441e-8ae1-95e5787c8d29/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/905731eb-29ea-45e5-a7ae-55ea468b63e8/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/d9d252c5-393d-457b-abcf-f370d89f2ab8/image.png">
+<meta property="og:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/31d55b13-b66a-44e0-a61a-e7ef62f59b8d/image.png">
+<meta property="article:published_time" content="2025-02-28T15:58:45.000Z">
+<meta property="article:modified_time" content="2025-02-28T16:00:49.663Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1e02e04b-2e21-4de8-a487-b25c0b342f76/image.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>YatCPU - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="YatCPU"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-28 23:58" pubdate>
+          2025年2月28日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          9.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          78 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">YatCPU</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-03-01T00:00:49+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><ul>
+<li><strong>单周期 CPU</strong>：本实验的目的是从零开始编写一个可以运行 RV32I 指令集程序的单周期 CPU，这个 CPU 将会是后续所有实验的基础。完成本实验之后，可以通过仿真的方式，加载运行 RV32I 程序，验证正确性。</li>
+<li><strong>中断机制</strong>：本实验在单周期 CPU 的基础上，添加了中断控制器以及中断控制流的内容，使单周期 CPU 可以处理来自外部设备的中断，响应 IO。完成本实验之后，CPU 将具备响应 UART 数据中断、时钟中断的功能，你将可以使用 UART 端口来操作 CPU 运行中的程序。</li>
+<li><strong>流水线 CPU</strong>：本实验在以上两个实验基础上，对 CPU 进行性能优化，从单周期的 CPU 修改为多周期以及流水线的 CPU。本实验将通过几个性能评测，来验证 CPU 性能优化的效果。</li>
+<li><strong>总线处理</strong>：本实验在流水线 CPU 的基础上，给 CPU 添加总线功能，实现外设与 CPU 的解耦。在完成总线实验后，添加外设无需修改 CPU 本身，只需要实现总线协议并与总线对接即可。本实验目的是进一步完善 CPU 实验的总体框架，提供更贴近真实计算机系统的结构实践。</li>
+</ul>
+<h1 id="Lab0—get-ready-for-experiment"><a href="#Lab0—get-ready-for-experiment" class="headerlink" title="Lab0—get ready for experiment"></a>Lab0—get ready for experiment</h1><blockquote>
+<p>chisel 3基本学习</p>
+</blockquote>
+<h2 id="chisel3基本语法和功能"><a href="#chisel3基本语法和功能" class="headerlink" title="chisel3基本语法和功能"></a>chisel3基本语法和功能</h2><ul>
+<li>区别举例：想要在chisel3中使用一个常量，要写<strong>when(value&#x3D;&#x3D;&#x3D;12.U)</strong>，而不是if(value&#x3D;&#x3D;12)</li>
+</ul>
+<h3 id="基本类型"><a href="#基本类型" class="headerlink" title="基本类型"></a>基本类型</h3><ul>
+<li>无符号整数**<code>UInt</code><strong>与有符号整数</strong> <code>SInt</code>** ，使用.W来指定整数位宽（<code>Uint(8.W)</code>），.U来将scala中的整数转换为chisel3的<strong>硬件整数</strong>（见我们最开始举的例子）</li>
+<li>布尔值Bool；使用.B来转换成硬件布尔值（如**<code>true.B</code>**)</li>
+<li>模块：声明一个模块需要<strong>继承 <code>Module</code> 类</strong>，并通过 <code>io</code> 成员声明输入输出端口。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">import</span> chisel<span class="hljs-number">3.</span>_<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyModule</span> **extends Module** &#123;<br>    val io = <span class="hljs-built_in">IO</span>(<span class="hljs-keyword">new</span> Bundle &#123;<br>        val in = <span class="hljs-built_in">Input</span>(<span class="hljs-built_in">UInt</span>(<span class="hljs-number">8.</span>W))<br>        val out = <span class="hljs-built_in">Output</span>(<span class="hljs-built_in">UInt</span>(<span class="hljs-number">8.</span>W))<br>    &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>组合逻辑</li>
+</ul>
+<p><code>val wire = Wire(UInt(8.W))  val wireinit = WireInit(0.U(8.W))</code></p>
+<ul>
+<li>时序电路</li>
+<li>寄存器</li>
+</ul>
+<p><code>val reg = Reg(UInt(8.W))  val reginit = RegInit(0.U(8.W))</code></p>
+<h3 id="Chisel3-项目结构"><a href="#Chisel3-项目结构" class="headerlink" title="Chisel3 项目结构"></a>Chisel3 项目结构</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs cpp">- labx<br>    - coremark              # CPU 性能测试<br>    - csrc                  # 存放汇编语言和 C 语言源代码<br>    - project               <span class="hljs-meta"># sbt 的插件以及配置文件</span><br>    - src <br>        - main<br>            - scala         # Chisel <span class="hljs-number">3</span> 源代码 &lt;--<br>        - resources         # 资源文件<br>        - test<br>            - scala         # Chisel <span class="hljs-number">3</span> 测试代码 <br>    - target                <span class="hljs-meta"># sbt 生成的文件</span><br>    - test_run_dir          # 运行测试时生成的文件<br>    - verilog               # Verilog 代码<br>    - vivado                <span class="hljs-meta"># tcl 脚本以及约束文件（用于自动化烧板）</span><br>    - build.sbt             <span class="hljs-meta"># sbt 配置文件</span><br>  <br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>反汇编：llvm-objdump<ul>
+<li>目标文件反汇编：<code>objdump -s -d main.o &gt; main.o.txt</code> &#x2F;&#x2F;将main.o 反汇编并将结果输出到txt文件中。</li>
+<li>可执行文件反汇编： <code>objdump -s -d main&gt; main.txt</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>objdump反汇编常用参数</strong></p>
+<ul>
+<li><code>objdump -d &lt;file(s)&gt;</code>: 将代码段反汇编；</li>
+<li><code>objdump -S &lt;file(s)&gt;</code>: 将代码段反汇编的同时，将反汇编代码与源代码交替显示，编译时需要使用 <code>g</code>参数，即需要调试信息；</li>
+<li><code>objdump -C &lt;file(s)&gt;</code>: 将C++符号名逆向解析</li>
+<li><code>objdump -l &lt;file(s)&gt;</code>: 反汇编代码中插入文件名和行号</li>
+<li><code>objdump -j section &lt;file(s)&gt;</code>: 仅反汇编指定的section</li>
+</ul>
+<h1 id="Lab1：单周期CPU"><a href="#Lab1：单周期CPU" class="headerlink" title="Lab1：单周期CPU"></a>Lab1：单周期CPU</h1><p>本实验的目的：理解 CPU 的基本结构以及 CPU 是如何执行指令的。</p>
+<ul>
+<li><strong>基本概念</strong>，然后会按照指令执行的步骤逐步<strong>构造数据通路和控制单元</strong>（期间会留有填写代码的任务，请记得完成），最终构造成一个<strong>简单的单周期 RISC-V 处理器。</strong></li>
+</ul>
+<h2 id="基本概念："><a href="#基本概念：" class="headerlink" title="基本概念："></a>基本概念：</h2><ul>
+<li>数据通路：显示数据从一个组件流向另一个组件的所有方式。</li>
+<li>控制信号：让各个数据通路部件知道自己要干什么。CPU 原理图中的 <strong>Decoder、ALUControl、JumpJudge</strong> 三个元件都可以看作控制单元。他们接收指令并输出控制信号。</li>
+<li>组合单元与状态单元：组合逻辑电路构成的单元叫组合单元，时序逻辑电路构成的单元叫做状态单元。<ul>
+<li>本实验中只有<strong>寄存器</strong>属于<strong>状态单元</strong>（内存不属于 CPU 内核的范畴），其余的均为组合单元。</li>
+<li>组合单元：输出只取决于当前的输入，并且<strong>不需要时钟作为触发条件</strong>，输入会立即（不考虑延时）反映到输出</li>
+<li>状态单元：存储了状态，并且<strong>以时钟作为触发条件</strong>，时钟的上升沿到来时输入才会反映到输出</li>
+</ul>
+</li>
+</ul>
+<h2 id="实现方式："><a href="#实现方式：" class="headerlink" title="实现方式："></a>实现方式：</h2><p>我们设计的 RISC-V CPU 能执行 RISC-V 指令的一个核心子集（RV32I）：</p>
+<ul>
+<li>算术逻辑指令：<code>add</code>、<code>sub</code>、<code>slt</code> 等</li>
+<li>存储器访问指令：<code>lb</code>、<code>lw</code>、<code>sb</code> 等</li>
+<li>分支指令：<code>beq</code>、<code>jar</code> 等</li>
+</ul>
+<p>我们将执行指令分<strong>为五个不同的阶段</strong>：</p>
+<ul>
+<li>取指：从内存中获取指令数据</li>
+<li>译码：弄清楚这条指令的意义，并读取寄存器数据</li>
+<li>执行：用 ALU 计算结果</li>
+<li>访存（<code>load</code>&#x2F;<code>store</code> 指令）：读写内存</li>
+<li>回写（除了 <code>store</code> 指令外所有指令）：将结果写回寄存器</li>
+</ul>
+<p>下面我们先按照上述步骤<strong>逐步构建数据通路部件</strong>，<strong>然后在 CPU 顶层模块将这些数据通路部件实例化并且连接起来</strong>。（下面涉及的代码都位于 <code>lab1/src/main/scala/riscv</code> 目录下）</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43681766/article/details/122860354">Chisel教程——02.Chisel环境配置和第一个Chisel模块的实现与测试-CSDN博客</a></p>
+<h3 id="取指："><a href="#取指：" class="headerlink" title="取指："></a>取指：</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1e02e04b-2e21-4de8-a487-b25c0b342f76/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>重点：</p>
+<ul>
+<li>理解各个变量都是什么。，我们需要实现的是when指令有效时，先取出pc的当前指令，然后再判断是否需要jump—也就是判断jump_flag_id是否有效，如果有效就要把pc的值换成需要jump到的地址，否则就是顺序执行pc+4；</li>
+<li>主要pc+4这个点，chisel语言写的比较不同4.U表示无符号的整数。</li>
+</ul>
+<p>进行测试：<code>sbt &quot;testOnly riscv.singlecycle.InstructionFetchTest&quot;</code></p>
+<h3 id="译码"><a href="#译码" class="headerlink" title="译码"></a>译码</h3><p>一些知识：</p>
+<ul>
+<li>多路选择器：Mux</li>
+</ul>
+<p><code>Mux</code>类似于传统的三元运算符，参数依次为 <code>(条件, 为真时的值, 为假时的值)</code>，建议用 <code>true.B</code>和 <code>false.B</code>来创建Chisel中的布尔值。</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c37be282-9bcc-4705-8144-c6416df8b2c7/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>重点：</p>
+<ul>
+<li><p>对于ALUop2，我有个小疑惑，提供的图里是0的时候连接reg，而1连接immediate，但是实际写的时候反过来了。不太理解。<strong>已经理解了，看前面提供的代码发现，所提供的Aluop2source结构体里面，reg对应的值是0，immediate对应的是1，故要对应上。</strong></p>
+</li>
+<li><p>注意不要漏，所有i指令都要添加上，他甚至有一个单独的lui没有被添加，要额外加上。主要就是看那个指令有没有i标识。</p>
+</li>
+<li><p>对于使能指令比较简单，一开始傻傻的还去使用Mux，其实完全没有必要，因为值仅仅是真或假，直接判断是否符合就行了。Mux一般用于给条件后，读取不同值（非0,1）</p>
+<ul>
+<li>只有load指令可以访问内存</li>
+<li>只有store指令可以写入到内存</li>
+<li>故自然而然得到结果</li>
+</ul>
+</li>
+<li><p>稍微困难一点点的是写回输入来源，由于有四个来源，不能使用两个通路的Mux了，要使用MuxLookup。使用指南：</p>
+<ul>
+<li>三个参数：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">import</span> chisel<span class="hljs-number">3.</span>_<br><span class="hljs-keyword">import</span> chisel<span class="hljs-number">3.</span>util._<br><br>val key = <span class="hljs-built_in">Wire</span>(<span class="hljs-built_in">UInt</span>(<span class="hljs-number">3.</span>W))<br>val <span class="hljs-keyword">default</span> = <span class="hljs-number">0.</span>U<br>val lookupTable = <span class="hljs-built_in">Seq</span>(<br>  <span class="hljs-number">0.</span>U -&gt; <span class="hljs-string">&quot;b000&quot;</span>.U,<br>  <span class="hljs-number">1.</span>U -&gt; <span class="hljs-string">&quot;b001&quot;</span>.U,<br>  <span class="hljs-number">2.</span>U -&gt; <span class="hljs-string">&quot;b010&quot;</span>.U,<br>  <span class="hljs-number">3.</span>U -&gt; <span class="hljs-string">&quot;b011&quot;</span>.U<br>)<br><br>val result = <span class="hljs-built_in">MuxLookup</span>(key, <span class="hljs-keyword">default</span>, lookupTable)<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>两个参数：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">import</span> chisel<span class="hljs-number">3.</span>_<br><span class="hljs-keyword">import</span> chisel<span class="hljs-number">3.</span>util._<br><br>val key = <span class="hljs-built_in">Wire</span>(<span class="hljs-built_in">UInt</span>(<span class="hljs-number">3.</span>W))<br>val <span class="hljs-keyword">default</span> = <span class="hljs-number">0.</span>U<br>val lookupTable = <span class="hljs-built_in">Seq</span>(<br>  <span class="hljs-number">0.</span>U -&gt; <span class="hljs-string">&quot;b000&quot;</span>.U,<br>  <span class="hljs-number">1.</span>U -&gt; <span class="hljs-string">&quot;b001&quot;</span>.U,<br>  <span class="hljs-number">2.</span>U -&gt; <span class="hljs-string">&quot;b010&quot;</span>.U,<br>  <span class="hljs-number">3.</span>U -&gt; <span class="hljs-string">&quot;b011&quot;</span>.U<br>)<br><br>val result = <span class="hljs-built_in">MuxLookup</span>(key, <span class="hljs-keyword">default</span>)(lookupTable)<br></code></pre></td></tr></table></figure>
+
+<p>seq表示有序集合&#x2F;序列。然后箭头左右表示的是一种映射关系。</p>
+</li>
+</ul>
+<h3 id="执行"><a href="#执行" class="headerlink" title="执行"></a>执行</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/cf433301-39de-45c2-96fe-9525ae145101/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<ul>
+<li>目的：给ALU的输入端口赋值。</li>
+<li>我们要看到ALU.scala实现文件：</li>
+</ul>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/75f5ed2a-c27b-4143-b645-20e150da257d/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>可以看到我们需要传入的是alu执行什么功能，op1和op2，然后他会计算出结果result。至于func的来源就是ALU_control，里面有一个output是会根据指令内容来输出alu_funct。</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/583e23ee-4823-4aea-8aa4-ca69b16a7691/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>值得注意的是，我们在得到op1和op2时，op1_source和op2_source均是指示变量（类似于bool）表示输入来源，而没有运用我们上一个模块写的 如下：（或许是还没有到组合成一个完整单周期CPU的时候，尚且在一个周期一个周期实现，且各种数据来源比较割裂）</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/62affc69-210d-4c60-9ef5-9b57ae74a723/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="访存"><a href="#访存" class="headerlink" title="访存"></a>访存</h3><ul>
+<li>只有load和store才有访存阶段。数据从内存读到寄存器或者反过来。</li>
+<li>判断读还是写看 memory_read_enable使能，为1则read，反之write。</li>
+</ul>
+<h3 id="写回"><a href="#写回" class="headerlink" title="写回"></a>写回</h3><p>多路选择器，决定从哪里得到写回的数据。</p>
+<h3 id="组成CPU"><a href="#组成CPU" class="headerlink" title="组成CPU"></a>组成CPU</h3><ul>
+<li>CPUBundle 是 CPU 和内存等外设进行数据交换的通道。</li>
+</ul>
+<h1 id="烧板"><a href="#烧板" class="headerlink" title="烧板"></a>烧板</h1><ol>
+<li>生成verilator文件（运行Top.scala)</li>
+</ol>
+<aside>
+💡
+
+<p>注意：是在lab1内进行，然后z710v1_3这个包！不是z710v1.3!!!</p>
+</aside>
+
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/554ad192-24f8-471f-81f7-36771022fc8a/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<ol>
+<li><strong>生成 Vivado 项目</strong></li>
+</ol>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/259f6157-65c2-40b3-b8a5-b99a37013dba/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<ol>
+<li>生成比特流文件</li>
+</ol>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/53c8d9cd-8206-4f22-b174-1b87584763f5/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4e1943bf-e7f9-4359-a1fa-d8e922338b35/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<ol>
+<li>烧录：由于是在wsl中进行的，会导致没有“驱动”的问题，然后发现了win上之前安装的vivado是可以连接到debian里面的，所以就直接在里面打开，根据program_device.tcl里面的指令（结合vivado中的烧录键），实际上只需要自己多输入最后那步 <code>close_hw_target</code> ，这样子能够保证vitis正常工作。</li>
+</ol>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c678f2ed-b03e-426e-a1bd-1d93015011d4/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>烧录结果：（后打开clock之后，会一闪一闪亮红灯）</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/789c4161-6b8e-4d97-bf31-954bcc9a8d27/be3cee1cacb047c90c08ad06a6b68ee.jpg" srcset="/img/loading.gif" lazyload alt="be3cee1cacb047c90c08ad06a6b68ee.jpg"></p>
+<p>vitis显示如下：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/03254c1f-b2a3-4380-9bb6-e23dc05ed7fe/%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_17338008355682.png" srcset="/img/loading.gif" lazyload alt="企业微信截图_17338008355682.png"></p>
+<h2 id="实验报告："><a href="#实验报告：" class="headerlink" title="实验报告："></a>实验报告：</h2><p>合规性测试部分：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-keyword">export</span> TARGET_SIM=~/YatCPU/yatcpu23_new/lab1/verilog/verilator/obj_dir/VTop<br><span class="hljs-keyword">export</span> TARGETDIR=~/YatCPU/yatcpu23_new/lab1/riscv-target<br><span class="hljs-keyword">export</span> RISCV_TARGET=yatcpu<br>make<br></code></pre></td></tr></table></figure>
+
+<aside>
+💡
+
+<p>如果要测试其他的lab要注意把路径修改了</p>
+</aside>
+
+<p>lab2：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"># 测试 lab2 的 CPU<br><span class="hljs-keyword">export</span> TARGET_SIM=~/YatCPU/yatcpu23_new/lab2/verilog/verilator/obj_dir/VTop<br><span class="hljs-keyword">export</span> TARGETDIR=~/YatCPU/yatcpu23_new/lab2/riscv-target<br><span class="hljs-keyword">export</span> RISCV_TARGET=yatcpu<br></code></pre></td></tr></table></figure>
+
+<p>lab3:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp"># 测试 lab3 的 CPU<br><span class="hljs-keyword">export</span> TARGET_SIM=~/YatCPU/yatcpu23_new/lab3/verilog/verilator/obj_dir/VTop<br><span class="hljs-keyword">export</span> TARGETDIR=~/YatCPU/yatcpu23_new/lab3/riscv-target<br><span class="hljs-keyword">export</span> RISCV_TARGET=yatcpu<br></code></pre></td></tr></table></figure>
+
+<p>lab1的测试结果：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9152e9ef-2e5b-4ee9-be3c-650d1784d6bd/32d668896c5b7ecbacf247af766530d.png" srcset="/img/loading.gif" lazyload alt="32d668896c5b7ecbacf247af766530d.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9152e9ef-2e5b-4ee9-be3c-650d1784d6bd/32d668896c5b7ecbacf247af766530d.png" srcset="/img/loading.gif" lazyload alt="32d668896c5b7ecbacf247af766530d.png"></p>
+<h1 id="Lab2中断"><a href="#Lab2中断" class="headerlink" title="Lab2中断"></a>Lab2中断</h1><p>实验目的：</p>
+<ul>
+<li>学习CSR寄存器及其操作命令</li>
+<li>中断控制器的原理和设计</li>
+<li>编写一个简单的定时中断发生器</li>
+</ul>
+<h2 id="CSR寄存器的操作命令："><a href="#CSR寄存器的操作命令：" class="headerlink" title="CSR寄存器的操作命令："></a>CSR寄存器的操作命令：</h2><h3 id="回顾：中断和异常"><a href="#回顾：中断和异常" class="headerlink" title="回顾：中断和异常"></a>回顾：中断和异常</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/2d2dbece-9226-4a85-ad6a-28ff2a170cdb/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/7563df56-5735-4444-a001-17f6ca6ecd14/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="CSR：用来控制和保存CPU的其他功能的状态。例如终端使能状态，特权等级等。"><a href="#CSR：用来控制和保存CPU的其他功能的状态。例如终端使能状态，特权等级等。" class="headerlink" title="CSR：用来控制和保存CPU的其他功能的状态。例如终端使能状态，特权等级等。"></a>CSR：用来控制和保存CPU的其他功能的状态。例如终端使能状态，特权等级等。</h3><ul>
+<li>mstatus寄存器：记录<strong>机器模式下的状态</strong>（status），如中断是否启用等。</li>
+<li>mepc寄存器：保存了<strong>终端返回后需要执行的指令地址</strong>，当 CPU 执行中断时，<code>mepc</code> 寄存器被自动设置为当前指令的地址，如果 <code>EX</code> 阶段正在执行跳转，则设置为跳转的目标地址。</li>
+<li>mcause寄存器：保存了中断的<strong>原因</strong></li>
+<li>mtvec寄存器：保存了<strong>中断处理程序</strong>的地址。发生执行中断时会传给pc寄存器</li>
+<li>中断发生时，CPU需要清空并阻塞流水线，并在CSR寄存器写入中断相关的信息。由于CSR寄存器堆实现只有一个读写端口，故需要多个周期才能写入CSR寄存器。写完后，发出控制信号，开始处理。</li>
+</ul>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9f9ceea2-a7f4-4560-810d-ce43a10e3c71/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/00dc7cf5-97b3-424c-8922-a71d85ffb886/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="中断处理程序：实现更加复杂的功能。"><a href="#中断处理程序：实现更加复杂的功能。" class="headerlink" title="中断处理程序：实现更加复杂的功能。"></a>中断处理程序：实现更加复杂的功能。</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/e0ec95e0-c34c-440a-a56a-0dfe2d089312/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<ul>
+<li>我们可以将CSR指令分解为：CSR寄存器组，ID译码单元，EX执行单元，WB写回单元。<ul>
+<li>CSR寄存器组需要根据<strong>ID模块译码后给出的控制信号</strong>和<strong>CSR寄存器地址</strong>来对内部寄存器进行寻址，获取其内容并修改。</li>
+<li>ID译码单元需要识别CSR指令。（看手册）</li>
+<li>EX执行单元：CSR 指令都是<strong>原子读写</strong>的，即一条指令的执行结果中，既要把<strong>目标 CSR 寄存器原来的内容</strong>写入到<strong>目标通用寄存器</strong>中，还要按指令语义把从目标 CSR 寄存器读出来的<strong>内容修改之后再写回给该CSR 寄存器</strong>。此时 EX 里面的 ALU 单元是<strong>空闲</strong>的，要得到写入 CSR 寄存器的值，可以复用 ALU，也可以不复用。</li>
+<li>WB写回单元：支持 CSR 相关操作指令后，<strong>写回到目标通用寄存器</strong>的数据来源就多了一个<strong>从目标 CSR 寄存器读出来的修改前的值</strong>。</li>
+</ul>
+</li>
+</ul>
+<h2 id="中断控制器CLINT"><a href="#中断控制器CLINT" class="headerlink" title="中断控制器CLINT"></a>中断控制器CLINT</h2><blockquote>
+<p>检测外部中断，并在中断到来并且中断使能时，中断CPU目前执行流，设置好相关的CSR信息后跳转到中断处理程序。</p>
+</blockquote>
+<ul>
+<li>保存到CSR寄存器的信息：<strong>CPU执行完当前指令的下一个状态。</strong></li>
+<li>让当前指令执行完后再跳转到中断处理程序</li>
+</ul>
+<h3 id="响应（硬件）中断"><a href="#响应（硬件）中断" class="headerlink" title="响应（硬件）中断"></a>响应（硬件）中断</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zyhse/article/details/136390088">https://blog.csdn.net/zyhse/article/details/136390088</a></p>
+<ul>
+<li>获取CPU下一个状态信息，一个周期内写入到相应的寄存器。</li>
+</ul>
+<p>写入的内容包括：mepc，mcause，mstatus。</p>
+<ul>
+<li><p><code>mepc</code>：保存的是中断或者异常处理完成后，CPU返回并开始执行的地址。所以对于异常和中断，<code>mepc</code> 的保存内容需要注意。</p>
+</li>
+<li><p><code>mcause</code>：保存的是导致中断或者异常的原因，具体内容请查阅特权级手册里的相关内容。</p>
+</li>
+<li><p><code>mstatus</code>：在响应中断时，需要将 <code>mstatus</code> 寄存器中的 <code>MPIE</code> 标志位设置为 <code>0</code>，禁用中断。</p>
+<ul>
+<li><strong>注意注意注意：这里不是自己手动地将MPIE位设置为0，是将MIE位设置为0，然后硬件会自动的把MPIE位修改</strong>然后从 <code>mtvec</code> 获取中断处理程序的地址，跳转到该地址执行进一步的中断处理</li>
+</ul>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9f234702-1688-497c-8010-651f7dc53f7e/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/cd72c169-cbfe-45be-8a44-4989200794d3/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+</li>
+</ul>
+<p>该部分的代码截图：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/01c995c9-3901-4573-a576-d4f29ed0dba3/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>解释：disable_interrupt是用来修改MIE位的，并且让后续禁用中断（因为我们要保证不会发生中断嵌套）</p>
+<p>然后看到数据中的信号连接：</p>
+<ul>
+<li>着重提醒mcause的原因，我们在同一个文件的最上方看到了Status的结构体定义，了解到就这么几种，并没有把所有的原因都列举出来，所以暂时只需要这样子写。（更多的mcause原因可以查看后面的截图或者直接看特权手册第二卷）</li>
+</ul>
+<p><strong>mstatus的指令结构：</strong></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1f1384af-b7e5-4fe5-8998-67b49e091e5b/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/a2857746-2f3c-48b8-82ba-81bfe76bc25c/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/bf9f34e1-6e68-4368-8b05-842a2af9d624/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="（硬件）中断返回"><a href="#（硬件）中断返回" class="headerlink" title="（硬件）中断返回"></a>（硬件）中断返回</h3><p>需要写入的寄存器：mstatus</p>
+<p>从mepc中获取跳转目标地址（原本正常执行的下一条地址）</p>
+<p>把 <strong>MIE</strong> 位置为 <strong>MPIE 位</strong>，那么 MPIE 为 1 的话 <code>mret</code> 就会恢复中断，如果 MPIE 为 0 的话，<code>mret</code> 则不改变 <code>mstatus</code> 的值，这也导致了我们不支持中断嵌套。</p>
+<p>CLINT的实现：for简单—采用纯组合逻辑实现。</p>
+<p>CLINT 需要<strong>一个周期</strong>就<strong>把多个寄存器的内容修改</strong>的功能，而<strong>正常的 CSR 指令只能对一个</strong>寄存器读-修改-写（Read-Modify-Write, RMW）。所以 CLINT 和 CSR 之间有独立的优先级更高的通路，用来<strong>快速更新</strong> CSR 寄存器的值。</p>
+<p>一个好的解释：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/16c62b2d-399d-46fe-8508-9c953d559c9f/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h2 id="简单的定时中断发生器"><a href="#简单的定时中断发生器" class="headerlink" title="简单的定时中断发生器"></a>简单的定时中断发生器</h2><p>MMIO的定时中断发生器—Timer</p>
+<blockquote>
+<p>MMIO 简单来说就是：<strong>该外设用来和 CPU 交互的寄存器是与内存一起编址的</strong>，所以 CPU 可以通过<strong>访存指令</strong>（load&#x2F;store）来修改这些寄存器的值，从而达到 CPU 和外设交互的目的。</p>
+</blockquote>
+<p>CPU发出的逻辑地址要发送到哪个设备，就由<strong>逻辑地址的高位</strong>作为<strong>外围设备的位选信号</strong>即可，<strong>低位</strong>则用于<strong>设备内部</strong>的寻址。</p>
+<h2 id="实验任务："><a href="#实验任务：" class="headerlink" title="实验任务："></a>实验任务：</h2><ol>
+<li>EX 执行单元在处理 CSR 指令时能够<strong>正确地得到写入 CSR 寄存器的数据</strong>。（done</li>
+<li>CSR 寄存器组可以<strong>正确支持CLINT和来自CSR指令的读写操作</strong>。（done</li>
+<li>定时中断发生器可以<strong>正确产生中断信号</strong>，并且<strong>实现 Timer 寄存器的 MMIO</strong>。</li>
+<li>CLINT 能够<strong>正确的响应中断</strong>并且<strong>在中断结束后回到原来的执行流</strong>。（done</li>
+</ol>
+<p>如果能够正确完成本次实验，那么你的 CPU 就可以运行更加复杂的程序了，可以运行一下俄罗斯方块程序试试，如果想要上手玩的话，也许需要一个串口转接板，这样就可以通过电脑的键盘通过 UART 串口给程序输入字符了。</p>
+<h3 id="任务1：EX-执行单元在处理-CSR-指令时能够正确地得到写入-CSR-寄存器的数据"><a href="#任务1：EX-执行单元在处理-CSR-指令时能够正确地得到写入-CSR-寄存器的数据" class="headerlink" title="任务1：EX 执行单元在处理 CSR 指令时能够正确地得到写入 CSR 寄存器的数据"></a>任务1：EX 执行单元在处理 CSR 指令时能够<strong>正确地得到写入 CSR 寄存器的数据</strong></h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4290bbb4-24b4-44c9-9160-13af9a9b6da6/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c3f7e361-4110-4940-aab4-ba28ad60defb/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/e585e7a2-a06a-4c05-aab6-e1dc23232281/0a3f20ee132b54699d4134c1320040d.png" srcset="/img/loading.gif" lazyload alt="0a3f20ee132b54699d4134c1320040d.png"></p>
+<p>这个地方要注意，csr寄存器的立即数和之前译码阶段的立即数是不太一样的。译码阶段取立即数主要是针对立即数长度or位置不同于一般指令的进行获取。（如图）</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/918f657a-115b-4ba0-82d6-ed9486d52f0f/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>从上方的指令划分的图中可以看到，crs寄存器的立即数和R指令寄存器指令取寄存器数是一样的（15-19）→ 在上图也是可以看到<strong>目标寄存器的值和立即数来源都是rs1</strong>，故后面只用在此处取值就行了。唯一的区别是第二个寄存器加上原本的func7组合在一起合成了crs寄存器的func7指示。（附上译码阶段的取指令的图：其中rs1对应的数据存储到reg1_data，rs2对应的数据存储到reg2_data—但此处是应该被忽略的，因为rs2部分的数据被合并到了func7中） <strong>mips的rs，rt的位置是确定的。</strong></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/41cd5ebf-b1d8-4c44-a4b1-550bebbc029c/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/8246c754-17b2-4c49-ace1-6581ed7d8f24/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/ce9f61ea-c7ce-4fd9-9e4e-9030d6b0f349/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>要注意的是，uimm是15-19位的原码，而source是rs1里面的值</p>
+<p>任务一结果：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/8c80ac24-145b-4414-8515-263cf7038800/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="任务2：CSR-寄存器组可以正确支持CLINT和来自CSR指令的读写操作。"><a href="#任务2：CSR-寄存器组可以正确支持CLINT和来自CSR指令的读写操作。" class="headerlink" title="任务2：CSR 寄存器组可以正确支持CLINT和来自CSR指令的读写操作。"></a>任务2：CSR 寄存器组可以<strong>正确支持CLINT和来自CSR指令的读写操作</strong>。</h3><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c1ed0bf3-0f89-469a-89f3-10e24ee656b6/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4604f572-0a2d-4805-ab6e-a522ad2f8832/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<ul>
+<li><code>CSRRegister.CycleL</code> 和 <code>CSRRegister.CycleH</code> 这两个参数通常是用于访问或设置 CSR（Control and Status Registers）寄存器中的低位和高位的值。</li>
+</ul>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/0a3ec965-8a4a-46d3-be51-7b0073b5844a/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>首先我们看到CSR中需要我们实现的是可以正确读取CSR寄存器组的信息，并且可以正确与CLINT交互—将信息传到CLINT）</p>
+<p>然后我们看到提示写了：如果数据线与CLINT冲突了，我们需要优先进行数据更新，这样子保证了CLINT读到的数是最新的。</p>
+<p>我们可以借鉴已经写好的代码中判断条件的方法：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/26456738-a558-452b-b30f-c0748264ac9c/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>可以看到如果需要进行数据更新，要判断reg_write_enable_id是否为1，然后判断对应的地址是哪一个—&gt;对应了需要更改的那一个寄存器的值。使用Mux来进行数据选择，如果条件满足，那么输入到CLINT中的值是reg_write_data_ex，若不满足则输入旧的值（也就是前面读取的寄存器组原本的值）</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/0337e759-5933-4113-884e-ff789094a897/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="功能3：定时中断发生器可以正确产生中断信号，并且实现-Timer-寄存器的-MMIO"><a href="#功能3：定时中断发生器可以正确产生中断信号，并且实现-Timer-寄存器的-MMIO" class="headerlink" title="功能3：定时中断发生器可以正确产生中断信号，并且实现 Timer 寄存器的 MMIO"></a>功能3：定时中断发生器可以<strong>正确产生中断信号</strong>，并且<strong>实现 Timer 寄存器的 MMIO</strong></h3><p>实现一个MMIO的定时中断发生器—timer</p>
+<p>MMIO：该外设用来和CPU交互的寄存器一起编址，这样子CPU就可以通过访存指令来修改这些寄存器的值，从而实现CPU与外设交互。即内存映射。</p>
+<p>没有总线时可以使用<strong>多路选择器（即现在阶段用多路选择器实现）</strong></p>
+<p>内部逻辑：两个控制寄存器 <code>enable</code> 寄存器和 <code>limit</code> 寄存器。</p>
+<ul>
+<li><code>enable</code> 寄存器：控制定时中断发生器的使能，为false则不产生中断，映射到地址空间的逻辑地址为0x80000008.</li>
+<li><code>limit</code> 寄存器：用来控制定时器的<strong>中断发生间隔</strong>。映射到地址空间逻辑地址：0x80000004。内部有个加一计数器，达到limit为标准的界限时，定时器会发生一次中断信号（enable使能）。注：产生中断信号的时长没有太大关系，但是至少应该大于一个 CPU 时钟周期，确保 CPU 能够正确捕捉到该信号即可。</li>
+</ul>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/3ff93292-0ed1-4ab4-9067-d05f7ce5f71d/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="任务4：CLINT-能够正确的响应中断并且在中断结束后回到原来的执行流（更多内容在前面中断概念处）"><a href="#任务4：CLINT-能够正确的响应中断并且在中断结束后回到原来的执行流（更多内容在前面中断概念处）" class="headerlink" title="任务4：CLINT 能够正确的响应中断并且在中断结束后回到原来的执行流（更多内容在前面中断概念处）"></a>任务4：CLINT 能够<strong>正确的响应中断</strong>并且<strong>在中断结束后回到原来的执行流（更多内容在前面中断概念处）</strong></h3><p><a target="_blank" rel="noopener" href="https://www.notion.so/13c279ae70e5804f81ddd90e124a9031?pvs=21"></a></p>
+<p>CLINT的一些理解概念：</p>
+<ol>
+<li><code>CLINT</code> 具有固定的优先级方案，但不支持给定特权级别内的嵌套中断（抢占）。 然而，较高的特权级别可能会抢占较低的特权级别。 <code>CLINT</code> 提供两种操作模式，<strong>直接模式</strong>和<strong>向量模式</strong>。<ul>
+<li>在<strong>直接模式</strong>下，所有中断和异常都会捕获到 <code>mtvec.BASE</code>。</li>
+<li>在<strong>向量模式</strong>下，异常trap到 <code>mtvec.BASE</code>，但中断将直接跳转到它们的向量表索引。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/c90f1260-7c99-43fe-a793-12f91fc1e8de/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<ol>
+<li><p>一些代码解释：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/014468d7-0c6f-4128-b775-3af358158014/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+</li>
+</ol>
+<p>InterruptStatus对象：</p>
+<ul>
+<li>定义了中断状态的常量值</li>
+<li>None表示<strong>没有中断</strong></li>
+<li>Timer0表示<strong>计时器0中断</strong></li>
+<li>Ret表示<strong>返回状态</strong></li>
+</ul>
+<p>InterruptEntry对象：</p>
+<ul>
+<li>定义了中断入口地址的常量值</li>
+<li>Timer0表示计时器0中断入口地址</li>
+</ul>
+<p>InterruptState对象：</p>
+<ul>
+<li>定义了中断状态机的不同状态</li>
+<li>Idle：空闲状态</li>
+<li>SyncAssert：同步断言状态</li>
+<li>AsyncAssert：异步断言状态</li>
+<li>MRET：表示<strong>从中断返回的状态</strong></li>
+</ul>
+<p>CSRState对象：</p>
+<ul>
+<li>定义了CSR状态机的不同状态。</li>
+<li><code>Idle</code>: 空闲状态，值为 <code>0x0</code>。</li>
+<li><code>Traping</code>: 陷入状态，值为 <code>0x1</code>。</li>
+<li><code>Mret</code>: 从中断返回状态，值为 <code>0x2</code>。</li>
+</ul>
+<ol>
+<li>mstatus寄存器和mcause寄存器</li>
+</ol>
+<p>mstatus指令结构：（我们使用到的是32位的</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/ac86d63c-db93-450c-af66-afca0d8b3780/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>mcause指令相关：</p>
+<p>可能出现的机器级异常代码</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/352d620c-634d-4c50-bdf5-ebe48e1b9965/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/f6c30f66-840f-4f01-8bb3-dd88c86f1b68/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/dccae40f-4b27-4782-9a55-5e52cb8e85b2/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>mtvec</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/101d1622-416f-43d9-85f1-c51130896ea7/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h1 id="Lab3流水线CPU"><a href="#Lab3流水线CPU" class="headerlink" title="Lab3流水线CPU"></a>Lab3流水线CPU</h1><h2 id="内容简介："><a href="#内容简介：" class="headerlink" title="内容简介："></a>内容简介：</h2><ul>
+<li><strong>竞争冒险</strong>的处理是流水线 CPU 设计的难点和关键所在。</li>
+<li>设计一个简单的三级流水线 CPU（IF、ID 和 EX 三级），它只涉及<strong>分支和跳转指令</strong>带来的控制冒险，然后，我们再将三级流水线 CPU 的 EX 级<strong>继续切分为 EX、MEM 和 WB</strong>，形成经典的<strong>五级流水线</strong>，这样做带来的数据冒险需要使用<strong>阻塞和转发技术</strong>进行处理；最后，我们将<strong>分支和跳转提前到 ID 阶段，进一步缩短分支延迟。</strong></li>
+<li>参考资料：计组黑书4.5-4.8节</li>
+<li>学习：<ul>
+<li>使用流水线设计缩短关键路径</li>
+<li>正确处理流水线阻塞与清空</li>
+<li>使用转发逻辑减少流水线阻塞</li>
+</ul>
+</li>
+</ul>
+<h2 id="流水线寄存器："><a href="#流水线寄存器：" class="headerlink" title="流水线寄存器："></a>流水线寄存器：</h2><blockquote>
+<p>缓存作用，切分组合逻辑，缩短关键路径。（存储该阶段产生的各种信息和数据。</p>
+</blockquote>
+<p>基本功能：</p>
+<ul>
+<li>在每一个时钟周期，根据复位（流水线清空）或阻塞（流水线暂停）的状态，将寄存器内容情况、保持或设置为新的值。输出则为其中保存的值。</li>
+<li>为了方便复用，我们可以定义一个带参数的 <code>PipelineRegister</code> 模块，用来实现<strong>不同数据位宽</strong>的流水线寄存器。</li>
+</ul>
+<h3 id="task0：补充完成PipelineRegister-scala"><a href="#task0：补充完成PipelineRegister-scala" class="headerlink" title="task0：补充完成PipelineRegister.scala"></a>task0：补充完成PipelineRegister.scala</h3><ul>
+<li><code>stall</code> 和 <code>flush</code> 分别为流水线寄存器的阻塞和清空信号，<code>in</code> 和 <code>out</code> 分别为要写入寄存器的值和寄存器的当前值。</li>
+</ul>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/fe542da7-c626-465f-b174-a1ee4cbf654d/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<ul>
+<li>解释：我们要存储结果，并且下一个阶段有可能还要用到前面那个阶段的状态信息，所以要用寄存器来传递、存储。</li>
+</ul>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/98781a7b-ca69-4696-9949-fd8e6da27fc3/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/9205658e-ebfb-4015-857f-cbd9e11ccd76/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="对比总结"><a href="#对比总结" class="headerlink" title="对比总结"></a><strong>对比总结</strong></h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>Scala 变量 (<code>var</code>)</th>
+<th>Chisel 寄存器 (<code>Reg</code>)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>功能</strong></td>
+<td>软件变量，临时存储值</td>
+<td>硬件寄存器，存储状态</td>
+</tr>
+<tr>
+<td><strong>硬件生成</strong></td>
+<td>不生成硬件</td>
+<td>生成硬件寄存器</td>
+</tr>
+<tr>
+<td><strong>值的更新</strong></td>
+<td>随程序执行更新</td>
+<td>时钟边沿更新</td>
+</tr>
+<tr>
+<td><strong>硬件复位</strong></td>
+<td>不支持复位行为</td>
+<td>可设置复位值 (<code>RegInit</code>)</td>
+</tr>
+<tr>
+<td><strong>用途</strong></td>
+<td>软件逻辑辅助计算</td>
+<td>描述硬件逻辑和状态存储</td>
+</tr>
+</tbody></table>
+<h1 id="三级流水线"><a href="#三级流水线" class="headerlink" title="三级流水线"></a>三级流水线</h1><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/77588407-9a56-4bfd-a311-c27e63aa638b/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<ul>
+<li>两组流水线寄存器：<code>IF2ID</code> 和 <code>ID2EX</code> 划分出三个阶段。（已写好）<ul>
+<li>取指（Instruction Fetch，IF）：根据 PC 中的指令地址从内存中取出指令码；</li>
+<li>译码（Instruction Decode，ID）：将指令码解码为控制信号并从寄存器组中读取操作数；</li>
+<li>执行（Execute，EX）：包括 ALU 运算、访问内存和结果写回。</li>
+</ul>
+</li>
+</ul>
+<h2 id="处理竞争冒险"><a href="#处理竞争冒险" class="headerlink" title="处理竞争冒险"></a>处理竞争冒险</h2><h3 id="解决控制冒险—清空"><a href="#解决控制冒险—清空" class="headerlink" title="解决控制冒险—清空"></a>解决控制冒险—清空</h3><ul>
+<li>由于所有数据处理都在EX阶段，不会出现数据冲突，无需考虑。我们只需处理程序跳转（beq指令等）带来的控制冒险。<ul>
+<li>EX执行到跳转指令</li>
+<li>EX端执行到分支指令且分支成立</li>
+<li>发生中断，接收到CLINT发来的中断信号 <code>InterruptAssert</code> 。相当于在EX指令至上叠加了跳转指令，要丢弃之前的—IF和ID</li>
+</ul>
+</li>
+<li>无论哪种情况，都是由 EX 段向 IF 段发送跳转信号 <code>jump_flag</code> 和跳转的目标地址 <code>jump_address</code>，但在 <code>jump_address</code> 写入 PC 并从该处取出指令前，流水线的 IF 和 ID 段已经各有两条不需要执行的指令，好在这两条指令的结果还没有写回，我们<strong>只需要清空对应的流水线寄存器，把它们变成两条空指令即可</strong>。</li>
+<li>我们用一个控制单元来检测控制冒险并清空流水线，模块定义在 <code>src/main/scala/riscv/core/threestage/Control.scala</code>，为了避免此题过于简单（呵呵，我们没有提供模块接口，请根据以上分析确定模块的输入输出，在 <code>// Lab3(Flush)</code> 处将代码补充完整，并在 <code>src/main/scala/riscv/core/threestage/CPU.scala</code> 的 <code>// Lab3(Flush)</code> 处补充相关连线，使其能够通过 <code>ThreeStageCPUTest</code> 测试。</li>
+</ul>
+<p>control：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/68544734-4bbe-4c2a-95a8-99741b0439af/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>如果传入了要跳转的信号，那我们控制器需要输出信号，确保能把IF和ID两个阶段清空</p>
+<p>CPU：与control连线。</p>
+<p>首先要保证输入信息传入；注意的是Interrupt_flag 信号的来源</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/5a7c860b-c017-4301-a7ae-9eed85779f86/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h2 id="五级流水线"><a href="#五级流水线" class="headerlink" title="五级流水线"></a>五级流水线</h2><p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/e53ad942-ff47-49fa-8379-667fa1a0649c/five_stage_pipelined_CPU_structure.png" srcset="/img/loading.gif" lazyload alt="five_stage_pipelined_CPU_structure.png"></p>
+<blockquote>
+<p>注意，上面的 CPU 结构图是我们完成所有实验之后的结果，在完成“缩短分支延迟”实验之前，我们 CPU 的结构将与上图稍有不同。例如，我们紧接着讨论的五级流水线 CPU 在 EX 阶段判断程序是否发生跳转，而不是 ID 阶段。</p>
+</blockquote>
+<ul>
+<li>使用阻塞的方式解决数据冒险（由于数据的处理不止在执行阶段了，所以会出现数据冒险），使用**旁路和将分支跳转提前到ID阶段（这两步选做）**进一步提升效率。</li>
+</ul>
+<h2 id="解决数据冒险：阻塞"><a href="#解决数据冒险：阻塞" class="headerlink" title="解决数据冒险：阻塞"></a>解决数据冒险：阻塞</h2><ul>
+<li>当处于 ID 阶段的指令要读取的寄存器依赖于 EX 或 MEM 阶段的指令时，发生数据冒险。可以保持这IF和ID阶段状态不变，直到相关数据被放出来。</li>
+<li>位于 ID 阶段的指令和位于 WB 阶段的指令之间不会发生数据冒险，这是因为我们的寄存器组模拟实现了 <strong>Double Pumping</strong> 功能，即 WB 阶段在前半个时钟周期向寄存器组写入数据，ID 阶段在后半个时钟周期从寄存器组读出数据（读写分离）。</li>
+<li>值得注意的是，我们在阻塞 PC 和 IF2ID 寄存器以保持 IF 和 ID 阶段不变的同时，需要<strong>清空 ID2EX 寄存器</strong>以在 EX 阶段插入空指令（“气泡”），否则 ID 阶段的指令还是会进入 EX 阶段，这样就不是“阻塞”，而变成“重复”了。</li>
+<li><code>jalr</code> 是跳转指令，虽然它后面两条指令依赖于它写入的寄存器，但是它们本就不应该紧接着被执行，而是应该被清空，所以在第 10 个时钟周期应该清空 IF2ID 和 ID2EX 寄存器，而不是阻塞。</li>
+</ul>
+<aside>
+💡
+
+<p>特别提示：除了以上讨论的情况之外，寄存器 <code>x0</code> 在 risc-v 中具有特殊作用，以它为目标寄存器的指令的结果将被丢弃，也就是说，只依赖于 <code>x0</code> 的指令并不需要阻塞。</p>
+</aside>
+
+<table>
+<thead>
+<tr>
+<th><strong>情况</strong></th>
+<th><strong>PC阻塞</strong></th>
+<th><strong>IF2ID阻塞</strong></th>
+<th><strong>ID2EX清空</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>数据冒险（ID依赖EX或MEM）</strong></td>
+<td>是</td>
+<td>是</td>
+<td><strong>是</strong></td>
+<td>保持当前指令状态，防止错误执行</td>
+</tr>
+<tr>
+<td>数据冒险（ID依赖WB）</td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>WB 阶段支持双抽泵，不需要阻塞</td>
+</tr>
+<tr>
+<td>控制冒险（跳转指令如jalr）</td>
+<td>否</td>
+<td>是</td>
+<td>是</td>
+<td>跳转指令需要清空后续流水段，移除错误指令</td>
+</tr>
+<tr>
+<td><strong>依赖寄存器x0</strong></td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+<td>x0结果总是0，无需阻塞</td>
+</tr>
+</tbody></table>
+<h3 id="核心逻辑："><a href="#核心逻辑：" class="headerlink" title="核心逻辑："></a><strong>核心逻辑：</strong></h3><ol>
+<li><strong>数据冒险检测（依赖判断）</strong>：<ul>
+<li><strong>EX 阶段的寄存器写入</strong>：如果 ID 阶段的指令需要读取的寄存器（<code>rs1_id</code> 或 <code>rs2_id</code>）依赖 <strong>EX 阶段的目标寄存器</strong>（<code>rd_ex</code>），需要阻塞。</li>
+<li><strong>MEM 阶段的寄存器写入</strong>：如果 ID 阶段的指令依赖 MEM 阶段的<strong>目标寄存器</strong>（<code>rd_mem</code>），需要阻塞。</li>
+</ul>
+</li>
+<li><strong>清空信号</strong>：<ul>
+<li><strong>控制冒险（跳转指令）</strong>：遇到跳转信号（<code>jump_flag</code>），需要清空 IF 和 ID 阶段的指令。</li>
+</ul>
+</li>
+<li><strong>阻塞信号</strong>：<ul>
+<li><strong>PC 阻塞与 IF 阶段阻塞</strong>：在数据冒险发生时，需要阻塞 PC 和 IF 阶段，保持当前指令不变。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/b390bac4-81eb-4f10-b142-8fff15dc4c84/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h2 id="拓展：使用旁路（转发）减少阻塞"><a href="#拓展：使用旁路（转发）减少阻塞" class="headerlink" title="拓展：使用旁路（转发）减少阻塞"></a><strong>拓展：使用旁路（转发）减少阻塞</strong></h2><ul>
+<li>用一个<strong>控制单元</strong>来处理流水线的阻塞和清空</li>
+<li>用一个<strong>旁路单元</strong>来检测数据冒险并发出旁路控制信号</li>
+<li>在执行单元中根据旁路单元的控制信号使用对应的旁路数据</li>
+</ul>
+<p>Control：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/d00468fd-4e0c-4ba0-8f3d-423913238ec5/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>Forwarding：检测数据冒险（看是否存在冲突），发出转发信号。看是与那个寄存器冲突。</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/020768f4-d436-4200-b667-e990d2e82cfe/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>Execute：看CPU流程图，可以得知数据的来源有两类，直接得到（已经写回了的数据，直接从寄存器中得到），发生数据冒险的数据（看写到了哪个寄存器中，如果是ex2mem，则从mem转发，如果是mem2wb，就从wb转发</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/73fd5c72-194a-4538-ab08-de2d7e6b797d/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h2 id="拓展：缩短分支延迟"><a href="#拓展：缩短分支延迟" class="headerlink" title="拓展：缩短分支延迟"></a><strong>拓展：缩短分支延迟</strong></h2><ul>
+<li>往cpu中加入少量硬件，将分支&#x2F;跳转指令的执行从EX段提前到ID段，进而把程序跳转的损失减少到一个时钟周期</li>
+</ul>
+<p>Steps：</p>
+<ul>
+<li>把<strong>跳转</strong>的判断从EX段移到ID段</li>
+<li>跳转的目标地址原本是在Ex段的ALU进行计算的，故我们要在ID段添加一个加法器来计算目标地址</li>
+<li>添加<strong>额外的旁路逻辑</strong>，将前面指令的执行结果旁路到ID段给分支or跳转指令使用，如果所依赖的结果还没有产生，还需要进行阻塞</li>
+</ul>
+<h3 id="1-在-ID-段实现跳转判断"><a href="#1-在-ID-段实现跳转判断" class="headerlink" title="1. 在 ID 段实现跳转判断"></a>1. <strong>在 ID 段实现跳转判断</strong></h3><ul>
+<li><p><strong>核心目标</strong>：将跳转判断逻辑（如条件跳转的比较）从 EX 段移到 ID 段。</p>
+</li>
+<li><p><strong>具体实现</strong>：</p>
+<ol>
+<li><strong>在 <code>InstructionDecode.scala</code> 中</strong>：<ul>
+<li>定义额外的逻辑单元，用于在 ID 段进行分支条件的比较判断。</li>
+<li>根据分支指令的操作码（opcode）和功能码（funct3），确定需要执行的比较操作（如 <code>==</code>, <code>&lt;</code>, <code>&gt;=</code> 等）。</li>
+<li>添加对寄存器值（<code>rs1</code> 和 <code>rs2</code>）的读取和比较逻辑。</li>
+</ul>
+</li>
+<li><strong>目标地址计算</strong>：<ul>
+<li>添加一个加法器，计算跳转目标地址。跳转目标地址为：<code>PC + offset</code>，其中 <code>offset</code> 是指令中解析出的立即数（<code>imm</code>）。</li>
+<li>在 ID 段，将 PC 和立即数相加生成跳转目标地址。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><strong>示例代码</strong>（在 <code>InstructionDecode.scala</code> 中）：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs scala">scala<br>复制代码<br>when (isBranch) &#123;<br>  branchTarget := currentPC + imm<br>  branchTaken := (rs1Value === rs2Value) <span class="hljs-comment">// Example: BEQ condition</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<p>如果信号的值需要通过逻辑运算生成或在后续逻辑中被赋值，则需要使用 <code>Wire</code>。</p>
+<hr>
+<h3 id="2-添加旁路逻辑"><a href="#2-添加旁路逻辑" class="headerlink" title="2. 添加旁路逻辑"></a>2. <strong>添加旁路逻辑</strong></h3><ul>
+<li><p><strong>核心目标</strong>：解决跳转判断所依赖的数据可能尚未生成的问题。</p>
+</li>
+<li><p><strong>具体实现</strong>：</p>
+<ol>
+<li>在 <code>Forwarding.scala</code> 中，扩展旁路逻辑，使得 ALU 或存储单元的输出能够在 ID 段被立即使用。</li>
+<li>判断数据依赖的来源：<ul>
+<li>如果依赖的数据在 EX 段，需要旁路 EX 段的 ALU 输出。</li>
+<li>如果依赖的数据在 MEM 段，需要旁路 MEM 段的存储输出。</li>
+</ul>
+</li>
+<li>阻塞处理：<ul>
+<li>如果数据依赖尚未解决（例如还在加载数据），则插入气泡（阻塞流水线）。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p><strong>示例代码</strong>（在 <code>Forwarding.scala</code> 中）：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs scala">scala<br>复制代码<br>when (rs1Valid &amp;&amp; rs1Source === <span class="hljs-type">EX_STAGE</span>) &#123;<br>  rs1Value := exAluOutput<br>&#125;.elsewhen (rs1Valid &amp;&amp; rs1Source === <span class="hljs-type">MEM_STAGE</span>) &#123;<br>  rs1Value := memDataOutput<br>&#125;<br><br></code></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="3-修改控制逻辑"><a href="#3-修改控制逻辑" class="headerlink" title="3. 修改控制逻辑"></a>3. <strong>修改控制逻辑</strong></h3><ul>
+<li><p><strong>核心目标</strong>：更新 <code>Control.scala</code> 中的控制信号生成逻辑，以支持分支跳转在 ID 段的实现。</p>
+</li>
+<li><p><strong>具体实现</strong>：</p>
+<ol>
+<li>根据指令类型（分支&#x2F;跳转），生成额外的控制信号：<ul>
+<li><code>branchTaken</code>：判断是否跳转。</li>
+<li><code>branchTarget</code>：跳转的目标地址。</li>
+</ul>
+</li>
+<li>在 ID 段判断后，如果确定分支成功，则向流水线发出控制信号清空后续指令（如插入气泡）。</li>
+</ol>
+</li>
+<li><p><strong>示例代码</strong>（在 <code>Control.scala</code> 中）：</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs scala">scala<br>复制代码<br>when (branchTaken) &#123;<br>  pcSrc := <span class="hljs-type">BRANCH_TARGET</span><br>  pipelineFlush := <span class="hljs-literal">true</span><br>&#125;<br><br></code></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="4-测试竞争冒险"><a href="#4-测试竞争冒险" class="headerlink" title="4. 测试竞争冒险"></a>4. <strong>测试竞争冒险</strong></h3><ul>
+<li><strong>核心目标</strong>：模拟和解决所有可能的竞争冒险情况。</li>
+<li><strong>指导原则</strong>：<ul>
+<li>测试分支跳转依赖前面指令的结果。例如：<ol>
+<li><code>BEQ R1, R2, offset</code></li>
+<li><code>ADD R1, R3, R4</code></li>
+</ol>
+</li>
+<li>验证是否正确解决数据依赖问题。</li>
+</ul>
+</li>
+<li><strong>测试数据冒险的关键</strong>：<ul>
+<li>如果冒险可通过旁路解决，则确保旁路逻辑正常工作。</li>
+<li>如果旁路无法解决，则检查阻塞是否正常。</li>
+</ul>
+</li>
+</ul>
+<h1 id="lab4：总线"><a href="#lab4：总线" class="headerlink" title="lab4：总线"></a>lab4：总线</h1><ul>
+<li>CPU除了通过内存控制器访问内存以外，还可以通过<strong>总线</strong>访问外部设备。使用总线可以减少电路布线数量以及电路设计复杂度。避免CPU与外部直接连接。（具体的硬件操作则进一步抽象为读写硬件设备上的寄存器）</li>
+</ul>
+<p>在本实验中，你将学习到：</p>
+<ul>
+<li>AXI4-Lite <strong>总线协议原理</strong></li>
+<li>使用<strong>状态机</strong>实现总线协议</li>
+</ul>
+<h2 id="总线前置知识："><a href="#总线前置知识：" class="headerlink" title="总线前置知识："></a>总线前置知识：</h2><blockquote>
+<p>AXI4-Lite总线通信协议</p>
+</blockquote>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/8ed1ed79-32e2-40bd-b47e-610a743bfed5/axi.png" srcset="/img/loading.gif" lazyload alt="axi.png"></p>
+<p>写地址通道：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/bd53bcaa-8b4a-4d82-8548-2cc7e7724220/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>写数据通道：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/1212ba2d-d2d2-4448-b215-48f548892a7f/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>写响应通道</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/de6abdd7-cddb-41de-80ec-f0674748aeef/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>读地址通道：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/4b332481-15c3-4cae-9152-42f3f9f751a9/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>读数据通道：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/bc757076-2d7d-42b6-9a56-fc5623721789/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>状态机：</p>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/158b0582-99d3-4e79-a174-8cfcf4599e93/axi-fsm.png" srcset="/img/loading.gif" lazyload alt="axi-fsm.png"></p>
+<ul>
+<li>总线仲裁：所有设备在通信之前都要检测总线是都占用。**每一个设备则需要增加总线请求线以及总线授权线，连接到总线仲裁器。**在设备需要通过总线传输数据前，需要先通过总线请求线请求总线的访问权限。<strong>总线仲裁器则通过总线授权线来授予访问权限</strong>，从而避免设备之间的冲突。</li>
+<li>总线交换机：类似于网络交换机的方式连接。不同对的设备之间可以通过交换机同时进行通信。</li>
+</ul>
+<h2 id="读操作："><a href="#读操作：" class="headerlink" title="读操作："></a>读操作：</h2><ol>
+<li>IF发出取指信号，包括：读请求（valid）和读地址（pc），如果对应的主机处于空闲状态，则对本次读取做出响应（<strong>空闲→读请求状态</strong>），产生并<strong>发送读请求</strong>（ARVALID），<strong>读地址</strong>（ARADDR）</li>
+<li>当 从机（slave）接收到读请求且处于空闲状态，则返回主机（master）读准备（ARREADY）—表示可以读取。（完成一次读地址的握手</li>
+<li>从机（slave）开始准备需返回的数据（RDATA），读返回请求（RVALID），主机跳变到下一个<strong>读数据状态。</strong></li>
+<li>当主机的RVALID和RREADY完成握手，主机得到目标数据，则产生读完成的信号（RREADY），把数据返还给取值模块，就完成了一次读操作，此时主机跳转回空闲状态。</li>
+</ol>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/6d60b960-c91b-441e-8ae1-95e5787c8d29/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h2 id="写操作："><a href="#写操作：" class="headerlink" title="写操作："></a>写操作：</h2><blockquote>
+<p>相比读多了一个接收<strong>写回复</strong>（如图）</p>
+</blockquote>
+<ol>
+<li>有总线后的MMIO（已给）</li>
+<li>把总线加到流水线上</li>
+</ol>
+<h2 id="实验任务：-1"><a href="#实验任务：-1" class="headerlink" title="实验任务："></a>实验任务：</h2><ol>
+<li>完成主从设备内部的状态机（按照上面给的状态图）</li>
+</ol>
+<p>主从设备的状态机切换图在预备知识里面给出了，不需要自己去总结，实现所需的寄存器和模块输入输出接口已经给出，你<strong>只需要实现状态切换以及相应的握手信号</strong>。</p>
+<h3 id="资料："><a href="#资料：" class="headerlink" title="资料："></a>资料：</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45937291/article/details/129771811">https://blog.csdn.net/weixin_45937291/article/details/129771811</a></p>
+<h3 id="实验指导："><a href="#实验指导：" class="headerlink" title="实验指导："></a>实验指导：</h3><p>实现 AXI4Lite 从设备模块</p>
+<ol>
+<li><strong>实现状态机</strong>：<ul>
+<li>在每个状态中，根据相应的输入信号更新状态和输出信号。</li>
+<li>例如，在 <code>ReadAddr</code> 状态中，等待 <code>ARVALID</code> 信号变高，并将 <code>ARREADY</code> 信号置高。</li>
+<li>一旦地址被接受，将状态切换到 <code>ReadData</code> 并准备输出数据。</li>
+</ul>
+</li>
+<li><strong>实现读写逻辑</strong>：<ul>
+<li>在 <code>ReadData</code> 状态中，等待 <code>RREADY</code> 信号，输出 <code>RDATA</code> 和 <code>RRESP</code>。</li>
+<li>在 <code>WriteAddr</code> 状态中，等待 <code>AWVALID</code> 信号，并将 <code>AWREADY</code> 信号置高。</li>
+<li>在 <code>WriteData</code> 状态中，等待 <code>WVALID</code> 信号，并将写数据和写掩码存储到寄存器中。</li>
+</ul>
+</li>
+<li><strong>实现响应逻辑</strong>：<ul>
+<li>在 <code>WriteResp</code> 状态中，输出写响应信号 <code>BVALID</code> 和 <code>BRESP</code>。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/905731eb-29ea-45e5-a7ae-55ea468b63e8/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<p>实现 AXI4Lite 主设备模块</p>
+<ol>
+<li><strong>实现状态机</strong>：<ul>
+<li>在每个状态中，根据相应的输出信号更新状态和输入信号。</li>
+<li>例如，在 <code>ReadAddr</code> 状态中，输出 <code>ARVALID</code> 信号，并等待 <code>ARREADY</code> 信号变高。</li>
+<li>一旦地址被接受，将状态切换到 <code>ReadData</code> 并准备接收数据。</li>
+</ul>
+</li>
+<li><strong>实现读写逻辑</strong>：<ul>
+<li>在 <code>ReadData</code> 状态中，等待 <code>RVALID</code> 信号，接收 <code>RDATA</code> 和 <code>RRESP</code>。</li>
+<li>在 <code>WriteAddr</code> 状态中，输出 <code>AWVALID</code> 信号，并等待 <code>AWREADY</code> 信号变高。</li>
+<li>在 <code>WriteData</code> 状态中，输出写数据和写掩码信号 <code>WSTRB</code>。</li>
+</ul>
+</li>
+<li><strong>实现响应逻辑</strong>：<ul>
+<li>在 <code>WriteResp</code> 状态中，等待 <code>BVALID</code> 信号，接收写响应信号 <code>BRESP</code>。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/d9d252c5-393d-457b-abcf-f370d89f2ab8/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+<h3 id="ps-一些chisel的知识："><a href="#ps-一些chisel的知识：" class="headerlink" title="ps:一些chisel的知识："></a>ps:一些chisel的知识：</h3><ul>
+<li>Bundle：用于将不同类型的信号划分为一组</li>
+<li>Vec用于表示一个<strong>可索引的、相同类型的</strong>信号的集合</li>
+<li><strong>&lt;&gt; 运算符</strong>：用于连接两个信号，类似于 Verilog 中的 <code>assign</code> 语句。</li>
+</ul>
+<h2 id="实验报告¶"><a href="#实验报告¶" class="headerlink" title="实验报告¶"></a>实验报告<a target="_blank" rel="noopener" href="https://yatcpu.sysu.tech/labs/lab2-interrupt/#%E5%AE%9E%E9%AA%8C%E6%8A%A5%E5%91%8A">¶</a></h2><ol>
+<li>简要概括不同测试用例的功能，描述它们分别从什么层面测试 CPU，以及使用了什么方法加载测试程序指令，以及测试用例的执行结果。</li>
+<li>对于填空涉及到的信号，使用测试框架输出波形图，描述在执行不同指令时候对应的部件的关键信号的变化情况。</li>
+<li>使用实验板上的 LED 或者数码管等外设，体现你的 CPU 可以响应定时器中断或者其他外部中断。</li>
+<li>在完成实验的过程中，遇到的关于实验指导不明确或者其他问题，或者改进的建议。</li>
+</ol>
+<p><img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/2e763812-23f7-45b6-8338-e8153720b833/31d55b13-b66a-44e0-a61a-e7ef62f59b8d/image.png" srcset="/img/loading.gif" lazyload alt="image.png"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>YatCPU</div>
+      <div>https://pqcu77.github.io/2025/02/28/YatCPU/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年2月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/02/%E7%88%AC%E8%99%AB/" title="爬虫">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">爬虫</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/19/Rust-macro/" title="Rust_macro">
+                        <span class="hidden-mobile">Rust_macro</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

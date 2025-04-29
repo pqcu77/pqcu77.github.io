@@ -1,0 +1,962 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Machine Learning 机器学习为计算机提供数据，而非确切的指令，通过这些数据，计算机学习去识别模式并自行执行  监督学习 监督学习是指计算机基于输入-输出对数据集来学习函数映射。 监督意味着这些数据已经有了确切的标签or分类  分类学习：最近邻居分类 为相关变量分配最近的观察值   比如这张图，根据最近观察值策略，可能会认为他是红色的；然而从更大角度来看，它周围蓝色点居多，我们直觉地认">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cs50-Ai-Machine-Learning">
+<meta property="og:url" content="https://pqcu77.github.io/2025/03/06/cs50-ai-Machine-Learning/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="Machine Learning 机器学习为计算机提供数据，而非确切的指令，通过这些数据，计算机学习去识别模式并自行执行  监督学习 监督学习是指计算机基于输入-输出对数据集来学习函数映射。 监督意味着这些数据已经有了确切的标签or分类  分类学习：最近邻居分类 为相关变量分配最近的观察值   比如这张图，根据最近观察值策略，可能会认为他是红色的；然而从更大角度来看，它周围蓝色点居多，我们直觉地认">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/nearestneighbor.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/decisionboundary.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/perceptronlearning.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/hardthreshold.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/softthreshold.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/01loss.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/reinforcement.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/qlearning.png">
+<meta property="article:published_time" content="2025-03-06T06:58:57.000Z">
+<meta property="article:modified_time" content="2025-03-10T03:48:27.267Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/nearestneighbor.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Cs50-Ai-Machine-Learning - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Cs50-Ai-Machine-Learning"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-06 14:58" pubdate>
+          2025年3月6日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          32 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Cs50-Ai-Machine-Learning</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-03-10T11:48:27+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Machine-Learning"><a href="#Machine-Learning" class="headerlink" title="Machine Learning"></a>Machine Learning</h1><ul>
+<li>机器学习为计算机提供数据，而非确切的指令，通过这些数据，计算机学习去识别模式并自行执行</li>
+</ul>
+<h2 id="监督学习"><a href="#监督学习" class="headerlink" title="监督学习"></a>监督学习</h2><ul>
+<li>监督学习是指计算机<strong>基于输入-输出对数据集</strong>来学习函数映射。</li>
+<li>监督意味着这些数据已经有了确切的标签or分类</li>
+</ul>
+<h3 id="分类学习：最近邻居分类"><a href="#分类学习：最近邻居分类" class="headerlink" title="分类学习：最近邻居分类"></a>分类学习：最近邻居分类</h3><ul>
+<li>为相关变量分配<strong>最近的观察值</strong></li>
+</ul>
+<p><img src="/img/nearestneighbor.png" srcset="/img/loading.gif" lazyload alt="Nearest Neighbor Classification"></p>
+<p>比如这张图，根据最近观察值策略，可能会认为他是红色的；然而从更大角度来看，它周围蓝色点居多，我们直觉地认为，蓝色可能是更好的预测，即时最近的观察值是红色的（局限性or不准确）</p>
+<ul>
+<li>优化：k最近邻居分类，根据点最近的k个邻居的值来判断。缺点是需要消耗计算力去测量各个点到相关点的距离。（进一步可以通过剪枝或更符合的数据结构加速）<ul>
+<li><strong>选择k值</strong>：k是一个超参数，表示需要考虑的最近邻居的数量。k的选择会影响模型的性能：<ul>
+<li>如果k太小，模型可能会过拟合，对噪声敏感。</li>
+<li>如果k太大，模型可能会欠拟合，忽略数据的局部特征。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="感知器学习"><a href="#感知器学习" class="headerlink" title="感知器学习"></a>感知器学习</h3><ul>
+<li>神经网络：由一个或多个神经元组成，而一个神经元包含输入、输出和内部处理器</li>
+<li>感知器（perceptron）：单层感知器（包含输入和输出层，且二者直接相连）、多层感知器（多层计算）</li>
+<li>与最近邻策略相反，解决分类问题的另一种方法是将数据作为一个整体来查看，并尝试创建一个<strong>决策边界</strong>–二分类的线性分类模型</li>
+</ul>
+<p><img src="/img/decisionboundary.png" srcset="/img/loading.gif" lazyload alt="Decision Boundary"></p>
+<p>缺点：数据很混乱，很少能画一条线并将类整齐地划分为两个观测值而没有任何错误。</p>
+<p>将各个参数与对应的权重相乘之后相加，输入到激活函数，通过判断是否超过阈值得到期望。</p>
+<p>例子：</p>
+<ul>
+<li>输入–x1&#x3D;humidity（湿度）；x2&#x3D;pressure（压力）；函数h(x1,x2)</li>
+<li>该函数对每个输入进行加权，并添加一个常数，产生如下的线性方程： <ul>
+<li>Rain w₀ + w₁x₁ + w₂x₂ ≥ 0</li>
+<li>No Rain otherwise</li>
+</ul>
+</li>
+</ul>
+<p><img src="/img/perceptronlearning.png" srcset="/img/loading.gif" lazyload alt="Perceptron Learning Rule"></p>
+<p>这里的y代表观测值，而h(x)代表估计值，如果他们误差较大，说明要调整这个数据的权重</p>
+<ul>
+<li><p>如果它们<strong>相同</strong>，则整个项等于零，因此<strong>权重不会改变</strong>。如果我们低估了（在观察到 Rain 时调用 No Rain），那么括号中的值将为 1，权重将增加新的值α学习系数。如果我们高估（在观察到 No Rain 时调用 Rain），则括号中的值将为 -1，权重将减少 x 的值，缩放 α。α越高，每个新事件对权重的影响就越大。</p>
+</li>
+<li><p>结果是一个阈值函数，一旦超过设定的值函数值就会发生跳跃</p>
+<ul>
+<li>硬性阈值<img src="/img/hardthreshold.png" srcset="/img/loading.gif" lazyload alt="Hard Threshold"></li>
+<li>软性阈值    <img src="/img/softthreshold.png" srcset="/img/loading.gif" lazyload alt="软阈值"></li>
+</ul>
+</li>
+</ul>
+<p>​		软性阈值会存在中间过渡的值</p>
+<h3 id="支持向量机"><a href="#支持向量机" class="headerlink" title="支持向量机"></a>支持向量机</h3><p>这种方法是在决策边界附件使用一个<strong>额外的向量</strong>（支持向量），以便在分离数据时做出最佳决策–<strong>Maximum Margin Separator</strong></p>
+<p>优点：可以表示两个维度以上的决策边界，以及非线性决策边界</p>
+<h3 id="回归"><a href="#回归" class="headerlink" title="回归"></a>回归</h3><p>回归是函数的监督学习任务，它将输入点映射到连续值。</p>
+<p>目标不是在观察类型之间进行分离，而是根据输入预测输出的值</p>
+<h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><h4 id="0-1损失函数"><a href="#0-1损失函数" class="headerlink" title="0-1损失函数"></a>0-1损失函数</h4><ul>
+<li>L(预测，损失)：当实际&#x3D;预测，则L&#x3D;0；否则，L&#x3D;1</li>
+</ul>
+<p><img src="/img/01loss.png" srcset="/img/loading.gif" lazyload alt="0-1 Loss Function"></p>
+<ul>
+<li>预测连续值时，可以使用L1和L2损失函数，更加看重每个预测域观测值之间的差异程度。<ul>
+<li>L1：L(实际，预测)&#x3D;|实际-预测|</li>
+<li>L2：L(实际，预测）&#x3D;|实际-预测|²</li>
+</ul>
+</li>
+</ul>
+<h3 id="过拟合"><a href="#过拟合" class="headerlink" title="过拟合"></a>过拟合</h3><p>过拟合是指模型与训练数据的你和非常好，以至于无法推广到其他数据集。</p>
+<h3 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h3><p>正则化是惩罚更复杂的假设以支持更简单、更一般的假设的过程。我们使用正则化来避免过拟合。</p>
+<p><code>cost(h) = loss(h) + λcomplexity(h)</code></p>
+<p>测试我们是否过度拟合模型的一种方法是使用 <strong>Holdout Cross Validation</strong>。在这种技术中，我们将所有数据一分为二：<strong>训练集</strong>和测试<strong>集</strong>。我们在训练集上运行学习算法，然后查看它对测试集中数据的预测能力如何。这里的想法是，通过测试训练中未使用的数据，我们可以衡量学习的泛化程度。</p>
+<p>保持交叉验证的缺点是，我们无法使用一半的数据来训练模型，因为它用于评估目的。解决这个问题的一种方法是使用 <strong>k-Fold\ 交叉验证</strong>。在这个过程中，我们将数据分成 k 个集合。我们运行训练 k 次，每次都省略一个数据集并将其用作测试集。我们最终对模型进行了 k 种不同的评估，我们可以对模型进行平均并估计我们的模型如何泛化而不会丢失任何数据。</p>
+<h3 id="强度学习"><a href="#强度学习" class="headerlink" title="强度学习"></a>强度学习</h3><p>在每次行动过后，agent会得到反馈（正反馈或负反馈</p>
+<p><img src="/img/reinforcement.png" srcset="/img/loading.gif" lazyload alt="Reinforcement Learning"></p>
+<h3 id="马尔可夫决策过程"><a href="#马尔可夫决策过程" class="headerlink" title="马尔可夫决策过程"></a>马尔可夫决策过程</h3><ul>
+<li>Set of states <strong>S</strong></li>
+<li>Set of actions <strong>Actions(S)</strong></li>
+<li>Transition model <strong>P(s’ | s, a)</strong></li>
+<li>Reward function <strong>R(s, a, s’)</strong></li>
+</ul>
+<h3 id="Q学习"><a href="#Q学习" class="headerlink" title="Q学习"></a>Q学习</h3><p>函数 Q(s, a) 输出在状态 <em>s</em> 下采取行动 <em>a</em> 的值的估计值</p>
+<p>模型从所有估计值等于0开始，当执行作并收到奖励时，该函数会执行两项作：</p>
+<p>1） 它根据当前奖励和预期的未来奖励估计 <strong>Q（s， a）</strong> 的值，以及</p>
+<p> 2） 更新 <strong>Q（s， a）</strong> 以同时考虑旧估计值和新估计值。</p>
+<p><img src="/img/qlearning.png" srcset="/img/loading.gif" lazyload alt="Q 学习公式"></p>
+<p>训练强化学习模型的另一种方法是，不是在每次移动时提供反馈，而是在整个过程结束时提供反馈</p>
+<h2 id="非监督学习"><a href="#非监督学习" class="headerlink" title="非监督学习"></a>非监督学习</h2><ul>
+<li>没有人为进行分类，只有输入数据，AI会学习这些数据中的模式</li>
+</ul>
+<p>聚类：</p>
+<p>获取输入数据并将其组织成组，以便相似的对象最终属于同一组</p>
+<p>K-means聚集</p>
+<p>它映射一个空间中的所有数据点，然后在空间中随机放置 k 个集群中心（由程序员决定多少个，这是我们在左侧看到的起始状态）。每个集群中心只是空间中的一个点。然后，每个聚类都会分配最接近其中心的所有点，而不是任何其他中心（这是中间的图片）。然后，在迭代过程中，聚类中心移动到所有这些点的中间（右侧的状态），然后再次将点重新分配给现在最靠近它们的聚类。当重复该过程后，每个点都保持在与之前相同的集群中时，我们已经达到了平衡，算法结束了，给我们留下了在集群之间划分的点。</p>
+<h1 id="Project"><a href="#Project" class="headerlink" title="Project"></a>Project</h1><h2 id="shopping"><a href="#shopping" class="headerlink" title="shopping"></a>shopping</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>当用户在线购物时，并非所有人最终都会购买东西。事实上，在线购物网站的大多数访问者可能不会在网络浏览会话期间进行购买。不过，购物网站能够预测用户是否打算进行购买可能很有用：也许向用户显示不同的内容，例如，如果网站认为用户不打算完成购买，则向用户显示折扣优惠。网站如何确定用户的购买意向？这就是机器学习的用武之地。</p>
+<p>您在此问题中的任务是构建一个最近邻分类器来解决此问题。给定有关用户的信息 — 他们访问了多少个页面，他们是否在周末购物，他们正在使用什么 Web 浏览器等 — 您的分类器将预测用户是否会进行购买。您的分类器不会完全准确 — 完美地模拟人类行为是一项远远超出本课程范围的任务 — 但它应该比随机猜测要好。为了训练您的分类器，我们将为您提供来自某个购物网站的一些数据，这些数据来自大约 12000 个用户会话。</p>
+<p>我们如何衡量此类系统的准确性？如果我们有一个测试数据集，我们可以对数据运行分类器，并计算我们正确分类用户意图的时间比例。这将为我们提供一个准确率。但这个数字可能有点误导。例如，想象一下，如果大约 15% 的用户最终完成了购买。如果分类器始终预测用户不会完成购买，那么，我们将衡量为 85% 的准确率：它唯一错误分类的用户是 15% 的用户。虽然 85% 的准确率听起来不错，但这似乎不是一个非常有用的分类器。</p>
+<p>相反，我们将测量两个值：灵敏度（也称为“真阳性率”）和特异性（也称为“真阴性率”）。敏感度是指正确识别的正面示例的比例：换句话说，正确识别完成购买的用户比例。特异性是指被正确识别的负面示例的比例：在这种情况下，未完成购买但被正确识别的用户比例。因此，我们之前的 “always guess no” 分类器将具有完美的特异性 （1.0），但没有灵敏度 （0.0）。我们的目标是构建一个在这两个指标上都执行合理的分类器。</p>
+<h3 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h3><ul>
+<li><p>shopping.csv文件中是数据集</p>
+<ul>
+<li>前六列衡量了用户在会话中访问的不同类型页面</li>
+<li><code>Administrative</code>、<code>Informational</code>、<code>ProductRelated</code>列指示下的值代表用户访问过多少这类型的页面</li>
+<li><code>_Duration</code>列指示了用户留存时间</li>
+<li><code>BounceRates</code>，<code>ExitRates</code>和<code>PageValues</code>衡量来自谷歌评估的有关用户访问的页面信息</li>
+<li><code>SpecialDay</code>评估了用户访问日期和特殊日期的接近程度</li>
+<li>还有一些有关用户的属性</li>
+<li><code>VisitorType</code>指示了是回头客或新用户</li>
+<li><code>Weekend</code>是布尔值，代表是否在周末进行访问</li>
+<li>最后还有一个指示用户是否购买的列 <code>Revenue</code></li>
+</ul>
+</li>
+<li><p>shopping.py文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br><br>    <span class="hljs-comment"># Check command-line arguments</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) != <span class="hljs-number">2</span>:<br>        sys.exit(<span class="hljs-string">&quot;Usage: python shopping.py data&quot;</span>)<br><br>    <span class="hljs-comment"># Load data from spreadsheet and split into train and test sets</span><br>    evidence, labels = load_data(sys.argv[<span class="hljs-number">1</span>])<br>    X_train, X_test, y_train, y_test = train_test_split(<br>        evidence, labels, test_size=TEST_SIZE<br>    )<br><br>    <span class="hljs-comment"># Train model and make predictions</span><br>    model = train_model(X_train, y_train)<br>    predictions = model.predict(X_test)<br>    sensitivity, specificity = evaluate(y_test, predictions)<br><br>    <span class="hljs-comment"># Print results</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Correct: <span class="hljs-subst">&#123;(y_test == predictions).<span class="hljs-built_in">sum</span>()&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Incorrect: <span class="hljs-subst">&#123;(y_test != predictions).<span class="hljs-built_in">sum</span>()&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;True Positive Rate: <span class="hljs-subst">&#123;<span class="hljs-number">100</span> * sensitivity:<span class="hljs-number">.2</span>f&#125;</span>%&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;True Negative Rate: <span class="hljs-subst">&#123;<span class="hljs-number">100</span> * specificity:<span class="hljs-number">.2</span>f&#125;</span>%&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<p><code>load_data</code>函数用来加载数据和分割数据</p>
+<p><code>train_model</code>函数是用来训练的，会对测试集的输入做出预测</p>
+<p><code>evaluate</code>函数用于检测敏感度和特异性</p>
+</li>
+</ul>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><h4 id="load-data-函数"><a href="#load-data-函数" class="headerlink" title="load_data 函数"></a><code>load_data</code> 函数</h4><p><code>load_data</code> 函数应接受一个 CSV 文件名作为参数，打开该文件，并返回一个元组 <code>(evidence, labels)</code>。<code>evidence</code> 应是一个包含所有数据点证据的列表，<code>labels</code> 应是一个包含所有数据点标签的列表。</p>
+<p>由于每一行数据对应一个证据和一个标签，<code>evidence</code> 列表和 <code>labels</code> 列表的长度应等于 CSV 文件中的行数（不包括标题行）。列表的顺序应与用户在电子表格中的顺序一致。也就是说，<code>evidence[0]</code> 应是第一个用户的证据，<code>labels[0]</code> 应是第一个用户的标签。</p>
+<p><code>evidence</code> 列表中的每个元素应是一个长度为 17 的列表，对应电子表格中除最后一列（标签列）外的每一列。证据列表中的值应与电子表格中的列顺序一致。你可以假设 <code>shopping.csv</code> 中的列顺序始终不变。</p>
+<p>请注意，为了构建最近邻分类器，所有数据都必须是数值类型。确保你的值具有以下类型：</p>
+<ul>
+<li><code>Administrative</code>, <code>Informational</code>, <code>ProductRelated</code>, <code>Month</code>, <code>OperatingSystems</code>, <code>Browser</code>, <code>Region</code>, <code>TrafficType</code>, <code>VisitorType</code>, 和 <code>Weekend</code> 应为 <code>int</code> 类型。</li>
+<li><code>Administrative_Duration</code>, <code>Informational_Duration</code>, <code>ProductRelated_Duration</code>, <code>BounceRates</code>, <code>ExitRates</code>, <code>PageValues</code>, 和 <code>SpecialDay</code> 应为 <code>float</code> 类型。</li>
+<li><code>Month</code> 应为 0（一月）到 11（十二月）。</li>
+<li><code>VisitorType</code> 应为 1（返回访客）或 0（非返回访客）。</li>
+<li><code>Weekend</code> 应为 1（用户在周末访问）或 0（否则）。</li>
+</ul>
+<p><code>labels</code> 中的每个值应为整数 1（用户完成购买）或 0（否则）。</p>
+<p>例如，第一个证据列表的值应为 <code>[0, 0.0, 0, 0.0, 1, 0.0, 0.2, 0.2, 0.0, 0.0, 1, 1, 1, 1, 1, 1, 0]</code>，第一个标签的值应为 <code>0</code>。</p>
+<p>更加顺序化：</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">evidence should be <span class="hljs-keyword">a</span> list <span class="hljs-keyword">of</span> lists, where <span class="hljs-keyword">each</span> list <span class="hljs-keyword">contains</span> <span class="hljs-keyword">the</span><br>    following values, <span class="hljs-keyword">in</span> order:<br>        - Administrative, <span class="hljs-keyword">an</span> integer0<br>        - Administrative_Duration, <span class="hljs-keyword">a</span> floating point number1<br>        - Informational, <span class="hljs-keyword">an</span> integer2<br>        - Informational_Duration, <span class="hljs-keyword">a</span> floating point number3<br>        - ProductRelated, <span class="hljs-keyword">an</span> integer4<br>        - ProductRelated_Duration, <span class="hljs-keyword">a</span> floating point number5<br>        - BounceRates, <span class="hljs-keyword">a</span> floating point number6<br>        - ExitRates, <span class="hljs-keyword">a</span> floating point number7<br>        - PageValues, <span class="hljs-keyword">a</span> floating point number8<br>        - SpecialDay, <span class="hljs-keyword">a</span> floating point number9<br>        - Month, <span class="hljs-keyword">an</span> index <span class="hljs-built_in">from</span> <span class="hljs-number">0</span> (January) <span class="hljs-built_in">to</span> <span class="hljs-number">11</span> (December)<span class="hljs-number">10</span><br>        - OperatingSystems, <span class="hljs-keyword">an</span> integer11<br>        - Browser, <span class="hljs-keyword">an</span> integer12<br>        - Region, <span class="hljs-keyword">an</span> integer13<br>        - TrafficType, <span class="hljs-keyword">an</span> integer14<br>        - VisitorType, <span class="hljs-keyword">an</span> <span class="hljs-keyword">integer</span> <span class="hljs-number">0</span> (<span class="hljs-keyword">not</span> returning) <span class="hljs-keyword">or</span> <span class="hljs-number">1</span> (returning)<span class="hljs-number">15</span><br>        - Weekend, <span class="hljs-keyword">an</span> <span class="hljs-keyword">integer</span> <span class="hljs-number">0</span> (<span class="hljs-keyword">if</span> <span class="hljs-literal">false</span>) <span class="hljs-keyword">or</span> <span class="hljs-number">1</span> (<span class="hljs-keyword">if</span> <span class="hljs-literal">true</span>)<span class="hljs-number">16</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h4 id="train-model-函数"><a href="#train-model-函数" class="headerlink" title="train_model 函数"></a><code>train_model</code> 函数</h4><p><code>train_model</code> 函数应接受一个证据列表和一个标签列表，并返回一个基于该训练数据训练的 scikit-learn 最近邻分类器（k&#x3D;1 的 k-最近邻分类器）。</p>
+<p>请注意，我们已经为你导入了 <code>from sklearn.neighbors import KNeighborsClassifier</code>。你应在此函数中使用 <code>KNeighborsClassifier</code>。</p>
+<h4 id="evaluate-函数"><a href="#evaluate-函数" class="headerlink" title="evaluate 函数"></a><code>evaluate</code> 函数</h4><p><code>evaluate</code> 函数应接受一个标签列表（测试集中用户的真实标签）和一个预测列表（分类器预测的标签），并返回两个浮点值 <code>(sensitivity, specificity)</code>。</p>
+<ul>
+<li><code>sensitivity</code> 应为 0 到 1 之间的浮点值，表示“真正例率”：实际为正例的标签中被准确识别的比例。</li>
+<li><code>specificity</code> 应为 0 到 1 之间的浮点值，表示“真负例率”：实际为负例的标签中被准确识别的比例。</li>
+</ul>
+<p>你可以假设每个标签为 1（正例，用户完成购买）或 0（负例，用户未完成购买）。你可以假设真实标签列表至少包含一个正例和一个负例。</p>
+<h3 id="指导"><a href="#指导" class="headerlink" title="指导"></a>指导</h3><ol>
+<li><p><strong><code>load_data</code> 函数</strong>：</p>
+<ul>
+<li>使用 Python 的 <code>csv</code> 模块或 <code>pandas</code> 库读取 CSV 文件。</li>
+<li>遍历每一行数据，将除最后一列外的所有列转换为适当的类型，并存储在 <code>evidence</code> 列表中。</li>
+<li>将最后一列（标签列）转换为整数，并存储在 <code>labels</code> 列表中。</li>
+<li>确保所有数据的类型正确，特别是 <code>Month</code>、<code>VisitorType</code> 和 <code>Weekend</code> 的转换。</li>
+</ul>
+</li>
+<li><p><strong><code>train_model</code> 函数</strong>：</p>
+<ul>
+<li>使用 <code>KNeighborsClassifier</code> 创建一个 k&#x3D;1 的最近邻分类器。</li>
+<li>使用 <code>fit</code> 方法将证据和标签作为训练数据拟合模型。</li>
+<li>返回训练好的模型。</li>
+</ul>
+</li>
+<li><p><strong><code>evaluate</code> 函数</strong>：</p>
+<ul>
+<li>计算真正例（True Positives, TP）、真负例（True Negatives, TN）、假正例（False Positives, FP）和假负例（False Negatives, FN）。</li>
+<li>使用公式 <code>sensitivity = TP / (TP + FN)</code> 计算敏感度。</li>
+<li>使用公式 <code>specificity = TN / (TN + FP)</code> 计算特异性。</li>
+<li>返回计算得到的敏感度和特异性。</li>
+</ul>
+</li>
+</ol>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<li>确保数据类型转换正确，特别是 <code>Month</code>、<code>VisitorType</code> 和 <code>Weekend</code> 的转换。</li>
+<li>在 <code>evaluate</code> 函数中，确保正确处理边界情况，例如所有预测都为正例或负例的情况。</li>
+<li>使用适当的库函数和方法来简化代码，例如 <code>pandas</code> 的 <code>read_csv</code> 函数和 <code>scikit-learn</code> 的 <code>KNeighborsClassifier</code>。</li>
+</ul>
+<p>通过这些步骤，你应该能够成功实现 <code>load_data</code>、<code>train_model</code> 和 <code>evaluate</code> 函数。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/" class="category-chain-item">AI</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Cs50-Ai-Machine-Learning</div>
+      <div>https://pqcu77.github.io/2025/03/06/cs50-ai-Machine-Learning/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月6日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/11/AI-lab2/" title="AI-Lab2">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AI-Lab2</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/05/ysos/" title="Ysos">
+                        <span class="hidden-mobile">Ysos</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

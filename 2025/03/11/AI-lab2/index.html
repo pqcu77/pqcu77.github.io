@@ -1,0 +1,1050 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="基本概念 常量：任何类型的实体  变量：x,y未知量  项：谓词、变量的参数项，由递归定义  变量是项（可以看成是0元函数） t1，t2，t3……tn是项，f是n元函数，则f(t1,t2,,,,tn)也是项 一阶逻辑中谓词不是项，即不能作为函数&#x2F;谓词的参数，也就是不存在f(P(x))这种复合方式，但是二阶逻辑中是可以的   谓词：谓词是对其参数的  零元谓词：退化为命题 单元谓词：只有一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI-Lab2">
+<meta property="og:url" content="https://pqcu77.github.io/2025/03/11/AI-lab2/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="基本概念 常量：任何类型的实体  变量：x,y未知量  项：谓词、变量的参数项，由递归定义  变量是项（可以看成是0元函数） t1，t2，t3……tn是项，f是n元函数，则f(t1,t2,,,,tn)也是项 一阶逻辑中谓词不是项，即不能作为函数&#x2F;谓词的参数，也就是不存在f(P(x))这种复合方式，但是二阶逻辑中是可以的   谓词：谓词是对其参数的  零元谓词：退化为命题 单元谓词：只有一">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250310164756545.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250310165405419.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250310165631716.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250310165631716.png">
+<meta property="article:published_time" content="2025-03-11T14:29:07.000Z">
+<meta property="article:modified_time" content="2025-03-17T02:30:11.262Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/image-20250310164756545.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>AI-Lab2 - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AI-Lab2"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-11 22:29" pubdate>
+          2025年3月11日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          5.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          45 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AI-Lab2</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-03-17T10:30:11+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><ul>
+<li><p>常量：任何类型的实体</p>
+</li>
+<li><p>变量：x,y未知量</p>
+</li>
+<li><p>项：谓词、变量的参数项，由递归定义</p>
+<ul>
+<li>变量是项（可以看成是0元函数）</li>
+<li>t1，t2，t3……tn是项，f是n元函数，则f(t1,t2,,,,tn)也是项</li>
+<li>一阶逻辑中<strong>谓词不是项</strong>，即不能作为函数&#x2F;谓词的参数，也就是不存在f(P(x))这种复合方式，但是二阶逻辑中是可以的</li>
+</ul>
+</li>
+<li><p>谓词：谓词是对其参数的</p>
+<ul>
+<li>零元谓词：退化为命题</li>
+<li>单元谓词：只有一个参数，表示参数具备某种属性</li>
+<li>多元谓词：多个参数，表示参数之间的关系</li>
+</ul>
+</li>
+<li><p>事实：谓词中变量实例化后得到的事实</p>
+</li>
+<li><p>规则：公式，通过递归定义</p>
+</li>
+<li><p>可满足性：对该可满足性问题，只要能找到一组赋值，使得这个公式成立，这个公式就是可满足的</p>
+</li>
+<li><p>逻辑蕴含和逻辑推论</p>
+<ul>
+<li>逻辑蕴含S |&#x3D; α指对于<strong>任意变量赋值</strong>，如果S正确，则α也正确</li>
+<li>逻辑推论S |- α指<strong>存在一条推理路径</strong>，从S出发，推导证明α</li>
+</ul>
+</li>
+<li><p>一阶逻辑中谓词不是项，即不能作为函数&#x2F;谓词的参数，也就是不存在f(P(x))这种复合方式，但是二阶逻辑中是可以的</p>
+</li>
+</ul>
+<h2 id="归结算法"><a href="#归结算法" class="headerlink" title="归结算法"></a>归结算法</h2><h3 id="归结反演："><a href="#归结反演：" class="headerlink" title="归结反演："></a>归结反演：</h3><p>steps:</p>
+<ol>
+<li>将α取否定，放到KB中</li>
+<li>将更新的KB转换为clausal form得到新的子句集S</li>
+<li>反复调用单步归结<ul>
+<li>如果得到空子句，即S|- ()，说明KB ∧¬α 不可满足，算法终止，可得KB |&#x3D; α</li>
+<li>如果一直归结直到不产生新的子句，在这个过程中没有得到空子句，则KB |&#x3D; α不成立</li>
+</ul>
+</li>
+</ol>
+<p><strong>clausal form–便于计算机处理的形式</strong></p>
+<ul>
+<li>每一个子句对应一个<strong>元组</strong>，元组中的每一个元素是一个原子公式或原子公式的否定，元素之间的关系是<strong>析取关系</strong>，表示只要一个原子成立，即子句成立。<ul>
+<li>ps：元组是用<strong>逗号</strong>分隔的，<u>即使只有一个元素，也需要在元素后面加上逗号</u>，以区分它与普通变量的不同</li>
+<li>元组的集合组合子句集S，子句集中的每个句子之间是<strong>合取关系</strong></li>
+</ul>
+</li>
+<li>单步归结：<ul>
+<li>从两个子句中分贝寻找相同的原子及其对应的原子否定（只能找其中一组，如果出现两组互补对不可以同时归结）</li>
+<li>去掉该互补对，并将剩余元素合并为新子句</li>
+</ul>
+</li>
+</ul>
+<p>举例：<img src="/img/image-20250310164756545.png" srcset="/img/loading.gif" lazyload alt="example_归结"></p>
+<h2 id="最一般合一算法"><a href="#最一般合一算法" class="headerlink" title="最一般合一算法"></a>最一般合一算法</h2><h3 id="合一"><a href="#合一" class="headerlink" title="合一"></a>合一</h3><ul>
+<li><p>通过<strong>变量替换</strong>使得两个子句能够被归结（有相同的原子），所以合一也被定义为使得两个原子公式等价的一组变量替换&#x2F;赋值</p>
+</li>
+<li><p>由于一阶逻辑中存在变量，所以归结之前需要进行合一，如<code>(P(john),Q(fred),R(x))</code>和<code>(¬P(y),R(susan),R(y))</code>两个子句中，我们无法找到一样的原子及其对应的否定，但是不代表它们不能够归结</p>
+</li>
+<li><p>通过将y替换为john（替换一定要<strong>全部替换</strong>），我们得到了<code>(P(john),Q(fred),R(x))</code>和<code>(¬P(john),R(susan),R(john))</code>，此时我们两个子句分别存在原子P(john)和它的否定<code>¬P(john)</code>，可以进行归结</p>
+</li>
+</ul>
+<h3 id="最一般合一"><a href="#最一般合一" class="headerlink" title="最一般合一"></a>最一般合一</h3><p>指使得两个原子公式等价，最简单的一组变量替换</p>
+<ul>
+<li>输入：两个原子公式，它们有相同的谓词，不同的参数项和‘’¬“</li>
+<li>输出：一组变量替换&#x2F;赋值</li>
+<li>流程：<img src="/img/image-20250310165405419.png" srcset="/img/loading.gif" lazyload alt="最一般合一算法流程"></li>
+</ul>
+<p><strong>Tips:变量替换是从两个原子公式中找到的，但是最后要施加给整个子句的</strong></p>
+<h2 id="一阶逻辑归结算法："><a href="#一阶逻辑归结算法：" class="headerlink" title="一阶逻辑归结算法："></a>一阶逻辑归结算法：</h2><p><img src="/img/image-20250310165631716.png" srcset="/img/loading.gif" lazyload alt="一阶逻辑归结算法"></p>
+<h1 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h1><p>存储<strong>公式</strong>的python数据结构</p>
+<ul>
+<li><p>用字符串存储</p>
+</li>
+<li><p>符号¬用‘~’代替</p>
+</li>
+<li><p><strong>谓词</strong>的<strong>首字母大写</strong>, 例如用A, B, C, P1, P2, Student等表示; 谓词的每个参数之间用逗号“,”间隔且不加空格</p>
+</li>
+<li><p><strong>常量</strong>用小写单词或a, b, c等小写字母表示;</p>
+</li>
+<li><p>本次作业的公式中不含∃,∀量词符号</p>
+<ul>
+<li><p>例子: ¬child存储为 “~child” boy存储为“boy”</p>
+</li>
+<li><p>几个公式: “R(a)”, “~P(a,zz)”, “Student(tony)”. 这里应该将a,tony看做常量,将zz看做变量</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>存储<strong>子句</strong>的python数据结构</p>
+<ul>
+<li>用tuple的方式存储<ul>
+<li>例子: </li>
+<li>¬child˅¬male˅boy存储为(‘<del>child’, ‘</del>male’, ‘boy’)</li>
+<li>¬S(z) ˅ L(z, snow)存储为(‘~S(z)’, ‘L(z,snow)’)</li>
+</ul>
+</li>
+</ul>
+<p>存储<strong>子句集</strong>的python数据结构</p>
+<ul>
+<li><p>子句集用<strong>set</strong>（可以去重）的方式存储, 每个元素是子句(元组)</p>
+</li>
+<li><p>小心归结的时候重复生成一样的子句</p>
+</li>
+</ul>
+<h1 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h1><h2 id="实验一：命题逻辑的归结推理"><a href="#实验一：命题逻辑的归结推理" class="headerlink" title="实验一：命题逻辑的归结推理"></a>实验一：命题逻辑的归结推理</h2><h3 id="内容："><a href="#内容：" class="headerlink" title="内容："></a>内容：</h3><p>编写函数<code>ResolutionProp</code>实现命题逻辑的归结推理，函数要点如下：</p>
+<ul>
+<li>输入为子句集, 每个子句中的元素是原子命题或其否定.</li>
+</ul>
+<ul>
+<li>输出归结推理的过程, <strong>每个归结步骤存为字符串</strong>, 将所有归结步骤按序存到一个列表中并返回, 即返回的数据类型为 <code>list[str]</code>.</li>
+<li>一个归结步骤的格式为 <code>步骤编号 R[用到的子句编号] = 子句</code>. 如果一个字句包含多个公式，则每个公式用编号 <code>a,b,c...</code>区分，如果一个字句仅包含一个公式，则不用编号区分.（见课件和例题）</li>
+</ul>
+<p>例子: 输入子句集</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">KB</span> = &#123;(FirstGrade,), (~FirstGrade,Child), (~Child,)&#125;<br></code></pre></td></tr></table></figure>
+
+<p>则调用 <code>ResolutionProp(KB)</code>后返回推理过程的列表如下:</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>(FirstGrade,),<br><span class="hljs-symbol">2 </span>(~FirstGrade,Child)<br><span class="hljs-symbol">3 </span>(~Child,),<br><span class="hljs-symbol">4 </span>R[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>a] = (Child,),<br><span class="hljs-symbol">5 </span>R[<span class="hljs-number">3</span>,<span class="hljs-number">4</span>] = ()<br></code></pre></td></tr></table></figure>
+
+<h3 id="ResolutionProp-函数"><a href="#ResolutionProp-函数" class="headerlink" title="ResolutionProp()函数"></a><code>ResolutionProp()</code>函数</h3><p>working on…</p>
+<ul>
+<li>这里我们设置了两个字典用于存储子句的编号以及子句中元素的编号，方便后续打印；同时先将基本的子句集列举出来</li>
+<li>设置<code>processed_KB</code>用于记录已经归结过的子句，同时建立一个<code>new_KB</code>用于记录每轮新增子句，原KB用于不断更新–保存旧子句和加入新子句</li>
+<li>在进行归结时，需要将完整子句集与新增子句集进行归结，进行归结的子句需要没被归结过–也就是不在processed_KB之中。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">ResolutionProp</span>(<span class="hljs-params">KB</span>):<br>    steps = []<br>    k = <span class="hljs-number">1</span><br>    clause_dict = &#123;&#125;  <span class="hljs-comment"># 记录子句及其编号--同时加入新增语句</span><br>    clause_labels = &#123;&#125;  <span class="hljs-comment"># 记录子句内元素的编号</span><br>    <br>    <span class="hljs-comment"># 初始化子句编号,同时将子句集列举出来</span><br>    <span class="hljs-keyword">for</span> clause <span class="hljs-keyword">in</span> KB:<br>        clause_dict[clause] = k<br>        steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> <span class="hljs-subst">&#123;clause&#125;</span>&quot;</span>)<br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(clause) &gt; <span class="hljs-number">1</span>: <span class="hljs-comment">#有多个元素的子句编号a,b...</span><br>            clause_labels[clause] = &#123;ele: <span class="hljs-built_in">chr</span>(<span class="hljs-number">97</span> + i) <span class="hljs-keyword">for</span> i, ele <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(clause)&#125; <br>        k += <span class="hljs-number">1</span><br>    <br>    clauses = <span class="hljs-built_in">list</span>(KB)<br>    processed_KB = <span class="hljs-built_in">set</span>()  <span class="hljs-comment"># 记录已经归结过的子句--保证不会重复归结</span><br>    new_KB = <span class="hljs-built_in">set</span>(clauses)  <span class="hljs-comment"># 初始子句集--需要进行更新</span><br>    <br>    <span class="hljs-keyword">while</span> new_KB:<br>        current_clauses = <span class="hljs-built_in">list</span>(new_KB)  <span class="hljs-comment"># 当前需要归结的新子句--上一轮生成的语句</span><br>        new_KB.clear() <br>        <br>            <br>        <br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(current_clauses)):<br>            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(clauses)):  <span class="hljs-comment"># 之前的子句 + 新生成的子句</span><br>                <span class="hljs-keyword">if</span> current_clauses[i] == clauses[j]:  <span class="hljs-comment"># 避免自身归结</span><br>                    <span class="hljs-keyword">continue</span><br>                <span class="hljs-keyword">if</span> current_clauses[i] <span class="hljs-keyword">in</span> processed_KB : <span class="hljs-comment"># 这里是防止出现重复归结</span><br>                    <span class="hljs-keyword">continue</span><br>                <span class="hljs-keyword">if</span> clauses[j] <span class="hljs-keyword">in</span> processed_KB :<br>                    <span class="hljs-keyword">continue</span><br>                <br>                res, resolved_literals = resolve(current_clauses[i], clauses[j])<br>                <span class="hljs-keyword">if</span> res <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>                    clause1_id = <span class="hljs-built_in">str</span>(clause_dict[current_clauses[i]])<br>                    clause2_id = <span class="hljs-built_in">str</span>(clause_dict[clauses[j]])<br>                    <br>                    <span class="hljs-comment"># 处理字句编号</span><br>                    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(current_clauses[i]) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> resolved_literals[<span class="hljs-number">0</span>] <span class="hljs-keyword">in</span> clause_labels[current_clauses[i]]:<br>                        clause1_id += clause_labels[current_clauses[i]][resolved_literals[<span class="hljs-number">0</span>]]<br>                    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(clauses[j]) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> resolved_literals[<span class="hljs-number">1</span>] <span class="hljs-keyword">in</span> clause_labels[clauses[j]]:<br>                        clause2_id += clause_labels[clauses[j]][resolved_literals[<span class="hljs-number">1</span>]]<br>                    <span class="hljs-comment">#在这里把已经归结的加入</span><br>                    processed_KB.add(current_clauses[i])<br>                    processed_KB.add(clauses[j])<br>                    <br>                    <span class="hljs-keyword">if</span> res == ():<span class="hljs-comment">#空子句</span><br>                        steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> R[<span class="hljs-subst">&#123;clause1_id&#125;</span>,<span class="hljs-subst">&#123;clause2_id&#125;</span>] = ()&quot;</span>)<br>                        <span class="hljs-keyword">return</span> steps<br>                    <br>                    <span class="hljs-keyword">if</span> res <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> clause_dict:<br>                        clause_dict[res] = k<br>                        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">1</span>:<br>                            clause_labels[res] = &#123;lit: <span class="hljs-built_in">chr</span>(<span class="hljs-number">97</span> + i) <span class="hljs-keyword">for</span> i, lit <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(res)&#125;<br>                        new_KB.add(res)<br>                        clauses.append(res)<br>                        steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> R[<span class="hljs-subst">&#123;clause1_id&#125;</span>,<span class="hljs-subst">&#123;clause2_id&#125;</span>] = <span class="hljs-subst">&#123;res&#125;</span>&quot;</span>)<br>                        k += <span class="hljs-number">1</span><br>        <br>            <br>        <span class="hljs-comment">#clauses.extend(current_clauses)  # 将新子句加入原始子句集中</span><br><br>    <br>    <span class="hljs-keyword">return</span> steps<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="resolve-函数"><a href="#resolve-函数" class="headerlink" title="resolve()函数"></a><strong><code>resolve()</code>函数</strong></h3><p>！这个函数主要用于做<strong>单步归结</strong> ！</p>
+<p>思路：</p>
+<ul>
+<li>遍历子句1中的所有元素，对每一个元素都取反，查看这个取反的元素是否在子句2中，如果存在，说明找到了一组互补对，进行归结，并返回新的子句集（合并并去掉互补对）以及互补对；如果取反的元素不在子句2中继续遍历。</li>
+<li>如果遍历到结尾都没有找到，说明这两句无法进行归结，返回空。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">resolve</span>(<span class="hljs-params">clause1, clause2</span>):<br>    <span class="hljs-keyword">for</span> literal <span class="hljs-keyword">in</span> clause1:<br>        complement = <span class="hljs-string">f&quot;~<span class="hljs-subst">&#123;literal&#125;</span>&quot;</span> <span class="hljs-keyword">if</span> literal[<span class="hljs-number">0</span>] != <span class="hljs-string">&#x27;~&#x27;</span> <span class="hljs-keyword">else</span> literal[<span class="hljs-number">1</span>:]<br>        <span class="hljs-keyword">if</span> complement <span class="hljs-keyword">in</span> clause2:<br>            <span class="hljs-comment"># 新的子句应该去除字面量和互补字面量</span><br>            new_clause = <span class="hljs-built_in">tuple</span>(<span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">set</span>(clause1).union(<span class="hljs-built_in">set</span>(clause2)) - &#123;literal, complement&#125;))<br>            <br>            <span class="hljs-comment"># 如果新子句为空，返回空子句</span><br>            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> new_clause:<br>                <span class="hljs-keyword">return</span> (), (literal, complement)<br>            <span class="hljs-keyword">return</span> new_clause, (literal, complement)<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span><br></code></pre></td></tr></table></figure>
+
+<p>其他注意点：</p>
+<ul>
+<li>子句是元组，但由于元组是一种不可修改的数据结构，我们需要在合并子句集的时候就去除互补对。</li>
+</ul>
+<h3 id="main函数"><a href="#main函数" class="headerlink" title="main函数"></a><code>main</code>函数</h3><p>main函数比较简单，只需要设置好子句集，然后调用<code>ResolutionProp</code>函数，再输出steps这个字符串列表就好了。可以增加一些新例子。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    KB = &#123;<br>        (<span class="hljs-string">&#x27;FirstGrade&#x27;</span>,), <br>        (<span class="hljs-string">&#x27;~FirstGrade&#x27;</span>, <span class="hljs-string">&#x27;Child&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~Child&#x27;</span>,)<br>    &#125;<br>    KB1=&#123;<br>        (<span class="hljs-string">&#x27;a&#x27;</span>,),<br>        (<span class="hljs-string">&#x27;b&#x27;</span>,)<br>    &#125;<br>    KB2 = &#123;<br>        (<span class="hljs-string">&#x27;A&#x27;</span>,), <br>        (<span class="hljs-string">&#x27;~A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~B&#x27;</span>,)<br>    &#125;<br>    KB3 = &#123;<br>        (<span class="hljs-string">&#x27;P&#x27;</span>, <span class="hljs-string">&#x27;Q&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~P&#x27;</span>, <span class="hljs-string">&#x27;R&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~Q&#x27;</span>, <span class="hljs-string">&#x27;R&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~R&#x27;</span>,)<br>    &#125;<br>    KB4 = &#123;<br>        (<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~A&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~B&#x27;</span>, <span class="hljs-string">&#x27;D&#x27;</span>), <br>        (<span class="hljs-string">&#x27;~C&#x27;</span>, <span class="hljs-string">&#x27;~D&#x27;</span>)<br>    &#125;<br>    steps = ResolutionProp(KB)<br>    <span class="hljs-keyword">for</span> step <span class="hljs-keyword">in</span> steps:<br>        <span class="hljs-built_in">print</span>(step)<br></code></pre></td></tr></table></figure>
+
+<h2 id="实验二：最一般合一算法"><a href="#实验二：最一般合一算法" class="headerlink" title="实验二：最一般合一算法"></a>实验二：最一般合一算法</h2><p>编写函数 <code>MGU</code>实现最一般合一算法. 该函数要点如下:</p>
+<ul>
+<li>输入为<strong>两个原子公式</strong>, 它们的<strong>谓词相同</strong>. 其数据类型为 <code>str</code>, 格式详见课件.</li>
+<li>输出最一般合一的结果, 数据类型为 <code>dict</code>, 格式形如**{变量: 项, 变量: 项}**, 其中的变量和项均为字符串.</li>
+<li>若不存在合一, 则返回空字典.</li>
+</ul>
+<p>例子:</p>
+<p>调用 <code>MGU(&#39;P(xx,a)&#39;, &#39;P(b,yy)&#39;)</code>后返回字典 <code>&#123;&#39;xx&#39;:&#39;b&#39;, &#39;yy&#39;:&#39;a&#39;&#125;</code>.</p>
+<p>调用 <code>MGU(&#39;P(a,xx,f(g(yy)))&#39;, &#39;P(zz,f(zz),f(uu))&#39;)</code>后返回字典 <code>&#123;&#39;zz&#39;:&#39;a&#39;, &#39;xx&#39;:&#39;f(a)&#39;, &#39;uu&#39;:&#39;g(yy)&#39;&#125;</code>.</p>
+<h3 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h3><ol>
+<li>只含一个元素的 <code>tuple</code>类型要在末尾加 <code>,</code>. 例如 <code>(&#39;a&#39;)</code>是错误的写法, 而正确的写法是 <code>(&#39;a&#39;,)</code>.</li>
+<li><code>&#123;&#125;</code>会被解释成空字典. 若要定义空集合请用 <code>set()</code>.</li>
+</ol>
+<p>这一部分只写了一个函数（MGU）和一个辅助函数（用于判断是否含有变量）</p>
+<h3 id="MGU-literal1-literal2"><a href="#MGU-literal1-literal2" class="headerlink" title="MGU(literal1,literal2)"></a>MGU(literal1,literal2)</h3><p>实现思路：</p>
+<ul>
+<li>输入：两个谓词相同的原子公式（字符串类型）；</li>
+<li>返回&#x2F;输出：字典，格式：{变量: 项, 变量: 项}</li>
+</ul>
+<ol>
+<li>首先处理原子公式，我们需要对各个位置的变量or项进行比较，在此之前，我们可以去掉谓词<code>P()</code>，然后再使用分词器<code>split</code>来将字符串分割成列表元素。</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#其实这部分可以直接使用find()来查找第一个左括号，再使用切片</span><br>i=<span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(literal1)):<br>    <span class="hljs-keyword">if</span> literal1[i]!=<span class="hljs-string">&#x27;(&#x27;</span>:<br>        i+=<span class="hljs-number">1</span><br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-keyword">break</span><br><br><span class="hljs-comment"># 去掉P(),然后使用split以逗号划分项</span><br>lit1=literal1[i+<span class="hljs-number">1</span>:-<span class="hljs-number">1</span>].split(<span class="hljs-string">&#x27;,&#x27;</span>)<br>lit2=literal2[i+<span class="hljs-number">1</span>:-<span class="hljs-number">1</span>].split(<span class="hljs-string">&#x27;,&#x27;</span>)<br><br><span class="hljs-comment">#不等长无法合并--特殊情况</span><br><span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(lit1)!=<span class="hljs-built_in">len</span>(lit2):<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>最重要的处理部分–主要思想就是一个个元素比较，分<strong>三类</strong>：<ul>
+<li>两个元素都是变量–无法合一，返回None</li>
+<li>一个元素是变量，另一个是项–用项替代变量，并加入到res字典中，同时把式子中所有相同变量用项替代</li>
+<li>两个元素都是项–分析是不是f()或f(g())这种函数嵌套的项，如果都含有f()，需要进行<strong>递归</strong>判断（递归调用<strong>MGU()</strong>）</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#遍历两个集合</span><br>   <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(lit1)):<br>       <span class="hljs-keyword">if</span> lit1[i]==lit2[i]:<br>           <span class="hljs-keyword">continue</span><br>       <br>       <span class="hljs-keyword">if</span> lit1[i] != lit2[i]:<br>           <span class="hljs-comment"># 查看字符串里是否存在变量？如果都是变量无法合一--单独一个变量，不是项</span><br>           v1=Check_Var(lit1[i])<br>           v2=Check_Var(lit2[i])<br>           <span class="hljs-comment">#全都含有变量，无法合一</span><br>           <span class="hljs-keyword">if</span> v1 <span class="hljs-keyword">and</span> v2:<br>              <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <br>           <span class="hljs-keyword">elif</span> v1 <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">and</span> v2 <span class="hljs-keyword">is</span> <span class="hljs-literal">False</span>:<br>               <span class="hljs-keyword">if</span> v1 <span class="hljs-keyword">in</span> res:<br>                   <span class="hljs-comment">#如果v1在res中已经进行了项的替换，不能再替换成其他的</span><br>                   <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <br>               <span class="hljs-comment">#v1是变量，v2是项</span><br>               res[lit1[i]]=lit2[i]<br>               <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i+<span class="hljs-number">1</span>,<span class="hljs-built_in">len</span>(lit1)):<br>                   lit1[j]=lit1[j].replace(lit1[i],lit2[i])<br>                   lit2[j]=lit2[j].replace(lit1[i],lit2[i])<br>           <span class="hljs-keyword">elif</span> v2 <span class="hljs-keyword">is</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">and</span> v1 <span class="hljs-keyword">is</span> <span class="hljs-literal">False</span>:<br>               <span class="hljs-keyword">if</span> v2 <span class="hljs-keyword">in</span> res:<br>                   <span class="hljs-comment">#如果v1在res中已经进行了项的替换，不能再替换成其他的</span><br>                   <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <br>               <span class="hljs-comment">#v1是变量，v2是项</span><br>               res[lit2[i]]=lit1[i]<br>               <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i+<span class="hljs-number">1</span>,<span class="hljs-built_in">len</span>(lit1)):<br>                   lit1[j]=lit1[j].replace(lit2[i],lit1[i])<br>                   lit2[j]=lit2[j].replace(lit2[i],lit1[i])<br>           <span class="hljs-keyword">else</span>:<br>               <span class="hljs-comment">#单独判断--可能存在嵌套的函数项</span><br>               <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;(&#x27;</span> <span class="hljs-keyword">in</span> lit1[i] <span class="hljs-keyword">and</span> <span class="hljs-string">&#x27;(&#x27;</span> <span class="hljs-keyword">in</span> lit2[i]:<br>                   sub_res=MGU(lit1[i],lit2[i])<br>                   <span class="hljs-keyword">if</span> sub_res <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:<br>                       <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span><br>                   <span class="hljs-keyword">else</span>: <br>                       res.update(sub_res)<br>               <span class="hljs-keyword">else</span>:   <br>                   <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span> <br><br></code></pre></td></tr></table></figure>
+
+<h3 id="Check-Var"><a href="#Check-Var" class="headerlink" title="Check_Var()"></a>Check_Var()</h3><p>很普通的一个函数，这里我只判断了是否存在x，y，z，u这几个变量，如果有更多函数符号可以添加，或者后面修改成传递变量集（but…lazy）</p>
+<h3 id="简单测试一下："><a href="#简单测试一下：" class="headerlink" title="简单测试一下："></a>简单测试一下：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-comment"># literal1=&#x27;P(f(zz))&#x27;</span><br>    <span class="hljs-comment"># literal2=&#x27;P(f(f(u)))&#x27;</span><br>    <span class="hljs-comment"># literal1=&#x27;P(xx,a)&#x27;</span><br>    <span class="hljs-comment"># literal2=&#x27;P(b,yy)&#x27;</span><br>    <span class="hljs-comment"># literal1=&#x27;P(zz,xx)&#x27;</span><br>    <span class="hljs-comment"># literal2=&#x27;P(a,f(zz))&#x27;</span><br>    literal1=<span class="hljs-string">&#x27;P(a,xx,f(g(yy)))&#x27;</span><br>    literal2=<span class="hljs-string">&#x27;P(zz,f(zz),f(uu))&#x27;</span><br>    res=MGU(literal1,literal2)<br>    <span class="hljs-keyword">if</span> res <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>        <span class="hljs-keyword">for</span> key,value <span class="hljs-keyword">in</span> res.items():<br>            <span class="hljs-built_in">print</span>(key,<span class="hljs-string">&quot;:&quot;</span>,value)<br>    <span class="hljs-keyword">else</span>:<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;NO MGU found&quot;</span>)<br>        <br></code></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs isbl"><span class="hljs-variable">zz</span> : <span class="hljs-variable">a</span><br><span class="hljs-variable">xx</span> : <span class="hljs-function"><span class="hljs-title">f</span>(<span class="hljs-variable">a</span>)</span><br><span class="hljs-variable">uu</span> : <span class="hljs-function"><span class="hljs-title">g</span>(<span class="hljs-variable">yy</span>)</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="一阶逻辑的归结推理"><a href="#一阶逻辑的归结推理" class="headerlink" title="一阶逻辑的归结推理"></a>一阶逻辑的归结推理</h2><p>编写函数 <code>ResolutionFOL</code>实现一阶逻辑的归结推理. 该函数要点如下:</p>
+<ul>
+<li>输入为子句集, <code>KB</code>子句中的<strong>每个元素是一阶逻辑公式</strong>(不含全称量词和存在量词等量词符号)</li>
+<li>输出归结推理的过程, 每个归结步骤存为字符串, 将所有归结步骤按序存到一个列表中并返回, 即<strong>返回的数据类型</strong>为 <code>list[str]</code></li>
+<li>一个归结步骤的格式为 <code>步骤编号 R[用到的子句编号]&#123;最一般合一&#125; = 子句</code>, 其中最一般合一输出格式为”{变量&#x3D;常量, 变量&#x3D;常量}”.如果一个字句包含多个公式，则每个公式用编号 <code>a,b,c...</code>区分，如果一个字句仅包含一个公式，则不用编号区分。</li>
+</ul>
+<p>例题: 输入</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">KB = &#123;(<span class="hljs-built_in">GradStudent</span>(sue),),(~<span class="hljs-built_in">GradStudent</span>(<span class="hljs-attribute">x</span>),<span class="hljs-built_in">Student</span>(x)),(~<span class="hljs-built_in">Student</span>(x),<span class="hljs-built_in">HardWorker</span>(x)),(~<span class="hljs-built_in">HardWorker</span>(sue),)&#125;<br></code></pre></td></tr></table></figure>
+
+<p>则调用 <code>ResolutionFOL(KB)</code>后返回推理过程的列表如下:</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>(GradStudent(sue),)<br><span class="hljs-symbol">2 </span>(~GradStudent(x),Student(x))<br><span class="hljs-symbol">3 </span>(~Student(x),HardWorker(x))<br><span class="hljs-symbol">4 </span>(~HardWorker(sue),)<br><span class="hljs-symbol">5 </span>R[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>a]&#123;x=sue&#125; = (Student(sue),)<br><span class="hljs-symbol">6 </span>R[<span class="hljs-number">3</span>a,<span class="hljs-number">5</span>]&#123;x=sue&#125; = (HardWorker(sue),)<br><span class="hljs-symbol">7 </span>R[<span class="hljs-number">4</span>,<span class="hljs-number">6</span>] = []<br></code></pre></td></tr></table></figure>
+
+<p>输入</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">KB = &#123;(<span class="hljs-built_in">A</span>(tony),),(<span class="hljs-built_in">A</span>(mike),),(<span class="hljs-built_in">A</span>(john),),(<span class="hljs-built_in">L</span>(tony,rain),),(<span class="hljs-built_in">L</span>(tony,snow),),(~<span class="hljs-built_in">A</span>(<span class="hljs-attribute">x</span>),<span class="hljs-built_in">S</span>(x),<span class="hljs-built_in">C</span>(x)),(~<span class="hljs-built_in">C</span>(y),~<span class="hljs-built_in">L</span>(y,rain)),(<span class="hljs-built_in">L</span>(z,snow),~<span class="hljs-built_in">S</span>(z)),(~<span class="hljs-built_in">L</span>(tony,u),~<span class="hljs-built_in">L</span>(mike,u)),(<span class="hljs-built_in">L</span>(tony,v),<span class="hljs-built_in">L</span>(mike,v)),(~<span class="hljs-built_in">A</span>(w),~<span class="hljs-built_in">C</span>(w),<span class="hljs-built_in">S</span>(w))&#125;<br></code></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>(A(tony),)<br><span class="hljs-symbol">2 </span>(A(mike),)<br><span class="hljs-symbol">3 </span>(A(john),)<br><span class="hljs-symbol">4 </span>(L(tony,rain),)<br><span class="hljs-symbol">5 </span>(L(tony,snow),)<br><span class="hljs-symbol">6 </span>(~A(x),S(x),C(x))<br><span class="hljs-symbol">7 </span>(~C(y),~L(y,rain))<br><span class="hljs-symbol">8 </span>(L(z,snow),~S(z))<br><span class="hljs-symbol">9 </span>(~L(tony,u),~L(mike,u))<br><span class="hljs-symbol">10 </span>(L(tony,v),L(mike,v))<br><span class="hljs-symbol">11 </span>(~A(w),~C(w),S(w))<br><span class="hljs-symbol">12 </span>R[<span class="hljs-number">2</span>,<span class="hljs-number">11</span>a]&#123;w=mike&#125; = (S(mike),~C(mike))<br><span class="hljs-symbol">13 </span>R[<span class="hljs-number">5</span>,<span class="hljs-number">9</span>a]&#123;u=snow&#125; = (~L(mike,snow),)<br><span class="hljs-symbol">14 </span>R[<span class="hljs-number">6</span>c,<span class="hljs-number">12</span>b]&#123;x=mike&#125; = (S(mike),~A(mike),S(mike))<br><span class="hljs-symbol">15 </span>R[<span class="hljs-number">2</span>,<span class="hljs-number">14</span>b] = (S(mike),)<br><span class="hljs-symbol">16 </span>R[<span class="hljs-number">8</span>b,<span class="hljs-number">15</span>]&#123;z=mike&#125; = (L(mike,snow),)<br><span class="hljs-symbol">17 </span>R[<span class="hljs-number">13</span>,<span class="hljs-number">16</span>] = []<br></code></pre></td></tr></table></figure>
+
+<p>输入</p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mathematica"><span class="hljs-variable">KB</span> <span class="hljs-operator">=</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">On</span><span class="hljs-punctuation">(</span><span class="hljs-variable">tony</span><span class="hljs-operator">,</span><span class="hljs-variable">mike</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">On</span><span class="hljs-punctuation">(</span><span class="hljs-variable">mike</span><span class="hljs-operator">,</span><span class="hljs-variable">john</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span><span class="hljs-punctuation">(</span><span class="hljs-built_in">Green</span><span class="hljs-punctuation">(</span><span class="hljs-variable">tony</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span><span class="hljs-punctuation">(</span><span class="hljs-operator">~</span><span class="hljs-built_in">Green</span><span class="hljs-punctuation">(</span><span class="hljs-variable">john</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span><span class="hljs-punctuation">(</span><span class="hljs-operator">~</span><span class="hljs-built_in">On</span><span class="hljs-punctuation">(</span><span class="hljs-variable">xx</span><span class="hljs-operator">,</span><span class="hljs-variable">yy</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,~</span><span class="hljs-built_in">Green</span><span class="hljs-punctuation">(</span><span class="hljs-variable">xx</span><span class="hljs-punctuation">)</span><span class="hljs-operator">,</span><span class="hljs-built_in">Green</span><span class="hljs-punctuation">(</span><span class="hljs-variable">yy</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span>(<span class="hljs-keyword">On</span>(tony,mike),),<br><span class="hljs-symbol">2 </span>(<span class="hljs-keyword">On</span>(mike,john),),<br><span class="hljs-symbol">3 </span>(Green(tony),),<br><span class="hljs-symbol">4 </span>(~Green(john),),<br><span class="hljs-symbol">5 </span>(~<span class="hljs-keyword">On</span>(xx,yy),~Green(xx),Green(yy)),<br><span class="hljs-symbol">6 </span>R[<span class="hljs-number">4</span>,<span class="hljs-number">5</span>c]&#123;yy=john&#125; = (~<span class="hljs-keyword">On</span>(xx,john),~Green(xx)),<br><span class="hljs-symbol">7 </span>R[<span class="hljs-number">3</span>,<span class="hljs-number">5</span>b]&#123;xx=tony&#125; = (~<span class="hljs-keyword">On</span>(tony,yy),Green(yy)),<br><span class="hljs-symbol">8 </span>R[<span class="hljs-number">2</span>,<span class="hljs-number">6</span>a]&#123;xx=mike&#125; = (~Green(mike),),<br><span class="hljs-symbol">9 </span>R[<span class="hljs-number">1</span>,<span class="hljs-number">7</span>a]&#123;yy=mike&#125; = (Green(mike),),<br><span class="hljs-symbol">10 </span>R[<span class="hljs-number">8</span>,<span class="hljs-number">9</span>] = ()<br></code></pre></td></tr></table></figure>
+
+<h3 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h3><ol>
+<li>只含一个元素的 <code>tuple</code>类型要在末尾加 <code>,</code>. 例如 <code>(&#39;x&#39;)</code>是错误的写法, 而正确的写法是 <code>(&#39;x&#39;,)</code>.</li>
+<li><code>&#123;&#125;</code>会被解释成空字典. 若要定义空集合请用 <code>set()</code>.</li>
+<li>请提交代码时只提交一个 <code>.py</code>代码文件, 请不要提交其他文件.</li>
+<li>例题和作业都会进行代码测试.</li>
+<li>上述作业的输出仅供参考。如果有不同的归结顺序，结果相同的情况，代码也算正确.</li>
+</ol>
+<p><img src="/img/image-20250310165631716.png" srcset="/img/loading.gif" lazyload alt="一阶逻辑归结算法"></p>
+<h3 id="实现思路："><a href="#实现思路：" class="headerlink" title="实现思路："></a>实现思路：</h3><blockquote>
+<p>参考以及复用大部分前两个任务的代码来构建</p>
+</blockquote>
+<h4 id="ResolutionFOL-："><a href="#ResolutionFOL-：" class="headerlink" title="ResolutionFOL()："></a><code>ResolutionFOL()</code>：</h4><p>算法思路：</p>
+<ul>
+<li>将KB库以子句集的方式传入到函数中进行归结处理</li>
+<li>对子句集反复进行单步归结，同时使用MGU算法进行合一处理</li>
+</ul>
+<p>具体：</p>
+<ul>
+<li><p>同上面的归结算法，由于输出时需要有美观的编号，我们设置了两个记录字典–<code>clause_dict</code>和<code>clause_labels</code>，前者记录子句的编号，后者记录子句中元素的编号（有多个元素的子句才需要）</p>
+</li>
+<li><p>类似地，先将子句集的子句进行编号</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python">k = <span class="hljs-number">1</span><br>clause_dict = &#123;&#125;  <span class="hljs-comment"># 记录子句及其编号--同时加入新增语句</span><br>clause_labels = &#123;&#125;  <span class="hljs-comment"># 记录子句内元素的编号</span><br><br><span class="hljs-comment"># 初始化子句编号,同时将子句集列举出来</span><br><span class="hljs-keyword">for</span> clause <span class="hljs-keyword">in</span> KB:<br>    clause_dict[clause] = k<br>    clause_str = format_clause(clause)<br>    steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> <span class="hljs-subst">&#123;clause_str&#125;</span>&quot;</span>)<br><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(clause) &gt; <span class="hljs-number">1</span>:<span class="hljs-comment">#有多个元素的子句编号a,b...</span><br>        clause_labels[clause] = &#123;&#125;<br>        <span class="hljs-keyword">for</span> i, literal <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(clause):<br>            clause_labels[clause][literal] = <span class="hljs-built_in">chr</span>(<span class="hljs-number">97</span> + i)  <br>        k += <span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p>进入归结的主要步骤，需要维持一个已经归结的子句对的集合–保证子句对不会重复归结（这部分和上面的归结算法有点出入，前者只需要保证我归结过的句子不用再出现就可以了），但是由于我们可以对谓词P(x)赋不同的值，所以可以对他赋值后产生的新子句再次归结。</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">ResolutionFOL</span>(<span class="hljs-params">KB</span>):<br>    steps = []<br>    k = <span class="hljs-number">1</span><br>    clause_dict = &#123;&#125;  <span class="hljs-comment"># 记录子句及其编号--同时加入新增语句</span><br>    clause_labels = &#123;&#125;  <span class="hljs-comment"># 记录子句内元素的编号</span><br>    <br>    <span class="hljs-comment"># 初始化子句编号,同时将子句集列举出来</span><br>    <span class="hljs-keyword">for</span> clause <span class="hljs-keyword">in</span> KB:<br>        clause_dict[clause] = k<br>        clause_str = format_clause(clause)<br>        steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> <span class="hljs-subst">&#123;clause_str&#125;</span>&quot;</span>)<br>        <br>        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(clause) &gt; <span class="hljs-number">1</span>:<span class="hljs-comment">#有多个元素的子句编号a,b...</span><br>            clause_labels[clause] = &#123;&#125;<br>            <span class="hljs-keyword">for</span> i, literal <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(clause):<br>                clause_labels[clause][literal] = <span class="hljs-built_in">chr</span>(<span class="hljs-number">97</span> + i)  <br>        k += <span class="hljs-number">1</span><br>    <br>    original_size = k - <span class="hljs-number">1</span>  <span class="hljs-comment"># 记录原始子句集的大小</span><br>    <span class="hljs-comment">#原始子句集</span><br>    clauses = <span class="hljs-built_in">list</span>(KB)<br>    <span class="hljs-comment"># 记录已经归结过的子句--保证不会重复归结（但问题是一阶逻辑是可以多次为量词赋值的，所有我们记录的不是归结过的单个子句，而是子句对）</span><br>    processed = <span class="hljs-built_in">set</span>()   <br>   <br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        new_resolvents = []<br>        <br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(clauses)):<br>            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(clauses)):<br>                <span class="hljs-keyword">if</span> clauses[i] == clauses[j]:  <span class="hljs-comment"># 避免自身归结</span><br>                    <span class="hljs-keyword">continue</span><br>                c1 = clauses[i]<br>                c2 = clauses[j]<br>                <br>                <span class="hljs-keyword">if</span> (c1, c2) <span class="hljs-keyword">in</span> processed:<br>                    <span class="hljs-keyword">continue</span><br>                <span class="hljs-comment">#这里加入子句对</span><br>                processed.add((c1, c2))<br>                processed.add((c2, c1))<br>                <br>                resolvents = resolve(c1, c2)<br>                <br>                <span class="hljs-keyword">for</span> resolvent_info <span class="hljs-keyword">in</span> resolvents:<br>                    <span class="hljs-comment">#由于输出需要含有合一替换，所以resolve函数有一些变化</span><br>                    resolvent, lit1, lit2, mgu = resolvent_info<br>                    <br>                    <span class="hljs-comment"># 编号</span><br>                    clause1_id = <span class="hljs-built_in">str</span>(clause_dict[c1])<br>                    clause2_id = <span class="hljs-built_in">str</span>(clause_dict[c2])<br>                    <br>                    <span class="hljs-comment"># 处理元素的编号</span><br>                    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(c1) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> lit1 <span class="hljs-keyword">in</span> clause_labels.get(c1, &#123;&#125;):<br>                        clause1_id += clause_labels[c1][lit1]<br>                    <br>                    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(c2) &gt; <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> lit2 <span class="hljs-keyword">in</span> clause_labels.get(c2, &#123;&#125;):<br>                        clause2_id += clause_labels[c2][lit2]<br>                    <br>                    <span class="hljs-comment">#MGU调用</span><br>                    mgu_str = format_mgu(mgu)<br>                    <br>                    <span class="hljs-comment"># 查看是否产生了空集</span><br>                    <span class="hljs-keyword">if</span> resolvent == ():<br>                        steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> R[<span class="hljs-subst">&#123;clause1_id&#125;</span>,<span class="hljs-subst">&#123;clause2_id&#125;</span>]<span class="hljs-subst">&#123;mgu_str&#125;</span> = ()&quot;</span>)<br>                        <span class="hljs-comment"># 找到空子句，简化归结过程</span><br>                        simplified_steps = Simplify(steps, original_size)<br>                        <span class="hljs-keyword">return</span> simplified_steps<br>                    <br>                    <span class="hljs-comment"># 将新的子句加入子句集</span><br>                    <span class="hljs-keyword">if</span> resolvent <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> clause_dict:<br>                        clause_dict[resolvent] = k<br>                        <br>                        <span class="hljs-comment"># 编号</span><br>                        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(resolvent) &gt; <span class="hljs-number">1</span>:<br>                            clause_labels[resolvent] = &#123;&#125;<br>                            <span class="hljs-keyword">for</span> idx, lit <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(resolvent):<br>                                clause_labels[resolvent][lit] = <span class="hljs-built_in">chr</span>(<span class="hljs-number">97</span> + idx)<br>                        <br>                        resolvent_str = format_clause(resolvent)<br>                        steps.append(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;k&#125;</span> R[<span class="hljs-subst">&#123;clause1_id&#125;</span>,<span class="hljs-subst">&#123;clause2_id&#125;</span>]<span class="hljs-subst">&#123;mgu_str&#125;</span> = <span class="hljs-subst">&#123;resolvent_str&#125;</span>&quot;</span>)<br>                        new_resolvents.append(resolvent)<br>                        k += <span class="hljs-number">1</span><br>        <br>        <span class="hljs-comment">#不产生新子句，返回结果</span><br>        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> new_resolvents:<br>            <span class="hljs-keyword">return</span> steps<br>        <br>        <span class="hljs-comment"># 扩展旧子句集</span><br>        clauses.extend(new_resolvents)<br></code></pre></td></tr></table></figure>
+
+<h4 id="extract-parents"><a href="#extract-parents" class="headerlink" title="extract_parents()"></a><code>extract_parents()</code></h4><p>用于从归结步骤中提取父子句编号，用于筛选出真正有用的归结步骤</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">extract_parents</span>(<span class="hljs-params">step</span>):<br>    <span class="hljs-comment">#从归结步骤中提取父子句编号</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;R[&quot;</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> step:<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span><br>    <br>    <span class="hljs-comment"># 提取R[]内的内容</span><br>    relation_part = step[step.index(<span class="hljs-string">&quot;R[&quot;</span>) + <span class="hljs-number">2</span>:step.index(<span class="hljs-string">&quot;]&quot;</span>)]<br>    parents = relation_part.split(<span class="hljs-string">&#x27;,&#x27;</span>)<br>    <br>    <span class="hljs-comment"># 提取数字部分</span><br>    parent1 = <span class="hljs-built_in">int</span>(<span class="hljs-string">&#x27;&#x27;</span>.join(c <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> parents[<span class="hljs-number">0</span>] <span class="hljs-keyword">if</span> c.isdigit()))<br>    parent2 = <span class="hljs-built_in">int</span>(<span class="hljs-string">&#x27;&#x27;</span>.join(c <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> parents[<span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> c.isdigit()))<br>    <br>    <span class="hljs-comment"># 提取字母后缀</span><br>    parent1_suffix = <span class="hljs-string">&#x27;&#x27;</span>.join(c <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> parents[<span class="hljs-number">0</span>] <span class="hljs-keyword">if</span> c.isalpha())<br>    parent2_suffix = <span class="hljs-string">&#x27;&#x27;</span>.join(c <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> parents[<span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> c.isalpha())<br>    <br>    <span class="hljs-keyword">return</span> parent1, parent2, parent1_suffix, parent2_suffix<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="get-step-number-step"><a href="#get-step-number-step" class="headerlink" title="get_step_number(step)"></a><code>get_step_number(step)</code></h4><p>获取编号，把step的第一个标号提取出来</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_step_number</span>(<span class="hljs-params">step</span>): <span class="hljs-comment">#获取编号</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(step.split(<span class="hljs-string">&#x27; &#x27;</span>)[<span class="hljs-number">0</span>])<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="Simplify-steps-original-size"><a href="#Simplify-steps-original-size" class="headerlink" title="Simplify(steps, original_size)"></a><strong>Simplify</strong>(steps, original_size)</h4><p>简化归结过程–把又臭又长的过程删减成有用的过程</p>
+<ul>
+<li>记录初始子句集（也就是KB库转换的最初的子句集）</li>
+<li>同时建立一个存储有用子句的集合</li>
+<li>在旧的step的基础上进行筛选，同时创建新的编号，创建num2idx字典，用于存储编号到索引的映射</li>
+<li>为了简化过程，我们是从空子句开始回溯，找到能得到空子句的核心步骤。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">Simplify</span>(<span class="hljs-params">steps, original_size</span>): <span class="hljs-comment">#简化归结过程--把又臭又长的过程删减成有用的过程</span><br>    base_process = steps[<span class="hljs-number">0</span>:original_size]  <span class="hljs-comment"># 初始子句集</span><br>    useful_steps = []  <span class="hljs-comment"># 有用子句集</span><br>    <br>    <span class="hljs-comment"># 创建编号到索引的映射</span><br>    number_to_index = &#123;&#125;<br>    <span class="hljs-keyword">for</span> i, step <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(steps):<br>        number = get_step_number(step)<br>        number_to_index[number] = i<br>    <br>    <span class="hljs-comment"># 从空子句开始，队列中存放需要处理的子句编号</span><br>    number = [get_step_number(steps[-<span class="hljs-number">1</span>])]  <span class="hljs-comment"># 空子句的编号</span><br>    processed = <span class="hljs-built_in">set</span>()  <span class="hljs-comment"># 已处理的子句编号</span><br>    <br>    <span class="hljs-keyword">while</span> number:<br>        number0 = number.pop(<span class="hljs-number">0</span>)  <span class="hljs-comment"># 提取队列首元素</span><br>        <span class="hljs-keyword">if</span> number0 <span class="hljs-keyword">in</span> processed:  <span class="hljs-comment"># 避免处理已处理的子句</span><br>            <span class="hljs-keyword">continue</span><br>            <br>        processed.add(number0)<br>        step_index = number_to_index[number0]<br>        step = steps[step_index]<br>        <br>        <span class="hljs-keyword">if</span> step_index &gt;= original_size:  <span class="hljs-comment"># 非原始子句才加入useful_steps</span><br>            useful_steps.append(step)<br>            <br>        <span class="hljs-comment"># 获取父子句编号</span><br>        parent_info = extract_parents(step)<br>        <span class="hljs-keyword">if</span> parent_info[<span class="hljs-number">0</span>] <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>            num1, num2 = parent_info[<span class="hljs-number">0</span>], parent_info[<span class="hljs-number">1</span>]<br>            <br>            <span class="hljs-comment"># 如果不是初始子句，加入队列</span><br>            <span class="hljs-keyword">if</span> num1 &gt; original_size <span class="hljs-keyword">and</span> num1 <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> processed:<br>                number.append(num1)<br>            <span class="hljs-keyword">if</span> num2 &gt; original_size <span class="hljs-keyword">and</span> num2 <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> processed:<br>                number.append(num2)<br>    <br>    <span class="hljs-comment"># 结果需要反转--回溯</span><br>    useful_steps.reverse()<br>    <br>    <span class="hljs-comment"># 得到新的归结过程：原始子句 + 有用子句</span><br>    final_steps = base_process + useful_steps<br>    <br>    <span class="hljs-comment"># 创建新旧编号的映射</span><br>    old_to_new = &#123;&#125;<br>    <span class="hljs-keyword">for</span> i, step <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(final_steps):<br>        old_num = get_step_number(step)<br>        new_num = i + <span class="hljs-number">1</span><br>        old_to_new[old_num] = new_num<br>    <br>    <span class="hljs-comment"># 将归结过程重新编号</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(original_size, <span class="hljs-built_in">len</span>(final_steps)):<br>        step = final_steps[i]<br>        parent_info = extract_parents(step)<br>        <br>        <span class="hljs-keyword">if</span> parent_info[<span class="hljs-number">0</span>] <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>            old_num1, old_num2 = parent_info[<span class="hljs-number">0</span>], parent_info[<span class="hljs-number">1</span>]<br>            suffix1, suffix2 = parent_info[<span class="hljs-number">2</span>], parent_info[<span class="hljs-number">3</span>]<br>            <br>            <span class="hljs-comment"># 获取新编号</span><br>            new_num1 = old_to_new[old_num1]<br>            new_num2 = old_to_new[old_num2]<br>            <br>            <span class="hljs-comment"># 构造新的引用字符串</span><br>            old_ref = <span class="hljs-string">f&quot;R[<span class="hljs-subst">&#123;old_num1&#125;</span><span class="hljs-subst">&#123;suffix1&#125;</span>,<span class="hljs-subst">&#123;old_num2&#125;</span><span class="hljs-subst">&#123;suffix2&#125;</span>]&quot;</span><br>            new_ref = <span class="hljs-string">f&quot;R[<span class="hljs-subst">&#123;new_num1&#125;</span><span class="hljs-subst">&#123;suffix1&#125;</span>,<span class="hljs-subst">&#123;new_num2&#125;</span><span class="hljs-subst">&#123;suffix2&#125;</span>]&quot;</span><br>            <br>            <span class="hljs-comment"># 替换引用</span><br>            final_steps[i] = final_steps[i].replace(old_ref, new_ref)<br>        <br>        <span class="hljs-comment"># 更新步骤编号</span><br>        old_step_num = get_step_number(final_steps[i])<br>        new_step_num = i + <span class="hljs-number">1</span><br>        <span class="hljs-keyword">if</span> old_step_num != new_step_num:<br>            final_steps[i] = <span class="hljs-built_in">str</span>(new_step_num) + final_steps[i][<span class="hljs-built_in">len</span>(<span class="hljs-built_in">str</span>(old_step_num)):]<br>    <br>    <span class="hljs-keyword">return</span> final_steps<br><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+<h1 id=""><a href="#" class="headerlink" title=""></a></h1>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/" class="category-chain-item">AI</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AI-Lab2</div>
+      <div>https://pqcu77.github.io/2025/03/11/AI-lab2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/12/OS-lab3/" title="OS_lab3">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OS_lab3</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/06/cs50-ai-Machine-Learning/" title="Cs50-Ai-Machine-Learning">
+                        <span class="hidden-mobile">Cs50-Ai-Machine-Learning</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

@@ -1,0 +1,1579 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="OS_Lab3：从实模式到保护模式要求 DDL：2025.4.6  提交内容：2+1个任务的代码和实验报告 传课程邮箱os_sysu_lab@163.com+实验报告pdf–提交到腾讯微云  材料的Example的代码放置在src目录下。   概述学习如何从16位的实模式跳转到32位的保护模式，然后在平坦模式下运行32位系统。同时学习如何使用I&#x2F;O端口和硬件交互，为后面保护模式编程打下基">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS_lab3">
+<meta property="og:url" content="https://pqcu77.github.io/2025/03/12/OS-lab3/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="OS_Lab3：从实模式到保护模式要求 DDL：2025.4.6  提交内容：2+1个任务的代码和实验报告 传课程邮箱os_sysu_lab@163.com+实验报告pdf–提交到腾讯微云  材料的Example的代码放置在src目录下。   概述学习如何从16位的实模式跳转到32位的保护模式，然后在平坦模式下运行32位系统。同时学习如何使用I&#x2F;O端口和硬件交互，为后面保护模式编程打下基">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/%E7%A1%AC%E7%9B%98%E7%9A%84%E6%8A%BD%E8%B1%A1%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/0x1f6%E7%AB%AF%E5%8F%A3.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/0x1f7.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/%E6%AE%B5%E6%8F%8F%E8%BF%B0%E7%AC%A6.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250320143535634.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250320144218557.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250320164325744.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250320163929392.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250320171528591.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250320172738614.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250320172319147.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250324213555322.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250320171528591.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325085117185.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325085326131.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325085405878.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325085657137.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325090100161.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325090218168.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325102422602.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325102509957.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325102602634.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325102052040.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103125494.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103155996.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103217047.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103229067.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103308463.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103324172.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103341062.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103354840.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250330212542533.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103450079.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103511283.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103521281.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103529256.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103605882.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103620227.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103627936.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103649298.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103703503.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103719845.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103805259.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250325103857556.png">
+<meta property="article:published_time" content="2025-03-12T06:28:28.000Z">
+<meta property="article:modified_time" content="2025-03-30T13:25:43.466Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="OS_Labs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/%E7%A1%AC%E7%9B%98%E7%9A%84%E6%8A%BD%E8%B1%A1%E7%BB%93%E6%9E%84.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>OS_lab3 - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OS_lab3"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-12 14:28" pubdate>
+          2025年3月12日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          9.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          78 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">OS_lab3</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-03-30T21:25:43+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="OS-Lab3：从实模式到保护模式"><a href="#OS-Lab3：从实模式到保护模式" class="headerlink" title="OS_Lab3：从实模式到保护模式"></a>OS_Lab3：从实模式到保护模式</h1><h2 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h2><ul>
+<li><p>DDL：2025.4.6</p>
+</li>
+<li><p>提交内容：2+1个任务的代码和实验报告 传课程邮箱<a href="https://gitee.com/link?target=mailto:os_sysu_lab@163.com">os_sysu_lab@163.com</a>+实验报告pdf–提交到<a target="_blank" rel="noopener" href="https://inbox.weiyun.com/NuWl0loN">腾讯微云</a></p>
+</li>
+<li><p><strong>材料的Example的代码放置在<code>src</code>目录下</strong>。</p>
+</li>
+</ul>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>学习如何从16位的实模式跳转到32位的保护模式，然后在平坦模式下运行32位系统。同时学习如何使用I&#x2F;O端口和硬件交互，为后面保护模式编程打下基础</p>
+<h2 id="基础学习"><a href="#基础学习" class="headerlink" title="基础学习"></a>基础学习</h2><h3 id="突破512字节的限制"><a href="#突破512字节的限制" class="headerlink" title="突破512字节的限制"></a>突破512字节的限制</h3><p>​	我们在之前学到了计算机在启动的最后只会自动加载MBR（512字节）到内存中运行，然而这个空间是很小的，所以在实际应用中，MBR只负责定义了一些基本信息，如磁盘大小、扇区大小等。</p>
+<p>​	在运行操作系统前，需要将操作系统内核程序从外存加载到内存中，但这个空间大小无疑是较大的，因而在系统内核加载前，我们的MBR不再是输出“hello world”，而是<strong>将一段程序从外存加载到内存</strong>（大小无512Bytes限制）。这段程序（称为<strong>bootloader</strong>）在内存足够的前提下可以尽量大一点–可以实现：从实模式跳转到保护模式、加载操作系统内核等。</p>
+<p>​	无论是MBR还是bootloader，其最开始都是存放在<strong>磁盘</strong>（外存）上的。而MBR和bootloader只有被加载到内存中才可以被执行，除了MBR外，计算机是不会去外存找程序执行的。<strong>MBR</strong>是在计算机启动时被计算机<strong>自动加载到0x7C00处</strong>执行。此后，计算机的任何行为都由我们的程序来控制。也就是说，<u>我们需要自己从外存中加载程序到内存中运行。</u>–学习如何读写硬盘！</p>
+<h3 id="LBA方式读写硬盘"><a href="#LBA方式读写硬盘" class="headerlink" title="LBA方式读写硬盘"></a>LBA方式读写硬盘</h3><h4 id="读写I-O端口"><a href="#读写I-O端口" class="headerlink" title="读写I&#x2F;O端口"></a>读写I&#x2F;O端口</h4><ul>
+<li>硬盘属于外设，<u>CPU和外设的交换</u>通过<strong>I&#x2F;O端口</strong>进行。</li>
+<li>I&#x2F;O端口是一些<strong>寄存器</strong>，位于I&#x2F;O接口电路中。当需要进行数据交换时，我们先将命令和数据放入到指定的I&#x2F;O端口中，等待外设处理完后再从指定的端口取出处理结果。指定的端口也可以获取外设的状态。</li>
+</ul>
+<blockquote>
+<p>（指定–数据交换的I&#x2F;O端口已经被预先规定好了）</p>
+</blockquote>
+<ul>
+<li><p>和寄存器编址很相似，每一个端口在I&#x2F;O电路中都会被<strong>统一编址</strong>。</p>
+<ul>
+<li><p>主硬盘分配的端口地址是0x1f0<del>0x1f7，从硬盘分配的端口地址是0x170</del>0x177</p>
+</li>
+<li><p>由于端口是独立编址的，因此我们<strong>无法使用mov指令来对端口赋值</strong>，可以使用in（读），out（写）指令。</p>
+</li>
+<li><p>值得注意的是：<strong>in指令的源操作数只能是立即数或dx，目的操作数只能是ax和al；out指令的源操作数只能是al或ax，目的操作数只能是立即数或dx</strong></p>
+</li>
+<li><p>例子：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-comment">; in指令</span><br><span class="hljs-keyword">in</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0x21</span> <span class="hljs-comment">; 表示从0x21端口读取一字节数据到al</span><br><span class="hljs-keyword">in</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">0x21</span> <span class="hljs-comment">; 表示从端口地址0x21读取1字节数据到al，从端口地址0x22读取1字节到ah</span><br><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>,<span class="hljs-number">0x379</span><br><span class="hljs-keyword">in</span> <span class="hljs-built_in">al</span>, <span class="hljs-built_in">dx</span>  <span class="hljs-comment">; 从端口0x379读取1字节到al</span><br><br><span class="hljs-comment">; out指令</span><br><span class="hljs-keyword">out</span> <span class="hljs-number">0x21</span>, <span class="hljs-built_in">al</span> <span class="hljs-comment">; 将al的值写入0x21端口</span><br><span class="hljs-keyword">out</span> <span class="hljs-number">0x21</span>, <span class="hljs-built_in">ax</span> <span class="hljs-comment">; 将ax的值写入端口地址0x21开始的连续两个字节</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, <span class="hljs-number">0x378</span><br><span class="hljs-keyword">out</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">ax</span>  <span class="hljs-comment">; 将ah和al分别写入端口0x379和0x378</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h4 id="读写硬盘"><a href="#读写硬盘" class="headerlink" title="读写硬盘"></a>读写硬盘</h4><ul>
+<li>硬盘的读写是以块为单位的，块在硬盘中也被称为扇区，一般的扇区大小是512字节。</li>
+<li>LBA的全称是Logical Block Addressing, <strong>逻辑块寻址模式</strong>。</li>
+<li>硬盘的物理结构包括<strong>磁头、扇区和柱面</strong>（CHS），通过CHS就可以定位磁盘上的数据–在访问硬盘时手动指定磁头、磁道和柱面。</li>
+</ul>
+<p><img src="/img/%E7%A1%AC%E7%9B%98%E7%9A%84%E6%8A%BD%E8%B1%A1%E7%BB%93%E6%9E%84.png" srcset="/img/loading.gif" lazyload alt="硬盘内部示意图"></p>
+<ul>
+<li>另一种方法：LBA模式。此模式下磁盘的地址空间被划分一个个的逻辑块，访问时<u>只需要指定对应磁盘地址对应的逻辑块</u>即可。</li>
+</ul>
+<blockquote>
+<p>在实模式下，还有利用BIOS中断来读取硬盘的方式，称为CHS模式。需要手动将逻辑扇区号转化为磁盘对应的磁头、磁道和柱面，比较麻烦。这里不使用BIOS中断的原因是因为BIOS中断是16位程序，在保护模式下无法使用。有兴趣的同学可以自行探索“<strong>通过BIOS中断读取硬盘</strong>”</p>
+</blockquote>
+<p>使用LBA读取硬盘的方式：</p>
+<ul>
+<li><p>设置<strong>起始的逻辑扇区号</strong>。由于扇区的读写是连续的，因此只要给出第一个扇区的编号就好了。此处使用的是LBA28（28表示使用28位来表示逻辑扇区的编号）的方式来读取硬盘–但IO端口一次只能读取8位，所以要分<strong>四段</strong>写入端口。</p>
+<ul>
+<li>逻辑扇区的0<del>7位被写入0x1F3端口，8</del>15位被写入0x1F4端口，16~23位被写入0x1F5端口，最后4位被写入0x1F6端口的低4位。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">端口地址</th>
+<th align="left">数据位范围</th>
+<th align="left">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">0x1F3</td>
+<td align="left">0~7</td>
+<td align="left">逻辑扇区号的低 8 位</td>
+</tr>
+<tr>
+<td align="left">0x1F4</td>
+<td align="left">8~15</td>
+<td align="left">逻辑扇区号的中间 8 位</td>
+</tr>
+<tr>
+<td align="left">0x1F5</td>
+<td align="left">16~23</td>
+<td align="left">逻辑扇区号的高 8 位</td>
+</tr>
+<tr>
+<td align="left">0x1F6</td>
+<td align="left">24~27</td>
+<td align="left">逻辑扇区号的最高 4 位</td>
+</tr>
+</tbody></table>
+<ul>
+<li>0x1F6的8个位表示如下</li>
+</ul>
+</li>
+</ul>
+<p><img src="/img/0x1f6%E7%AB%AF%E5%8F%A3.png" srcset="/img/loading.gif" lazyload alt="0x1f6端口"></p>
+<ul>
+<li><p>将要读取的扇区数量写入0x1F2端口。<strong>8位端口</strong>，每次最多只能读写255个扇区</p>
+</li>
+<li><p>向0x1F7端口写入0x20，请求硬盘读。</p>
+</li>
+<li><p>等待其他读写操作完成。</p>
+</li>
+</ul>
+<p><img src="/img/0x1f7.png" srcset="/img/loading.gif" lazyload alt="0x1f7"></p>
+<ul>
+<li>若在第四步中检测到其他操作已经完成，那么我们就可以正式从硬盘中读取数据。</li>
+</ul>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">asm_read_hard_disk:</span>                           <br><span class="hljs-comment">; 从硬盘读取一个逻辑扇区</span><br><br><span class="hljs-comment">; 参数列表</span><br><span class="hljs-comment">; ax=逻辑扇区号0~15位</span><br><span class="hljs-comment">; cx=逻辑扇区号16~28位</span><br><span class="hljs-comment">; ds:bx=读取出的数据放入地址</span><br><br><span class="hljs-comment">; 返回值</span><br><span class="hljs-comment">; bx=bx+512</span><br><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, <span class="hljs-number">0x1f3</span><br>    <span class="hljs-keyword">out</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">al</span>    <span class="hljs-comment">; LBA地址7~0</span><br><br>    <span class="hljs-keyword">inc</span> <span class="hljs-built_in">dx</span>        <span class="hljs-comment">; 0x1f4</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">ah</span><br>    <span class="hljs-keyword">out</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">al</span>    <span class="hljs-comment">; LBA地址15~8</span><br><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">cx</span><br><br>    <span class="hljs-keyword">inc</span> <span class="hljs-built_in">dx</span>        <span class="hljs-comment">; 0x1f5</span><br>    <span class="hljs-keyword">out</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">al</span>    <span class="hljs-comment">; LBA地址23~16</span><br><br>    <span class="hljs-keyword">inc</span> <span class="hljs-built_in">dx</span>        <span class="hljs-comment">; 0x1f6</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">ah</span><br>    <span class="hljs-keyword">and</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0x0f</span><br>    <span class="hljs-keyword">or</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0xe0</span>   <span class="hljs-comment">; LBA地址27~24</span><br>    <span class="hljs-keyword">out</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">al</span><br><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, <span class="hljs-number">0x1f2</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">1</span><br>    <span class="hljs-keyword">out</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">al</span>   <span class="hljs-comment">; 读取1个扇区</span><br><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, <span class="hljs-number">0x1f7</span>    <span class="hljs-comment">; 0x1f7</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0x20</span>     <span class="hljs-comment">;读命令</span><br>    <span class="hljs-keyword">out</span> <span class="hljs-built_in">dx</span>,<span class="hljs-built_in">al</span><br><br>    <span class="hljs-comment">; 等待处理其他操作</span><br><span class="hljs-symbol">  .waits:</span><br>    <span class="hljs-keyword">in</span> <span class="hljs-built_in">al</span>, <span class="hljs-built_in">dx</span>        <span class="hljs-comment">; dx = 0x1f7</span><br>    <span class="hljs-keyword">and</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">0x88</span><br>    <span class="hljs-keyword">cmp</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">0x08</span><br>    <span class="hljs-keyword">jnz</span> .waits                         <br>    <br><br>    <span class="hljs-comment">; 读取512字节到地址ds:bx</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cx</span>, <span class="hljs-number">256</span>   <span class="hljs-comment">; 每次读取一个字，2个字节，因此读取256次即可          </span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dx</span>, <span class="hljs-number">0x1f0</span><br><span class="hljs-symbol">  .readw:</span><br>    <span class="hljs-keyword">in</span> <span class="hljs-built_in">ax</span>, <span class="hljs-built_in">dx</span><br>    <span class="hljs-keyword">mov</span> [<span class="hljs-built_in">bx</span>], <span class="hljs-built_in">ax</span><br>    <span class="hljs-keyword">add</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">2</span><br>    <span class="hljs-keyword">loop</span> .readw<br>      <br>    <span class="hljs-keyword">ret</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="保护模式"><a href="#保护模式" class="headerlink" title="保护模式"></a>保护模式</h3><h4 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h4><p>保护模式，是一种在80286系列之后，基于x86架构的CPU操作模式。在80286及以后，保护模式的引入使得内存地址改为32位，程序至少可以访问到2^32&#x3D;4G的内存空间</p>
+<p>保护模式与实模式相比，主要有两个差别。</p>
+<ul>
+<li>保护模式提供了<strong>段间的保护机制</strong>，防止程序间胡乱访问地址带来的问题。</li>
+<li>保护模式访问的<strong>内存空间变大</strong>，32位地址线最大支持4G内存空间。</li>
+</ul>
+<h4 id="从实模式到保护模式"><a href="#从实模式到保护模式" class="headerlink" title="从实模式到保护模式"></a>从实模式到保护模式</h4><p><u>在保护模式下，所有的程序都会运行在自己的段中，一旦程序错误地访问其他段的地址空间，那么CPU就会产生异常来阻止程序访问。</u>可以简单地理解为保护模式保护的是段地址空间，阻止程序越界访问。</p>
+<p>CPU需要知道当前运行中程序的段地址空间信息，然后才能执行地址保护。段地址空间信息是通过<strong>段描述符</strong>(segment descriptor)来给出的，包含了<strong>段基地址</strong>(段的起始地址)、<strong>段界限</strong>(段的长度)等，共计64字节</p>
+<p><img src="/img/%E6%AE%B5%E6%8F%8F%E8%BF%B0%E7%AC%A6.png" srcset="/img/loading.gif" lazyload alt="段描述符"></p>
+<ul>
+<li><strong>段基地址</strong>。段基地址共32位，是<strong>段的起始地址</strong>，被拆分成三部分放置。</li>
+<li><strong>G位</strong>。G表示<strong>粒度</strong>， G&#x3D;0表示段界限以<strong>字节</strong>为单位， G&#x3D;1表示段界限以<strong>4KB</strong>为单位。</li>
+<li><strong>D&#x2F;B位</strong>。D&#x2F;B位是<u>默认操作数的大小或默认堆栈指针的大小</u>，在保护模式下，该位置为1，表示32位。</li>
+<li><strong>L位</strong>。L位是 <strong>64 位代码段标志</strong>，由于这里我们使用的是32位的代码，所以L置0。</li>
+<li><strong>AVL</strong>。AVL位是保留位。</li>
+<li><strong>段界限</strong>。段界限表示段的偏移地址范围，我们在后面详细讨论这个问题。</li>
+<li><strong>P位</strong>。P位是段存在位， P&#x3D;1表示段存在， P&#x3D;0表示段不存在。</li>
+<li><strong>DPL</strong>。DPL指明访问该段必须有的最低优先级，优先级从0-3依次降低，即0拥有最高优先级，3拥有最低优先级。</li>
+<li><strong>S位</strong>。S位是描述符类型。S&#x3D;0表示该段是系统段，S&#x3D;1表示该段位代码段或数据段。</li>
+<li><strong>TYPE</strong>。TYPE指示代码段或数据段的类型，如下所示。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>第11位(X)</th>
+<th>第10位(E)</th>
+<th>第9位(W)</th>
+<th>第8位(A)</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>*</td>
+<td>只读，向上扩展</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>*</td>
+<td>读写，向上扩展</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>*</td>
+<td>只读，向下扩展</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>*</td>
+<td>读写，向下扩展</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>*</td>
+<td>只执行，非一致代码段</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>*</td>
+<td>执行、可读，非一致代码段</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>*</td>
+<td>只执行，一致代码段</td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>*</td>
+<td>执行、可读、一致代码段</td>
+</tr>
+</tbody></table>
+<p>A位表示是否被使用过，A&#x3D;1表示使用，A&#x3D;0表示未被使用，由<strong>CPU</strong>负责设置，我们不需要去管</p>
+<p><strong>向上</strong>扩展和<strong>向下</strong>扩展指的是<strong>段的线性基地址</strong>和<strong>段的线性尾地址</strong>的大小关系</p>
+<p>保护模式的寻址过程：线性地址&#x3D;base+offset</p>
+<p>保护模式下，我们在指令中给出的都是偏移地址，偏移地址和段线性基地址相加后得到线性地址，线性地址通过<strong>地址变换部件MMU</strong>后得到实际的物理地址。<br>$$<br>物理地址&#x3D;f(线性地址)<br>$$<br>但在此时我们并未开启分页机制，所以是恒等变换x&#x3D;f(x) –&gt;线性地址</p>
+<p>对于一个向上扩展的段，如代码段和数据段，段界限给出的是最大的偏移量，寻址时满足下面的条件。<br>$$<br>0\le offset +length\le(段界限+1)*粒度<br>$$<br>对于一个向下扩展的段，如栈段，段界限给出的是最小的偏移量，寻址时满足如下条件。<br>$$<br>(段界限+1)*粒度\le offset-length\le\text{0xFFFFFFFF}<br>$$</p>
+<p>在保护模式，所有<strong>段描述符</strong>都会被<strong>集中放置</strong>，这个集中放置的区域被称为<strong>全局描述符表</strong>（GDT）。</p>
+<p>保护模式的内存地址扩展到32位，所以可以使用32位的寄存器。保护模式下<strong>段寄存器</strong>仍在使用，但保存的不再是段地址，而是<strong>段选择子</strong>（GDT的索引），用于指示给CPU寻址时使用的是哪个段。</p>
+<p><img src="/img/image-20250320143535634.png" srcset="/img/loading.gif" lazyload alt="image-20250320143535634"></p>
+<ul>
+<li>第15-3位是<strong>段描述符的索引</strong>，表示选择子指向的段描述符是段描述符表中的第几个，编号从 0 开始。</li>
+<li>第2位用来<strong>指示描述符表</strong>，0表示描述符表是 GDT。</li>
+<li>第1-0位是<strong>请求特权级</strong>，特权级编号为 0-3，权限依次降低，<strong>0权限最高</strong>。</li>
+</ul>
+<p>保护模式下的寻址：段地址+偏移地址–&gt;表示为 <strong>选择子:偏移地址</strong></p>
+<p>每个段寄存器都会有一个64位的不可见的部分，这部分被称为描述符高速缓存器。<em>当我们将选择子送入段寄存器时，CPU会自动从描述符表中加载对应的段描述符到描述符高速缓存器中。此后，当需要使用段寄存器时，CPU会直接从描述符高速缓存器中取出相应的内容，无需重新在描述符表中查找对应的段描述符。</em></p>
+<p>CPU向下兼容，Intel 80286以后的CPU首先进入实模式，然后通过切换机制再进入到保护模式。也就是说在BIOS加电启动后，需要在实模式下的<strong>MBR</strong>中<u>编写16位进入保护模式的代码</u>，然后再跳转到保护模式，执行接下来的32位代码。</p>
+<p>steps:</p>
+<ul>
+<li><p><strong>准备GDT，用lgdt指令加载GDTR信息</strong>。</p>
+</li>
+<li><p><strong>打开第21根地址线</strong>。</p>
+<ul>
+<li><p>实模式下，第21根地址线的值恒为0，使得当访问越界超过1MB时，自然溢出使得地址的值仍然小于1MB（取模）</p>
+</li>
+<li><p>所以要进入保护模式，需要打开第21根地址线–开关位于南桥芯片的端口A20，使用in、out指令可以对主板端口进行<strong>读写</strong>操作</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">in</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">0x92</span> <span class="hljs-comment">;南桥芯片内的端口</span><br><span class="hljs-keyword">or</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">0000_0010B</span><br><span class="hljs-keyword">out</span> <span class="hljs-number">0x92</span>,<span class="hljs-built_in">al</span> <span class="hljs-comment">;打开A20</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>开启cr0的保护模式标志位</strong>。</p>
+<ul>
+<li><p>真正的开关–CR0（32bit寄存器）包含了一系列用户控制CPU操作模式和运行的标志位</p>
+</li>
+<li><p><strong>第0位是保护模式的开关位</strong>–PE位–PE位置1，CPU进入保护模式</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">cli</span> <span class="hljs-comment">;保护模式下中断机制尚未建立，应禁止中断</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,<span class="hljs-built_in">cr0</span><br><span class="hljs-keyword">or</span> <span class="hljs-built_in">eax</span>,<span class="hljs-number">1</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">cr0</span>,<span class="hljs-built_in">eax</span> <span class="hljs-comment">;设置PE位为1</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong>远跳转，进入保护模式</strong>。</p>
+</li>
+</ul>
+<p>GDT的起始位置和大小由我们来确定，保存在寄存器<strong>GDTR</strong>中，GDTR：</p>
+<p><img src="/img/image-20250320144218557.png" srcset="/img/loading.gif" lazyload alt="image-20250320144218557"></p>
+<p>全集描述符表边界–GDT的边界–段界限边界</p>
+<p>$$<br>段描述符最大数量&#x3D;\frac{2^{16}}{8}&#x3D;8192<br>$$<br>每个段描述符是64bit（8字节）</p>
+<h2 id="Example1：-bootloader的加载"><a href="#Example1：-bootloader的加载" class="headerlink" title="Example1： bootloader的加载"></a>Example1： bootloader的加载</h2><p>内存地址安排：bootloader被安排在MBR之后，预留了<strong>5个扇区</strong>的空间</p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>start</th>
+<th>length</th>
+<th>end</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MBR</td>
+<td>0x7c00</td>
+<td>0x200(512B)</td>
+<td>0x7e00</td>
+</tr>
+<tr>
+<td>bootloader</td>
+<td>0x7e00</td>
+<td>0xa00(512B *** 5**)</td>
+<td>0x8800</td>
+</tr>
+</tbody></table>
+<p>运行步骤：</p>
+<ul>
+<li><p>编译bootloader后写入到<strong>硬盘起始编号为1</strong>的扇区，共有五个扇区。</p>
+<ul>
+<li>编译：<code>nasm -f bin bootloader.asm -o bootloader.bin</code></li>
+<li>加载：<code>dd if=bootloader.bin of=hd.img bs=512 count=5 seek=1 conv=notrunc</code></li>
+</ul>
+</li>
+<li><p>mbr也要重新编译并写入硬盘其实编号为0的扇区</p>
+<ul>
+<li>编译：<code>nasm -f bin mbr.asm -o mbr.bin</code></li>
+<li>加载：<code>dd if=mbr.bin of=hd.img bs=512 count=1 seek=0 conv=notrunc</code></li>
+</ul>
+<p>回顾一下对应的参数设置：<img src="/img/image-20250320164325744.png" srcset="/img/loading.gif" lazyload alt="image-20250320164325744"></p>
+</li>
+<li><p>运行 <code>qemu-system-i386 -hda hd2.img -serial null -parallel stdio</code></p>
+</li>
+</ul>
+<p>运行结果：</p>
+<p><img src="/img/image-20250320163929392.png" srcset="/img/loading.gif" lazyload alt="image-20250320163929392"></p>
+<h2 id="Example2：进入保护模式"><a href="#Example2：进入保护模式" class="headerlink" title="Example2：进入保护模式"></a>Example2：进入保护模式</h2><p>在进入保护模式之前，我们先对我们的内存地址进行规划。</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Start</th>
+<th>Length</th>
+<th>End</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MBR</td>
+<td>0x7c00</td>
+<td>0x200(512B)</td>
+<td>0x7e00</td>
+</tr>
+<tr>
+<td>bootloader</td>
+<td>0x7e00</td>
+<td>0xa00(512B * 5)</td>
+<td>0x8800</td>
+</tr>
+<tr>
+<td>GDT</td>
+<td>0x8800</td>
+<td>0x80(8B * 16)</td>
+<td>0x8880</td>
+</tr>
+</tbody></table>
+<ul>
+<li>MBR自动加载到0x7c00</li>
+<li>bootloader在MBR中显式加载到0x7e00</li>
+<li>GDT显示加载到0x8800</li>
+</ul>
+<p><code>equ</code>是汇编伪指令，e.g：编译器会在编译时将 <code>LOADER_SECTOR_COUNT</code>出现的地方替换为5 （类似与宏</p>
+<blockquote>
+<p>在操作系统内核设计的过程中，内存规划是一件令人苦恼的事情。从上面的例子可以看到，bootloader紧跟在MBR后面，GDT紧跟在bootloader后面，看起来非常紧凑。但是，只要其中一个发生变化，那么可能我们又要重新规划内存。也就是说，没有一种内存规划方案是完美的。</p>
+</blockquote>
+<p>在bootloader中跳转到保护模式：</p>
+<ul>
+<li>定义段描述符（代码段描述符、数据段描述符、栈段描述符和视频段描述符）</li>
+</ul>
+<p>平坦模式：让代码段描述符、数据段描述符和栈段描述符中的<strong>段线性基地址为0</strong> &#x3D;&gt;偏移地址和线性地址完全相同</p>
+<blockquote>
+<p>段的存在是为了让CPU执行段保护，放置程序越界访问；</p>
+<p>后续实验中会采用二级分页机制，此时页保护页可以组织程序越界访问 &#x3D;》无需分段了</p>
+</blockquote>
+<p>视频段描述符是<strong>显存所在的内存区域</strong>的段描述符。注意，<strong>GDT的第0个描述符必须是全0的描述符</strong>。接着，在GDT中依次放入0描述符，数据段描述符、堆栈段描述符、显存段描述符和代码段描述符</p>
+<p>运行结果：</p>
+<p><img src="/img/image-20250320171528591.png" srcset="/img/loading.gif" lazyload alt="image-20250320171528591"></p>
+<p>如何在gdb中使用info registers查看寄存器</p>
+<ul>
+<li>要记得在qemu启动时加入 <code>-s -S</code> 参数: <code>qemu-system-i386 -hda hd.img -serial null -parallel stdio -s -S</code></li>
+<li>再启动gdb，并且连接端口 <code>target remote:1234</code></li>
+<li>在输入 <code>info registers</code>可以查看</li>
+</ul>
+<p><img src="/img/image-20250320172738614.png" srcset="/img/loading.gif" lazyload alt="image-20250320172738614"></p>
+<ul>
+<li>执行程序之后，发现寄存器发生了很大的变化</li>
+</ul>
+<p><img src="/img/image-20250320172319147.png" srcset="/img/loading.gif" lazyload alt="image-20250320172319147"></p>
+<p>ps：</p>
+<table>
+<thead>
+<tr>
+<th>gdb指令</th>
+<th>含义</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>break *adress或b *address</td>
+<td>在地址adress处设置断点。</td>
+<td>break *0x7c00 b *0x7c00</td>
+</tr>
+<tr>
+<td>break symbol或b symbol</td>
+<td>在符号symbol处设置断点，例如symbol一般是函数名。</td>
+<td>break setup_kernel b setup_kernel</td>
+</tr>
+<tr>
+<td>break filename:line_number</td>
+<td>在文件filename处的第line_numer行设置断点</td>
+<td>b mbr.asm:12</td>
+</tr>
+<tr>
+<td>add-symbol-file filename address</td>
+<td>加载符号表filename到地址address处</td>
+<td>add-symbol-file mbr.symbol 0x7c00</td>
+</tr>
+<tr>
+<td>x&#x2F;FMT address</td>
+<td>address是内存地址，FMT格式是重复的单元个数+格式+大小。 重复的单元个数是一个数字，表示我们希望查看多少个单元。正数表示从address向后查看。负数表示从address向前查看。 格式是一个字符，可以是o(octal), x(hex), d(decimal), u(unsigned decimal), t(binary), f(float), a(address), i(instruction), c(char), s(string)。 大小是一个字符，可以是b(byte, 1 byte), h(halfword, 2 byte), w(word, 4 byte), g(giant, 8 bytes)。</td>
+<td>x&#x2F;5xw 0x8032 x&#x2F;10i 0x7c00</td>
+</tr>
+<tr>
+<td>continue或c</td>
+<td>继续执行正在调试的程序到断点处暂停。</td>
+<td></td>
+</tr>
+<tr>
+<td>step或s</td>
+<td>执行一条C语句，如果遇到函数调用语句，则会进入函数体中。</td>
+<td></td>
+</tr>
+<tr>
+<td>next或n</td>
+<td>执行一条C语句，函数调用语句不会进入函数体，把函数当成一条语句执行。</td>
+<td></td>
+</tr>
+<tr>
+<td>stepi或si</td>
+<td>执行一条汇编语句，如果遇到函数调用语句，则会进入函数体中。</td>
+<td></td>
+</tr>
+<tr>
+<td>nexti或ni</td>
+<td>执行一条汇编语句，函数调用语句不会进入函数体，把函数当成一条语句执行。</td>
+<td></td>
+</tr>
+<tr>
+<td>info registers</td>
+<td>查看所有寄存器的值</td>
+<td></td>
+</tr>
+<tr>
+<td>layout layout_name</td>
+<td>layout_name包含src，asm，split，regs。 src显示源代码窗口和命令窗口，asm显示汇编代码窗口和命令窗口，split显示源代码窗口、汇编代码窗口和命令窗口，regs显示寄存器窗口。</td>
+<td>layout split</td>
+</tr>
+<tr>
+<td>focus layout_window</td>
+<td>转换当前窗口到layout窗口，layout_window包含src，asm，regs，cmd。任何时刻gdb的当前窗口只有一个，并且使用方向键的效果只会在当前窗口处显示。</td>
+<td>focus cmd</td>
+</tr>
+<tr>
+<td>file symbol_file</td>
+<td>加载符号表，为gdb提供debug信息。</td>
+<td>file ..&#x2F;build&#x2F;kernel.o</td>
+</tr>
+<tr>
+<td>set disassembly-flavor intel</td>
+<td>设置汇编代码格式为intel风格</td>
+<td></td>
+</tr>
+<tr>
+<td>set architecture name</td>
+<td>设置指令对应的CPU架构，name包含i8086(16位)，i386(32位)</td>
+<td>set architecture i386</td>
+</tr>
+</tbody></table>
+<h2 id="任务-1"><a href="#任务-1" class="headerlink" title="任务 1"></a>任务 1</h2><h3 id="1-1"><a href="#1-1" class="headerlink" title="1.1"></a>1.1</h3><p>复现Example 1，说说你是怎么做的并提供结果截图，也可以参考Ucore、Xv6等系统源码，实现自己的LBA方式的磁盘访问。</p>
+<p>提示：部分需要的文件存放在<code>src/example-1</code>下，请根据需要将其放置于自己创建的lab3文件夹下。</p>
+<h3 id="1-2"><a href="#1-2" class="headerlink" title="1.2"></a>1.2</h3><p>在Example1中，我们使用了LBA28的方式来读取硬盘。此时，我们只要给出逻辑扇区号即可，但需要手动去读取I&#x2F;O端口。然而，BIOS提供了实模式下读取硬盘的中断，其不需要关心具体的I&#x2F;O端口，只需要给出逻辑扇区号对应的磁头（Heads）、扇区（Sectors）和柱面（Cylinder）即可，又被称为CHS模式。现在，同学们需要&#x3D;&#x3D;将LBA28读取硬盘的方式换成CHS读取&#x3D;&#x3D;，同时给出逻辑扇区号向CHS的转换公式。最后说说你是怎么做的并提供结果截图。</p>
+<p>勘误：《于渊：一个操作系统的实现2》P183-184给的是读取软盘的计算公式，而我们读取的是硬盘，因此不适用。参考资料变更如下。</p>
+<ul>
+<li><a href="https://gitee.com/link?target=https://blog.csdn.net/G_Spider/article/details/6906184">LBA向CHS模式的转换</a></li>
+<li><a href="https://gitee.com/link?target=https://blog.csdn.net/brainkick/article/details/7583727">int 13h中断</a></li>
+</ul>
+<p>其中，关键参数如下。</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>驱动器号（DL寄存器）</td>
+<td>80h</td>
+</tr>
+<tr>
+<td>每磁道扇区数</td>
+<td><strong>63</strong></td>
+</tr>
+<tr>
+<td>每柱面磁头数（每柱面总的磁道数）</td>
+<td>18</td>
+</tr>
+</tbody></table>
+<h3 id="LBA向CHS模式转换："><a href="#LBA向CHS模式转换：" class="headerlink" title="LBA向CHS模式转换："></a>LBA向CHS模式转换：</h3><ul>
+<li>LBA值需要通过运算间接的粗cylinder、head、sector这三个变量的值</li>
+</ul>
+<h4 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h4><ul>
+<li><strong>cylinder</strong>：磁盘的<strong>柱面</strong></li>
+<li><strong>head</strong>：磁盘的<strong>磁头</strong>，每张磁片有两个磁头</li>
+<li><strong>sector</strong>：磁盘<strong>扇区</strong>，这里指物理扇区，编号从 <strong>1 - 63</strong>，每条 track 的最大 sector 数 63</li>
+<li><strong>SPT</strong>（sector_per_track）：每磁道上的 sector 数</li>
+<li><strong>HPC</strong>（head_per_cylinder）：每个 cylinder 的 head 数量，这个数量应该是<strong>磁片数 * 2</strong></li>
+</ul>
+<h4 id="LBA寻址"><a href="#LBA寻址" class="headerlink" title="LBA寻址"></a>LBA寻址</h4><p>LBA的扇区从0开始计算。<br>&#x3D;&#x3D;LBA &#x3D; (cylinder * HPC + head) * SPT + sector - 1&#x3D;&#x3D;</p>
+<ul>
+<li>先计算track的数量，再加上物理扇区（从1开始编号），转换为LBA扇区需要-1</li>
+<li>track 的数量计算方式为：<code>cylinder * HPC（head_per_cylinder）+ head</code></li>
+</ul>
+<h4 id="LBA2CHS"><a href="#LBA2CHS" class="headerlink" title="LBA2CHS"></a>LBA2CHS</h4><ol>
+<li>计算cylinder：<code>cylinder=LBA/(SPT*HPC)</code><ul>
+<li><code>SPT*HPC</code>这部分计算的是每个cylinder有多少个扇区</li>
+<li>然后再计算在磁盘内需要多少个柱面表达</li>
+</ul>
+</li>
+<li>计算head：<code>head=(LBA/SPT)%HPC</code><ul>
+<li>在求出磁盘柱面的情况下，我们需要求得磁盘的磁头</li>
+<li><code>LBA/SPT</code>这步在计算磁盘内有多少head</li>
+<li>然后再计算出在一个柱面中的磁头编号</li>
+</ul>
+</li>
+<li>计算sector：sector&#x3D;LBA%SPT+1<ul>
+<li><code>LBA % SPT</code> 这步计算可以得出逻辑的扇区号</li>
+<li>然后由于物理的扇区是从1开始的，所以要<code>+1</code></li>
+</ul>
+</li>
+</ol>
+<p>Resources：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/haiross/article/details/38661051">代码实现之磁盘的 LBA 寻址转换为 CHS 寻址_lba和cly-CSDN博客</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mlzrq/p/10223053.html">读取磁盘：CHS方式 - 猛练自然强 - 博客园</a></p>
+<p>实现过程：<br>直接使用int 13h中断模式中的ah&#x3D;02h功能（读扇区）</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">功能<span class="hljs-number">02H</span>： <br>功能描述：读扇区 <br>入口参数：<span class="hljs-number">AH</span>＝<span class="hljs-number">02H</span> <br><span class="hljs-built_in">AL</span>＝扇区数 <br><span class="hljs-number">CH</span>＝柱面 <br><span class="hljs-built_in">CL</span>＝扇区 <br><span class="hljs-number">DH</span>＝磁头 <br><span class="hljs-built_in">DL</span>＝驱动器，<span class="hljs-number">00H</span>~<span class="hljs-number">7FH</span>：软盘；<span class="hljs-number">80H</span>~<span class="hljs-number">0FFH</span>：硬盘 <br><span class="hljs-symbol">ES:</span><span class="hljs-built_in">BX</span>＝缓冲区的地址 <br>出口参数：CF＝<span class="hljs-number">0</span>——操作成功，<span class="hljs-number">AH</span>＝<span class="hljs-number">00H</span>，<span class="hljs-built_in">AL</span>＝传输的扇区数，否则，<span class="hljs-number">AH</span>＝状态代码，参见功能号<span class="hljs-number">01H</span>中的说明<br></code></pre></td></tr></table></figure>
+
+<p>关键参数参考：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>驱动器号（DL寄存器）</td>
+<td>80h</td>
+</tr>
+<tr>
+<td>每磁道扇区数</td>
+<td><strong>63</strong></td>
+</tr>
+<tr>
+<td>每柱面磁头数（每柱面总的磁道数）</td>
+<td>18</td>
+</tr>
+<tr>
+<td>扇区号（通过LBA地址+1得到物理地址CSH）</td>
+<td>2</td>
+</tr>
+<tr>
+<td>柱面号</td>
+<td>0</td>
+</tr>
+<tr>
+<td>缓冲区地址(bootloader加载地址)</td>
+<td>0x7e00</td>
+</tr>
+</tbody></table>
+<p>代码：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">asm_read_hard_disk:</span><br>  <span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>,<span class="hljs-number">0x02</span> <span class="hljs-comment">;设置模式</span><br>  <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">1</span> <span class="hljs-comment">;读取扇区数</span><br>  <span class="hljs-keyword">mov</span> <span class="hljs-built_in">dl</span>,<span class="hljs-number">0x80</span> <span class="hljs-comment">;磁头</span><br>  <span class="hljs-keyword">mov</span> <span class="hljs-built_in">bx</span>,<span class="hljs-number">0x7e00</span> <span class="hljs-comment">;缓冲区地址</span><br>  <span class="hljs-keyword">mov</span> <span class="hljs-number">ch</span>,<span class="hljs-number">0</span>  <span class="hljs-comment">;柱面号</span><br>  <span class="hljs-keyword">mov</span> <span class="hljs-built_in">cl</span>,<span class="hljs-number">2</span> <span class="hljs-comment">;扇区号？</span><br><br>  <span class="hljs-keyword">int</span> <span class="hljs-number">13h</span><br></code></pre></td></tr></table></figure>
+
+<p>结果截图：</p>
+<p><img src="/img/image-20250324213555322.png" srcset="/img/loading.gif" lazyload alt="image-20250324213555322"></p>
+<h2 id="任务-2"><a href="#任务-2" class="headerlink" title="任务 2"></a>任务 2</h2><p>复现Example 2，使用gdb或其他debug工具在进入保护模式的4个重要步骤上<strong>设置断点</strong>，并结合代码、寄存器的内容等来分析这4个步骤，最后附上结果截图。gdb的使用可以参考appendix的“debug with gdb and qemu”部份。</p>
+<p>提示：部分需要的文件存放在<code>src/example-2</code>下，请根据需要将其放置于自己创建的lab3文件夹下。</p>
+<h3 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h3><p>可以直接make run；<br>结果截图参见上面的Example2部分。<br><img src="/img/image-20250320171528591.png" srcset="/img/loading.gif" lazyload alt="image-20250320171528591"></p>
+<h3 id="GDB调试方法"><a href="#GDB调试方法" class="headerlink" title="GDB调试方法"></a>GDB调试方法</h3><p>resources：<br><a target="_blank" rel="noopener" href="https://gitee.com/kpyang5/sysu-2025-spring-operating-system/blob/main/appendix/debug_with_gdb_and_qemu/README.md#%E5%AE%89%E8%A3%85215%E7%89%88%E6%9C%AC%E7%9A%84nasm">appendix&#x2F;debug_with_gdb_and_qemu&#x2F;README.md · young&#x2F;sysu-2025-spring-operating-system - 码云 - 开源中国</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_51753728/article/details/142262405">Makefile(超详细一文读懂)-CSDN博客</a></p>
+<p>回顾之前简单的调试：</p>
+<ul>
+<li>在qemu启动的前提下，打开一个新的终端，并输入gdb进入gdb调试</li>
+<li>在gdb下，连接已经启动的qemu进行调试： <code>target remote:1234</code></li>
+<li>设置断点：<code>break func</code></li>
+<li>输入<code>c</code>（continue）运行</li>
+</ul>
+<h4 id="生成符号表"><a href="#生成符号表" class="headerlink" title="生成符号表"></a>生成符号表</h4><ul>
+<li>可以使用gdb在debug过程中查看源代码&#x3D;&gt;提供相关的信息&#x3D;&gt;符号表（ELF格式）</li>
+<li>制作符号表：<ul>
+<li>先编译汇编代码生成可重定向文件（ELF文件）</li>
+<li>使用这个可重定向文件生成可执行文件和bin格式文件</li>
+</ul>
+</li>
+</ul>
+<p>以example-2为例：</p>
+<ul>
+<li>删除<code>*.asm</code>中的<code>org</code>语句，后续会在链接的过程中指定他们代码和数据的起始地址</li>
+<li>编译mbr.asm生成.o文件 。<code>-g</code>参数是为了加上debug信息</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">nasm -o mbr<span class="hljs-selector-class">.o</span> -<span class="hljs-selector-tag">g</span> -f elf32 mbr<span class="hljs-selector-class">.asm</span> <br></code></pre></td></tr></table></figure>
+<ul>
+<li>为<code>mbr.o</code>文件指定起始地址为<code>0x7c00</code>，分别链接生成可执行文件<code>mbr.symbol</code>和<code>mbr.bin</code></li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">ld -o mbr<span class="hljs-selector-class">.symbol</span> -melf_i386 -N mbr<span class="hljs-selector-class">.o</span> -Ttext <span class="hljs-number">0</span>x7c00<br>ld -o mbr<span class="hljs-selector-class">.bin</span> -melf_i386 -N mbr<span class="hljs-selector-class">.o</span> -Ttext <span class="hljs-number">0</span>x7c00 <span class="hljs-attr">--oformat</span> binary<br></code></pre></td></tr></table></figure>
+<ul>
+<li>对bootloader.asm重复同样的工作</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">nasm -o bootloader<span class="hljs-selector-class">.o</span> -<span class="hljs-selector-tag">g</span> -f elf32 bootloader<span class="hljs-selector-class">.asm</span> <br>ld -o bootloader<span class="hljs-selector-class">.symbol</span> -melf_i386 -N bootloader<span class="hljs-selector-class">.o</span> -Ttext <span class="hljs-number">0</span>x7e00<br>ld -o bootloader<span class="hljs-selector-class">.bin</span> -melf_i386 -N bootloader<span class="hljs-selector-class">.o</span> -Ttext <span class="hljs-number">0</span>x7e00 <span class="hljs-attr">--oformat</span> binary<br></code></pre></td></tr></table></figure>
+<ul>
+<li>将mbr.bin和bootloader.bin都载入磁盘</li>
+</ul>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">dd <span class="hljs-attribute">if</span>=mbr.bin <span class="hljs-attribute">of</span>=hd.img <span class="hljs-attribute">bs</span>=512 <span class="hljs-attribute">count</span>=1 <span class="hljs-attribute">seek</span>=0 <span class="hljs-attribute">conv</span>=notrunc<br>dd <span class="hljs-attribute">if</span>=bootloader.bin <span class="hljs-attribute">of</span>=hd.img <span class="hljs-attribute">bs</span>=512 <span class="hljs-attribute">count</span>=5 <span class="hljs-attribute">seek</span>=1 <span class="hljs-attribute">conv</span>=notrunc<br></code></pre></td></tr></table></figure>
+<p>执行完这些之后会发现生成了这些文件：</p>
+<p><img src="/img/image-20250325085117185.png" srcset="/img/loading.gif" lazyload alt="image-20250325085117185"></p>
+<p>设置断点：</p>
+<p>在mbr的第一条指令处设置断点</p>
+<p><img src="/img/image-20250325085326131.png" srcset="/img/loading.gif" lazyload alt="image-20250325085326131"></p>
+<p>打开显示源代码的窗口：</p>
+<p><img src="/img/image-20250325085405878.png" srcset="/img/loading.gif" lazyload alt="image-20250325085405878"></p>
+<p>加载MBR对应的符号表，可以在src窗口看到我们的源代码</p>
+<p>&#x3D;&#x3D;B+表示断点，白色窗口表示下一条要执行的指令&#x3D;&#x3D;</p>
+<p><img src="/img/image-20250325085657137.png" srcset="/img/loading.gif" lazyload alt="image-20250325085657137"></p>
+<p>窗口之间跳转：<br>注意，我们现在有两个窗口，一个是输入命令的cmd窗口，一个是显示源代码的src窗口。而方向键的效果只会在当前窗口起作用，并且当前窗口只有一个。在src窗口下，<strong>上下键的作用是上下滚动代码</strong>，<strong>在cmd窗口下，上键的作用是找到之前执行的命令</strong>。如果想要在两个窗口之前切换，可以使用<code>focus</code>命令，例如切换当前窗口到cmd窗口。</p>
+<p><img src="/img/image-20250325090100161.png" srcset="/img/loading.gif" lazyload alt="image-20250325090100161"></p>
+<p><img src="/img/image-20250325090218168.png" srcset="/img/loading.gif" lazyload alt="image-20250325090218168"></p>
+<h3 id="设置断点"><a href="#设置断点" class="headerlink" title="设置断点"></a>设置断点</h3><h4 id="进入保护模式的四个步骤"><a href="#进入保护模式的四个步骤" class="headerlink" title="进入保护模式的四个步骤"></a>进入保护模式的四个步骤</h4><ul>
+<li><strong>准备GDT，用lgdt指令加载GDTR信息</strong>。</li>
+<li><strong>打开第21根地址线</strong>。</li>
+<li><strong>开启cr0的保护模式标志位</strong>。</li>
+<li><strong>远跳转，进入保护模式</strong>。</li>
+</ul>
+<h4 id="更加详细的基本调试思路"><a href="#更加详细的基本调试思路" class="headerlink" title="更加详细的基本调试思路"></a>更加详细的基本调试思路</h4><ol>
+<li><strong>qemu启动</strong>。我们先在一个Terminal下启动qemu，注意，qemu运行的参数需要加上<code>-s -S</code>参数，且在gdb启动之前不能关闭qemu。</li>
+<li><strong>gdb启动</strong>。在另一个Terminal下启动gdb并<strong>连接</strong>上第1步启动的qemu。（如target remote:1234)</li>
+<li><strong>加载符号表</strong>。&#x3D;&#x3D;符号表&#x3D;&#x3D;会为gdb提供源代码和标识符等debug信息。</li>
+<li><strong>设置断点</strong>。gdb运行到我们设置的断点处会暂停，我们会在我们感兴趣的代码地址处设置断点，断点一般是我们认为bug出现的地方。</li>
+<li><strong>运行至断点处</strong>。使用命令跳过其他我们不感兴趣的代码，使代码一直执行到我们设置的断点处暂停。</li>
+<li><strong>查看寄存器或特定地址的值</strong>。我们可以在gdb暂停的地方查看寄存器或特定地址的值，并根据输出来判断前面执行的代码是否出现bug。</li>
+<li><strong>单步调试跟踪</strong>。gdb在断点处暂停后，我们可以一条一条语句地执行来跟踪程序的运行逻辑，gdb每执行条语句就会暂停。</li>
+<li><strong>重复3、4、5、6一直到bug解决</strong>。这个过程可能需要反复执行，但不一定是按照{3,4,5,6}{3,4,5,6}的顺序，可以是{3,4,6,5,6,6,6,5,3,4,5}{3,4,6,5,6,6,6,5,3,4,5}。</li>
+</ol>
+<h4 id="实验断点设置："><a href="#实验断点设置：" class="headerlink" title="实验断点设置："></a>实验断点设置：</h4><p>在mbr的初始地址设置断点：</p>
+<p><img src="/img/image-20250325102422602.png" srcset="/img/loading.gif" lazyload alt="image-20250325102422602"></p>
+<p>键入<code>c</code>之后，成功初始化</p>
+<p><img src="/img/image-20250325102509957.png" srcset="/img/loading.gif" lazyload alt="image-20250325102509957"></p>
+<p>然后打开源代码窗口，并加载MBR对应的符号表</p>
+<p><img src="/img/image-20250325102602634.png" srcset="/img/loading.gif" lazyload alt="image-20250325102602634"></p>
+<p>然后为bootloader设置断点，对应情况如下：</p>
+<ul>
+<li>这里<strong>断点位置的查找</strong>（偏移量的计算）使用了<code>nasm -f bin -l bootloader.lst bootloader.asm</code>命令，可以生成一个对应的<strong>列表文件</strong>，会显示&#x3D;&#x3D;每条指令的偏移量&#x3D;&#x3D;</li>
+<li>另一种方法是使用反汇编（objdump）–输出结果会呈现在终端中<code>objdump -D -b binary -m i386 -M intel bootloader.bin</code></li>
+</ul>
+<p><img src="/img/image-20250325102052040.png" srcset="/img/loading.gif" lazyload alt="image-20250325102052040"></p>
+<ul>
+<li>到达第一个起始点：</li>
+</ul>
+<p><img src="/img/image-20250325103125494.png" srcset="/img/loading.gif" lazyload alt="image-20250325103125494"></p>
+<p>此时的寄存器内容：</p>
+<p><img src="/img/image-20250325103155996.png" srcset="/img/loading.gif" lazyload alt="image-20250325103155996"></p>
+<p><img src="/img/image-20250325103217047.png" srcset="/img/loading.gif" lazyload alt="image-20250325103217047"></p>
+<p><img src="/img/image-20250325103229067.png" srcset="/img/loading.gif" lazyload alt="image-20250325103229067"><br>栈顶指针指向0x7c00，下一条执行的指令</p>
+<ul>
+<li>到达第二个断点–初始设置GDTR之前</li>
+</ul>
+<p><img src="/img/image-20250325103308463.png" srcset="/img/loading.gif" lazyload alt="image-20250325103308463"></p>
+<p>寄存器内容：</p>
+<p><img src="/img/image-20250325103324172.png" srcset="/img/loading.gif" lazyload alt="image-20250325103324172"></p>
+<p><img src="/img/image-20250325103341062.png" srcset="/img/loading.gif" lazyload alt="image-20250325103341062"></p>
+<p><img src="/img/image-20250325103354840.png" srcset="/img/loading.gif" lazyload alt="image-20250325103354840"></p>
+<ul>
+<li>第三个断点–GDTR设置后，打开第21根地址线之前<br><img src="/img/file-20250330212542533.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<p><img src="/img/image-20250325103450079.png" srcset="/img/loading.gif" lazyload alt="image-20250325103450079"></p>
+<p>寄存器内容：</p>
+<p><img src="/img/image-20250325103511283.png" srcset="/img/loading.gif" lazyload alt="image-20250325103511283"></p>
+<p><img src="/img/image-20250325103521281.png" srcset="/img/loading.gif" lazyload alt="image-20250325103521281"></p>
+<p><img src="/img/image-20250325103529256.png" srcset="/img/loading.gif" lazyload alt="image-20250325103529256"></p>
+<ul>
+<li>第四个断点–打开第21根地址线之后，设置保护模式PE位之前</li>
+</ul>
+<p><img src="/img/image-20250325103605882.png" srcset="/img/loading.gif" lazyload alt="image-20250325103605882"></p>
+<p><img src="/img/image-20250325103620227.png" srcset="/img/loading.gif" lazyload alt="image-20250325103620227"></p>
+<p><img src="/img/image-20250325103627936.png" srcset="/img/loading.gif" lazyload alt="image-20250325103627936"></p>
+<ul>
+<li>第五个断点–设置PE位之后，进入保护模式之前</li>
+</ul>
+<p><img src="/img/image-20250325103649298.png" srcset="/img/loading.gif" lazyload alt="image-20250325103649298"></p>
+<p>寄存器内容：</p>
+<p><img src="/img/image-20250325103703503.png" srcset="/img/loading.gif" lazyload alt="image-20250325103703503"></p>
+<p><img src="/img/image-20250325103719845.png" srcset="/img/loading.gif" lazyload alt="image-20250325103719845"></p>
+<h6 id="可以看到这里cr0位改变了，成功设置"><a href="#可以看到这里cr0位改变了，成功设置" class="headerlink" title="可以看到这里cr0位改变了，成功设置"></a>可以看到这里cr0位改变了，成功设置</h6><p>进入保护模式前：</p>
+<p><img src="/img/image-20250325103805259.png" srcset="/img/loading.gif" lazyload alt="image-20250325103805259"></p>
+<ul>
+<li>执行到最后（进入保护模式）</li>
+</ul>
+<p>可以看到<strong>多呈现了一行输出</strong>–成功进入保护模式</p>
+<p><img src="/img/image-20250325103857556.png" srcset="/img/loading.gif" lazyload alt="image-20250325103857556"></p>
+<h4 id="Makefile"><a href="#Makefile" class="headerlink" title="Makefile"></a>Makefile</h4><h5 id="基本概念："><a href="#基本概念：" class="headerlink" title="基本概念："></a>基本概念：</h5><p><code>Makefile</code> 是 <code>make</code> 命令所读取的配置文件，包含了构建项目的规则。其主要作用是<strong>检查项目文件的依赖关系</strong>，<strong>自动执行必要的命令</strong>，从而<strong>更新目标文件</strong>。一般来说，Makefile 主要包括以下三部分内容：</p>
+<ul>
+<li>目标：需要生成的文件，例如可执行文件。</li>
+<li>依赖：生成目标所依赖的文件或目标。</li>
+<li>命令：构建目标时需要执行的命令。</li>
+</ul>
+<h5 id="基本语法："><a href="#基本语法：" class="headerlink" title="基本语法："></a>基本语法：</h5><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">target</span>:dependencies<br>	<span class="hljs-keyword">command</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>target</strong>：目标文件，可以是一个目标文件或一个动作名称（例如：<code>all</code>, <code>clean</code>）。</li>
+<li><strong>dependencies</strong>：生成目标所依赖的文件或其他目标。</li>
+<li><strong>command</strong>：构建目标的命令，必须以 <code>Tab</code> 键开头。</li>
+</ul>
+<p>变量的使用：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs abnf"><span class="hljs-attribute">VarName</span><span class="hljs-operator">=</span>var<br></code></pre></td></tr></table></figure>
+<p>使用的时候：<code>$(VarName)</code><br>例子：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus">CC = g++<br>CFLAGS = -Wall -<span class="hljs-selector-tag">g</span><br> <br><span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span>: <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.cpp</span><br>    $(CC) $(CFLAGS) -c <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.cpp</span> -o <span class="hljs-selector-tag">main</span>.o<br></code></pre></td></tr></table></figure>
+<p>常用的内置变量：</p>
+<ul>
+<li><code>$@</code>：表示<strong>目标文件</strong>。</li>
+<li><code>$^</code>：表示<strong>所有的依赖文件</strong>。</li>
+<li><code>$&lt;</code>：表示<strong>第一个依赖文件</strong>。</li>
+</ul>
+<p>伪目标：一种&#x3D;&#x3D;命令名称&#x3D;&#x3D;<br>例子：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-meta"><span class="hljs-keyword">.PHONY</span>: clean</span><br><span class="hljs-section">clean:</span><br>    rm -f *.o main<br></code></pre></td></tr></table></figure>
+
+<p><strong>方式一：Makefile+直接编译链接（不推荐）</strong></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">app:add<span class="hljs-selector-class">.c</span> <span class="hljs-selector-tag">div</span><span class="hljs-selector-class">.c</span> multi<span class="hljs-selector-class">.c</span> sub<span class="hljs-selector-class">.c</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span><br>	gcc add<span class="hljs-selector-class">.c</span> <span class="hljs-selector-tag">div</span><span class="hljs-selector-class">.c</span> multi<span class="hljs-selector-class">.c</span> sub<span class="hljs-selector-class">.c</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span> -o app<br></code></pre></td></tr></table></figure>
+<p><strong>方式二：Makefile+编译+链接</strong></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs stylus">app:add<span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">div</span><span class="hljs-selector-class">.o</span> multi<span class="hljs-selector-class">.o</span> sub<span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span><br>	gcc add<span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">div</span><span class="hljs-selector-class">.o</span> multi<span class="hljs-selector-class">.o</span> sub<span class="hljs-selector-class">.o</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span> -o app<br> <br>add<span class="hljs-selector-class">.o</span>:add<span class="hljs-selector-class">.c</span><br>	gcc -c add<span class="hljs-selector-class">.c</span> -o add<span class="hljs-selector-class">.o</span><br> <br><span class="hljs-selector-tag">div</span><span class="hljs-selector-class">.o</span>:<span class="hljs-selector-tag">div</span><span class="hljs-selector-class">.c</span><br>	gcc -c <span class="hljs-selector-tag">div</span><span class="hljs-selector-class">.c</span> -o <span class="hljs-selector-tag">div</span><span class="hljs-selector-class">.o</span><br> <br>multi<span class="hljs-selector-class">.o</span>:multi<span class="hljs-selector-class">.c</span><br>	gcc -c multi<span class="hljs-selector-class">.c</span> -o multi<span class="hljs-selector-class">.o</span><br> <br>sub<span class="hljs-selector-class">.o</span>:sub<span class="hljs-selector-class">.c</span><br>	gcc -c sub<span class="hljs-selector-class">.c</span> -o sub<span class="hljs-selector-class">.o</span><br> <br><span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span>:<span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span><br>	gcc -c <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span> -o <span class="hljs-selector-tag">main</span>.o<br></code></pre></td></tr></table></figure>
+<p><strong>方式三：Makefile+变量</strong><br>知识点：<br>自定义变量：</p>
+<ul>
+<li>变量名&#x3D;变量值，如var&#x3D;hello<br>预定义变量：</li>
+<li>AR : 归档维护程序的名称，默认值为 ar</li>
+<li>CC : C 编译器的名称，默认值为 cc</li>
+<li>CXX : C++ 编译器的名称，默认值为 g++</li>
+<li>$@ : 目标的完整名称</li>
+<li>$&lt; : 第一个依赖文件的名称</li>
+<li>$^: 所有的依赖文件<br>例子：</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs makefile">src=add.o div.o multi.o sub.o main.o<br>target=app<br><span class="hljs-variable">$(target)</span>:<span class="hljs-variable">$(src)</span><br>	<span class="hljs-variable">$(CC)</span> <span class="hljs-variable">$^</span> -o <span class="hljs-variable">$@</span><br> <br><span class="hljs-section">add.o:add.c</span><br>	<span class="hljs-variable">$(CC)</span> -c <span class="hljs-variable">$^</span> -o <span class="hljs-variable">$@</span><br> <br><span class="hljs-section">div.o:div.c</span><br>	<span class="hljs-variable">$(CC)</span> -c <span class="hljs-variable">$^</span> -o <span class="hljs-variable">$@</span><br> <br><span class="hljs-section">multi.o:multi.c</span><br>	<span class="hljs-variable">$(CC)</span> -c <span class="hljs-variable">$^</span> -o <span class="hljs-variable">$@</span><br> <br><span class="hljs-section">sub.o:sub.c</span><br>	<span class="hljs-variable">$(CC)</span> -c <span class="hljs-variable">$^</span> -o <span class="hljs-variable">$@</span><br> <br><span class="hljs-section">main.o:main.c</span><br>	<span class="hljs-variable">$(CC)</span> -c <span class="hljs-variable">$^</span> -o <span class="hljs-variable">$@</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>方式四：Makefile+模式匹配</strong><br><strong>方法五：Makefile + 函数</strong></p>
+<h5 id="运行："><a href="#运行：" class="headerlink" title="运行："></a>运行：</h5><ul>
+<li><code>make</code>或<code>make run</code>。使用qemu启动<code>hd.img</code>，在此命令执行前应该执行<code>make build</code>。</li>
+<li><code>make debug</code>。启动qemu并开启gdb调试。</li>
+<li><code>make build</code>。编译代码并写入<code>hd.img</code>。</li>
+<li><code>make clean</code>。清除当前文件夹下以<code>.bin</code>结尾的文件。（也可以自己设置，比如.o结尾，.exe结尾的文件等等）</li>
+</ul>
+<p>gdb的命令也可以预先写到文件中，在启动gdb后会自动加载执行<br>比如：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs smali">target remote:1234<br>set disassembly-flavor intel<span class="hljs-built_in"></span><br><span class="hljs-built_in">add-symbol-file </span>mbr.symbol 0x7c00<span class="hljs-built_in"></span><br><span class="hljs-built_in">add-symbol-file </span>bootloader.symbol 0x7c00<br></code></pre></td></tr></table></figure>
+
+
+<h2 id="任务-3（选做）"><a href="#任务-3（选做）" class="headerlink" title="任务 3（选做）"></a>任务 3（选做）</h2><p>改造“Lab2-Assignment 4”为32位代码，即在保护模式后执行自定义的汇编程序。</p>
+<p>resources：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/abc123lzf/article/details/109289567">x86保护模式——全局描述符表GDT详解_gdt全局描述符表 作用-CSDN博客</a></p>
+<h3 id="GDT介绍"><a href="#GDT介绍" class="headerlink" title="GDT介绍"></a>GDT介绍</h3><p>GDT全称：全局描述符表<br>GDT的数据结构是一个描述符数组，每个描述符8个字节，可以存放在内存当中任意位置</p>
+<p><strong>实模式</strong>下的初始化代码，主要完成三件事：</p>
+<ol>
+<li>初始化段描述符</li>
+<li>初始化GDT的基址，并存放到GDTR寄存器</li>
+<li><strong>切换到保护模式</strong>（打开A20地址线，将CR0寄存器第0位设置为1），并跳转到负责打印字符串的代码段。</li>
+</ol>
+<p>现在为止学到的：<br>从MBR加载bootloader，bootloader理论上是没有字节限制的，可以占据多个扇区，并完成很多功能，然后再将控制权交给操作系统<br>运行MBR是16位实模式，运行bootloader时通过执行对应的一组指令切换到32位保护模式，才开始加载内核进入内存，并且<strong>开始执行用户程序</strong>（本task要学习实现的）。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>参照原本的bootloader代码，<br>示例代码：</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-comment">;# 初始设置和显示信息 #</span><br><span class="hljs-meta">%include</span> <span class="hljs-string">&quot;boot.inc&quot;</span><br><span class="hljs-comment">;org 0x7e00 这里注释掉，因为会通过命令行设置起到同样作用的命令</span><br>[<span class="hljs-meta">bits</span> <span class="hljs-number">16</span>]<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">0xb800</span> <span class="hljs-comment">;显存地址</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">gs</span>, <span class="hljs-built_in">ax</span><br><span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">0x03</span> <span class="hljs-comment">;青色</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ecx</span>, bootloader_tag_end - bootloader_tag <span class="hljs-comment">;计算要打印的字符串长度</span><br><span class="hljs-keyword">xor</span> <span class="hljs-built_in">ebx</span>, <span class="hljs-built_in">ebx</span> <span class="hljs-comment">;置0</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>, bootloader_tag <span class="hljs-comment">;将字符串移动到寄存器内（指针）</span><br><span class="hljs-symbol">output_bootloader_tag:</span> <span class="hljs-comment">;循环输出</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, [<span class="hljs-built_in">esi</span>]<br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">word</span>[<span class="hljs-built_in">gs</span>:<span class="hljs-built_in">bx</span>], <span class="hljs-built_in">ax</span><br>    <span class="hljs-keyword">inc</span> <span class="hljs-built_in">esi</span><br>    <span class="hljs-keyword">add</span> <span class="hljs-built_in">ebx</span>,<span class="hljs-number">2</span><br>    <span class="hljs-keyword">loop</span> output_bootloader_tag<br><span class="hljs-comment">;# 初始设置和显示信息 #</span><br><br><span class="hljs-comment">;# 局描述符表GDT设置 #</span><br><span class="hljs-comment">;空描述符--GDT的第一个条目必须为空</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dword</span> [GDT_START_ADDRESS+<span class="hljs-number">0x00</span>],<span class="hljs-number">0x00</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dword</span> [GDT_START_ADDRESS+<span class="hljs-number">0x04</span>],<span class="hljs-number">0x00</span>  <br><br><span class="hljs-comment">;创建描述符，这是一个数据段，对应0~4GB的线性地址空间</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dword</span> [GDT_START_ADDRESS+<span class="hljs-number">0x08</span>],<span class="hljs-number">0x0000ffff</span>    <span class="hljs-comment">; 基地址为0，段界限为0xFFFFF</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dword</span> [GDT_START_ADDRESS+<span class="hljs-number">0x0c</span>],<span class="hljs-number">0x00cf9200</span>    <span class="hljs-comment">; 粒度为4KB，存储器段描述符 </span><br><br><span class="hljs-comment">;建立保护模式下的堆栈段描述符      </span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dword</span> [GDT_START_ADDRESS+<span class="hljs-number">0x10</span>],<span class="hljs-number">0x00000000</span>    <span class="hljs-comment">; 基地址为0x00000000，界限0x0 </span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dword</span> [GDT_START_ADDRESS+<span class="hljs-number">0x14</span>],<span class="hljs-number">0x00409600</span>    <span class="hljs-comment">; 粒度为1个字节</span><br><br><span class="hljs-comment">;建立保护模式下的显存描述符   </span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dword</span> [GDT_START_ADDRESS+<span class="hljs-number">0x18</span>],<span class="hljs-number">0x80007fff</span>    <span class="hljs-comment">; 基地址为0x000B8000，界限0x07FFF </span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dword</span> [GDT_START_ADDRESS+<span class="hljs-number">0x1c</span>],<span class="hljs-number">0x0040920b</span>    <span class="hljs-comment">; 粒度为字节</span><br><br><span class="hljs-comment">;创建保护模式下平坦模式代码段描述符</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dword</span> [GDT_START_ADDRESS+<span class="hljs-number">0x20</span>],<span class="hljs-number">0x0000ffff</span>    <span class="hljs-comment">; 基地址为0，段界限为0xFFFFF</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">dword</span> [GDT_START_ADDRESS+<span class="hljs-number">0x24</span>],<span class="hljs-number">0x00cf9800</span>    <span class="hljs-comment">; 粒度为4kb，代码段描述符 </span><br><br><span class="hljs-comment">;# 局描述符表GDT设置 #</span><br><br><span class="hljs-comment">;#加载GDTR并准备切换到保护模式#</span><br><span class="hljs-comment">;准备GDTR B+ 1</span><br><span class="hljs-comment">;初始化描述符表寄存器GDTR</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">word</span> [pgdt], <span class="hljs-number">39</span>      <span class="hljs-comment">;描述符表的界限   </span><br><span class="hljs-keyword">lgdt</span> [pgdt] <span class="hljs-comment">;加载GDTR寄存器，告诉CPU GDT的位置和大小</span><br><span class="hljs-comment">;打开第21根地址线，B+ 2      </span><br><span class="hljs-keyword">in</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">0x92</span>                         <span class="hljs-comment">;南桥芯片内的端口 </span><br><span class="hljs-keyword">or</span> <span class="hljs-built_in">al</span>,<span class="hljs-number">0000_0010B</span><br><span class="hljs-keyword">out</span> <span class="hljs-number">0x92</span>,<span class="hljs-built_in">al</span>                        <span class="hljs-comment">;打开A20</span><br><span class="hljs-comment">;设置保护模式标志位 B+ 3</span><br><span class="hljs-keyword">cli</span>                                <span class="hljs-comment">;禁用中断，中断机制尚未工作</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>,<span class="hljs-built_in">cr0</span><br><span class="hljs-keyword">or</span> <span class="hljs-built_in">eax</span>,<span class="hljs-number">1</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">cr0</span>,<span class="hljs-built_in">eax</span>                        <span class="hljs-comment">;设置PE位</span><br><span class="hljs-comment">;#加载GDTR并准备切换到保护模式#   </span><br><br><span class="hljs-comment">;以下进入保护模式 B+ 4</span><br><span class="hljs-keyword">jmp</span> <span class="hljs-built_in">dword</span> CODE_SELECTOR:protect_mode_begin <span class="hljs-comment">;远跳转，同时清空CPU流水线并加载CS寄存器为代码段选择子</span><br><br><span class="hljs-comment">;16位的描述符选择子：32位偏移</span><br><span class="hljs-comment">;清流水线并串行化处理器</span><br>[<span class="hljs-meta">bits</span> <span class="hljs-number">32</span>]           <br><span class="hljs-symbol">protect_mode_begin:</span>    <span class="hljs-comment">;进入保护模式                          </span><br><span class="hljs-comment">;保护模式下的初始化</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>, DATA_SELECTOR                     <span class="hljs-comment">;加载数据段(0..4GB)选择子</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ds</span>, <span class="hljs-built_in">eax</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">es</span>, <span class="hljs-built_in">eax</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>, STACK_SELECTOR<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ss</span>, <span class="hljs-built_in">eax</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>, VIDEO_SELECTOR<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">gs</span>, <span class="hljs-built_in">eax</span><br><span class="hljs-comment">;保护模式必须通过GDT描述符来访问内存，不能直接使用段地址</span><br><span class="hljs-comment">;32位模式下使用32位寄存器(eax)而不是16位(ax)</span><br><span class="hljs-comment">;显存访问需要通过专门的显存段描述符</span><br><span class="hljs-comment">;这里开始执行自己的程序--所以我们只需要修改这部分就好了，同时要保证这部分是32位的</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ecx</span>, protect_mode_tag_end - protect_mode_tag<br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">ebx</span>, <span class="hljs-number">80</span> * <span class="hljs-number">2</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">esi</span>, protect_mode_tag<br><span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, <span class="hljs-number">0x3</span><br><span class="hljs-symbol">output_protect_mode_tag:</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, [<span class="hljs-built_in">esi</span>]<br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">word</span>[<span class="hljs-built_in">gs</span>:<span class="hljs-built_in">ebx</span>], <span class="hljs-built_in">ax</span><br>    <span class="hljs-keyword">add</span> <span class="hljs-built_in">ebx</span>, <span class="hljs-number">2</span><br>    <span class="hljs-keyword">inc</span> <span class="hljs-built_in">esi</span><br>    <span class="hljs-keyword">loop</span> output_protect_mode_tag<br><span class="hljs-comment">;=======up======|same|======up===========</span><br><span class="hljs-keyword">jmp</span> $ <span class="hljs-comment">; 死循环</span><br><br><span class="hljs-comment">;数据定义</span><br>pgdt <span class="hljs-built_in">dw</span> <span class="hljs-number">0</span><br>     <span class="hljs-built_in">dd</span> GDT_START_ADDRESS<br><br>bootloader_tag <span class="hljs-built_in">db</span> <span class="hljs-string">&#x27;run bootloader&#x27;</span><br><span class="hljs-symbol">bootloader_tag_end:</span><br><br>protect_mode_tag <span class="hljs-built_in">db</span> <span class="hljs-string">&#x27;enter protect mode&#x27;</span><br><span class="hljs-symbol">protect_mode_tag_end:</span><br></code></pre></td></tr></table></figure>
+
+<p>my_program：前面的部分和上面基本完全一样，下面只展示我的程序部分</p>
+<ol>
+<li>初始化弹射字符变量–存储在内存中（<strong>保护模式下更倾向于使用内存变量而不是寄存器存储状态</strong>）</li>
+</ol>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">byte</span> [row], <span class="hljs-number">2</span>        <span class="hljs-comment">; 初始行位置</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">byte</span> [col], <span class="hljs-number">0</span>        <span class="hljs-comment">; 初始列位置</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">byte</span> [row_dir], <span class="hljs-number">1</span>    <span class="hljs-comment">; 行方向增量 (1=向下)</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">byte</span> [col_dir], <span class="hljs-number">1</span>    <span class="hljs-comment">; 列方向增量 (1=向右)</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">byte</span> [char_color], <span class="hljs-number">0x0A</span>  <span class="hljs-comment">; 字符颜色 (亮绿色)</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">byte</span> [char_value], <span class="hljs-string">&#x27;0&#x27;</span>   <span class="hljs-comment">; 显示字符</span><br></code></pre></td></tr></table></figure>
+<p>使用：<code>mov &lt;mem&gt;, &lt;con&gt;</code>，将常数存储到&#x3D;&#x3D;内存地址row&#x3D;&#x3D;处，并通过<code>byte</code>指定操作数大小为1字节。<br>2. 边界检查</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-keyword">bounce_loop:</span><br><span class="hljs-keyword"></span>    <span class="hljs-comment">; 检查上下边界</span><br>    mov al, [row]<br>    cmp al, <span class="hljs-number">0</span><br>    <span class="hljs-keyword">jle </span><span class="hljs-keyword">bounce_up </span>      <span class="hljs-comment">; 如果行 &lt;= 0，需要向下反弹</span><br>    cmp al, <span class="hljs-number">24</span><br>    <span class="hljs-keyword">jge </span><span class="hljs-keyword">bounce_down </span>    <span class="hljs-comment">; 如果行 &gt;= 24，需要向上反弹</span><br>    <br>    <span class="hljs-comment">; 检查左右边界</span><br>    mov al, [col]<br>    cmp al, <span class="hljs-number">0</span><br>    <span class="hljs-keyword">jle </span><span class="hljs-keyword">bounce_right </span>   <span class="hljs-comment">; 如果列 &lt;= 0，需要向右反弹</span><br>    cmp al, <span class="hljs-number">79</span><br>    <span class="hljs-keyword">jge </span><span class="hljs-keyword">bounce_left </span>    <span class="hljs-comment">; 如果列 &gt;= 79，需要向左反弹</span><br>    <br>    <span class="hljs-keyword">jmp </span><span class="hljs-keyword">display </span>        <span class="hljs-comment">; 通过所有边界检查，显示字符</span><br></code></pre></td></tr></table></figure>
+<p>这里将模板内存地址中存储的值取出到寄存器内，再进行比较。其余的内容差不多。<br>3. 显存位置计算</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">movzx</span> <span class="hljs-built_in">ebx</span>, <span class="hljs-built_in">byte</span> [row]    <span class="hljs-comment">; 获取当前行</span><br><span class="hljs-keyword">imul</span> <span class="hljs-built_in">ebx</span>, <span class="hljs-number">80</span>             <span class="hljs-comment">; ebx = row * 80</span><br><span class="hljs-keyword">movzx</span> <span class="hljs-built_in">ecx</span>, <span class="hljs-built_in">byte</span> [col]    <span class="hljs-comment">; 获取当前列</span><br><span class="hljs-keyword">add</span> <span class="hljs-built_in">ebx</span>, <span class="hljs-built_in">ecx</span>             <span class="hljs-comment">; ebx = row * 80 + col</span><br><span class="hljs-keyword">shl</span> <span class="hljs-built_in">ebx</span>, <span class="hljs-number">1</span>               <span class="hljs-comment">; ebx = 2 * (row * 80 + col)</span><br></code></pre></td></tr></table></figure>
+<p>使用32位寄存器代替原本的16位寄存器。<br>4. 显存写入<br>区别是32位一次可以写入两个字节，所以我们分别对ah和al进行赋值之后，一起存储到gs中</p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-number">ah</span>, [char_color]     <span class="hljs-comment">; 设置字符颜色</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, [char_value]     <span class="hljs-comment">; 设置字符值</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">word</span> [<span class="hljs-built_in">gs</span>:<span class="hljs-built_in">ebx</span>], <span class="hljs-built_in">ax</span>    <span class="hljs-comment">; 写入显存</span><br></code></pre></td></tr></table></figure>
+<ol start="5">
+<li>位置更新<br>内存上的值要进行计算，需要提取到寄存器之后再计算。</li>
+</ol>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, [row]<br><span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>, [row_dir]        <span class="hljs-comment">; 根据行方向增量更新行</span><br><span class="hljs-keyword">mov</span> [row], <span class="hljs-built_in">al</span><br>    <br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, [col]<br><span class="hljs-keyword">add</span> <span class="hljs-built_in">al</span>, [col_dir]        <span class="hljs-comment">; 根据列方向增量更新列</span><br><span class="hljs-keyword">mov</span> [col], <span class="hljs-built_in">al</span><br>    <br><span class="hljs-keyword">inc</span> <span class="hljs-built_in">byte</span> [char_color]    <span class="hljs-comment">; 改变颜色</span><br><span class="hljs-keyword">inc</span> <span class="hljs-built_in">byte</span> [char_value]    <span class="hljs-comment">; 改变字符</span><br></code></pre></td></tr></table></figure>
+<ol start="5">
+<li>延时实现<br>旧的代码中我使用的是bios int15h中断功能，但是这是实模式专属的，在保护模式无法使用。因此要切换成<strong>循环计数</strong>（纯软件延时）的方式（之前在实模式尝试过这种方式，但是延时效果比较差，应该是空间不够大）</li>
+</ol>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">mov ecx, <span class="hljs-number">2000000</span>         <span class="hljs-comment">; 延时计数器</span><br><span class="hljs-symbol">delay_loop:</span><br>    <span class="hljs-keyword">nop </span>                     <span class="hljs-comment">; 空操作</span><br>    loop delay_loop          <span class="hljs-comment">; 循环直到ecx为0</span><br></code></pre></td></tr></table></figure>
+
+<p>整个程序：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm"><span class="hljs-comment">; =========== 弹射字符动画 (32-bit) ===========</span><br><br><span class="hljs-comment">; 初始化弹射字符变量--存储在内存中</span><br>mov <span class="hljs-keyword">byte </span>[row], <span class="hljs-number">2</span>        <span class="hljs-comment">; 初始行位置</span><br>mov <span class="hljs-keyword">byte </span>[col], <span class="hljs-number">0</span>        <span class="hljs-comment">; 初始列位置</span><br>mov <span class="hljs-keyword">byte </span>[row_dir], <span class="hljs-number">1</span>    <span class="hljs-comment">; 行方向增量 (1=向下)</span><br>mov <span class="hljs-keyword">byte </span>[col_dir], <span class="hljs-number">1</span>    <span class="hljs-comment">; 列方向增量 (1=向右)</span><br>mov <span class="hljs-keyword">byte </span>[char_color], <span class="hljs-number">0x0A</span>  <span class="hljs-comment">; 字符颜色 (亮绿色)</span><br>mov <span class="hljs-keyword">byte </span>[char_value], <span class="hljs-string">&#x27;0&#x27;</span>   <span class="hljs-comment">; 显示字符</span><br><br><span class="hljs-comment">; 主弹射循环</span><br><span class="hljs-keyword">bounce_loop:</span><br><span class="hljs-keyword"></span>    <span class="hljs-comment">; 检查上下边界</span><br>    mov al, [row]<br>    cmp al, <span class="hljs-number">0</span><br>    <span class="hljs-keyword">jle </span><span class="hljs-keyword">bounce_up </span>      <span class="hljs-comment">; 如果行 &lt;= 0，需要向下反弹</span><br>    cmp al, <span class="hljs-number">24</span><br>    <span class="hljs-keyword">jge </span><span class="hljs-keyword">bounce_down </span>    <span class="hljs-comment">; 如果行 &gt;= 24，需要向上反弹</span><br>    <br>    <span class="hljs-comment">; 检查左右边界</span><br>    mov al, [col]<br>    cmp al, <span class="hljs-number">0</span><br>    <span class="hljs-keyword">jle </span><span class="hljs-keyword">bounce_right </span>   <span class="hljs-comment">; 如果列 &lt;= 0，需要向右反弹</span><br>    cmp al, <span class="hljs-number">79</span><br>    <span class="hljs-keyword">jge </span><span class="hljs-keyword">bounce_left </span>    <span class="hljs-comment">; 如果列 &gt;= 79，需要向左反弹</span><br>    <br>    <span class="hljs-keyword">jmp </span><span class="hljs-keyword">display </span>        <span class="hljs-comment">; 通过所有边界检查，显示字符</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">bounce_up:</span><br>    mov <span class="hljs-keyword">byte </span>[row_dir], <span class="hljs-number">1</span>    <span class="hljs-comment">; 将行方向改为向下(正)</span><br>    <span class="hljs-keyword">jmp </span><span class="hljs-keyword">display</span><br><span class="hljs-keyword"></span><span class="hljs-symbol"></span><br><span class="hljs-symbol">bounce_down:</span><br>    mov <span class="hljs-keyword">byte </span>[row_dir], -<span class="hljs-number">1</span>   <span class="hljs-comment">; 将行方向改为向上(负)</span><br>    <span class="hljs-keyword">jmp </span><span class="hljs-keyword">display</span><br><span class="hljs-keyword"></span><span class="hljs-symbol">    </span><br><span class="hljs-symbol">bounce_right:</span><br>    mov <span class="hljs-keyword">byte </span>[col_dir], <span class="hljs-number">1</span>    <span class="hljs-comment">; 将列方向改为向右(正)</span><br>    <span class="hljs-keyword">jmp </span><span class="hljs-keyword">display</span><br><span class="hljs-keyword"></span><span class="hljs-symbol">    </span><br><span class="hljs-symbol">bounce_left:</span><br>    mov <span class="hljs-keyword">byte </span>[col_dir], -<span class="hljs-number">1</span>   <span class="hljs-comment">; 将列方向改为向左(负)</span><br>    <span class="hljs-keyword">jmp </span><span class="hljs-keyword">display</span><br><span class="hljs-keyword"></span><span class="hljs-symbol"></span><br><span class="hljs-symbol">display:</span><br>    <span class="hljs-comment">; 计算显存位置</span><br>    <span class="hljs-keyword">movzx </span>ebx, <span class="hljs-keyword">byte </span>[row]    <span class="hljs-comment">; 获取当前行</span><br>    imul ebx, <span class="hljs-number">80</span>             <span class="hljs-comment">; ebx = row * 80</span><br>    <span class="hljs-keyword">movzx </span>ecx, <span class="hljs-keyword">byte </span>[col]    <span class="hljs-comment">; 获取当前列</span><br>    <span class="hljs-keyword">add </span>ebx, ecx             <span class="hljs-comment">; ebx = row * 80 + col</span><br>    <span class="hljs-keyword">shl </span>ebx, <span class="hljs-number">1</span>               <span class="hljs-comment">; ebx = 2 * (row * 80 + col)</span><br>    <br>    <span class="hljs-comment">; 显示字符</span><br>    mov ah, [char_color]     <span class="hljs-comment">; 设置字符颜色</span><br>    mov al, [char_value]     <span class="hljs-comment">; 设置字符值</span><br>    mov word [gs:ebx], ax    <span class="hljs-comment">; 写入显存</span><br>    <br>    <span class="hljs-comment">; 更新位置</span><br>    mov al, [row]<br>    <span class="hljs-keyword">add </span>al, [row_dir]        <span class="hljs-comment">; 根据行方向增量更新行</span><br>    mov [row], al<br>    <br>    mov al, [col]<br>    <span class="hljs-keyword">add </span>al, [col_dir]        <span class="hljs-comment">; 根据列方向增量更新列</span><br>    mov [col], al<br>    <br>    <span class="hljs-comment">; 更新字符外观</span><br>    inc <span class="hljs-keyword">byte </span>[char_color]    <span class="hljs-comment">; 改变颜色</span><br>    inc <span class="hljs-keyword">byte </span>[char_value]    <span class="hljs-comment">; 改变字符</span><br>    cmp <span class="hljs-keyword">byte </span>[char_value], <span class="hljs-string">&#x27;9&#x27;</span>+<span class="hljs-number">1</span><br>    <span class="hljs-keyword">jne </span><span class="hljs-keyword">add_delay</span><br><span class="hljs-keyword"></span>    mov <span class="hljs-keyword">byte </span>[char_value], <span class="hljs-string">&#x27;0&#x27;</span>  <span class="hljs-comment">; 如果超过&#x27;9&#x27;，重置为&#x27;0&#x27;</span><br><span class="hljs-symbol"></span><br><span class="hljs-symbol">add_delay:</span><br>    <span class="hljs-comment">; 保护模式下的延时循环</span><br>    mov ecx, <span class="hljs-number">2000000</span>         <span class="hljs-comment">; 延时计数器</span><br><span class="hljs-symbol">delay_loop:</span><br>    <span class="hljs-keyword">nop </span>                     <span class="hljs-comment">; 空操作</span><br>    loop delay_loop          <span class="hljs-comment">; 循环直到ecx为0</span><br>    <br>    <span class="hljs-keyword">jmp </span><span class="hljs-keyword">bounce_loop </span>         <span class="hljs-comment">; 继续主循环</span><br><br><span class="hljs-comment">; 保护模式下存储变量的数据区</span><br>row         db <span class="hljs-number">0</span>  <span class="hljs-comment">; 当前行位置</span><br>col         db <span class="hljs-number">0</span>  <span class="hljs-comment">; 当前列位置</span><br>row_dir     db <span class="hljs-number">0</span>  <span class="hljs-comment">; 行方向</span><br>col_dir     db <span class="hljs-number">0</span>  <span class="hljs-comment">; 列方向</span><br>char_color  db <span class="hljs-number">0</span>  <span class="hljs-comment">; 字符颜色</span><br>char_value  db <span class="hljs-number">0</span>  <span class="hljs-comment">; 字符值</span><br><br>protect_mode_tag db <span class="hljs-string">&#x27;enter protect mode&#x27;</span><br><span class="hljs-symbol">protect_mode_tag_end:</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS-Labs/" class="category-chain-item">OS_Labs</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="/tags/OS-Labs/" class="print-no-link">#OS_Labs</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OS_lab3</div>
+      <div>https://pqcu77.github.io/2025/03/12/OS-lab3/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月12日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/12/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C%E5%9B%9B/" title="信号与系统实验四">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">信号与系统实验四</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/11/AI-lab2/" title="AI-Lab2">
+                        <span class="hidden-mobile">AI-Lab2</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

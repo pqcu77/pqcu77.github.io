@@ -1,0 +1,957 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="AI-Lab3–搜索算法任务List 利用盲目搜索解决迷宫问题（无需提交） 利用启发式搜索解决15-Puzzle问题 利用博弈树搜索实现象棋AI（无需提交） 利用遗传算法求解TSP问题  任务1：利用盲目搜索解决迷宫问题尝试利用DFS、BFS、深度受限算法、迭代加深算法、双向搜索算法解决迷宫问题:  S表示起点; E表示终点; 1表示墙; 0是可通行。迷宫样例图：  123456789101112">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI-Lab3">
+<meta property="og:url" content="https://pqcu77.github.io/2025/03/24/AI-lab3/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="AI-Lab3–搜索算法任务List 利用盲目搜索解决迷宫问题（无需提交） 利用启发式搜索解决15-Puzzle问题 利用博弈树搜索实现象棋AI（无需提交） 利用遗传算法求解TSP问题  任务1：利用盲目搜索解决迷宫问题尝试利用DFS、BFS、深度受限算法、迭代加深算法、双向搜索算法解决迷宫问题:  S表示起点; E表示终点; 1表示墙; 0是可通行。迷宫样例图：  123456789101112">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250324172954172.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250330115435358.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250329203607439.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250329203936669.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331220621299.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331170514223.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331170528207.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331170610602.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331172623564.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/9a1dfe9d663af4eb0c6989344df3c6f.jpg">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331173623765.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331173701655.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331173729854.png">
+<meta property="article:published_time" content="2025-03-24T09:07:32.000Z">
+<meta property="article:modified_time" content="2025-04-17T11:15:12.868Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/image-20250324172954172.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>AI-Lab3 - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AI-Lab3"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-24 17:07" pubdate>
+          2025年3月24日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AI-Lab3</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-04-17T19:15:12+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="AI-Lab3–搜索算法"><a href="#AI-Lab3–搜索算法" class="headerlink" title="AI-Lab3–搜索算法"></a>AI-Lab3–搜索算法</h1><h2 id="任务List"><a href="#任务List" class="headerlink" title="任务List"></a>任务List</h2><ol>
+<li>利用盲目搜索解决迷宫问题（无需提交）</li>
+<li>利用启发式搜索解决15-Puzzle问题</li>
+<li>利用博弈树搜索实现象棋AI（无需提交）</li>
+<li>利用遗传算法求解TSP问题</li>
+</ol>
+<h2 id="任务1：利用盲目搜索解决迷宫问题"><a href="#任务1：利用盲目搜索解决迷宫问题" class="headerlink" title="任务1：利用盲目搜索解决迷宫问题"></a>任务1：利用盲目搜索解决迷宫问题</h2><p>尝试利用DFS、BFS、深度受限算法、迭代加深算法、双向搜索算法解决迷宫问题:</p>
+<ul>
+<li>S表示起点;</li>
+<li>E表示终点;</li>
+<li>1表示墙;</li>
+<li>0是可通行。<br>迷宫样例图：</li>
+</ul>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-number">111111111111111111111111111111111111</span><br><span class="hljs-number">1000000000000000000000000000000000</span><span class="hljs-built_in">S1</span><br><span class="hljs-number">101111111111111111111111101111111101</span><br><span class="hljs-number">101100010001000000111111100011000001</span><br><span class="hljs-number">101101010101011110111111111011011111</span><br><span class="hljs-number">101101010101000000000000011011000001</span><br><span class="hljs-number">101101010101010111100111000011111101</span><br><span class="hljs-number">101001010100010000110111111110000001</span><br><span class="hljs-number">101101010111111110110000000011011111</span><br><span class="hljs-number">101101000110000000111111111011000001</span><br><span class="hljs-number">100001111110111111100000011011111101</span><br><span class="hljs-number">111111000000100000001111011010000001</span><br><span class="hljs-number">100000011111101111101000011011011111</span><br><span class="hljs-number">101111110000001000000011111011000001</span><br><span class="hljs-number">100000000111111011111111111011001101</span><br><span class="hljs-number">111111111100000000000000000011111101</span><br><span class="hljs-number">1</span>E0000000001111111111111111000000001<br><span class="hljs-number">111111111111111111111111111111111111</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="任务2：利用启发式搜索解决15-Puzzle问题"><a href="#任务2：利用启发式搜索解决15-Puzzle问题" class="headerlink" title="任务2：利用启发式搜索解决15-Puzzle问题"></a>任务2：利用启发式搜索解决15-Puzzle问题</h2><p>尝试使用<code>A*</code>与<code>IDA*</code>算法解决15-Puzzle问题，启发式函数可以自己选取，最好多尝试几种不同的启发式函数</p>
+<p><img src="/img/image-20250324172954172.png" srcset="/img/loading.gif" lazyload alt="样例_15puzzle"></p>
+<p>利用A*算法和IDA*算法解决15-Puzzle问题, 可自定义启发式函数. Puzzle问题的输入数据类型为二维嵌套list, 空位置用 <code>0</code>表示. 输出的解数据类型为 <code>list</code>, 是移动数字方块的次序.</p>
+<p>若选择A*算法, 则函数名为 <code>A_star</code>; 若选择IDA*算法, 则函数名为 <code>IDA_star</code>.</p>
+<p>例子: 输入</p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">puzzle = <span class="hljs-comment">[<span class="hljs-comment">[1,2,3,4]</span>,<span class="hljs-comment">[5,6,7,8]</span>,<span class="hljs-comment">[9,10,11,12]</span>,<span class="hljs-comment">[0,13,14,15]</span>]</span><br></code></pre></td></tr></table></figure>
+
+<p>则调用 <code>A_star(puzzle)</code>或 <code>IDA_star(puzzle)</code>后输出解</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-string">[13,14,15]</span><br></code></pre></td></tr></table></figure>
+
+<p>相关知识：<br><code>A*</code>算法的必要知识点：<br>&#x3D;&#x3D;算法描述&#x3D;&#x3D;：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs text">* 初始化open_set和close_set；<br>* 将起点加入open_set中，并设置优先级为0（优先级最高）；<br>* 如果open_set不为空，则从open_set中选取优先级最高的节点n：<br>    * 如果节点n为终点，则：<br>        * 从终点开始逐步追踪parent节点，一直达到起点；<br>        * 返回找到的结果路径，算法结束；<br>    * 如果节点n不是终点，则：<br>        * 将节点n从open_set中删除，并加入close_set中；<br>        * 遍历节点n所有的邻近节点：<br>            * 如果邻近节点m在close_set中，则：<br>                * 跳过，选取下一个邻近节点<br>            * 如果邻近节点m也不在open_set中，则：<br>                * 设置节点m的parent为节点n<br>                * 计算节点m的优先级<br>                * 将节点m加入open_set中<br></code></pre></td></tr></table></figure>
+<p>&#x3D;&#x3D;启发式函数：&#x3D;&#x3D; <code>f(n)=g(n)+h(n)</code></p>
+<ul>
+<li>f(n)是节点n的<strong>综合</strong>优先级。（每次选择会选择总和优先级最高，也就是<strong>f(n)值最小</strong>的节点&#x3D;&gt;维护一个优先队列）</li>
+<li>g(n)是节点n距离<strong>起点</strong>的代价</li>
+<li>h(n)是节点n距离<strong>终点</strong>的预估代价</li>
+</ul>
+<p>&#x3D;&gt;启发函数的选取：（网格形式的图）</p>
+<ul>
+<li>曼哈顿距离–适用于只允许&#x3D;&#x3D;上下左右&#x3D;&#x3D;四个方向移动  √ （同时加上线性冲突判断）</li>
+<li>对角距离–适用于允许朝八个方向移动</li>
+<li>欧几里得距离–适用于允许朝任何方向移动</li>
+</ul>
+<p>&#x3D;&gt;计算曼哈顿距离的函数：</p>
+<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gml">def heuristic(node):<br>	dx=<span class="hljs-built_in">abs</span>(node.<span class="hljs-variable language_">x</span>-goal.<span class="hljs-variable language_">x</span>)<br>	dy=<span class="hljs-built_in">abs</span>(node.<span class="hljs-variable language_">y</span>-goal.<span class="hljs-variable language_">y</span>)<br>	<span class="hljs-keyword">return</span> cost*(dx+dy)<br></code></pre></td></tr></table></figure>
+
+<p><code>IDA*</code>算法：<br><code>IDA*</code>算法是在DFS的基础上，添加启发信息的启发式搜索算法。（IDA * 为采用了<strong>迭代加深算法的 A * 算法</strong>。）<br>优点：（相对于A*)</p>
+<ul>
+<li>不需要判重、不需要排序，利于深度剪枝</li>
+<li><strong>空间需求减少</strong>：每个深度下实际上是一个深度优先搜索，不过有深度限制，使用DFS可以减小空间消耗<br>缺点：<br>重复搜索：当深度变大后每次都要从头搜索（不记忆-节省内存）</li>
+</ul>
+<p>&#x3D;&#x3D;算法描述&#x3D;&#x3D;：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">1、开始时，计算起点所有邻居结点的估价函数，选取估价函数最小的结点作为下一个访问结点。(?)<br><br>2、重复步骤一，在递归过程中，若当前结点的估价函数大于阈值bound，则返回当前结点的估价得分。<br><br>3、若当前结点是目标结点，则得到最优解，返回路径。<br></code></pre></td></tr></table></figure>
+
+
+<p><img src="/img/file-20250330115435358.png" srcset="/img/loading.gif" lazyload></p>
+<p>算法思路：</p>
+<h3 id="Resources"><a href="#Resources" class="headerlink" title="Resources:"></a>Resources:</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54510444">路径规划之 A* 算法 - 知乎</a><br><a target="_blank" rel="noopener" href="https://witchpuff.github.io/posts/astar/#2-%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81%E5%B1%95%E7%A4%BA">Solving 15-Puzzle with A* and IDA* | CyberWitch</a></p>
+<p><img src="/img/file-20250329203607439.png" srcset="/img/loading.gif" lazyload alt="1"><br><img src="/img/file-20250329203936669.png" srcset="/img/loading.gif" lazyload alt="2"><br><img src="/img/file-20250331220621299.png" srcset="/img/loading.gif" lazyload alt="3"></p>
+<h2 id="任务3：利用博弈树搜索实现象棋AI"><a href="#任务3：利用博弈树搜索实现象棋AI" class="headerlink" title="任务3：利用博弈树搜索实现象棋AI"></a>任务3：利用博弈树搜索实现象棋AI</h2><p>编写一个中国象棋博弈程序，要求用alpha-beta剪枝算法，可以实现两个AI对弈。</p>
+<ul>
+<li>一方由人类点击或者AI算法控制。</li>
+<li>一方由内置规则AI控制。</li>
+<li>算法支持红黑双方互换</li>
+</ul>
+<h2 id="任务4：利用遗传算法求解TSP问题利用遗传算法求解-TSP-问题"><a href="#任务4：利用遗传算法求解TSP问题利用遗传算法求解-TSP-问题" class="headerlink" title="任务4：利用遗传算法求解TSP问题利用遗传算法求解 TSP 问题"></a>任务4：利用遗传算法求解TSP问题利用遗传算法求解 TSP 问题</h2><ul>
+<li>在National Traveling Salesman Problems（uwaterloo.ca)（<a target="_blank" rel="noopener" href="https://www.math.uwaterloo.ca/tsp/world/countries.html%EF%BC%89">https://www.math.uwaterloo.ca/tsp/world/countries.html）</a> 中任选两个TSP问题的数据集。</li>
+<li>建议：<ul>
+<li><p>对于规模较大的TSP问题, 遗传算法可能需要运行几分钟甚至几个小时的时间才能得到一个比较好的结果. 因此建议先用城市数较小的数据集测试算法正确与否, 再用城市数较大的数据集来评估算法性能。</p>
+</li>
+<li><p>由于遗传算法是基于随机搜索的算法, 只运行一次算法的结果并不能反映算法的性能. 为了更好地分析遗传算法的性能, 应该以不同的初始随机种子或用不同的参数(例如种群数量, 变异概率等)多次运行算法, 这些需要在实验报告中呈现.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>resources：<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/623494344">初识Numpy数组，看这一篇就够了！ - 知乎</a></p>
+<h3 id="更加详细的要求："><a href="#更加详细的要求：" class="headerlink" title="更加详细的要求："></a>更加详细的要求：</h3><p>为了方便批改作业, 我们统一用类 <code>GeneticAlgTSP</code>来编写遗传算法的各个模块, 并分析算法性能. 该类需包含以下方法:</p>
+<ul>
+<li>构造函数 <code>__init__()</code>, 输入为TSP数据集文件名 <code>filename</code>, 数据类型 <code>str</code>. 例如 <code>&quot;dj38.tsp&quot;</code>是Djibouti的38个城市坐标数据文件; <code>&quot;ch71009.tsp&quot;</code>是China的71009个城市坐标数据文件. 我们需要在构造函数中读取该文件中的数据, 存储到类成员 <code>self.cities</code>中(数据类型自定, 建议存储为 <code>numpy</code>数组). 同时在构造函数中初始化种群, 存储到类成员 <code>self.population</code>中(数据类型自定).</li>
+<li>求解方法 <code>iterate()</code>, 输入为算法迭代的轮数 <code>num_iterations</code>, 数据类型 <code>int</code>. 该方法是基于当前种群 <code>self.population</code>进行迭代(不是从头开始), 返回迭代后种群中的一个较优解, 数据类型 <code>list</code>, 格式为1-n个城市编号的排列. 例如, 对于n&#x3D;5的TSP问题, 迭代后返回的较优解形如 <code>[1,3,4,5,2]</code>, 表示当前较好的游览城市次序为1-3-4-5-2-1.</li>
+</ul>
+<p>可以在类中编写其他方法以方便编写并分析遗传算法的性能. 请在代码注释或实验报告中说明每个方法&#x2F;模块的功能.</p>
+<h3 id="steps："><a href="#steps：" class="headerlink" title="steps："></a>steps：</h3><ul>
+<li>读取文件，提取出城市维度和城市坐标</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">read_tsp</span>(<span class="hljs-params">filename</span>):<br><br>    nodes=[]<br><br>    dimension=<span class="hljs-number">0</span><br><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(filename) <span class="hljs-keyword">as</span> file:<br><br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> file:<br><br>            <span class="hljs-keyword">if</span> line.strip().startswith(<span class="hljs-string">&#x27;DIMENSION&#x27;</span>):<br><br>                <span class="hljs-comment">#获取维度信息</span><br><br>                dimension=line.split(<span class="hljs-string">&#x27;:&#x27;</span>)[<span class="hljs-number">1</span>].strip()<br><br>            <span class="hljs-comment">#节点信息获取</span><br><br>            <span class="hljs-keyword">if</span> line.strip().startswith(<span class="hljs-string">&#x27;NODE_COORD_SECTION&#x27;</span>):<br><br>                <span class="hljs-keyword">break</span><br><br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> file:<br><br>            line = line.strip()<br><br>            <span class="hljs-keyword">if</span> line==<span class="hljs-string">&#x27;EOF&#x27;</span> <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> line:<br><br>                <span class="hljs-keyword">break</span>  <span class="hljs-comment">#结束</span><br><br>            parts=line.split()<br><br>            <span class="hljs-comment">#去掉开头编号，生成元组</span><br><br>            nodes.append((<span class="hljs-built_in">float</span>(parts[<span class="hljs-number">1</span>]),<span class="hljs-built_in">float</span>(parts[<span class="hljs-number">2</span>])))<br><br>    location=np.array(nodes)<br><br>    <span class="hljs-keyword">return</span> dimension,location<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>初始化种族：在城市数较少时使用<strong>随机数</strong>生成法，中等城市数可以考虑部分贪婪（？，大体量城市再考虑其他</li>
+</ul>
+<h2 id="相关资料：NumPy随机排列：使用numpy-random-permutation实现数组元素的随机重排-极客教程"><a href="#相关资料：NumPy随机排列：使用numpy-random-permutation实现数组元素的随机重排-极客教程" class="headerlink" title="相关资料：NumPy随机排列：使用numpy.random.permutation实现数组元素的随机重排|极客教程"></a>相关资料：<a target="_blank" rel="noopener" href="https://geek-docs.com/numpy/numpy-ask-answer/numpy-random-permutation_z1.html">NumPy随机排列：使用numpy.random.permutation实现数组元素的随机重排|极客教程</a></h2><h4 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h4><ol>
+<li>数据集来源于网站<a target="_blank" rel="noopener" href="https://www.math.uwaterloo.ca/tsp/world/countries.html">National Traveling Salesman Problems (uwaterloo.ca)</a>. 可浏览该网站参考相关国家的TSP问题的解. 可以自选1-2个数据集来测试算法性能, 并在实验报告中说明.</li>
+<li>TSP问题上遗传算法的具体实现(解的表示, 染色体交叉操作等)不一定局限于课件上的方式, 也许存在比课件效果更好的具体实现方法.</li>
+<li>由于遗传算法是基于随机搜索的算法, 只运行一次算法的结果并不能反映算法的性能. 为了更好地分析遗传算法的性能, 应该以不同的初始随机种子或用不同的参数(例如种群数量, 变异概率等)多次运行算法, 这些需要在实验报告中呈现.</li>
+<li>最后提交的代码只需包含性能最好的实现方法和参数设置. 只需提交一个代码文件, 请不要提交其他文件.</li>
+<li>对于规模较大的TSP问题, 遗传算法可能需要运行几分钟甚至几个小时的时间才能得到一个比较好的结果. 因此建议先用城市数较小的数据集测试算法正确与否, 再用城市数较大的数据集来评估算法性能.</li>
+<li>本次作业可以使用 <code>numpy</code>库以及python标准库. 有余力的同学可用 <code>matplotlib</code>库对遗传算法的结果进行可视化处理与分析, 并在实验报告中呈现.</li>
+</ol>
+<h2 id="高级搜索"><a href="#高级搜索" class="headerlink" title="高级搜索"></a>高级搜索</h2><h2 id="模拟退火算法"><a href="#模拟退火算法" class="headerlink" title="模拟退火算法"></a>模拟退火算法</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>模拟退火算法SA来源于固体退火原理，是一种基于<strong>概率</strong>的算法。<br>模拟退火算法从某一较高初温出发，伴随温度参数的不断下降，&#x3D;&#x3D;结合概率突跳特性在解空间中随机寻找目标函数的全局最优解&#x3D;&#x3D;，<strong>即在局部最优解能</strong>概率性地跳出<strong>并</strong>最终趋于全局最优。</p>
+<blockquote>
+<p>[!NOTE]<br>算法思想为：先从一个<strong>较高的初始温度</strong>出发，逐渐降低温度，直到温度降低到满足热平衡条件为止。在每个温度下，进行<strong>n轮搜索</strong>，每轮搜索时对旧解添加随机扰动生成新解，并按一定规则接受新解。</p>
+</blockquote>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>模拟退火算法包含两个部分即&#x3D;&#x3D;Metropolis算法&#x3D;&#x3D;和&#x3D;&#x3D;退火过程&#x3D;&#x3D;，分别对应内循环和外循环。</p>
+<ul>
+<li><strong>外循环就是退火过程</strong>，将固体达到较高的温度（初始温度T（0）），然后按照降温系数alpha使温度按照一定的比例下降，当达到<strong>终止温度Tf</strong>时，冷却结束，即退火过程结束。<blockquote>
+<p>[!NOTE]</p>
+<ul>
+<li><p>外层循环控制温度由高向低变化</p>
+</li>
+<li><p>内层循环中温度固定，对旧解添加随机扰动得到新解，并按一定规则接受新解。迭代次数成为马尔可夫链长度</p>
+</li>
+</ul>
+</blockquote>
+</li>
+<li><strong>Metropolis算法是内循环</strong>，即<u>在每次温度下，迭代L次，寻找在该温度下能量的最小值</u>（即最优解）。</li>
+</ul>
+<h3 id="算法优点"><a href="#算法优点" class="headerlink" title="算法优点"></a>算法优点</h3><p><strong>不管函数形式多复杂，模拟退火算法更有可能找到全局最优解。</strong></p>
+<p>过程图：</p>
+<p><img src="/img/file-20250331170514223.png" srcset="/img/loading.gif" lazyload></p>
+<p>伪代码：<br><img src="/img/file-20250331170528207.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250331170610602.png" srcset="/img/loading.gif" lazyload></p>
+<p>resources：<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/382426984">模拟退火算法超详细教程 - 知乎</a></p>
+<h2 id="遗传算法"><a href="#遗传算法" class="headerlink" title="遗传算法"></a>遗传算法</h2><blockquote>
+<p>[!NOTE]<br>遗传算法是受自然进化理论启发的一系列搜索算法。</p>
+</blockquote>
+<p>达尔文进化论的原理概括总结如下：</p>
+<ol>
+<li>&#x3D;&#x3D;变异&#x3D;&#x3D;：种群中单个样本的特征(性状，属性)可能会有所不同，这导致了样本彼此之间有一定程度的差异</li>
+<li>&#x3D;&#x3D;遗传&#x3D;&#x3D;：某些特征可以遗传给其后代。导致后代与双亲样本具有一定程度的相似性</li>
+<li>&#x3D;&#x3D;选择&#x3D;&#x3D;：种群通常在给定的环境中争夺资源。更适应环境的个体在生存方面更具优势，因此会产生更多的后代</li>
+</ol>
+<p>进化算法：</p>
+<ol>
+<li>选择</li>
+<li>交叉（或重组）</li>
+<li>变异</li>
+</ol>
+<p><strong>达尔文进化论&lt;&#x3D;&gt;遗传算法</strong>的对应概念</p>
+<ul>
+<li>遗传算法试图找问题的最优解</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>达尔文进化论</th>
+<th>遗传算法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>保留种群的个体性状</td>
+<td>保留了针对给定问题的<strong>候选解集合</strong></td>
+</tr>
+<tr>
+<td><strong>适者生存</strong>并更有可能遗传优良特性</td>
+<td>候选解经过<strong>迭代评估</strong>，越优的解越有可能将特征传递给下一代候选解集合</td>
+</tr>
+</tbody></table>
+<p>算法的基本思想：<br>在求解问题时从多个解开始，然后通过一定的法则进行逐步迭代以产生新的解</p>
+<p>遗传算法的过程：</p>
+<ul>
+<li>开始时，种群随机初始化，并计算每个个体的适应度函数，初代产生</li>
+<li>如果不满足优化准则，开始产生新一代计算</li>
+<li>为了产生下一代，按照适应度选择个体，父代进行基因重组而产生子代</li>
+<li>子代有几率变异，子代的适应度被重新计算</li>
+<li>循环直到满足优化准则</li>
+</ul>
+<p>伪代码：<br><img src="/img/file-20250331172623564.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/9a1dfe9d663af4eb0c6989344df3c6f.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>resources：<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/436453994">遗传算法 (Genetic Algorithm, GA) 详解与实现 - 知乎</a></p>
+<h2 id="旅行商问题–解的表示"><a href="#旅行商问题–解的表示" class="headerlink" title="旅行商问题–解的表示"></a>旅行商问题–解的表示</h2><p><img src="/img/file-20250331173623765.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250331173701655.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250331173729854.png" srcset="/img/loading.gif" lazyload></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/" class="category-chain-item">AI</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AI-Lab3</div>
+      <div>https://pqcu77.github.io/2025/03/24/AI-lab3/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/28/eBPF-learning/" title="eBPF_learning">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">eBPF_learning</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/16/HTML-Notes/" title="HTML_Notes">
+                        <span class="hidden-mobile">HTML_Notes</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

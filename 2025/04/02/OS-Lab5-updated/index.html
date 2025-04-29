@@ -1,0 +1,975 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="内核线程实验概述本次实验会学习C语言的可变参数机制的实现方法，然后实现一个简单的printf函数，通过printf()和gdb来帮助debug；同时会实现内核线程（定义PCB；实现基于时钟中断的RR算法）。 实验要求 DDL：2024.5.4 24:00 提交的内容：将3+1（选做）个assignment的代码和实验报告放到压缩包中，命名为“lab5-学号-姓名”，并交到课程邮箱 os_sysu_">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS_Lab5_updated">
+<meta property="og:url" content="https://pqcu77.github.io/2025/04/02/OS-Lab5-updated/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="内核线程实验概述本次实验会学习C语言的可变参数机制的实现方法，然后实现一个简单的printf函数，通过printf()和gdb来帮助debug；同时会实现内核线程（定义PCB；实现基于时钟中断的RR算法）。 实验要求 DDL：2024.5.4 24:00 提交的内容：将3+1（选做）个assignment的代码和实验报告放到压缩包中，命名为“lab5-学号-姓名”，并交到课程邮箱 os_sysu_">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250417193048263.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250428190629787.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429104258940.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429111214591.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429111249331.png">
+<meta property="article:published_time" content="2025-04-02T06:23:04.000Z">
+<meta property="article:modified_time" content="2025-04-29T03:14:31.693Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="OS_Labs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250417193048263.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>OS_Lab5_updated - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OS_Lab5_updated"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-02 14:23" pubdate>
+          2025年4月2日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">OS_Lab5_updated</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-04-29T11:14:31+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="内核线程"><a href="#内核线程" class="headerlink" title="内核线程"></a>内核线程</h1><h2 id="实验概述"><a href="#实验概述" class="headerlink" title="实验概述"></a>实验概述</h2><p>本次实验会学习C语言的可变参数机制的实现方法，然后实现一个简单的printf函数，通过printf()和gdb来帮助debug；同时会实现内核线程（定义PCB；实现基于时钟中断的RR算法）。</p>
+<h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><ul>
+<li>DDL：2024.5.4 24:00</li>
+<li>提交的内容：将<strong>3+1（选做）个assignment的代码</strong>和<strong>实验报告</strong>放到<strong>压缩包</strong>中，命名为“<strong>lab5-学号-姓名</strong>”，并交到课程邮箱 <a href="https://gitee.com/link?target=mailto:os_sysu_lab@163.com">os_sysu_lab@163.com</a></li>
+<li>将实验报告的pdf提交至 <a href="https://gitee.com/link?target=http://inbox.weiyun.com/3CiJFwEn">http://inbox.weiyun.com/3CiJFwEn</a></li>
+<li><strong>材料的Example的代码放置在 <code>src</code>目录下</strong>。</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/clover-toeic/p/3736748.html">可变参数函数详解 - clover_toeic - 博客园</a></p>
+<h2 id="printf的实现"><a href="#printf的实现" class="headerlink" title="printf的实现"></a>printf的实现</h2><p>printf()可以使用任意数量的参数来调用，这类函数称为<strong>可变参数函数</strong></p>
+<h3 id="C语言的可变参数机制"><a href="#C语言的可变参数机制" class="headerlink" title="C语言的可变参数机制"></a>C语言的可变参数机制</h3><p>C语言允许我们使用定义可变参数函数，此时函数参数列表分为两部分：固定参数（如int，char* )+可变参数(用 <code>...</code>来表示)<br>例如：</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">printf</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span>* <span class="hljs-type">const</span> _Format, ...)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>可变参数函数，参数列表中至少要有一个固定参数</li>
+<li>可变参数列表必须放在形参列表最后</li>
+</ul>
+<p>为了<strong>引用可变参数列表中的参数</strong>，我们需要用到 <code>&lt;stdarg.h&gt;</code>头文件定义的一个变量类型 <code>va_list</code>和三个宏 <code>va_start</code>，<code>va_arg</code>，<code>va_end</code>，这三个宏用于获取可变参数列表中的参数，用法如下。</p>
+<table>
+<thead>
+<tr>
+<th>宏</th>
+<th>用法说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>va_list</code></td>
+<td>定义一个<strong>指向可变参数列表的指针</strong>。</td>
+</tr>
+<tr>
+<td><code>void va_start(va_list ap, last_arg)</code></td>
+<td><strong>初始化可变参数列表指针</strong> <code>ap</code>，使其指向可变参数列表的<strong>起始位置</strong>，即函数的固定参数列表的最后一个参数 <code>last_arg</code>的后面第一个参数。<strong>（使用固定参数的最后一个参数来初始化可变参数指针）</strong></td>
+</tr>
+<tr>
+<td><code>type va_arg(va_list ap, type)</code></td>
+<td>以类型 <code>type</code>返回可变参数，并使 <code>ap</code>指向<strong>下一个参数</strong>。</td>
+</tr>
+<tr>
+<td><code>void va_end(va_list ap)</code></td>
+<td>清零 <code>ap</code>。</td>
+</tr>
+</tbody></table>
+<ul>
+<li>可变参数必须<strong>从头到尾</strong>逐个访问。如果你在访问了几个可变参数之后想半途中止，这是可以的，但是，如果你想一开始就访问参数列表中间的参数，那是不行的(可以把想访问的中间参数之前的参数读取但是不使用，曲线救国)。</li>
+<li>这些宏是无法直接判断实际实际存在参数的数量。</li>
+<li>这些宏无法判断每个参数的类型，所以在使用 <code>va_arg</code>的时候一定要指定正确的类型。</li>
+<li>如果在 <code>va_arg</code>中指定了错误的类型，那么将会影响到后面的参数的读取。</li>
+<li>第一个参数也未必要是可变参数个数，例如 <code>printf</code>的第一个参数就是字符串指针。</li>
+</ul>
+<p>无论参数数量有多少，这些参数都被统一地按函数调用给出的顺序放到了栈上，只不过使用可变参数的函数并不知道这些栈上的参数具体含义&#x3D;&gt;才需要使用 <code>va_arg</code>来指定参数的类型<br>$可变参数列表的起始地址&#x3D;固定参数列表的最后一个参数的地址+这个参数的大小$<br>初始化了 <code>parameter</code>后，我们就使用 <code>parameter</code>和 <code>va_arg</code>来引用可变参数。<br>从本质上来说，<code>parameter</code>就是指向函数调用栈的一个指针，类似 <code>esp</code>、<code>ebp</code>，<code>va_arg</code>按照指定的类型来返回 <code>parameter</code>指向的内容。注意，在 <code>va_arg</code>返回后，<code>parameter</code>会指向下一个参数，无需我们手动调整。</p>
+<h3 id="src：2"><a href="#src：2" class="headerlink" title="src：2"></a>src：2</h3><p>定义的几个宏</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs scss"><span class="hljs-selector-id">#define</span> <span class="hljs-built_in">_INTSIZEOF</span>(n) ((sizeof(n) + <span class="hljs-built_in">sizeof</span>(int) - <span class="hljs-number">1</span>) &amp; ~(sizeof(int) - <span class="hljs-number">1</span>))<br><br><span class="hljs-selector-id">#define</span> <span class="hljs-built_in">va_start</span>(ap, v) (ap = (va_list)&amp;v + <span class="hljs-built_in">_INTSIZEOF</span>(v))<br><br><span class="hljs-selector-id">#define</span> <span class="hljs-built_in">va_arg</span>(ap, type) (*(type *)((ap += _INTSIZEOF(type)) - <span class="hljs-built_in">_INTSIZEOF</span>(type)))<br><br><span class="hljs-selector-id">#define</span> <span class="hljs-built_in">va_end</span>(ap) (ap = (va_list)<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+
+<p>作用：<br><code>_INTSIZEOF</code> 宏：对齐宏，将给定类型的大小向上舍入为sizeof(int)的倍数。（push和pop是32位的，所以都像4字节对齐）</p>
+<ul>
+<li><code>sizeof(n) + sizeof(int) - 1</code> 确保我们有足够的字节</li>
+<li><code>&amp; ~(sizeof(int) - 1)</code> 通过屏蔽掉低位来确保适当的对齐</li>
+</ul>
+<p><code>va_start</code> 宏：初始化va_list使其指向第一个可变参数</p>
+<ul>
+<li><code>&amp;v</code> 是最后一个命名参数的地址</li>
+<li><code>_INTSIZEOF(v)</code> 计算需要跳过多少字节才能到达第一个可变参数</li>
+<li>结果指针指向可变参数列表的开头</li>
+</ul>
+<p><code>va_arg</code> 宏：获取下一个参数</p>
+<ul>
+<li>它将指针前进适当对齐的请求类型大小：<code>ap += _INTSIZEOF(type)</code></li>
+<li>然后再回调相同的大小：<code>- _INTSIZEOF(type)</code></li>
+<li>将结果地址转换为请求类型的指针：<code>(type *)</code></li>
+<li>解引用该指针以获取值：<code>*(type *)</code></li>
+</ul>
+<p><code>va_end</code>宏：将va_list指针设置为NULL来清理，标记可变参数的结束</p>
+<h3 id="Example1-实现printf"><a href="#Example1-实现printf" class="headerlink" title="Example1  实现printf"></a>Example1  实现printf</h3><ul>
+<li>定义：<code>int printf(const char *const fmt,...);</code><ul>
+<li>首先找到fmt中形如 <code>%c,%d,%x,%s</code>对应的参数，然后用这些参数具体的值来替换，得到新的格式化输出字符串（fmt的解析）</li>
+<li>最后printf将这个新的格式化输出字符即可。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>[!NOTE]<br>实际上，我们会定义一个缓冲区，然后对fmt进行逐字符地解析，将结果逐字符的放到缓冲区中。放入一个字符后，我们会检查缓冲区，如果缓冲区已满，则将其输出，然后清空缓冲区，否则不做处理。</p>
+</blockquote>
+<ul>
+<li>我们还需要实现：<ul>
+<li>一个能输出字符串的函数</li>
+<li>这个函数要能正确处理换行（光标移动到下一行开始）</li>
+<li>光标超过了屏幕表示范围需要滚屏</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">STDIO::print</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *<span class="hljs-type">const</span> str)</span><br>&#123;<br>    <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; str[i]; ++i)<br>    &#123;<br>        <span class="hljs-keyword">switch</span> (str[i])<br>        &#123;<br>        <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;\n&#x27;</span>:<br>            uint row;<br>            row = getCursor() / <span class="hljs-number">80</span>;<br>            <span class="hljs-keyword">if</span> (row == <span class="hljs-number">24</span>)<br>            &#123;<br>                rollUp();<br>            &#125;<br>            <span class="hljs-keyword">else</span><br>            &#123;<br>                ++row;<br>            &#125;<br>            moveCursor(row * <span class="hljs-number">80</span>);<br>            <span class="hljs-keyword">break</span>;<br><br>        <span class="hljs-keyword">default</span>:<br>            print(str[i]);<br>            <span class="hljs-keyword">break</span>;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> i;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%d</td>
+<td>按十进制整数输出</td>
+</tr>
+<tr>
+<td>%c</td>
+<td>输出一个字符</td>
+</tr>
+<tr>
+<td>%s</td>
+<td>输出一个字符串</td>
+</tr>
+<tr>
+<td>%x</td>
+<td>按16进制输出</td>
+</tr>
+<tr>
+<td>printf()</td>
+<td></td>
+</tr>
+</tbody></table>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">printf</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *<span class="hljs-type">const</span> fmt, ...)</span><br>&#123;<br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> BUF_LEN = <span class="hljs-number">32</span>;<br><br>    <span class="hljs-type">char</span> buffer[BUF_LEN + <span class="hljs-number">1</span>];<br>    <span class="hljs-type">char</span> number[<span class="hljs-number">33</span>];<br><br>    <span class="hljs-type">int</span> idx, counter;<br>    va_list ap;<br><br>    va_start(ap, fmt);<br>    idx = <span class="hljs-number">0</span>;<br>    counter = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; fmt[i]; ++i)<br>    &#123;<br>        <span class="hljs-keyword">if</span> (fmt[i] != <span class="hljs-string">&#x27;%&#x27;</span>)<br>        &#123;<br>            counter += printf_add_to_buffer(buffer, fmt[i], idx, BUF_LEN);<br>        &#125;<br>        <span class="hljs-keyword">else</span><br>        &#123;<br>            i++;<br>            <span class="hljs-keyword">if</span> (fmt[i] == <span class="hljs-string">&#x27;\0&#x27;</span>)<br>            &#123;<br>                <span class="hljs-keyword">break</span>;<br>            &#125;<br><br>            <span class="hljs-keyword">switch</span> (fmt[i])<br>            &#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;%&#x27;</span>:<br>                counter += printf_add_to_buffer(buffer, fmt[i], idx, BUF_LEN);<br>                <span class="hljs-keyword">break</span>;<br><br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;c&#x27;</span>:<br>                counter += printf_add_to_buffer(buffer, va_arg(ap, <span class="hljs-type">int</span>), idx, BUF_LEN);<br>                <span class="hljs-keyword">break</span>;<br><br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;s&#x27;</span>:<br>                buffer[idx] = <span class="hljs-string">&#x27;\0&#x27;</span>;<br>                idx = <span class="hljs-number">0</span>;<br>                counter += stdio.print(buffer);<br>                counter += stdio.print(va_arg(ap, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *));<br>                <span class="hljs-keyword">break</span>;<br><br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;d&#x27;</span>:<br>            <span class="hljs-keyword">case</span> <span class="hljs-string">&#x27;x&#x27;</span>:<br>                <span class="hljs-type">int</span> temp = va_arg(ap, <span class="hljs-type">int</span>);<br><br>                <span class="hljs-keyword">if</span> (temp &lt; <span class="hljs-number">0</span> &amp;&amp; fmt[i] == <span class="hljs-string">&#x27;d&#x27;</span>)<br>                &#123;<br>                    counter += printf_add_to_buffer(buffer, <span class="hljs-string">&#x27;-&#x27;</span>, idx, BUF_LEN);<br>                    temp = -temp;<br>                &#125;<br><br>                temp = itos(number, temp, (fmt[i] == <span class="hljs-string">&#x27;d&#x27;</span> ? <span class="hljs-number">10</span> : <span class="hljs-number">16</span>));<br><br>                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j = temp - <span class="hljs-number">1</span>; j &gt;= <span class="hljs-number">0</span>; --j)<br>                &#123;<br>                    counter += printf_add_to_buffer(buffer, number[j], idx, BUF_LEN);<br>                &#125;<br>                <span class="hljs-keyword">break</span>;<br><br>            &#125;<br>        &#125;<br>    &#125;<br><br>    buffer[idx] = <span class="hljs-string">&#x27;\0&#x27;</span>;<br>    counter += stdio.print(buffer);<br><br>    <span class="hljs-keyword">return</span> counter;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>添加到缓冲区函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">printf_add_to_buffer</span><span class="hljs-params">(<span class="hljs-type">char</span> *buffer, <span class="hljs-type">char</span> c, <span class="hljs-type">int</span> &amp;idx, <span class="hljs-type">const</span> <span class="hljs-type">int</span> BUF_LEN)</span><br>&#123;<br>    <span class="hljs-type">int</span> counter = <span class="hljs-number">0</span>;<br><br>    buffer[idx] = c;<br>    ++idx;<br><br>    <span class="hljs-keyword">if</span> (idx == BUF_LEN)<br>    &#123;<br>        buffer[idx] = <span class="hljs-string">&#x27;\0&#x27;</span>;<br>        counter = stdio.print(buffer);<br>        idx = <span class="hljs-number">0</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> counter;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/file-20250417193048263.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="内核线程-1"><a href="#内核线程-1" class="headerlink" title="内核线程"></a>内核线程</h2><ul>
+<li>程序、进程、线程</li>
+</ul>
+<h3 id="用户线程和内核线程"><a href="#用户线程和内核线程" class="headerlink" title="用户线程和内核线程"></a>用户线程和内核线程</h3><ul>
+<li>用户线程：线程只由用户进程实现，os察觉不到（无线程机制）&#x3D;&gt;一旦挂起，整个进程挂起</li>
+<li>内核线程：让进程更多地占用CPU资源，某一线程阻塞了也只会阻塞这个线程，不会影响其他线程</li>
+</ul>
+<h3 id="线程的描述"><a href="#线程的描述" class="headerlink" title="线程的描述"></a>线程的描述</h3><ul>
+<li>五个状态（创建态、运行态、就绪态、阻塞态、终止态）</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">ProgramStatus</span></span><br><span class="hljs-class">&#123;</span><br>    CREATED,<br>    RUNNING,<br>    READY,<br>    BLOCKED,<br>    DEAD<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>PCB数据结构</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">PCB</span></span><br><span class="hljs-class">&#123;</span><br>    <span class="hljs-type">int</span> *<span class="hljs-built_in">stack</span>;                      <span class="hljs-comment">// 栈指针，用于调度时保存esp</span><br>    <span class="hljs-type">char</span> name[MAX_PROGRAM_NAME + <span class="hljs-number">1</span>]; <span class="hljs-comment">// 线程名</span><br>    <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">ProgramStatus</span> <span class="hljs-title">status</span>;</span>       <span class="hljs-comment">// 线程的状态</span><br>    <span class="hljs-type">int</span> priority;                    <span class="hljs-comment">// 线程优先级</span><br>    <span class="hljs-type">int</span> pid;                         <span class="hljs-comment">// 线程pid</span><br>    <span class="hljs-type">int</span> ticks;                       <span class="hljs-comment">// 线程时间片总时间</span><br>    <span class="hljs-type">int</span> ticksPassedBy;               <span class="hljs-comment">// 线程已执行时间</span><br>    ListItem tagInGeneralList;       <span class="hljs-comment">// 线程队列标识</span><br>    ListItem tagInAllList;           <span class="hljs-comment">// 线程队列标识</span><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>stack：各个线程虽然共享内核空间，但是又有自己的栈，这个栈保存在PCB中；<ul>
+<li>每个PCB会被分配一个页，上面的数据结构PCB只是这个页的低地址部分，栈指针从这个页的结束为止向下递减。（所以栈的空间是有限的，过多会覆盖PCB的信息）<br><img src="/img/file-20250428190629787.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+</li>
+<li><code>ticks</code>是线程剩余的执行次数。在时间片调度算法中，每发生中断一次记为一个<code>tick</code>，当<code>ticks=0</code>时，线程会被换下处理器，然后将其他线程换上处理器执行。</li>
+<li><code>ticksPassedBy</code>是线程总共执行的<code>tick</code>的次数。</li>
+<li><code>tagInGeneralList</code>和<code>tagInAllList</code>是线程在线程队列中的标识，用于在线程队列中找到线程的PCB。</li>
+</ul>
+<h3 id="PCB的分配"><a href="#PCB的分配" class="headerlink" title="PCB的分配"></a>PCB的分配</h3><ul>
+<li>大小4096个字节（一个页）–目前手动预留–后面实现了内存分页、页内存管理，就是由页内存管理来实现）</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// PCB的大小，4KB。</span><br><span class="hljs-type">const</span> <span class="hljs-type">int</span> PCB_SIZE = <span class="hljs-number">4096</span>;         <br><span class="hljs-comment">// 存放PCB的数组，预留了MAX_PROGRAM_AMOUNT个PCB的大小空间。</span><br><span class="hljs-type">char</span> PCB_SET[PCB_SIZE * MAX_PROGRAM_AMOUNT]; <br><span class="hljs-comment">// PCB的分配状态，true表示已经分配，false表示未分配。</span><br><span class="hljs-type">bool</span> PCB_SET_STATUS[MAX_PROGRAM_AMOUNT];     <br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>在<code>ProgramManager</code>中声明两个管理PCB所在的内存空间函数。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 分配一个PCB</span><br>PCB *<span class="hljs-title function_">allocatePCB</span><span class="hljs-params">()</span>;<br><span class="hljs-comment">// 归还一个PCB</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">releasePCB</span><span class="hljs-params">(PCB *program)</span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>allocatePCB</code>会去检查<code>PCB_SET</code>中每一个PCB的状态，如果找到一个<strong>未被分配的PCB</strong>，则返回这个PCB的起始地址。若未找到，则返回nullptr。</li>
+<li>PCB_SET中的PCB是连续存放的，对于第i个PCB，起始地址即为<code>i*PCB_SIZE</code></li>
+<li><code>releasePCB</code>接受一个PCB指针<code>program</code>，然后计算出<code>program</code>指向的PCB在<code>PCB_SET</code>中的位置，然后将<code>PCB_SET_STATUS</code>中的对应位置设置<code>false</code>即可。</li>
+</ul>
+<h3 id="线程的创建"><a href="#线程的创建" class="headerlink" title="线程的创建"></a>线程的创建</h3><ul>
+<li>加入两个List成员，<code>allPrograms</code> （所有状态的线程、进程的队列）和<code>readyProframs</code>（处于就绪态的线程、进程的队列）</li>
+<li>创建线程<ul>
+<li>线程实际上执行的是<strong>某个函数的代码</strong>。（规定线程只能执行返回值为void，参数为 <code>void*</code> 的函数<br>用于创建线程的函数：</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 创建一个线程并放入就绪队列</span><br><span class="hljs-comment">// function：线程执行的函数</span><br><span class="hljs-comment">// parameter：指向函数的参数的指针</span><br><span class="hljs-comment">// name：线程的名称</span><br><span class="hljs-comment">// priority：线程的优先级</span><br><span class="hljs-comment">// 成功，返回pid；失败，返回-1</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">executeThread</span><span class="hljs-params">(ThreadFunction function, <span class="hljs-type">void</span> *parameter, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *name, <span class="hljs-type">int</span> priority)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>具体实现的注解：<br><img src="/img/file-20250429104258940.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>4个为0的值是要放到ebp，ebx，edi，esi中的。</li>
+<li><code>thread-&gt;stack[4]</code>是线程执行的函数的起始地址。</li>
+<li><code>thread-&gt;stack[5]</code>是线程的返回地址，所有的线程执行完毕后都会返回到这个地址。</li>
+<li><code>thread-&gt;stack[6]</code>是线程的参数的地址。</li>
+</ul>
+<h3 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h3><p>在ProgramManager中加入成员running，用来<u>记录当前处理机上执行的线程的PCB</u></p>
+<ul>
+<li>本次实验用的方法是RR（时间片轮转算法）</li>
+<li>线程切换：<ul>
+<li>由于线程的所有信息都在线程栈中，只要我们切换线程栈就能实现线程的切换，<strong>线程栈的切换就是将线程的栈指针放到esp中</strong></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs asm">asm_switch_thread:<br>    push ebp<br>    push ebx<br>    push edi<br>    push esi<br><br>    mov eax, [esp + 5 * 4]<br>    mov [eax], esp ; 保存当前栈指针到PCB中，以便日后恢复<br><br>    mov eax, [esp + 6 * 4]<br>    mov esp, [eax] ; 此时栈已经从cur栈切换到next栈<br><br>    pop esi<br>    pop edi<br>    pop ebx<br>    pop ebp<br><br>    sti<br>    ret<br></code></pre></td></tr></table></figure>
+
+<p>第2-5行，我们保存寄存器<code>ebp</code>，<code>ebx</code>，<code>edi</code>，<code>esi</code>。（C语言规则决定的，要求被调函数主动为主调函数保存这四个寄存器的值）<br>第7-8行，我们保存esp的值到线程的<code>PCB::statck</code>中，用做下次恢复。注意到<code>PCB::stack</code>在<code>PCB</code>的偏移地址是0。第7行代码是首先将<code>cur-&gt;stack</code>的地址放到<code>eax</code>中，第8行向<code>[eax]</code>中写入<code>esp</code>的值，也就是向<code>cur-&gt;stack</code>中写入esp。<br><img src="/img/file-20250429111214591.png" srcset="/img/loading.gif" lazyload><br>第10-11行，我们将<code>next-&gt;stack</code>的值写入到esp中，从而完成线程栈的切换。<br><img src="/img/file-20250429111249331.png" srcset="/img/loading.gif" lazyload><br>最后使用pop语句将四个0放入寄存器中。</p>
+<h2 id="Example2-第一个线程"><a href="#Example2-第一个线程" class="headerlink" title="Example2 第一个线程"></a>Example2 第一个线程</h2>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS-Labs/" class="category-chain-item">OS_Labs</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="/tags/OS-Labs/" class="print-no-link">#OS_Labs</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OS_Lab5_updated</div>
+      <div>https://pqcu77.github.io/2025/04/02/OS-Lab5-updated/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/04/02/OS-Lab4/" title="OS_Lab4">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OS_Lab4</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/29/ubuntu22-04%E5%AE%89%E8%A3%85bcc/" title="ubuntu22.04安装bcc">
+                        <span class="hidden-mobile">ubuntu22.04安装bcc</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

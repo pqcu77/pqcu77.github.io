@@ -1,0 +1,1223 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Python-basic for AI course实验课要求： 课件：https:&#x2F;&#x2F;github.com&#x2F;pqcu77&#x2F;2025AI&#x2F;tree&#x2F;main python基础资料：https:&#x2F;&#x2F;python.iswbm.com&#x2F; https:&#x2F;&#x2F;www.runoob.com&#x2F;python3&#x2F;python3-tutorial.html 常用conda命令:  conda env list 查看co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python_basic">
+<meta property="og:url" content="https://pqcu77.github.io/2025/03/03/python-basic/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="Python-basic for AI course实验课要求： 课件：https:&#x2F;&#x2F;github.com&#x2F;pqcu77&#x2F;2025AI&#x2F;tree&#x2F;main python基础资料：https:&#x2F;&#x2F;python.iswbm.com&#x2F; https:&#x2F;&#x2F;www.runoob.com&#x2F;python3&#x2F;python3-tutorial.html 常用conda命令:  conda env list 查看co">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/func.png">
+<meta property="article:published_time" content="2025-03-03T09:05:11.000Z">
+<meta property="article:modified_time" content="2025-04-29T03:41:10.433Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/func.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Python_basic - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Python_basic"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-03 17:05" pubdate>
+          2025年3月3日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Python_basic</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-04-29T11:41:10+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Python-basic-for-AI-course"><a href="#Python-basic-for-AI-course" class="headerlink" title="Python-basic for AI course"></a>Python-basic for AI course</h1><p>实验课要求：</p>
+<p>课件：<a target="_blank" rel="noopener" href="https://github.com/pqcu77/2025AI/tree/main">https://github.com/pqcu77/2025AI/tree/main</a></p>
+<h2 id="python基础"><a href="#python基础" class="headerlink" title="python基础"></a>python基础</h2><p>资料：<a target="_blank" rel="noopener" href="https://python.iswbm.com/">https://python.iswbm.com/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-tutorial.html">https://www.runoob.com/python3/python3-tutorial.html</a></p>
+<p><strong>常用conda命令</strong>:</p>
+<ul>
+<li><p><code>conda env list</code> 查看conda环境列表</p>
+</li>
+<li><p><code>conda create –n env_id python=3.9</code> 创建新py3.9虚</p>
+</li>
+</ul>
+<p>拟环境</p>
+<ul>
+<li><p><code>conda activate env_id</code> 激活对应python环境</p>
+</li>
+<li><p><code>conda deactivate</code> 关闭对应python环境</p>
+</li>
+</ul>
+<p><strong>print():</strong></p>
+<ul>
+<li>输入参数为要打印的对象，对象可以有多个</li>
+<li>sep参数，默认值为” “—默认用空格隔开</li>
+<li>end参数，默认值为 “\n”</li>
+</ul>
+<p><strong>input():</strong></p>
+<ul>
+<li>输入参数可以作为<strong>提示字符串</strong>。会打印出来“提示”用户</li>
+<li>返回值是读入的字符串</li>
+</ul>
+<h3 id="基本数据类型："><a href="#基本数据类型：" class="headerlink" title="基本数据类型："></a>基本数据类型：</h3><p><strong>简单&#x2F;基本数据类型</strong></p>
+<ul>
+<li><p>数字</p>
+<ul>
+<li><p>整数</p>
+</li>
+<li><p>浮点数</p>
+</li>
+<li><p>布尔值：True &#x2F; False （注意大写）</p>
+<ul>
+<li>int(True)返回1，int(False)返回0</li>
+</ul>
+</li>
+<li><p>字符串</p>
+<ul>
+<li>※空值：<strong>a &#x3D; None</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>计算</strong></p>
+<ul>
+<li>整数：加（+）、减（-）、乘（*）、除（&#x2F;）、<strong>整除（&#x2F;&#x2F;）</strong>、幂（**）、<strong>模（%）</strong></li>
+<li>浮点数：加（+）、减（-）、乘（*）、除（&#x2F;）、<strong>整除（&#x2F;&#x2F;）</strong>、幂（**）</li>
+<li>四舍五入保留k位：round(x,k)</li>
+</ul>
+<p><strong>函数：</strong></p>
+<ul>
+<li>绝对值：abs()</li>
+<li>最大，最小值：max(),min()</li>
+<li>math模块</li>
+</ul>
+<p>**运算符：<strong>如+&#x3D;，</strong>&#x3D;等。python没有<code>++</code>，<code>--</code>运算符</p>
+<p><strong>字符串</strong></p>
+<ul>
+<li><p><strong>引号</strong>括起的。可以是单引号也可以是双引号</p>
+</li>
+<li><p>拼接：</p>
+<ul>
+<li>用 <code>+</code> 来拼接—慢</li>
+<li>用 <code>*</code> 来<strong>重复</strong>自拼接。如print(”hello”*4)</li>
+</ul>
+</li>
+<li><p>大小写转换</p>
+<ul>
+<li>title()：首字母转换为大写</li>
+<li>lower()</li>
+<li>upper()</li>
+</ul>
+</li>
+<li><p>常用函数</p>
+<ul>
+<li>删除空白：<ul>
+<li>str.strip()  删除字符串<strong>前后</strong>的空白字符</li>
+<li>str.rstrip() 删除字符串**后面（右边）**的空白字符<ul>
+<li>str.lstrip() 删除字符串**前面（左边）**的空白字符</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>分割<ul>
+<li><strong>print(sentence.split())</strong></li>
+<li><strong>print(sentence.split(“,”))</strong></li>
+</ul>
+</li>
+<li><strong>替换</strong></li>
+</ul>
+<p><strong>sentence &#x3D; “Life is short, you need Python.”</strong></p>
+<p><strong>print(sentence.replace(“h”, “XD”))</strong></p>
+<p><strong>print(sentence.replace(“short”, “long”).replace(“Python”, “C++”))</strong></p>
+</li>
+</ul>
+<p><strong>类型转换</strong></p>
+<ul>
+<li>datatype() →如：int(),float(),str()…</li>
+<li><code>print(int(4/3))</code></li>
+<li></li>
+</ul>
+<h3 id="控制结构"><a href="#控制结构" class="headerlink" title="控制结构"></a>控制结构</h3><ul>
+<li>代码块与<strong>缩进</strong>；用缩进来区分关系</li>
+<li>比较运算符</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>描述</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>&#x3D;&#x3D;</td>
+<td>等于 - 比较对象是否相等</td>
+<td>(a &#x3D;&#x3D; b) 返回 False</td>
+</tr>
+<tr>
+<td>!&#x3D;</td>
+<td>不等于 - 比较两个对象是否不相等</td>
+<td>(a !&#x3D; b) 返回 True</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>大于 - 返回x是否大于y</td>
+<td>(a &gt; b) 返回 False</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>小于 - 返回x是否小于y</td>
+<td>(a &lt; b) 返回 True</td>
+</tr>
+<tr>
+<td>&gt;&#x3D;</td>
+<td>大于等于 - 返回x是否大于等于y</td>
+<td>(a &gt;&#x3D; b) 返回 False</td>
+</tr>
+<tr>
+<td>&lt;&#x3D;</td>
+<td>小于等于 - 返回x是否小于等于y</td>
+<td>(a &lt;&#x3D; b) 返回 True</td>
+</tr>
+</tbody></table>
+<p>逻辑控制符：and or not</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>逻辑表达式</th>
+<th>描述</th>
+<th>实例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>and</td>
+<td>x and y</td>
+<td>布尔”与” - 如果 x 为 False，x and y返回 x 的值，否则返回 y 的计算值。</td>
+<td>(a and b) 返回 20</td>
+</tr>
+<tr>
+<td>or</td>
+<td>x or y</td>
+<td>布尔”或” - 如果 x 是 True，它返回 x的值，否则它返回 y 的计算值。</td>
+<td>(a or b) 返回 10</td>
+</tr>
+<tr>
+<td>not</td>
+<td>not x</td>
+<td>布尔”非” - 如果 x 为 True，返回False。如果 x 为 False，它返回 True。</td>
+<td>not (a and b) 返回False</td>
+</tr>
+</tbody></table>
+<p>分支结构：</p>
+<ul>
+<li><p><code>if</code> 和 <code>elif</code>，后面加冒号，无大括号</p>
+</li>
+<li><pre><code class="hljs">while
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><br>  - <span class="hljs-keyword">break</span>和<span class="hljs-keyword">continue</span>；用法类似c++<br><br>```python<br><span class="hljs-keyword">while</span> condition:<br>		<span class="hljs-keyword">do</span> something<br></code></pre></td></tr></table></figure>
+</code></pre>
+</li>
+<li><p><code>for</code> ：常与迭代器一同使用</p>
+<ul>
+<li><code>range(n)</code>—从0遍历到n-1，步长为1</li>
+<li><code>range(a,b)</code> —从a遍历到b-1。左闭右开</li>
+<li><code>range(start,stop,step)</code> —从start遍历到stop-step，步长为step，step默认为1</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p><strong>列表list</strong></p>
+<ul>
+<li>类似与数组，由一系列按特定顺序排列的元素构成</li>
+<li>list里的元素<strong>可以是不同类型</strong></li>
+<li>访问元素：<ul>
+<li>索引访问：可以是<strong>非负索引</strong>也可以是<strong>负索引</strong></li>
+</ul>
+</li>
+<li>修改—可以动态增删&amp;修改</li>
+<li>添加<ul>
+<li><code>append()</code> 在末尾添加</li>
+<li><code>insert()</code> 插入</li>
+</ul>
+</li>
+<li>删除<ul>
+<li><code>del xxx</code> —使用del语句删除</li>
+<li><code>remove()</code>—按值删除元素</li>
+<li><code>pop()</code></li>
+</ul>
+</li>
+<li>长度：<code>len()</code></li>
+<li>翻转：<code>reverse()</code> —原地操作，永久修改</li>
+<li>排序</li>
+<li>切片<ul>
+<li><code>list[start:end]</code>   <code>list[start:end:step]</code></li>
+</ul>
+</li>
+<li>赋值（浅复制），指向同一块内存<ul>
+<li>可以用id()函数来获取对象的内存地址</li>
+<li>身份运算符 <code>is</code> ：x is y ⇒id(x)&#x3D;&#x3D;id(y) 表示二者指向同一块内存。</li>
+<li><code>is</code> 和 <code>==</code> 是不一样的，后者是用于判断引用变量的值是否相等</li>
+</ul>
+</li>
+<li>复制<ul>
+<li>深复制</li>
+<li>浅复制</li>
+</ul>
+</li>
+<li>遍历： <strong><code>for ele in list:</code></strong> 前面这个是遍历全体，或者是range来选定一个范围</li>
+</ul>
+<h3 id="元组tuple"><a href="#元组tuple" class="headerlink" title="元组tuple"></a>元组tuple</h3><ul>
+<li><strong>不可变</strong>的列表</li>
+<li><strong>圆括号标识</strong></li>
+</ul>
+<h3 id="集合set"><a href="#集合set" class="headerlink" title="集合set"></a>集合set</h3><ul>
+<li>无序不重复的元素序列</li>
+</ul>
+<h3 id="字典dict"><a href="#字典dict" class="headerlink" title="字典dict"></a>字典dict</h3><ul>
+<li>键值对</li>
+<li>访问字典中的值，dic(”key”);</li>
+<li>修改值</li>
+<li>添加键值对</li>
+<li>删除键值对：del</li>
+<li>遍历所有的键值对 <code>for key,value in dic.items():</code></li>
+<li>遍历所有键 <code>for key in dic.keys():</code></li>
+<li>遍历所有值 <code>for value in dic.values():</code></li>
+</ul>
+<p>两个字典同时遍历：</p>
+<ul>
+<li>以key同时遍历两个字典（两个字典长度一样，否则以最短的次数输出）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">dict_map = &#123;<span class="hljs-number">1</span>:<span class="hljs-string">&#x27;hello&#x27;</span>, <span class="hljs-number">2</span>:<span class="hljs-string">&#x27;world&#x27;</span>&#125;<br>dict_map1 = &#123;<span class="hljs-number">3</span>: <span class="hljs-string">&#x27;hi&#x27;</span>, <span class="hljs-number">4</span>: <span class="hljs-string">&#x27;test&#x27;</span>&#125;<br><span class="hljs-keyword">for</span> key1, key2 <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(dict_map.keys(), dict_map1.keys()):<br>    <span class="hljs-built_in">print</span>(key1, dict_map[key1], key2, dict_map1[key2])<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>以key、value同时遍历两个字典（两个字典长度一样，否则以最短的次数输出）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">dict_map = &#123;<span class="hljs-number">1</span>:<span class="hljs-string">&#x27;hello&#x27;</span>, <span class="hljs-number">2</span>:<span class="hljs-string">&#x27;world&#x27;</span>&#125;<br>dict_map1 = &#123;<span class="hljs-number">3</span>: <span class="hljs-string">&#x27;hi&#x27;</span>, <span class="hljs-number">4</span>: <span class="hljs-string">&#x27;test&#x27;</span>&#125;<br><span class="hljs-keyword">for</span> (key, value) <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(dict_map.items(), dict_map1.items()):<br>    <span class="hljs-built_in">print</span>(key, value)                    <br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>逐项同时遍历两个字典（两个字典长度一样，否则以最短的次数输出）</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">dict_map = &#123;<span class="hljs-number">1</span>:<span class="hljs-string">&#x27;hello&#x27;</span>, <span class="hljs-number">2</span>:<span class="hljs-string">&#x27;world&#x27;</span>&#125;<br>dict_map1 = &#123;<span class="hljs-number">3</span>: <span class="hljs-string">&#x27;hi&#x27;</span>, <span class="hljs-number">4</span>: <span class="hljs-string">&#x27;test&#x27;</span>&#125;<br><span class="hljs-keyword">for</span> kv <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(dict_map.items(), dict_map1.items()):<br>    <span class="hljs-built_in">print</span>(kv)<br></code></pre></td></tr></table></figure>
+
+
+
+<p>原文链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/wsq119/article/details/115221881">https://blog.csdn.net/wsq119/article/details/115221881</a></p>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>结构：def开头，函数名，括号，冒号结尾，紧跟的所有缩进构成函数体</p>
+<ul>
+<li>可以处理一组数据，并返回一个或一组值</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_formatted_name</span>(<span class="hljs-params">first_name, last_name, middle_name=<span class="hljs-string">&#x27;&#x27;</span></span>):<br>	<span class="hljs-keyword">if</span> middle_name:<br>		full_name = first_name + <span class="hljs-string">&#x27; &#x27;</span> + middle_name + <span class="hljs-string">&#x27; &#x27;</span> + last_name<br>		<span class="hljs-keyword">return</span> full_name.title()<br>	<span class="hljs-keyword">else</span>:<br>		full_name = first_name + <span class="hljs-string">&#x27; &#x27;</span> + last_name<br>		<span class="hljs-keyword">return</span> first_name.title(), last_name.title()<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>用一个或多个变量存储返回的值，或直接使用返回的值</li>
+</ul>
+<h3 id="传递实参"><a href="#传递实参" class="headerlink" title="传递实参"></a>传递实参</h3><ul>
+<li>位置实参：基于实参的顺序，将实参关联到啊哈怒火定义中的形参</li>
+<li>默认值：具有默认值的形参<strong>需排列在参数列表后面</strong>（才能达到可以省略的目的）</li>
+<li>关键字实参：无需考虑实参顺序。将形参变量名写出来，然后赋值</li>
+</ul>
+<p><img src="/img/func.png" srcset="/img/loading.gif" lazyload alt="func"></p>
+<ul>
+<li>对某些数据类型来说，在函数内部对传入变量做的修改，会导致函数外的值夜发生修改，产生副作用（<strong>列表、字典</strong>会改，但数值、字符串不改）<ul>
+<li>对于数值、字符串等，可以通过返回值传到函数外</li>
+</ul>
+</li>
+</ul>
+<p>如果希望不影响函数外的话：向函数传递列表副本</p>
+<ul>
+<li>利用切片创建副本 list_name[:]</li>
+<li>形参前加<code>*</code>号，可以传递<strong>任意数量的实参</strong></li>
+<li>形参前加<code>**</code>号，可以传递<strong>任意数量的关键字实参</strong></li>
+</ul>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><figure class="highlight plaintext"><figcaption><span>Dog</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs class">class Dog():<br>	def __init__(self, name, age):<br>		self.name = name<br>		self.age = age<br>	def sit(self):<br>        print(self.name.title() + &quot; is now sitting.&quot;)<br>	def roll_over(self):<br>		print(self.name.title() + &quot; rolled over!&quot;)<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>方法<code>_init_()</code>：构造函数，创建新对象自动调用</p>
+</li>
+<li><p>self：</p>
+<ul>
+<li><strong>必须</strong>写在所有方法参数列表的<strong>第一位</strong></li>
+<li>指代这个对象本身</li>
+<li>以self为前缀的成员变量可供类中所有方法使用–属性</li>
+<li>self.variable可以访问、创建与修改属性值</li>
+</ul>
+</li>
+<li><p>python的类属性默认是公有属性，要标记为私有的则要在变量名或函数名前加上两个下划线 “<code>__</code>”</p>
+</li>
+<li><p>属性修改：<strong>最好写一个update的方法</strong></p>
+<ul>
+<li>也可以直接修改，但破坏了封装</li>
+</ul>
+</li>
+</ul>
+<h3 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h3><ul>
+<li><p><code>class 子类名(父类名)</code>   </p>
+</li>
+<li><p>super()–在子类中通过<code>super()</code>指向父类</p>
+</li>
+<li><p>允许父类调用子类的方法</p>
+</li>
+<li><p>子类可以重写父类的方法，可以添加新的属性和方法，继承所有父类的方法</p>
+</li>
+</ul>
+<h2 id="文件与异常"><a href="#文件与异常" class="headerlink" title="文件与异常"></a>文件与异常</h2><ul>
+<li>读取文件：read()</li>
+<li>open() ：参数是文件路径（相对路径和绝对路径都可以）<ul>
+<li>open(“文件路径”，“模式”)，对于模式参数：<ul>
+<li>‘r’：读取模式（默认）</li>
+<li>‘w’：写入模式, 如果该文件已存在则打开文件，并从开头开始编辑<br>，即原有内容会被删除。如果该文件不存在，创建新文件。</li>
+<li>‘a’：追加模式. 如果该文件已存在，文件指针将会放在文件的结尾<br>。也就是说，新的内容将会被写入到已有内容之后。如果该文件不<br>存在，创建新文件进行写入</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>with()：在不再需要访问文件后将文件关闭，无需调用close()</li>
+<li>逐行读取 readlines()</li>
+<li>只能将字符串写入文件，如果需要换行，记得写换行符</li>
+</ul>
+<h3 id="file-对象"><a href="#file-对象" class="headerlink" title="file 对象"></a>file 对象</h3><p>file 对象使用 open 函数来创建，下表列出了 file 对象常用的函数：</p>
+<table>
+<thead>
+<tr>
+<th align="left">序号</th>
+<th align="left">方法及描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-close.html">file.close()</a>关闭文件。关闭后文件不能再进行读写操作。</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-flush.html">file.flush()</a>刷新文件内部缓冲，直接把内部缓冲区的数据立刻写入文件, 而不是被动的等待输出缓冲区写入。</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-fileno.html">file.fileno()</a>返回一个整型的文件描述符(file descriptor FD 整型), 可以用在如os模块的read方法等一些底层操作上。</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-isatty.html">file.isatty()</a>如果文件连接到一个终端设备返回 True，否则返回 False。</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-next.html">file.next()</a>**Python 3 中的 File 对象不支持 next() 方法。**返回文件下一行。</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="left">[file.read(<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-read.html">size])</a>从文件读取指定的字节数，如果未给定或为负则读取所有。</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="left">[file.readline(<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-readline.html">size])</a>读取整行，包括 “\n” 字符。</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="left">[file.readlines(<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-readlines.html">sizeint])</a>读取所有行并返回列表，若给定sizeint&gt;0，返回总和大约为sizeint字节的行, 实际读取值可能比 sizeint 较大, 因为需要填充缓冲区。</td>
+</tr>
+<tr>
+<td align="left">9</td>
+<td align="left">[file.seek(offset<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-seek.html">, whence])</a>移动文件读取指针到指定位置</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-tell.html">file.tell()</a>返回文件当前位置。</td>
+</tr>
+<tr>
+<td align="left">11</td>
+<td align="left">[file.truncate(<a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-truncate.html">size])</a>从文件的首行首字符开始截断，截断文件为 size 个字符，无 size 表示从当前位置截断；截断之后后面的所有字符被删除，其中 windows 系统下的换行代表2个字符大小。</td>
+</tr>
+<tr>
+<td align="left">12</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-write.html">file.write(str)</a>将字符串写入文件，返回的是写入的字符长度。</td>
+</tr>
+<tr>
+<td align="left">13</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-file-writelines.html">file.writelines(sequence)</a>向文件写入一个序列字符串列表，如果需要换行则要自己加入每行的换行符。</td>
+</tr>
+</tbody></table>
+<p>举例：</p>
+<ul>
+<li>读取文件：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;num.txt&#x27;</span>) <span class="hljs-keyword">as</span> file:<br>        <span class="hljs-comment">#1.打印整个文档</span><br>        <span class="hljs-comment"># num=file.read()</span><br>        <span class="hljs-comment"># print(num)</span><br>        <br>        <span class="hljs-comment">#2.逐行读取并打印</span><br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> file.readlines():<br>            <span class="hljs-comment"># print(line)#这里由于没有去除换行符，会导致换行符单独占据一行</span><br>            <span class="hljs-built_in">print</span>(line.rstrip()) <span class="hljs-comment">#这样子会去掉换行符</span><br>        <br>        <br>        <br>main()<br></code></pre></td></tr></table></figure>
+
+<p>情况1：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span><span class="hljs-number">2</span> <span class="hljs-number">3</span><br><span class="hljs-symbol">4 </span><span class="hljs-number">5</span> <span class="hljs-number">6</span><br></code></pre></td></tr></table></figure>
+
+<p>情况2.1：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span><span class="hljs-number">2</span> <span class="hljs-number">3</span><br><br><span class="hljs-symbol">4 </span><span class="hljs-number">5</span> <span class="hljs-number">6</span><br></code></pre></td></tr></table></figure>
+
+<p>情况2.2：</p>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">1 </span><span class="hljs-number">2</span> <span class="hljs-number">3</span><br><span class="hljs-symbol">4 </span><span class="hljs-number">5</span> <span class="hljs-number">6</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>写文件</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;num.txt&#x27;</span>,<span class="hljs-string">&#x27;w&#x27;</span>) <span class="hljs-keyword">as</span> file: <span class="hljs-comment">#这里设置为write模式</span><br>        file.write(<span class="hljs-string">&quot;hello world\n&quot;</span>)<br>    <br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(<span class="hljs-string">&#x27;num.txt&#x27;</span>,<span class="hljs-string">&#x27;a&#x27;</span>) <span class="hljs-keyword">as</span> file: <span class="hljs-comment">#设置为append模式</span><br>        file.write(<span class="hljs-string">&quot;appending...&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><ul>
+<li><p>将函数与类存储在被称为模块的独立文件中，与主程序分离</p>
+</li>
+<li><p>模块式拓展名为<code>.py</code>的文件，包含要导入到程序中的代码</p>
+</li>
+<li><p>模块导入</p>
+<ul>
+<li>导入整个模块 <code>import module</code></li>
+<li>导入部分函数或类 <code>from module_name import func</code> <code>from module_name import class_name</code></li>
+<li><code>import module_name as nickname</code></li>
+<li><code>from module_name import funcName as nickName</code></li>
+<li><code>from moduleNmae import *</code></li>
+</ul>
+</li>
+<li><p>导入一个模块时，该模块文件的无缩进代码将直接执行</p>
+</li>
+<li><p>在编写自己的模块时，模块测试代码等要记得缩进于<code>if __name__ ==</code> </p>
+<p><code>&#39;__main__&#39;</code>:<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/49136398">if <strong>name</strong> &#x3D;&#x3D; ‘<strong>main</strong>‘ 如何正确理解? - 知乎</a></p>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI/" class="category-chain-item">AI</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/AI/python/" class="category-chain-item">python</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/" class="print-no-link">#python</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Python_basic</div>
+      <div>https://pqcu77.github.io/2025/03/03/python-basic/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/05/Fluid%E9%AD%94%E6%94%B9%E8%AE%B0%E5%BD%95/" title="Fluid魔改记录">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Fluid魔改记录</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/02/%E7%88%AC%E8%99%AB/" title="爬虫">
+                        <span class="hidden-mobile">爬虫</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

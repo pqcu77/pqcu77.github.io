@@ -1,0 +1,896 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Chapter1 Introduction什么是eBPF eBPF可以在特权上下文中（如kernel）运行&#x3D;&#x3D;沙盒&#x3D;&#x3D;程序。用于安全有效地扩展内核的功能，而无需通过更改内核源代码或加载内核模块的方式来实现。  eBPF从根本上改变了这个方式，通过允许在操作系统中运行沙盒程序的方式，应用程序开发人员可以运行eBPF程序，以便在运行时向操作系统添加额外的功能。然">
+<meta property="og:type" content="article">
+<meta property="og:title" content="eBPF_learning">
+<meta property="og:url" content="https://pqcu77.github.io/2025/03/28/eBPF-learning/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="Chapter1 Introduction什么是eBPF eBPF可以在特权上下文中（如kernel）运行&#x3D;&#x3D;沙盒&#x3D;&#x3D;程序。用于安全有效地扩展内核的功能，而无需通过更改内核源代码或加载内核模块的方式来实现。  eBPF从根本上改变了这个方式，通过允许在操作系统中运行沙盒程序的方式，应用程序开发人员可以运行eBPF程序，以便在运行时向操作系统添加额外的功能。然">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/Pasted%20image%2020250328231557.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/Pasted%20image%2020250328234202.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/Pasted%20image%2020250328234616.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/go.webp">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250329153804831.png">
+<meta property="og:image" content="https://ebpf.io/static/6e18b76323d8520107fab90c033edaf4/b14d5/helper.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250329153901010.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405102033975.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405121158545.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405113648981.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405123905949.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405123948939.png">
+<meta property="article:published_time" content="2025-03-28T15:07:16.000Z">
+<meta property="article:modified_time" content="2025-04-29T03:39:52.949Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="OS">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/Pasted%20image%2020250328231557.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>eBPF_learning - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="eBPF_learning"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-28 23:07" pubdate>
+          2025年3月28日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">eBPF_learning</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-04-29T11:39:52+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Chapter1-Introduction"><a href="#Chapter1-Introduction" class="headerlink" title="Chapter1 Introduction"></a>Chapter1 Introduction</h1><h2 id="什么是eBPF"><a href="#什么是eBPF" class="headerlink" title="什么是eBPF"></a>什么是eBPF</h2><ul>
+<li><p>eBPF可以在特权上下文中（如kernel）运行&#x3D;&#x3D;沙盒&#x3D;&#x3D;程序。用于<strong>安全有效地扩展内核的功能</strong>，而无需通过更改内核源代码或加载内核模块的方式来实现。<br><img src="/img/Pasted%20image%2020250328231557.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>eBPF从根本上改变了这个方式，通过允许<strong>在操作系统中运行沙盒程序</strong>的方式，应用程序开发人员可以<strong>运行eBPF程序</strong>，以便在运行时向操作系统<strong>添加额外的功能</strong>。然后在<strong>JIT编译器</strong>和<strong>验证引擎</strong>的帮助下，操作系统确保它像本地编译的程序一样具备安全性和执行效率</p>
+</li>
+<li><p>eBPF最初代表了<strong>伯克利包过滤器 (Berkeley Packet Filter)</strong>，但现在能做的更多了，缩写不再有意义。最初的eBPF有时候被称为cBPF（经典BPF）。</p>
+</li>
+</ul>
+<h2 id="eBPF简介"><a href="#eBPF简介" class="headerlink" title="eBPF简介"></a>eBPF简介</h2><h2 id="resources："><a href="#resources：" class="headerlink" title="resources："></a>resources：</h2><p><a target="_blank" rel="noopener" href="https://docs.cilium.io/en/stable/reference-guides/bpf/index.html">BPF 和 XDP 参考指南 — Cilium 1.17.2 文档</a><br><a target="_blank" rel="noopener" href="https://ebpf.io/zh-hans/what-is-ebpf/#%E4%BB%80%E4%B9%88%E6%98%AF-ebpf-">什么是 eBPF ? An Introduction and Deep Dive into the eBPF Technology</a>（中文版）</p>
+<h2 id="钩子概览"><a href="#钩子概览" class="headerlink" title="钩子概览"></a>钩子概览</h2><p>eBPF 程序是<strong>事件驱动</strong>的，当内核或应用程序<em>通过某个钩子点</em>时运行。<strong>预定义的钩子</strong>包括系统调用、函数入口&#x2F;退出、内核跟踪点、网络事件等。<br><img src="/img/Pasted%20image%2020250328234202.png" srcset="/img/loading.gif" lazyload><br>如果预定义的钩子不能满足特定需求，则可以<strong>创建内核探针</strong>（kprobe）或<strong>用户探针</strong>（uprobe），以便在内核或用户应用程序的<strong>几乎任何位置附加 eBPF 程序</strong>。<br><img src="/img/Pasted%20image%2020250328234616.png" srcset="/img/loading.gif" lazyload></p>
+<p>eBPF的核心钩子位置：<br>eBPF程序通常通过以下的内核钩子注入并执行：</p>
+<ul>
+<li><strong>Kprobes&#x2F;Uprobes</strong>：动态跟踪内核或用户空间函数调用</li>
+<li><strong>Tracepoints</strong>：静态内核事件跟踪点（如系统调用、调度事件）</li>
+<li><strong>TC（Traffic Control）</strong>：在<strong>网络流量控制层</strong>处理数据包</li>
+<li><strong>Socket Filters</strong>：过滤或监控套接字数据</li>
+</ul>
+<h2 id="如何编写eBPF程序"><a href="#如何编写eBPF程序" class="headerlink" title="如何编写eBPF程序"></a>如何编写eBPF程序</h2><p>使用<strong>cilium、bcc或bpftrace</strong>这样子的项目间接使用，这些项目提供了 eBPF 之上的抽象，不需要直接编写程序，而是提供了指定基于意图的来定义实现的能力，然后用 eBPF 实现。</p>
+<h2 id="加载器和校验架构"><a href="#加载器和校验架构" class="headerlink" title="加载器和校验架构"></a>加载器和校验架构</h2><p>确定所需的钩子后，可以使用 <strong>bpf 系统调用</strong>将 eBPF 程序加载到 Linux 内核中。这通常是使用一个可用的 eBPF 库来完成的。<br><img src="/img/go.webp" srcset="/img/loading.gif" lazyload></p>
+<p>当层序被加载到Linux内核中时，它在被附加到所请求的钩子上之前要经过两个步骤：</p>
+<ul>
+<li>验证：验证步骤用来确保eBPF程序可以安全运行<ul>
+<li>加载eBPF程序的进程&#x3D;&#x3D;必须要所需的能力（特权）&#x3D;&#x3D;，<u>除非启用非特权eBPF</u>，否则只有特权进程可以加载eBPF程序</li>
+<li>eBPF程序不会崩溃或者对系统造成损害</li>
+<li>eBPF程序一定会运行至结束</li>
+</ul>
+</li>
+<li>JIT编译<ul>
+<li>JIT (Just-in-Time) 编译步骤<u>将程序的通用字节码转换为机器特定的指令集</u>，用以<strong>优化程序的执行速</strong>度。这使得 eBPF 程序可以像本地编译的内核代码或作为内核模块加载的代码一样高效地运行。</li>
+</ul>
+</li>
+</ul>
+<h2 id="Maps"><a href="#Maps" class="headerlink" title="Maps"></a>Maps</h2><p>eBPF 程序的其中一个重要方面是<strong>共享和存储</strong>所收集的信息和状态的能力。<br>为此，eBPF 程序可以利用 eBPF maps 的概念来存储和检索各种数据结构中的数据。eBPF maps 既可以<strong>从 eBPF 程序访问</strong>，也可以通过<strong>系统调用</strong>从<strong>用户空间中的应用程序访问</strong>。<br><img src="/img/file-20250329153804831.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Helper调用"><a href="#Helper调用" class="headerlink" title="Helper调用"></a>Helper调用</h2><p>eBPF 程序不直接调用内核函数。这样做会将 eBPF 程序绑定到特定的内核版本，会使程序的兼容性复杂化。而对应地，eBPF 程序改为调用 helper 函数达到效果，这是内核提供的通用且稳定的 API。</p>
+<p><a target="_blank" rel="noopener" href="https://ebpf.io/static/6e18b76323d8520107fab90c033edaf4/01295/helper.png"><img src="https://ebpf.io/static/6e18b76323d8520107fab90c033edaf4/b14d5/helper.png" srcset="/img/loading.gif" lazyload alt="Helper"></a></p>
+<p>可用的 helper 调用集也在不断发展迭代中。一些 helper 调用的示例:</p>
+<ul>
+<li>生成随机数</li>
+<li>获取当前时间日期</li>
+<li>eBPF map 访问</li>
+<li>获取进程 &#x2F; cgroup 上下文</li>
+<li>操作网络数据包及其转发逻辑</li>
+</ul>
+<h2 id="尾调用和函数调用"><a href="#尾调用和函数调用" class="headerlink" title="尾调用和函数调用"></a>尾调用和函数调用</h2><p>eBPF 程序可以通过尾调用和函数调用的概念来组合。函数调用允许在 eBPF 程序内部完成定义和调用函数。尾调用可以调用和执行另一个 eBPF 程序并替换执行上下文，类似于 execve() 系统调用对常规进程的操作方式。<br><img src="/img/file-20250329153901010.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="Chapter-2：简单运行Hello-World"><a href="#Chapter-2：简单运行Hello-World" class="headerlink" title="Chapter 2：简单运行Hello World"></a>Chapter 2：简单运行Hello World</h1><h2 id="Hello-world"><a href="#Hello-world" class="headerlink" title="Hello world"></a>Hello world</h2><p>code：</p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs d"><span class="hljs-meta">#!/usr/bin/python3</span><br>from bcc <span class="hljs-keyword">import</span> BPF<br><br>program = <span class="hljs-string">r&quot;&quot;</span><span class="hljs-string">&quot;</span><br><span class="hljs-string">int hello(void *ctx) &#123;</span><br><span class="hljs-string">    bpf_trace_printk(&quot;</span>Hello World!<span class="hljs-string">&quot;);</span><br><span class="hljs-string">    return 0;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string">&quot;</span><span class="hljs-string">&quot;&quot;</span><br><br>b = BPF(text=program)<br>syscall = b.get_syscall_fnname(<span class="hljs-string">&quot;execve&quot;</span>)<br>b.attach_kprobe(event=syscall, fn_name=<span class="hljs-string">&quot;hello&quot;</span>)<br>b.trace_print()<br></code></pre></td></tr></table></figure>
+
+<p>命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 1. 给予执行权限</span><br><span class="hljs-built_in">chmod</span> +x ~/ebpf-programs/hello.py<br><br><span class="hljs-comment"># 2. 使用sudo运行（eBPF需要root权限）</span><br><span class="hljs-built_in">sudo</span> ~/ebpf-programs/hello.py<br><br><span class="hljs-comment"># 或者</span><br><span class="hljs-built_in">sudo</span> python3 ~/ebpf-programs/hello.py<br></code></pre></td></tr></table></figure>
+
+<h3 id="解读"><a href="#解读" class="headerlink" title="解读"></a>解读</h3><p>这段代码由两部分组成：运行在内核中的<strong>eBPF程序</strong>（被””” “””包住的部分)本身，以及<strong>将eBPF程序加载到内核并读取其生成的跟踪的用户空间代码</strong></p>
+<p>hello.py是用户空间，hello()是运行在内核中的eBPF程序。<br><img src="/img/file-20250405102033975.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>[!NOTE]<br>整个代码是用python写的，但是eBPF程序本身是用C写的</p>
+</blockquote>
+<ul>
+<li>辅助函数bpf_trace_printk()：可以用来编写消息&#x2F;打印信息；辅助函数是eBPF程序可以调用与系统交互的函数</li>
+<li>跟踪输出：bpf_trace_printk()总是将输出发送到相同的预定义的伪文件位置：&#x2F;sys&#x2F;kernel&#x2F;debug&#x2F;tracing&#x2F;trace_pipe。但如果有多个eBPF程序会导致混乱（都保存到同样的地方）&#x3D;&gt;引入BPF Maps</li>
+</ul>
+<blockquote>
+<p>[!NOTE]<br>eBPF需要在root下运行（需要特权），如果不在root下则需要使用sudo</p>
+</blockquote>
+<ul>
+<li>eBPF程序可以动态改变系统的行为，一旦负载到事件上就可以由效果-</li>
+</ul>
+<h2 id="BPF-Maps"><a href="#BPF-Maps" class="headerlink" title="BPF Maps"></a>BPF Maps</h2><ul>
+<li>map是一种可以<strong>在用户空间访问</strong>的数据结构</li>
+<li>maps可以用来在<strong>多个eBPF程序</strong>中共享数据，或者在<strong>用户空间</strong>应用程序和<strong>运行的eBPF代码</strong>之间通信<ul>
+<li>用户空间写入配置信息到eBPF程序，以便检索</li>
+<li>由一个eBPF程序存储状态以便后续由另一个程序检索</li>
+<li>eBPF程序将结果或metrics写入map，以便用户空间应用呈现&#x2F;检索结果</li>
+</ul>
+</li>
+</ul>
+<h3 id="Hash-Table-Map"><a href="#Hash-Table-Map" class="headerlink" title="Hash Table Map"></a>Hash Table Map</h3><p>C程序部分：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs C">BPF_HASH(counter_table);<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">hello</span><span class="hljs-params">(<span class="hljs-type">void</span> *ctx)</span> &#123;<br>   u64 uid;<br>   u64 counter = <span class="hljs-number">0</span>;<br>   u64 *p;<br><br>   uid = bpf_get_current_uid_gid() &amp; <span class="hljs-number">0xFFFFFFFF</span>;<br>   p = counter_table.lookup(&amp;uid); <span class="hljs-comment">//查找map中是否存在对应的uid</span><br>   <span class="hljs-keyword">if</span> (p != <span class="hljs-number">0</span>) &#123;<br>      counter = *p;<span class="hljs-comment">//存在则取出对应的值cnt，不存在的话counter=0没有影响</span><br>   &#125;<br>   counter++;<span class="hljs-comment">//调用+1</span><br>   counter_table.update(&amp;uid, &amp;counter);<span class="hljs-comment">//更新对应的调用次数</span><br>   <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><code>BPF_HASH()</code>是bcc用于定义hash table的宏</li>
+<li><code>bpf_get_current_uid_gid()</code>是一个辅助函数，用于获得触发k探针事件的进程ID（保存到了64位的低32位中，高32位保留给group ID（但是这部分被masked out了））</li>
+<li><code>lookup(&amp;uid)</code> 在哈希表中查找具有与用户ID相匹配的键的条目，并返回一个指向对应值的指针</li>
+</ul>
+<p>bcc framework部分和前面helloworld基本相同，读取信息部分需要修改为从哈希表中读取<br>code：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/python3  </span><br><span class="hljs-keyword">from</span> bcc <span class="hljs-keyword">import</span> BPF<br><span class="hljs-keyword">from</span> time <span class="hljs-keyword">import</span> sleep<br><br>program = <span class="hljs-string">r&quot;&quot;&quot;</span><br><span class="hljs-string">BPF_HASH(counter_table);</span><br><span class="hljs-string"></span><br><span class="hljs-string">int hello(void *ctx) &#123;</span><br><span class="hljs-string">   u64 uid;</span><br><span class="hljs-string">   u64 counter = 0;</span><br><span class="hljs-string">   u64 *p;</span><br><span class="hljs-string"></span><br><span class="hljs-string">   uid = bpf_get_current_uid_gid() &amp; 0xFFFFFFFF;</span><br><span class="hljs-string">   p = counter_table.lookup(&amp;uid);</span><br><span class="hljs-string">   if (p != 0) &#123;</span><br><span class="hljs-string">      counter = *p;</span><br><span class="hljs-string">   &#125;</span><br><span class="hljs-string">   counter++;</span><br><span class="hljs-string">   counter_table.update(&amp;uid, &amp;counter);</span><br><span class="hljs-string">   return 0;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><br>b = BPF(text=program)<br>syscall = b.get_syscall_fnname(<span class="hljs-string">&quot;execve&quot;</span>)<br>b.attach_kprobe(event=syscall, fn_name=<span class="hljs-string">&quot;hello&quot;</span>)<br><br><span class="hljs-comment"># Attach to a tracepoint that gets hit for all syscalls </span><br><span class="hljs-comment"># b.attach_raw_tracepoint(tp=&quot;sys_enter&quot;, fn_name=&quot;hello&quot;)</span><br><br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>    sleep(<span class="hljs-number">2</span>)<br>    s = <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-keyword">for</span> k,v <span class="hljs-keyword">in</span> b[<span class="hljs-string">&quot;counter_table&quot;</span>].items():<br>        s += <span class="hljs-string">f&quot;ID <span class="hljs-subst">&#123;k.value&#125;</span>: <span class="hljs-subst">&#123;v.value&#125;</span>\t&quot;</span><br>    <span class="hljs-built_in">print</span>(s)<br></code></pre></td></tr></table></figure>
+
+<p>运行结果:<br><img src="/img/file-20250405121158545.png" srcset="/img/loading.gif" lazyload><br>在调用ls时，只会增加一个count，而运行sudo ls时由于会执行sudo和ls，会增加两个count</p>
+<h3 id="Perf-and-Ring-Buffer-Maps"><a href="#Perf-and-Ring-Buffer-Maps" class="headerlink" title="Perf and Ring Buffer Maps"></a>Perf and Ring Buffer Maps</h3><ul>
+<li>允许以我们选择的结构将数据写入到perf环缓冲区映射中</li>
+<li>环缓冲区可以看做是逻辑组织在环中的内存，由单独的写、读指针。任意长度的数据被写入指针的任何位置，<strong>长度信息包含在该数据的头</strong>中。对于读取操作，从读取指针所在的任何位置读取数据，使用头来确定要读取多少数据<br><img src="/img/file-20250405113648981.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/python3  </span><br><span class="hljs-keyword">from</span> bcc <span class="hljs-keyword">import</span> BPF<br><br>program = <span class="hljs-string">r&quot;&quot;&quot;</span><br><span class="hljs-string">BPF_PERF_OUTPUT(output); </span><br><span class="hljs-string"> </span><br><span class="hljs-string">struct data_t &#123;     </span><br><span class="hljs-string">   int pid;</span><br><span class="hljs-string">   int uid;</span><br><span class="hljs-string">   char command[16];</span><br><span class="hljs-string">   char message[12];</span><br><span class="hljs-string">&#125;;</span><br><span class="hljs-string"> </span><br><span class="hljs-string">int hello(void *ctx) &#123;</span><br><span class="hljs-string">   struct data_t data = &#123;&#125;; </span><br><span class="hljs-string">   char message[12] = &quot;Hello World&quot;;</span><br><span class="hljs-string"> </span><br><span class="hljs-string">   data.pid = bpf_get_current_pid_tgid() &gt;&gt; 32;</span><br><span class="hljs-string">   data.uid = bpf_get_current_uid_gid() &amp; 0xFFFFFFFF;</span><br><span class="hljs-string">   </span><br><span class="hljs-string">   bpf_get_current_comm(&amp;data.command, sizeof(data.command));</span><br><span class="hljs-string">   bpf_probe_read_kernel(&amp;data.message, sizeof(data.message), message); </span><br><span class="hljs-string"> </span><br><span class="hljs-string">   output.perf_submit(ctx, &amp;data, sizeof(data)); </span><br><span class="hljs-string"> </span><br><span class="hljs-string">   return 0;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><br>b = BPF(text=program) <br>syscall = b.get_syscall_fnname(<span class="hljs-string">&quot;execve&quot;</span>)<br>b.attach_kprobe(event=syscall, fn_name=<span class="hljs-string">&quot;hello&quot;</span>)<br> <br><span class="hljs-keyword">def</span> <span class="hljs-title function_">print_event</span>(<span class="hljs-params">cpu, data, size</span>):  <br>   data = b[<span class="hljs-string">&quot;output&quot;</span>].event(data)<br>   <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;<span class="hljs-subst">&#123;data.pid&#125;</span> <span class="hljs-subst">&#123;data.uid&#125;</span> <span class="hljs-subst">&#123;data.command.decode()&#125;</span> <span class="hljs-subst">&#123;data.message.decode()&#125;</span>&quot;</span>)<br> <br>b[<span class="hljs-string">&quot;output&quot;</span>].open_perf_buffer(print_event) <br><span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:   <br>   b.perf_buffer_poll()<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>BPF_PERF_OUTPUT</code>用于创建一个map（从内核传递消息到用户空间–map output）</li>
+<li><code>bpf_get_current_pid_tgid()</code>：获取触发词eBPF程序的进程ID</li>
+<li><code>bpf_get_current_comm()</code>：用于获取在创建execve系统共享的进程中运行的可执行文件；这是一个字符串，传递参数方法不太一样（要传递地址和长度）</li>
+</ul>
+<p><img src="/img/file-20250405123905949.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250405123948939.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="Tail-Calls"><a href="#Tail-Calls" class="headerlink" title="Tail Calls"></a>Tail Calls</h3><ul>
+<li>尾调用可以调用并执行另一个eBPF程序，并替换执行上下文，且不会返回原始位置</li>
+<li><code>long bpf_tail_call(void *ctx, struct bpf_map *prog_array_map, u32 index)</code><ul>
+<li>ctx允许将上下文从调用的eBPF程序传递给被调用者。</li>
+<li>prog_array_map是一种BPF_MAP_TYPE_PROG_ARRAY类型的eBPF映射，它包含一组标识eBPF程序的文件描述符。</li>
+<li>index指示应该调用哪一组eBPF程序<br>  BCC framework下可以这样简化使用：<code>prog_array_map.call(ctx, index)</code></li>
+</ul>
+</li>
+</ul>
+<p>code：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment">#!/usr/bin/python3  </span><br><span class="hljs-keyword">from</span> bcc <span class="hljs-keyword">import</span> BPF<br><span class="hljs-keyword">import</span> ctypes <span class="hljs-keyword">as</span> ct<br><br>program = <span class="hljs-string">r&quot;&quot;&quot;</span><br><span class="hljs-string">BPF_PROG_ARRAY(syscall, 500);</span><br><span class="hljs-string"></span><br><span class="hljs-string">int hello(struct bpf_raw_tracepoint_args *ctx) &#123;</span><br><span class="hljs-string">    int opcode = ctx-&gt;args[1];</span><br><span class="hljs-string">    syscall.call(ctx, opcode);</span><br><span class="hljs-string">    bpf_trace_printk(&quot;Another syscall: %d&quot;, opcode);</span><br><span class="hljs-string">    return 0;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string"></span><br><span class="hljs-string">int hello_exec(void *ctx) &#123;</span><br><span class="hljs-string">    bpf_trace_printk(&quot;Executing a program&quot;);</span><br><span class="hljs-string">    return 0;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string"></span><br><span class="hljs-string">int hello_timer(struct bpf_raw_tracepoint_args *ctx) &#123;</span><br><span class="hljs-string">    int opcode = ctx-&gt;args[1];</span><br><span class="hljs-string">    switch (opcode) &#123;</span><br><span class="hljs-string">        case 222:</span><br><span class="hljs-string">            bpf_trace_printk(&quot;Creating a timer&quot;);</span><br><span class="hljs-string">            break;</span><br><span class="hljs-string">        case 226:</span><br><span class="hljs-string">            bpf_trace_printk(&quot;Deleting a timer&quot;);</span><br><span class="hljs-string">            break;</span><br><span class="hljs-string">        default:</span><br><span class="hljs-string">            bpf_trace_printk(&quot;Some other timer operation&quot;);</span><br><span class="hljs-string">            break;</span><br><span class="hljs-string">    &#125;</span><br><span class="hljs-string">    return 0;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string"></span><br><span class="hljs-string">int ignore_opcode(void *ctx) &#123;</span><br><span class="hljs-string">    return 0;</span><br><span class="hljs-string">&#125;</span><br><span class="hljs-string">&quot;&quot;&quot;</span><br><br>b = BPF(text=program)<br>b.attach_raw_tracepoint(tp=<span class="hljs-string">&quot;sys_enter&quot;</span>, fn_name=<span class="hljs-string">&quot;hello&quot;</span>)<br><br>ignore_fn = b.load_func(<span class="hljs-string">&quot;ignore_opcode&quot;</span>, BPF.RAW_TRACEPOINT)<br>exec_fn = b.load_func(<span class="hljs-string">&quot;hello_exec&quot;</span>, BPF.RAW_TRACEPOINT)<br>timer_fn = b.load_func(<span class="hljs-string">&quot;hello_timer&quot;</span>, BPF.RAW_TRACEPOINT)<br><br>prog_array = b.get_table(<span class="hljs-string">&quot;syscall&quot;</span>)<br><br><span class="hljs-comment"># Ignore all syscalls initially</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(prog_array)):<br>    prog_array[ct.c_int(i)] = ct.c_int(ignore_fn.fd)<br><br><span class="hljs-comment"># Only enable few syscalls which are of the interest</span><br>prog_array[ct.c_int(<span class="hljs-number">59</span>)] = ct.c_int(exec_fn.fd)<br>prog_array[ct.c_int(<span class="hljs-number">222</span>)] = ct.c_int(timer_fn.fd)<br>prog_array[ct.c_int(<span class="hljs-number">223</span>)] = ct.c_int(timer_fn.fd)<br>prog_array[ct.c_int(<span class="hljs-number">224</span>)] = ct.c_int(timer_fn.fd)<br>prog_array[ct.c_int(<span class="hljs-number">225</span>)] = ct.c_int(timer_fn.fd)<br>prog_array[ct.c_int(<span class="hljs-number">226</span>)] = ct.c_int(timer_fn.fd)<br><br>b.trace_print()<br></code></pre></td></tr></table></figure>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS/" class="category-chain-item">OS</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="/tags/OS/" class="print-no-link">#OS</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>eBPF_learning</div>
+      <div>https://pqcu77.github.io/2025/03/28/eBPF-learning/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月28日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/29/ubuntu22-04%E5%AE%89%E8%A3%85bcc/" title="ubuntu22.04安装bcc">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ubuntu22.04安装bcc</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/24/AI-lab3/" title="AI-Lab3">
+                        <span class="hidden-mobile">AI-Lab3</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

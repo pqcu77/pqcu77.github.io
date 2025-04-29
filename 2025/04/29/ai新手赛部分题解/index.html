@@ -1,0 +1,1233 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="比赛结果：    NS-2025-00 须弥识花大赛 解题报告（Writeup）一、赛题理解与任务目标本次比赛模拟须弥地区的生态危机，任务目标是构建一个具备泛化能力的花卉识别 AI，能够在复杂环境下准确分类多种花卉种类。 从技术角度看，本题实质为一个 多类图像分类任务，即输入为一张图像，输出为其对应的花卉类别标签。该任务可归结为监督学习问题，挑战点在于：  样本环境多变（雨天、晴天、被踩踏等） 类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ai新手赛部分题解">
+<meta property="og:url" content="https://pqcu77.github.io/2025/04/29/ai%E6%96%B0%E6%89%8B%E8%B5%9B%E9%83%A8%E5%88%86%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="比赛结果：    NS-2025-00 须弥识花大赛 解题报告（Writeup）一、赛题理解与任务目标本次比赛模拟须弥地区的生态危机，任务目标是构建一个具备泛化能力的花卉识别 AI，能够在复杂环境下准确分类多种花卉种类。 从技术角度看，本题实质为一个 多类图像分类任务，即输入为一张图像，输出为其对应的花卉类别标签。该任务可归结为监督学习问题，挑战点在于：  样本环境多变（雨天、晴天、被踩踏等） 类">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429113148114.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/d7c6ae3d320a570860ea2a249e091e3.jpg">
+<meta property="og:image" content="https://pqcu77.github.io/img/f5c32e6412ef17296b10162cf510e4d.jpg">
+<meta property="og:image" content="https://pqcu77.github.io/img/af1752655222fcb5c747d3799a11201.jpg">
+<meta property="article:published_time" content="2025-04-29T03:25:57.000Z">
+<meta property="article:modified_time" content="2025-04-29T03:32:51.352Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250429113148114.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Ai新手赛部分题解 - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Ai新手赛部分题解"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-29 11:25" pubdate>
+          2025年4月29日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          7.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          61 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Ai新手赛部分题解</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-04-29T11:32:51+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>比赛结果：<br><img src="/img/file-20250429113148114.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/d7c6ae3d320a570860ea2a249e091e3.jpg" srcset="/img/loading.gif" lazyload alt="排行榜"></p>
+<p><img src="/img/f5c32e6412ef17296b10162cf510e4d.jpg" srcset="/img/loading.gif" lazyload alt="最后得分"></p>
+<p><img src="/img/af1752655222fcb5c747d3799a11201.jpg" srcset="/img/loading.gif" lazyload alt="奖品+奖状"></p>
+<h1 id="NS-2025-00-须弥识花大赛-解题报告（Writeup）"><a href="#NS-2025-00-须弥识花大赛-解题报告（Writeup）" class="headerlink" title="NS-2025-00 须弥识花大赛 解题报告（Writeup）"></a>NS-2025-00 须弥识花大赛 解题报告（Writeup）</h1><h2 id="一、赛题理解与任务目标"><a href="#一、赛题理解与任务目标" class="headerlink" title="一、赛题理解与任务目标"></a>一、赛题理解与任务目标</h2><p>本次比赛模拟须弥地区的生态危机，任务目标是构建一个具备泛化能力的花卉识别 AI，能够在复杂环境下准确分类多种花卉种类。</p>
+<p>从技术角度看，本题实质为一个 <strong>多类图像分类任务</strong>，即输入为一张图像，输出为其对应的花卉类别标签。该任务可归结为监督学习问题，挑战点在于：</p>
+<ul>
+<li>样本环境多变（雨天、晴天、被踩踏等）</li>
+<li>类别较多且视觉相似度高</li>
+<li>泛化能力要求高，需适应未知测试集</li>
+</ul>
+<h2 id="二、解题思路概述"><a href="#二、解题思路概述" class="headerlink" title="二、解题思路概述"></a>二、解题思路概述</h2><p>为应对复杂多变的测试图像环境，我们采用了如下整体策略：</p>
+<ol>
+<li><strong>数据增强 + 多模型集成</strong> 提升泛化能力；</li>
+<li><strong>MixUp &#x2F; CutMix</strong> 等标签混合增强强化训练；</li>
+<li><strong>使用预训练模型迁移学习</strong>，充分利用 ImageNet 语义特征；</li>
+<li><strong>引入 Label Smoothing</strong> 缓解过拟合；</li>
+<li><strong>测试时增强（TTA）</strong> 提高鲁棒性；</li>
+<li><strong>早停机制</strong> 控制训练轮次防止过拟合。</li>
+</ol>
+<h2 id="三、模型设计与训练策略"><a href="#三、模型设计与训练策略" class="headerlink" title="三、模型设计与训练策略"></a>三、模型设计与训练策略</h2><h3 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h3><p>我们构建了一个自定义的 <strong>多模型集成系统</strong>，结构如下：</p>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>模型名称</th>
+<th>预训练</th>
+<th>修改输出层</th>
+<th>Dropout</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>ResNet50</td>
+<td>✔️</td>
+<td>Linear</td>
+<td>0.5</td>
+</tr>
+<tr>
+<td>2</td>
+<td>EfficientNet-B0</td>
+<td>✔️</td>
+<td>Linear</td>
+<td>0.3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>MobileNetV3-Large</td>
+<td>✔️</td>
+<td>Linear</td>
+<td>0.3</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>所有模型的输出通过“软投票”方式（概率平均）融合，提高整体鲁棒性。</p>
+</blockquote>
+<h3 id="数据增强策略"><a href="#数据增强策略" class="headerlink" title="数据增强策略"></a>数据增强策略</h3><ul>
+<li><strong>训练集</strong>：使用多种图像变换组合（旋转、裁剪、亮度扰动、自动对比、灰度化、随机擦除）；</li>
+<li><strong>标签增强</strong>：随机应用 MixUp（β&#x3D;0.2）或 CutMix（β&#x3D;1.0）进行样本合成；</li>
+<li><strong>验证集&#x2F;测试集</strong>：保持中心裁剪 + 标准归一化，确保一致性。</li>
+</ul>
+<h3 id="损失函数与优化器"><a href="#损失函数与优化器" class="headerlink" title="损失函数与优化器"></a>损失函数与优化器</h3><ul>
+<li>损失函数：使用 <strong>LabelSmoothingLoss</strong>（smoothing&#x3D;0.1）防止模型过拟合；</li>
+<li>优化器：<strong>AdamW</strong> + <strong>OneCycleLR</strong> 学习率调度；</li>
+<li>混合精度训练 + 梯度裁剪，提升效率并稳定训练过程。</li>
+</ul>
+<h3 id="训练控制机制"><a href="#训练控制机制" class="headerlink" title="训练控制机制"></a>训练控制机制</h3><ul>
+<li>使用 <strong>早停机制</strong>（patience&#x3D;10）防止过拟合；</li>
+<li>训练轮数：最多 30 epoch；</li>
+<li>模型存储：保存最佳与最终模型权重，方便后续推理与对比。</li>
+</ul>
+<h2 id="四、模型预测与推理流程"><a href="#四、模型预测与推理流程" class="headerlink" title="四、模型预测与推理流程"></a>四、模型预测与推理流程</h2><h3 id="加载模型"><a href="#加载模型" class="headerlink" title="加载模型"></a>加载模型</h3><p>我们定义了自动化加载 <code>model_info.json</code> + <code>*.pth</code> 权重的流程，自动判断使用集成 or 单模型结构。</p>
+<h3 id="测试时增强（TTA）"><a href="#测试时增强（TTA）" class="headerlink" title="测试时增强（TTA）"></a>测试时增强（TTA）</h3><p>为了提高推理阶段的鲁棒性，对每张测试图像进行多种视图增强，具体包括：</p>
+<ol>
+<li>原始图像；</li>
+<li>水平翻转；</li>
+<li>垂直翻转；</li>
+<li>尺寸裁剪；</li>
+<li>亮度扰动。</li>
+</ol>
+<p>对上述增强图像进行推理后平均预测结果，提高模型的鲁棒性和准确性。</p>
+<h3 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h3><p>最终输出为 <code>results.csv</code>，包含：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csv">file_name,label<br>123.jpg,7<br>...<br></code></pre></td></tr></table></figure>
+
+<p>确保与比赛提交格式一致。</p>
+<h2 id="五、性能评估与可视化"><a href="#五、性能评估与可视化" class="headerlink" title="五、性能评估与可视化"></a>五、性能评估与可视化</h2><p>训练阶段使用验证集进行模型性能评估，并生成：</p>
+<ul>
+<li>分类报告（classification_report.txt）；</li>
+<li>混淆矩阵（confusion_matrix.png）；</li>
+<li>训练曲线（training_history.png）；</li>
+<li>预测可视化（model_predictions.png）。</li>
+</ul>
+<p>这些可视化图像有效支持模型诊断和调优。</p>
+<h2 id="六、使用的工具与框架"><a href="#六、使用的工具与框架" class="headerlink" title="六、使用的工具与框架"></a>六、使用的工具与框架</h2><ul>
+<li><strong>语言</strong>：Python 3.8+</li>
+<li><strong>深度学习框架</strong>：PyTorch 1.13</li>
+<li><strong>计算资源</strong>：NVIDIA GPU (CUDA 加速)</li>
+<li><strong>辅助库</strong>：NumPy、Pandas、sklearn、Pillow、tqdm、seaborn、matplotlib、torchvision</li>
+<li><strong>ai工具</strong>：copilot–claude3.7sonnet</li>
+</ul>
+<h2 id="七、总结与经验教训"><a href="#七、总结与经验教训" class="headerlink" title="七、总结与经验教训"></a>七、总结与经验教训</h2><ul>
+<li>多模型融合是提升分类精度的重要手段；</li>
+<li>数据增强和标签平滑有效提高泛化能力；</li>
+<li>测试时增强进一步改善预测稳定性；</li>
+<li>合理的训练控制策略（如早停和混合精度）提升了训练效率和最终性能。</li>
+</ul>
+<p>最终模型在验证集上表现稳定，预测准确率高，泛化能力强，能够较好适应测试集中复杂多变的花卉图像。效果良好，但达不到优秀，得分360。</p>
+<h2 id="附录一：关键代码模块"><a href="#附录一：关键代码模块" class="headerlink" title="附录一：关键代码模块"></a>附录一：关键代码模块</h2><h3 id="模型构建（多模型集成）"><a href="#模型构建（多模型集成）" class="headerlink" title="模型构建（多模型集成）"></a>模型构建（多模型集成）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ModelEnsemble</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, num_classes, device, num_models=<span class="hljs-number">3</span>, model_types=<span class="hljs-literal">None</span>, use_pretrained=<span class="hljs-literal">True</span></span>):<br>        <span class="hljs-built_in">super</span>(ModelEnsemble, <span class="hljs-variable language_">self</span>).__init__()<br>        <span class="hljs-variable language_">self</span>.models = []<br>        <span class="hljs-variable language_">self</span>.device = device<br>        <span class="hljs-variable language_">self</span>.num_models = num_models<br>        ...<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_models):<br>            model_type = model_types[i % <span class="hljs-built_in">len</span>(model_types)]<br>            <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;resnet&#x27;</span> <span class="hljs-keyword">in</span> model_type:<br>                model = torchvision.models.resnet50(weights=pretrained_weights)<br>                num_ftrs = model.fc.in_features<br>                model.fc = nn.Sequential(nn.Dropout(<span class="hljs-number">0.5</span>), nn.Linear(num_ftrs, num_classes))<br>            <span class="hljs-keyword">elif</span> <span class="hljs-string">&#x27;efficientnet&#x27;</span> <span class="hljs-keyword">in</span> model_type:<br>                model = torchvision.models.efficientnet_b0(weights=pretrained_weights)<br>                num_ftrs = model.classifier[<span class="hljs-number">1</span>].in_features<br>                model.classifier[<span class="hljs-number">1</span>] = nn.Sequential(nn.Dropout(<span class="hljs-number">0.3</span>), nn.Linear(num_ftrs, num_classes))<br>            <span class="hljs-keyword">elif</span> <span class="hljs-string">&#x27;mobilenet&#x27;</span> <span class="hljs-keyword">in</span> model_type:<br>                model = torchvision.models.mobilenet_v3_large(weights=pretrained_weights)<br>                num_ftrs = model.classifier[<span class="hljs-number">3</span>].in_features<br>                model.classifier[<span class="hljs-number">3</span>] = nn.Sequential(nn.Dropout(<span class="hljs-number">0.3</span>), nn.Linear(num_ftrs, num_classes))<br>            <span class="hljs-variable language_">self</span>.models.append(model.to(device))<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        outputs = [model(x) <span class="hljs-keyword">for</span> model <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.models]<br>        <span class="hljs-keyword">return</span> torch.mean(torch.stack(outputs), dim=<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="标签混合增强（MixUp-CutMix）"><a href="#标签混合增强（MixUp-CutMix）" class="headerlink" title="标签混合增强（MixUp &amp; CutMix）"></a>标签混合增强（MixUp &amp; CutMix）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MixUp</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, alpha=<span class="hljs-number">0.2</span></span>): <span class="hljs-variable language_">self</span>.alpha = alpha<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__call__</span>(<span class="hljs-params">self, batch, targets</span>):<br>        lam = np.random.beta(<span class="hljs-variable language_">self</span>.alpha, <span class="hljs-variable language_">self</span>.alpha)<br>        index = torch.randperm(batch.size(<span class="hljs-number">0</span>)).to(batch.device)<br>        mixed_batch = lam * batch + (<span class="hljs-number">1</span> - lam) * batch[index]<br>        <span class="hljs-keyword">return</span> mixed_batch, targets, targets[index], lam<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CutMix</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, alpha=<span class="hljs-number">1.0</span></span>): <span class="hljs-variable language_">self</span>.alpha = alpha<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__call__</span>(<span class="hljs-params">self, batch, targets</span>):<br>        lam = np.random.beta(<span class="hljs-variable language_">self</span>.alpha, <span class="hljs-variable language_">self</span>.alpha)<br>        index = torch.randperm(batch.size(<span class="hljs-number">0</span>)).to(batch.device)<br>        bbx1, bby1, bbx2, bby2 = <span class="hljs-variable language_">self</span>._rand_bbox(batch.size(), lam)<br>        batch[:, :, bbx1:bbx2, bby1:bby2] = batch[index, :, bbx1:bbx2, bby1:bby2]<br>        lam = <span class="hljs-number">1</span> - ((bbx2 - bbx1) * (bby2 - bby1)) / (batch.size(-<span class="hljs-number">1</span>) * batch.size(-<span class="hljs-number">2</span>))<br>        <span class="hljs-keyword">return</span> batch, targets, targets[index], lam<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="标签平滑损失函数"><a href="#标签平滑损失函数" class="headerlink" title="标签平滑损失函数"></a>标签平滑损失函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LabelSmoothingLoss</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, classes, smoothing=<span class="hljs-number">0.1</span></span>):<br>        <span class="hljs-built_in">super</span>(LabelSmoothingLoss, <span class="hljs-variable language_">self</span>).__init__()<br>        <span class="hljs-variable language_">self</span>.confidence = <span class="hljs-number">1.0</span> - smoothing<br>        <span class="hljs-variable language_">self</span>.smoothing = smoothing<br>        <span class="hljs-variable language_">self</span>.cls = classes<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, pred, target</span>):<br>        pred = pred.log_softmax(dim=-<span class="hljs-number">1</span>)<br>        true_dist = torch.zeros_like(pred)<br>        true_dist.fill_(<span class="hljs-variable language_">self</span>.smoothing / (<span class="hljs-variable language_">self</span>.cls - <span class="hljs-number">1</span>))<br>        true_dist.scatter_(<span class="hljs-number">1</span>, target.unsqueeze(<span class="hljs-number">1</span>), <span class="hljs-variable language_">self</span>.confidence)<br>        <span class="hljs-keyword">return</span> torch.mean(torch.<span class="hljs-built_in">sum</span>(-true_dist * pred, dim=-<span class="hljs-number">1</span>))<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="测试时增强（TTA）-1"><a href="#测试时增强（TTA）-1" class="headerlink" title="测试时增强（TTA）"></a>测试时增强（TTA）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_time_augmentation</span>(<span class="hljs-params">model, image, transform, device, num_augmentations=<span class="hljs-number">5</span></span>):<br>    model.<span class="hljs-built_in">eval</span>()<br>    predictions = []<br><br>    <span class="hljs-comment"># 原图预测</span><br>    image_tensor = transform(image).unsqueeze(<span class="hljs-number">0</span>).to(device)<br>    predictions.append(model(image_tensor))<br><br>    <span class="hljs-comment"># 水平翻转</span><br>    h_tensor = transform(transforms.functional.hflip(image)).unsqueeze(<span class="hljs-number">0</span>).to(device)<br>    predictions.append(model(h_tensor))<br><br>    <span class="hljs-comment"># 垂直翻转</span><br>    v_tensor = transform(transforms.functional.vflip(image)).unsqueeze(<span class="hljs-number">0</span>).to(device)<br>    predictions.append(model(v_tensor))<br><br>    <span class="hljs-comment"># 中心裁剪+亮度扰动</span><br>    jitter_transform = transforms.Compose([<br>        transforms.ColorJitter(brightness=<span class="hljs-number">0.2</span>),<br>        transform<br>    ])<br>    jitter_tensor = jitter_transform(image).unsqueeze(<span class="hljs-number">0</span>).to(device)<br>    predictions.append(model(jitter_tensor))<br><br>    <span class="hljs-comment"># 综合平均</span><br>    <span class="hljs-keyword">return</span> torch.mean(torch.stack(predictions), dim=<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+
+
+
+<h1 id="NS-2025-07-LLM-to-BTs–Writeup"><a href="#NS-2025-07-LLM-to-BTs–Writeup" class="headerlink" title="NS-2025-07 LLM to BTs–Writeup"></a>NS-2025-07 LLM to BTs–Writeup</h1><h2 id="题目概述"><a href="#题目概述" class="headerlink" title="题目概述"></a>题目概述</h2><p>本题要求实现一个将英文自然语言指令自动转换为行为树(Behavior Tree)结构化XML的系统。系统需要将用户文本指令转换为符合BehaviorTree.CPP库和Groot可视化工具要求的XML，并且以规定格式输出，包含119个使用CDATA包装的item元素。系统需要正确理解指令中的执行逻辑，并构建相应的行为树结构。</p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>针对不使用大语言模型的环境限制，我实现了一个基于规则和模式匹配的SimpleBehaviorTreeGenerator类。主要解题思路包括：</p>
+<h3 id="1-数据分析与样例学习"><a href="#1-数据分析与样例学习" class="headerlink" title="1. 数据分析与样例学习"></a>1. 数据分析与样例学习</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">load_training_examples</span>(<span class="hljs-params">self, input_file, output_file, max_examples=<span class="hljs-number">20</span></span>):<br>    <span class="hljs-string">&quot;&quot;&quot;加载训练示例用于参考&quot;&quot;&quot;</span><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(input_file, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        inputs = json.load(f)<br>    <br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(output_file, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        outputs = json.load(f)<br>        <br>    <span class="hljs-comment"># 选择示例（简单起见，取前N个）</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(<span class="hljs-built_in">zip</span>(inputs[:max_examples], outputs[:max_examples]))<br></code></pre></td></tr></table></figure>
+
+<p>通过载入训练样例，系统可以参考已有的指令-行为树对应关系，提高生成质量。为了节省内存，我只载入了前20个样例作为参考。</p>
+<h3 id="2-基于相似度的模式匹配"><a href="#2-基于相似度的模式匹配" class="headerlink" title="2. 基于相似度的模式匹配"></a>2. 基于相似度的模式匹配</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_similar_example</span>(<span class="hljs-params">self, instruction</span>):<br>    <span class="hljs-comment"># 提取指令中的关键词</span><br>    keywords = <span class="hljs-variable language_">self</span>.extract_keywords(instruction)<br>    <br>    best_match = <span class="hljs-literal">None</span><br>    best_score = <span class="hljs-number">0</span><br>    <br>    <span class="hljs-keyword">for</span> ex_input, ex_output <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.train_examples:<br>        <span class="hljs-comment"># 计算关键词匹配度</span><br>        ex_keywords = <span class="hljs-variable language_">self</span>.extract_keywords(ex_input)<br>        common_keywords = <span class="hljs-built_in">set</span>(keywords) &amp; <span class="hljs-built_in">set</span>(ex_keywords)<br>        score = <span class="hljs-built_in">len</span>(common_keywords) / <span class="hljs-built_in">max</span>(<span class="hljs-built_in">len</span>(keywords), <span class="hljs-number">1</span>)<br>        <br>        <span class="hljs-keyword">if</span> score &gt; best_score <span class="hljs-keyword">and</span> score &gt; <span class="hljs-number">0.2</span>:  <span class="hljs-comment"># 至少20%的关键词匹配</span><br>            best_score = score<br>            best_match = (ex_input, ex_output)<br>    <br>    <span class="hljs-keyword">return</span> best_match<br></code></pre></td></tr></table></figure>
+
+<p>系统会尝试在训练样例中找到与输入指令相似的例子，通过关键词匹配计算相似度，当相似度超过20%时，可以借鉴其行为树结构。</p>
+<h3 id="3-规则化语义解析"><a href="#3-规则化语义解析" class="headerlink" title="3. 规则化语义解析"></a>3. 规则化语义解析</h3><p>为了从文本中提取动作和条件，我实现了多个关键函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">extract_actions</span>(<span class="hljs-params">self, text</span>):<br>    <span class="hljs-comment"># 基于常见动词的简单提取</span><br>    action_list = []<br>    <br>    <span class="hljs-comment"># 常见动作动词</span><br>    action_verbs = [<span class="hljs-string">&quot;打开&quot;</span>, <span class="hljs-string">&quot;关闭&quot;</span>, <span class="hljs-string">&quot;移动&quot;</span>, <span class="hljs-string">&quot;走向&quot;</span>, <span class="hljs-string">&quot;前进&quot;</span>, <span class="hljs-string">&quot;后退&quot;</span>, <span class="hljs-string">&quot;转向&quot;</span>, <span class="hljs-string">&quot;拿起&quot;</span>, <span class="hljs-string">&quot;放下&quot;</span>,<br>                    <span class="hljs-string">&quot;检查&quot;</span>, <span class="hljs-string">&quot;观察&quot;</span>, <span class="hljs-string">&quot;寻找&quot;</span>, <span class="hljs-string">&quot;等待&quot;</span>, <span class="hljs-string">&quot;计算&quot;</span>, <span class="hljs-string">&quot;进入&quot;</span>, <span class="hljs-string">&quot;离开&quot;</span>, <span class="hljs-string">&quot;拿&quot;</span>, <span class="hljs-string">&quot;取&quot;</span>, <br>                    <span class="hljs-string">&quot;放置&quot;</span>, <span class="hljs-string">&quot;推&quot;</span>, <span class="hljs-string">&quot;拉&quot;</span>, <span class="hljs-string">&quot;跳&quot;</span>, <span class="hljs-string">&quot;握住&quot;</span>, <span class="hljs-string">&quot;松开&quot;</span>, <span class="hljs-string">&quot;启动&quot;</span>, <span class="hljs-string">&quot;停止&quot;</span>, <span class="hljs-string">&quot;跟随&quot;</span>,<br>                    <span class="hljs-string">&quot;测量&quot;</span>, <span class="hljs-string">&quot;抓取&quot;</span>, <span class="hljs-string">&quot;识别&quot;</span>, <span class="hljs-string">&quot;使用&quot;</span>, <span class="hljs-string">&quot;保存&quot;</span>, <span class="hljs-string">&quot;下载&quot;</span>, <span class="hljs-string">&quot;上传&quot;</span>, <span class="hljs-string">&quot;执行&quot;</span>, <span class="hljs-string">&quot;完成&quot;</span>]<br>    <br>    <span class="hljs-comment"># 分割文本</span><br>    parts = re.split(<span class="hljs-string">r&#x27;[,，。、；;]&#x27;</span>, text)<br>    <br>    <span class="hljs-comment"># 检查每个部分是否包含动作</span><br>    <span class="hljs-keyword">for</span> part <span class="hljs-keyword">in</span> parts:<br>        <span class="hljs-comment"># 省略实现细节...</span><br>        <br>    <span class="hljs-keyword">return</span> action_list<br></code></pre></td></tr></table></figure>
+
+<p>虽然代码中包含了中文动词列表，但考虑到实际测试集全是英文，我在实际部署前对代码做了修改，补充了英文动词列表，如”move”、”go”、”turn”、”pick”等。</p>
+<h3 id="4-控制结构判断"><a href="#4-控制结构判断" class="headerlink" title="4. 控制结构判断"></a>4. 控制结构判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">determine_control_structure</span>(<span class="hljs-params">self, text</span>):<br>    <span class="hljs-comment"># 默认使用顺序执行</span><br>    structure = <span class="hljs-string">&quot;Sequence&quot;</span><br>    <br>    <span class="hljs-comment"># 检查是否存在选择逻辑</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">any</span>(keyword <span class="hljs-keyword">in</span> text <span class="hljs-keyword">for</span> keyword <span class="hljs-keyword">in</span> [<span class="hljs-string">&quot;或者&quot;</span>, <span class="hljs-string">&quot;否则&quot;</span>, <span class="hljs-string">&quot;要么&quot;</span>, <span class="hljs-string">&quot;如果不&quot;</span>, <span class="hljs-string">&quot;失败后&quot;</span>, <span class="hljs-string">&quot;选择&quot;</span>]):<br>        structure = <span class="hljs-string">&quot;Fallback&quot;</span><br>    <br>    <span class="hljs-comment"># 检查是否存在并行逻辑</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">any</span>(keyword <span class="hljs-keyword">in</span> text <span class="hljs-keyword">for</span> keyword <span class="hljs-keyword">in</span> [<span class="hljs-string">&quot;同时&quot;</span>, <span class="hljs-string">&quot;并行&quot;</span>, <span class="hljs-string">&quot;一起&quot;</span>, <span class="hljs-string">&quot;并且&quot;</span>, <span class="hljs-string">&quot;一边&quot;</span>, <span class="hljs-string">&quot;同步&quot;</span>]):<br>        structure = <span class="hljs-string">&quot;Parallel&quot;</span><br>    <br>    <span class="hljs-comment"># 检查是否需要反应式</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">any</span>(keyword <span class="hljs-keyword">in</span> text <span class="hljs-keyword">for</span> keyword <span class="hljs-keyword">in</span> [<span class="hljs-string">&quot;持续检查&quot;</span>, <span class="hljs-string">&quot;保持&quot;</span>, <span class="hljs-string">&quot;反复&quot;</span>, <span class="hljs-string">&quot;一直&quot;</span>, <span class="hljs-string">&quot;直到&quot;</span>, <span class="hljs-string">&quot;监控&quot;</span>]):<br>        <span class="hljs-keyword">if</span> structure == <span class="hljs-string">&quot;Sequence&quot;</span>:<br>            structure = <span class="hljs-string">&quot;ReactiveSequence&quot;</span><br>        <span class="hljs-keyword">elif</span> structure == <span class="hljs-string">&quot;Fallback&quot;</span>:<br>            structure = <span class="hljs-string">&quot;ReactiveFallback&quot;</span><br>    <br>    <span class="hljs-keyword">return</span> structure<br></code></pre></td></tr></table></figure>
+
+<p>同样，在实际部署前，我将关键词判断逻辑修改为英文版本，增加了”or”、”else”、”parallel”、”simultaneously”、”continuous”等关键词。</p>
+<h3 id="5-XML树构建与验证"><a href="#5-XML树构建与验证" class="headerlink" title="5. XML树构建与验证"></a>5. XML树构建与验证</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_xml_tree</span>(<span class="hljs-params">self, actions, conditions, control_structure</span>):<br>    xml = <span class="hljs-string">f&#x27;&lt;root BTCPP_format=&quot;4&quot;&gt;\n&#x27;</span><br>    xml += <span class="hljs-string">f&#x27;  &lt;BehaviorTree ID=&quot;MainTree&quot;&gt;\n&#x27;</span><br>    xml += <span class="hljs-string">f&#x27;    &lt;<span class="hljs-subst">&#123;control_structure&#125;</span> name=&quot;Root<span class="hljs-subst">&#123;control_structure&#125;</span>&quot;&gt;\n&#x27;</span><br>    <br>    <span class="hljs-comment"># 添加条件节点</span><br>    <span class="hljs-keyword">for</span> condition <span class="hljs-keyword">in</span> conditions:<br>        xml += <span class="hljs-string">f&#x27;      &lt;Condition ID=&quot;<span class="hljs-subst">&#123;condition[<span class="hljs-string">&quot;ID&quot;</span>]&#125;</span>&quot; /&gt;\n&#x27;</span><br>    <br>    <span class="hljs-comment"># 添加动作节点</span><br>    <span class="hljs-keyword">for</span> action <span class="hljs-keyword">in</span> actions:<br>        xml += <span class="hljs-string">f&#x27;      &lt;Action ID=&quot;<span class="hljs-subst">&#123;action[<span class="hljs-string">&quot;ID&quot;</span>]&#125;</span>&quot; /&gt;\n&#x27;</span><br>    <br>    xml += <span class="hljs-string">f&#x27;    &lt;/<span class="hljs-subst">&#123;control_structure&#125;</span>&gt;\n&#x27;</span><br>    xml += <span class="hljs-string">f&#x27;  &lt;/BehaviorTree&gt;\n&#x27;</span><br>    xml += <span class="hljs-string">&#x27;&lt;/root&gt;&#x27;</span><br>    <br>    <span class="hljs-keyword">return</span> xml<br></code></pre></td></tr></table></figure>
+
+<p>这个函数构建了符合BehaviorTree.CPP格式的XML结构，通过validate_xml函数进行检查确保结构合法。</p>
+<h3 id="6-CDATA标签处理"><a href="#6-CDATA标签处理" class="headerlink" title="6. CDATA标签处理"></a>6. CDATA标签处理</h3><p>最初遇到的主要技术困难是ElementTree库不直接支持CDATA标签。解决方案是使用minidom库：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 提取所有item节点并手动添加CDATA</span><br>item_nodes = items_node.getElementsByTagName(<span class="hljs-string">&quot;item&quot;</span>)<br><br><span class="hljs-keyword">for</span> item_node <span class="hljs-keyword">in</span> item_nodes:<br>    <span class="hljs-comment"># 获取文本内容</span><br>    text_content = <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> item_node.childNodes:<br>        <span class="hljs-keyword">if</span> child.nodeType == minidom.Node.TEXT_NODE:<br>            text_content += child.data<br>    <br>    <span class="hljs-comment"># 清除所有子节点</span><br>    <span class="hljs-keyword">while</span> item_node.hasChildNodes():<br>        item_node.removeChild(item_node.firstChild)<br>    <br>    <span class="hljs-comment"># 创建新的CDATA节点</span><br>    cdata = reparsed.createCDATASection(text_content)<br>    item_node.appendChild(cdata)<br></code></pre></td></tr></table></figure>
+
+<p>这段代码解决了将XML内容正确包装在CDATA标签中的问题，确保输出符合要求格式。</p>
+<h2 id="实现中的关键技术难点与解决方案"><a href="#实现中的关键技术难点与解决方案" class="headerlink" title="实现中的关键技术难点与解决方案"></a>实现中的关键技术难点与解决方案</h2><h3 id="1-CDATA节点处理"><a href="#1-CDATA节点处理" class="headerlink" title="1. CDATA节点处理"></a>1. CDATA节点处理</h3><p><strong>问题</strong>: ElementTree库不直接支持创建CDATA节点，导致初始实现时出错。</p>
+<p><strong>解决方案</strong>: 使用minidom库替代处理CDATA部分，通过createCDATASection方法创建CDATA节点，并手动替换原有文本节点。</p>
+<h3 id="2-英文自然语言理解"><a href="#2-英文自然语言理解" class="headerlink" title="2. 英文自然语言理解"></a>2. 英文自然语言理解</h3><p><strong>问题</strong>: 代码初始设计时主要考虑了中文关键词，不适合全英文测试集。</p>
+<p><strong>解决方案</strong>: 在实际部署前，修改了关键词列表，添加了英文动作动词和条件关键词，并调整了相关的正则表达式和文本处理逻辑。</p>
+<h3 id="3-输出格式标准化"><a href="#3-输出格式标准化" class="headerlink" title="3. 输出格式标准化"></a>3. 输出格式标准化</h3><p><strong>问题</strong>: 需要确保生成119个item元素，即使测试输入可能少于这个数量。</p>
+<p><strong>解决方案</strong>: 在process_test_set方法中强制处理119个项目，对于超出测试集范围的项目使用空字符串作为内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 确保处理119个项目</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">120</span>):<br>    <span class="hljs-comment"># 如果索引超出测试输入范围，使用空XML</span><br>    <span class="hljs-keyword">if</span> i-<span class="hljs-number">1</span> &lt; <span class="hljs-built_in">len</span>(test_inputs):<br>        instruction = test_inputs[i-<span class="hljs-number">1</span>]<br>        <span class="hljs-comment"># 生成行为树</span><br>        xml_output = <span class="hljs-variable language_">self</span>.generate_behavior_tree(instruction)<br>    <span class="hljs-keyword">else</span>:<br>        logger.info(<span class="hljs-string">f&quot;No instruction for item <span class="hljs-subst">&#123;i&#125;</span>, using empty XML&quot;</span>)<br>        xml_output = <span class="hljs-string">&quot;&quot;</span><br>    <br>    <span class="hljs-comment"># 创建item元素...</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="使用的工具与依赖"><a href="#使用的工具与依赖" class="headerlink" title="使用的工具与依赖"></a>使用的工具与依赖</h2><ol>
+<li><p><strong>Python 3.8+</strong>: 主要开发语言</p>
+</li>
+<li><p><strong>Standard Library</strong>:</p>
+<ul>
+<li>xml.etree.ElementTree: XML树操作</li>
+<li>xml.dom.minidom: CDATA处理与XML格式化</li>
+<li>re: 正则表达式用于文本分析</li>
+<li>json: 读取训练和测试数据</li>
+<li>logging: 日志记录和调试</li>
+<li>argparse: 命令行参数解析</li>
+<li>datetime: 性能监测</li>
+</ul>
+</li>
+<li><p>ai工具：claude 3.7sonnet</p>
+</li>
+</ol>
+<h2 id="关键算法分析"><a href="#关键算法分析" class="headerlink" title="关键算法分析"></a>关键算法分析</h2><h3 id="1-相似度计算算法"><a href="#1-相似度计算算法" class="headerlink" title="1. 相似度计算算法"></a>1. 相似度计算算法</h3><p>使用集合交集计算关键词匹配度，算法复杂度为O(len(keywords))，通过设置阈值0.2确保只使用足够相似的样例。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">common_keywords = <span class="hljs-built_in">set</span>(keywords) &amp; <span class="hljs-built_in">set</span>(ex_keywords)<br>score = <span class="hljs-built_in">len</span>(common_keywords) / <span class="hljs-built_in">max</span>(<span class="hljs-built_in">len</span>(keywords), <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-动作提取算法"><a href="#2-动作提取算法" class="headerlink" title="2. 动作提取算法"></a>2. 动作提取算法</h3><p>通过文本分割和动词匹配，识别可能的动作，复杂度为O(n*m)，其中n是文本片段数，m是动词列表长度。</p>
+<h3 id="3-控制结构判断算法"><a href="#3-控制结构判断算法" class="headerlink" title="3. 控制结构判断算法"></a>3. 控制结构判断算法</h3><p>通过关键词匹配确定最合适的控制结构，采用优先级判断的方式处理多种可能性。</p>
+<h2 id="实验结果与性能"><a href="#实验结果与性能" class="headerlink" title="实验结果与性能"></a>实验结果与性能</h2><p>在我的测试环境中，系统能够在几秒内处理完119个指令，转换效率较高。通过日志记录，分析了成功率和常见失败模式，不断调整关键词列表和规则逻辑，提高了整体处理质量。</p>
+<p>由于没有使用大语言模型，系统在处理复杂语义和隐含逻辑时存在局限性，但对于结构化明确的指令有良好表现。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>我实现的SimpleBehaviorTreeGenerator系统通过<strong>规则匹配和模式识别</strong>，成功实现了英文自然语言指令到行为树XML的自动转换。系统不依赖大型语言模型，通过简单有效的文本处理技术和结构生成规则，提供了合理的转换质量。特别是通过样例学习和相似度匹配，结合精心设计的规则库，系统能够处理多种常见指令模式，生成符合BehaviorTree.CPP标准的行为树结构。</p>
+<p>虽然相比大型语言模型，规则化方法在语义理解的深度上存在局限，但在计算资源受限的环境中，这种方法提供了一个高效且实用的解决方案。通过将CDATA处理、XML验证等关键技术融入系统，确保了输出格式的规范性和有效性。</p>
+<h1 id="NS-2025-08-我搭的靶场-题解"><a href="#NS-2025-08-我搭的靶场-题解" class="headerlink" title="NS-2025-08 我搭的靶场 题解"></a>NS-2025-08 我搭的靶场 题解</h1><h2 id="题目理解"><a href="#题目理解" class="headerlink" title="题目理解"></a>题目理解</h2><p>本题要求我们设计一个二维障碍场景，用于测试强化学习无人机智能体 Alpha Pilot 的路径规划能力。我们需要布置起点、终点和最多30个圆形障碍物，目标是让智能体尽可能失败（高失败率、长路径），同时保证场景理论上可解。</p>
+<p>关键约束条件：</p>
+<ul>
+<li>场地大小：50m × 50m</li>
+<li>起点和终点距离至少20m</li>
+<li>障碍物半径1m，障碍物间距≥3m</li>
+<li>起点&#x2F;终点与障碍物距离≥2.5m</li>
+<li>无人机半径0.5m，最大速度2m&#x2F;s</li>
+</ul>
+<h2 id="解题思路-1"><a href="#解题思路-1" class="headerlink" title="解题思路"></a>解题思路</h2><h3 id="1-分析智能体弱点"><a href="#1-分析智能体弱点" class="headerlink" title="1. 分析智能体弱点"></a>1. 分析智能体弱点</h3><p>通过研究<code>agent.py</code>代码，可以发现Alpha Pilot智能体有以下潜在弱点：</p>
+<ul>
+<li>使用Q-learning算法，可能对复杂环境泛化能力有限</li>
+<li>感知范围有限（约15m）</li>
+<li>在障碍物附近有<strong>负奖励</strong>，可能导致”<strong>畏惧</strong>“靠近障碍物</li>
+<li>可能有<strong>方向偏好</strong>（如倾向于向右或向上移动）</li>
+</ul>
+<h3 id="2-设计策略性障碍布局"><a href="#2-设计策略性障碍布局" class="headerlink" title="2. 设计策略性障碍布局"></a>2. 设计策略性障碍布局</h3><p>基于上述分析，我们设计了几种针对性的障碍布局策略：</p>
+<h4 id="a-误导性路径"><a href="#a-误导性路径" class="headerlink" title="a) 误导性路径"></a>a) 误导性路径</h4><ul>
+<li>在起点和终点之间创建看似合理但实际是死胡同的路径</li>
+<li>利用无人机对特定方向的偏好设置陷阱</li>
+</ul>
+<h4 id="b-感知边界障碍"><a href="#b-感知边界障碍" class="headerlink" title="b) 感知边界障碍"></a>b) 感知边界障碍</h4><ul>
+<li>在无人机感知范围边界（约15m）布置障碍物</li>
+<li>使无人机难以提前规划路径，容易陷入局部最优</li>
+</ul>
+<h4 id="c-狭窄通道"><a href="#c-狭窄通道" class="headerlink" title="c) 狭窄通道"></a>c) 狭窄通道</h4><ul>
+<li>设计宽度刚好略大于无人机通过能力的通道（约3.5m）</li>
+<li>利用无人机对靠近障碍物的负奖励，使其犹豫不决</li>
+</ul>
+<h4 id="d-迷宫结构"><a href="#d-迷宫结构" class="headerlink" title="d) 迷宫结构"></a>d) 迷宫结构</h4><ul>
+<li>创建复杂的迷宫式布局</li>
+<li>增加路径规划的复杂度，容易使智能体迷失方向</li>
+</ul>
+<h3 id="3-遗传算法优化"><a href="#3-遗传算法优化" class="headerlink" title="3. 遗传算法优化"></a>3. 遗传算法优化</h3><p>使用遗传算法自动优化环境设计：</p>
+<ol>
+<li><strong>初始化种群</strong>：随机生成多个满足约束的环境</li>
+<li><strong>评估适应度</strong>：通过test_scoring.py评估每个环境的失败率和平均步数</li>
+<li><strong>选择精英</strong>：保留表现最好的环境</li>
+<li><strong>交叉变异</strong>：组合优秀环境的特征并引入随机变化</li>
+<li><strong>迭代优化</strong>：重复上述过程直到收敛</li>
+</ol>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>我们通过编写一个随机生成合理有效路障地图并测试失败率的程序来自我迭代搜索出最佳路障地图，主要类<code>EnvironmentOptimizer</code>实现了上述思路：</p>
+<ol>
+<li><p><strong>环境生成</strong>：</p>
+<ul>
+<li><code>generate_random_environment</code>：创建随机但有效的基础环境</li>
+<li>四种策略方法创建针对性障碍物</li>
+</ul>
+</li>
+<li><p><strong>评估函数</strong>：</p>
+<ul>
+<li>调用<code>test_scoring.py</code>获取失败率和平均步数</li>
+<li>计算综合得分（失败率×300 + min(平均步数&#x2F;50000, 0.9)×100）</li>
+</ul>
+</li>
+<li><p><strong>遗传算法</strong>：</p>
+<ul>
+<li>种群初始化、选择、交叉、变异</li>
+<li>保留精英个体确保不退化</li>
+</ul>
+</li>
+<li><p><strong>约束检查</strong>：</p>
+<ul>
+<li>确保所有几何约束得到满足</li>
+<li>验证环境可解性</li>
+</ul>
+</li>
+</ol>
+<h2 id="优化结果"><a href="#优化结果" class="headerlink" title="优化结果"></a>优化结果</h2><p>经过多代进化，算法能够找到使智能体高失败率的环境特征：</p>
+<ul>
+<li>在关键路径点设置”陷阱”区域</li>
+<li>利用狭窄通道增加决策难度</li>
+<li>在感知边界布置障碍物限制信息获取</li>
+<li>保持理论可解性但实际很难通过</li>
+</ul>
+<h2 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h2><ol>
+<li><p>运行<code>python solution.py</code>开始优化过程</p>
+</li>
+<li><p>程序会自动保存最佳环境到<code>results.json</code></p>
+</li>
+<li><p>可使用<code>test_env.py</code>可视化结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python test_env.py results.json --test-agent<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>使用 <code>test_scoring.py</code>来进行评分：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python test_scoring.py results.json <br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>我们本地测试是可以实现让agent十次都失败，但是最终提交结果没有拿到400分满分，可能还是稍微有些许漏洞或者应该多提交几次（hh。（最终得分是：399.95）</li>
+</ul>
+</li>
+</ol>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p>通过分析智能体弱点并针对性设计障碍布局，结合遗传算法自动优化，我们能够创建出理论上可解但实际上极具挑战性的测试环境。这种方法不仅适用于本题，也可推广到其他智能体测试场景的设计中。</p>
+<p>最佳环境通常具有以下特征：</p>
+<ul>
+<li>起点和终点位于对角线位置（最大化距离）</li>
+<li>25-30个精心布置的障碍物</li>
+<li>结合多种策略的复合障碍布局</li>
+<li>在关键路径点设置决策难点</li>
+</ul>
+<h2 id="使用工具与环境"><a href="#使用工具与环境" class="headerlink" title="使用工具与环境"></a>使用工具与环境</h2><ul>
+<li>开发语言：Python 3.8</li>
+<li>框架库：numpy，matplotlib（可视化）</li>
+<li>环境配置：CUDA 12.1，Ubuntu 22.04</li>
+<li>ai工具：ChatGPT-4o</li>
+</ul>
+<h2 id="关键代码展示"><a href="#关键代码展示" class="headerlink" title="关键代码展示"></a>关键代码展示</h2><ul>
+<li><p>展示4个策略：</p>
+<h4 id="误导性路径"><a href="#误导性路径" class="headerlink" title="误导性路径"></a>误导性路径</h4><ul>
+<li>在起点和终点之间创建看似合理但实际是死胡同的路径</li>
+<li>利用无人机对特定方向的偏好设置陷阱</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_misleading_path</span>(<span class="hljs-params">self, start, end, existing_obstacles=[]</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;创建一个误导性的路径，利用无人机向右和向上的偏好&quot;&quot;&quot;</span><br>        obstacles = []<br>        <br>        <span class="hljs-comment"># 计算从起点到终点的直线方向</span><br>        dx = end[<span class="hljs-number">0</span>] - start[<span class="hljs-number">0</span>]<br>        dy = end[<span class="hljs-number">1</span>] - start[<span class="hljs-number">1</span>]<br>        <br>        <span class="hljs-comment"># 创建一个看似通向目标但实际是误导的路径</span><br>        mislead_x = start[<span class="hljs-number">0</span>] + dx * <span class="hljs-number">0.6</span><br>        mislead_y = start[<span class="hljs-number">1</span>] + dy * <span class="hljs-number">0.6</span><br>        <br>        <span class="hljs-comment"># 在误导点周围创建障碍物包围圈</span><br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):<br>            angle = random.uniform(<span class="hljs-number">0</span>, <span class="hljs-number">2</span> * math.pi)<br>            radius = random.uniform(<span class="hljs-number">5</span>, <span class="hljs-number">8</span>)<br>            x = mislead_x + radius * math.cos(angle)<br>            y = mislead_y + radius * math.sin(angle)<br>            <br>            <span class="hljs-comment"># 确保在场地范围内</span><br>            x = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, x))<br>            y = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, y))<br>            <br>            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles):<br>                obstacles.append(&#123;<span class="hljs-string">&quot;x&quot;</span>: x, <span class="hljs-string">&quot;y&quot;</span>: y&#125;)<br>        <br>        <span class="hljs-comment"># 创建一个向右上方的诱饵路径（利用代理对向右和向上的偏好）</span><br>        bait_points = []<br>        bait_length = <span class="hljs-built_in">min</span>(<span class="hljs-number">10</span>, <span class="hljs-built_in">int</span>(<span class="hljs-variable language_">self</span>.point_distance(start, end) / <span class="hljs-number">3</span>))<br>        <br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, bait_length + <span class="hljs-number">1</span>):<br>            bait_x = start[<span class="hljs-number">0</span>] + i * <span class="hljs-number">1.5</span><br>            bait_y = start[<span class="hljs-number">1</span>] + i * <span class="hljs-number">1.5</span><br>            bait_points.append([bait_x, bait_y])<br>        <br>        <span class="hljs-comment"># 在诱饵路径末端设置障碍物陷阱</span><br>        <span class="hljs-keyword">if</span> bait_points:<br>            end_point = bait_points[-<span class="hljs-number">1</span>]<br>            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):<br>                angle = random.uniform(<span class="hljs-number">0</span>, <span class="hljs-number">2</span> * math.pi)<br>                radius = random.uniform(<span class="hljs-number">3</span>, <span class="hljs-number">6</span>)<br>                x = end_point[<span class="hljs-number">0</span>] + radius * math.cos(angle)<br>                y = end_point[<span class="hljs-number">1</span>] + radius * math.sin(angle)<br>                <br>                <span class="hljs-comment"># 确保在场地范围内</span><br>                x = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, x))<br>                y = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, y))<br>                <br>                <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles):<br>                    obstacles.append(&#123;<span class="hljs-string">&quot;x&quot;</span>: x, <span class="hljs-string">&quot;y&quot;</span>: y&#125;)<br>        <br>        <span class="hljs-keyword">return</span> obstacles<br>        <br></code></pre></td></tr></table></figure>
+
+<h4 id="感知边界障碍"><a href="#感知边界障碍" class="headerlink" title="感知边界障碍"></a>感知边界障碍</h4><ul>
+<li>在无人机感知范围边界（约15m）布置障碍物</li>
+<li>使无人机难以提前规划路径，容易陷入局部最优</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_narrow_passages</span>(<span class="hljs-params">self, start, end, existing_obstacles=[]</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;创建狭窄通道，利用无人机在障碍物3米范围内的负奖励&quot;&quot;&quot;</span><br>    obstacles = []<br>    <br>    <span class="hljs-comment"># 计算从起点到终点的方向</span><br>    dx = end[<span class="hljs-number">0</span>] - start[<span class="hljs-number">0</span>]<br>    dy = end[<span class="hljs-number">1</span>] - start[<span class="hljs-number">1</span>]<br>    distance = math.sqrt(dx**<span class="hljs-number">2</span> + dy**<span class="hljs-number">2</span>)<br>    <br>    <span class="hljs-comment"># 将方向单位化</span><br>    <span class="hljs-keyword">if</span> distance &gt; <span class="hljs-number">0</span>:<br>        dx /= distance<br>        dy /= distance<br>    <br>    <span class="hljs-comment"># 计算垂直于路径方向的向量</span><br>    perp_dx = -dy<br>    perp_dy = dx<br>    <br>    <span class="hljs-comment"># 在路径上创建多个狭窄通道</span><br>    num_passages = <span class="hljs-built_in">min</span>(<span class="hljs-number">4</span>, <span class="hljs-built_in">int</span>(distance / <span class="hljs-number">10</span>))<br>    passage_width = <span class="hljs-number">3.5</span>  <span class="hljs-comment"># 略大于障碍物直径+无人机直径</span><br>    <br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_passages):<br>        <span class="hljs-comment"># 计算通道中心点</span><br>        t = (i + <span class="hljs-number">1</span>) / (num_passages + <span class="hljs-number">1</span>)<br>        center_x = start[<span class="hljs-number">0</span>] + t * dx * distance<br>        center_y = start[<span class="hljs-number">1</span>] + t * dy * distance<br>        <br>        <span class="hljs-comment"># 在通道两侧创建障碍物</span><br>        <span class="hljs-keyword">for</span> side <span class="hljs-keyword">in</span> [-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>]:<br>            offset = passage_width / <span class="hljs-number">2</span> + <span class="hljs-variable language_">self</span>.obstacle_radius<br>            x = center_x + side * perp_dx * offset<br>            y = center_y + side * perp_dy * offset<br>            <br>            <span class="hljs-comment"># 确保在场地范围内</span><br>            x = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, x))<br>            y = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, y))<br>            <br>            <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">self</span>.point_distance([x, y], start) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span> <br>                <span class="hljs-variable language_">self</span>.point_distance([x, y], end) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span><br>                <span class="hljs-variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles)):<br>                obstacles.append(&#123;<span class="hljs-string">&quot;x&quot;</span>: x, <span class="hljs-string">&quot;y&quot;</span>: y&#125;)<br>    <br>    <span class="hljs-keyword">return</span> obstacles<br></code></pre></td></tr></table></figure>
+
+<h4 id="狭窄通道"><a href="#狭窄通道" class="headerlink" title="狭窄通道"></a>狭窄通道</h4><ul>
+<li>设计宽度刚好略大于无人机通过能力的通道（约3.5m）</li>
+<li>利用无人机对靠近障碍物的负奖励，使其犹豫不决</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_narrow_passages</span>(<span class="hljs-params">self, start, end, existing_obstacles=[]</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;创建狭窄通道，利用无人机在障碍物3米范围内的负奖励&quot;&quot;&quot;</span><br>    obstacles = []<br>    <br>    <span class="hljs-comment"># 计算从起点到终点的方向</span><br>    dx = end[<span class="hljs-number">0</span>] - start[<span class="hljs-number">0</span>]<br>    dy = end[<span class="hljs-number">1</span>] - start[<span class="hljs-number">1</span>]<br>    distance = math.sqrt(dx**<span class="hljs-number">2</span> + dy**<span class="hljs-number">2</span>)<br>    <br>    <span class="hljs-comment"># 将方向单位化</span><br>    <span class="hljs-keyword">if</span> distance &gt; <span class="hljs-number">0</span>:<br>        dx /= distance<br>        dy /= distance<br>    <br>    <span class="hljs-comment"># 计算垂直于路径方向的向量</span><br>    perp_dx = -dy<br>    perp_dy = dx<br>    <br>    <span class="hljs-comment"># 在路径上创建多个狭窄通道</span><br>    num_passages = <span class="hljs-built_in">min</span>(<span class="hljs-number">4</span>, <span class="hljs-built_in">int</span>(distance / <span class="hljs-number">10</span>))<br>    passage_width = <span class="hljs-number">3.5</span>  <span class="hljs-comment"># 略大于障碍物直径+无人机直径</span><br>    <br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_passages):<br>        <span class="hljs-comment"># 计算通道中心点</span><br>        t = (i + <span class="hljs-number">1</span>) / (num_passages + <span class="hljs-number">1</span>)<br>        center_x = start[<span class="hljs-number">0</span>] + t * dx * distance<br>        center_y = start[<span class="hljs-number">1</span>] + t * dy * distance<br>        <br>        <span class="hljs-comment"># 在通道两侧创建障碍物</span><br>        <span class="hljs-keyword">for</span> side <span class="hljs-keyword">in</span> [-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>]:<br>            offset = passage_width / <span class="hljs-number">2</span> + <span class="hljs-variable language_">self</span>.obstacle_radius<br>            x = center_x + side * perp_dx * offset<br>            y = center_y + side * perp_dy * offset<br>            <br>            <span class="hljs-comment"># 确保在场地范围内</span><br>            x = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, x))<br>            y = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, y))<br>            <br>            <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">self</span>.point_distance([x, y], start) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span> <br>                <span class="hljs-variable language_">self</span>.point_distance([x, y], end) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span><br>                <span class="hljs-variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles)):<br>                obstacles.append(&#123;<span class="hljs-string">&quot;x&quot;</span>: x, <span class="hljs-string">&quot;y&quot;</span>: y&#125;)<br>    <br>    <span class="hljs-keyword">return</span> obstacles<br></code></pre></td></tr></table></figure>
+
+<h4 id="迷宫结构"><a href="#迷宫结构" class="headerlink" title="迷宫结构"></a>迷宫结构</h4><ul>
+<li>创建复杂的迷宫式布局</li>
+<li>增加路径规划的复杂度，容易使智能体迷失方向</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_maze_structure</span>(<span class="hljs-params">self, start, end, existing_obstacles=[]</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;创建迷宫结构，让无人机容易迷失方向&quot;&quot;&quot;</span><br>    obstacles = []<br>    <br>    <span class="hljs-comment"># 在起点和终点之间创建迷宫结构</span><br>    mid_x = (start[<span class="hljs-number">0</span>] + end[<span class="hljs-number">0</span>]) / <span class="hljs-number">2</span><br>    mid_y = (start[<span class="hljs-number">1</span>] + end[<span class="hljs-number">1</span>]) / <span class="hljs-number">2</span><br>    <br>    <span class="hljs-comment"># 创建迷宫的中心区域</span><br>    maze_radius = <span class="hljs-built_in">min</span>(<span class="hljs-number">15</span>, <span class="hljs-variable language_">self</span>.point_distance(start, end) / <span class="hljs-number">3</span>)<br>    <br>    <span class="hljs-comment"># 创建迷宫的几条&quot;墙&quot;</span><br>    <span class="hljs-keyword">for</span> wall_idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>):<br>        wall_angle = wall_idx * <span class="hljs-number">2</span> * math.pi / <span class="hljs-number">3</span><br>        wall_length = maze_radius * <span class="hljs-number">0.8</span><br>        <br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>):<br>            t = (i + <span class="hljs-number">1</span>) / <span class="hljs-number">4</span><br>            x = mid_x + t * wall_length * math.cos(wall_angle)<br>            y = mid_y + t * wall_length * math.sin(wall_angle)<br>            <br>            <span class="hljs-comment"># 确保在场地范围内</span><br>            x = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, x))<br>            y = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, y))<br>            <br>            <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">self</span>.point_distance([x, y], start) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span> <br>                <span class="hljs-variable language_">self</span>.point_distance([x, y], end) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span><br>                <span class="hljs-variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles)):<br>                obstacles.append(&#123;<span class="hljs-string">&quot;x&quot;</span>: x, <span class="hljs-string">&quot;y&quot;</span>: y&#125;)<br>    <br>    <span class="hljs-comment"># 创建一些随机的迷宫元素</span><br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):<br>        angle = random.uniform(<span class="hljs-number">0</span>, <span class="hljs-number">2</span> * math.pi)<br>        radius = random.uniform(maze_radius * <span class="hljs-number">0.3</span>, maze_radius)<br>        x = mid_x + radius * math.cos(angle)<br>        y = mid_y + radius * math.sin(angle)<br>        <br>        <span class="hljs-comment"># 确保在场地范围内</span><br>        x = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, x))<br>        y = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, y))<br>        <br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">self</span>.point_distance([x, y], start) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span> <br>            <span class="hljs-variable language_">self</span>.point_distance([x, y], end) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span><br>            <span class="hljs-variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles)):<br>            obstacles.append(&#123;<span class="hljs-string">&quot;x&quot;</span>: x, <span class="hljs-string">&quot;y&quot;</span>: y&#125;)<br>    <br>    <span class="hljs-keyword">return</span> obstacles<br></code></pre></td></tr></table></figure>
+
+<h1 id="NS-2025-11-接管厨房客厅的那一天-Writeup"><a href="#NS-2025-11-接管厨房客厅的那一天-Writeup" class="headerlink" title="NS-2025-11 接管厨房客厅的那一天 Writeup"></a>NS-2025-11 接管厨房客厅的那一天 Writeup</h1><h2 id="一、任务背景与目标"><a href="#一、任务背景与目标" class="headerlink" title="一、任务背景与目标"></a>一、任务背景与目标</h2><p>本次“NS-2025-11 家庭智能协作挑战”要求参赛者基于多模态输入（图像 + 自然语言）构建智能体，使其控制机械臂完成一系列具有挑战性的家庭任务。这些任务具有不同的动态特征与动作要求，包括：</p>
+<ul>
+<li>堆叠积木（stack_blocks）</li>
+<li>放置杯子（place_cups）</li>
+<li>把钱放入保险箱（put_money_in_safe）</li>
+<li>拧入灯泡（light_bulb_in）</li>
+<li>将物品放入抽屉（put_item_in_drawer）</li>
+</ul>
+<p>智能体需对序列输入做出连续动作预测：三维位置（XYZ）、旋转（四元数）、抓取信号（是否夹取）。挑战评估模型对任务目标完成度、轨迹质量与精度的适应能力。</p>
+<hr>
+<h2 id="二、系统架构与模型设计"><a href="#二、系统架构与模型设计" class="headerlink" title="二、系统架构与模型设计"></a>二、系统架构与模型设计</h2><p>为统一处理所有任务，我们设计了统一结构的策略网络 <code>TaskModel</code>，其整体结构分为以下三个部分：</p>
+<h3 id="2-1-编码器：ActionDecoder-encoder"><a href="#2-1-编码器：ActionDecoder-encoder" class="headerlink" title="2.1 编码器：ActionDecoder.encoder"></a>2.1 编码器：<code>ActionDecoder.encoder</code></h3><p>输入为 <code>[B, T, D]</code> 的观测向量序列（图像 + 语言的融合特征），经过两层全连接网络映射到维度为 <code>embed_dim=128</code> 的特征表示，并通过 <code>ReLU</code> 激活增强非线性表达能力。</p>
+<h3 id="2-2-时序建模模块：TemporalBlock"><a href="#2-2-时序建模模块：TemporalBlock" class="headerlink" title="2.2 时序建模模块：TemporalBlock"></a>2.2 时序建模模块：<code>TemporalBlock</code></h3><p>采用标准的 Transformer 子结构（多头注意力 + 残差 LayerNorm + 前馈网络），能够建模动作序列中时间步间的依赖关系与长期轨迹规律：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">MultiheadAttention -&gt; LayerNorm -&gt; MLP -&gt; LayerNorm<br></code></pre></td></tr></table></figure>
+
+<p>该模块允许模型识别出不同时间步之间的操作规律，如“插入-旋转-释放”等时序动作序列。</p>
+<h3 id="2-3-动作解码头"><a href="#2-3-动作解码头" class="headerlink" title="2.3 动作解码头"></a>2.3 动作解码头</h3><ul>
+<li><code>head_pos</code>: 输出每一步的三维位置（XYZ）</li>
+<li><code>head_rot</code>: 输出归一化四元数，表示旋转角度</li>
+<li><code>head_grip</code>: 输出抓取信号，通过 <code>sigmoid</code> 激活</li>
+</ul>
+<p>最终模型输出维度为 <code>action_dim = 3 + 4 + 1 = 8</code>。</p>
+<hr>
+<h2 id="三、任务感知的损失函数设计"><a href="#三、任务感知的损失函数设计" class="headerlink" title="三、任务感知的损失函数设计"></a>三、任务感知的损失函数设计</h2><p>我们在 <code>TaskModel.compute_loss()</code> 中为不同任务设计了特定的损失加权策略，从而提高模型在各类任务中的表现力与泛化性。</p>
+<h3 id="通用损失构成："><a href="#通用损失构成：" class="headerlink" title="通用损失构成："></a>通用损失构成：</h3><ul>
+<li><code>loss_pos</code>: 所有时间步的 MSE（位置）</li>
+<li><code>loss_rot</code>: 所有时间步的 Cosine 相似度损失（四元数）</li>
+<li><code>loss_grip</code>: 所有时间步的 BCE（抓取信号）</li>
+</ul>
+<h3 id="任务特化策略如下："><a href="#任务特化策略如下：" class="headerlink" title="任务特化策略如下："></a>任务特化策略如下：</h3><table>
+<thead>
+<tr>
+<th>任务名称</th>
+<th>调整策略</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>stack_blocks</td>
+<td>强调<strong>最后一步的位置稳定性</strong>与<strong>旋转精度</strong>，将最后一帧位置误差加入损失，并将旋转损失权重翻倍。</td>
+</tr>
+<tr>
+<td>place_cups</td>
+<td>增加轨迹差值损失项，鼓励轨迹对齐；同时强调<strong>最后时刻的旋转一致性</strong>，增强杯口方向控制。</td>
+</tr>
+<tr>
+<td>put_money_in_safe</td>
+<td>加强末帧抓取状态与位置精度的监督，确保插入时精度与夹持控制。</td>
+</tr>
+<tr>
+<td>light_bulb_in</td>
+<td>提高位置与旋转损失权重，适配对姿态和插入精度的高要求；抓取控制也更为关键。</td>
+</tr>
+<tr>
+<td>put_item_in_drawer</td>
+<td>默认使用 <code>put_money_in_safe</code> 相似策略，注重轨迹尾部插入点与释放状态的联合优化。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="四、训练与实现细节"><a href="#四、训练与实现细节" class="headerlink" title="四、训练与实现细节"></a>四、训练与实现细节</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>配置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Batch Size</td>
+<td>32</td>
+</tr>
+<tr>
+<td>Epochs</td>
+<td>30</td>
+</tr>
+<tr>
+<td>Optimizer</td>
+<td>Adam</td>
+</tr>
+<tr>
+<td>Learning Rate</td>
+<td>1e-4</td>
+</tr>
+<tr>
+<td>Scheduler</td>
+<td>Cosine Annealing</td>
+</tr>
+<tr>
+<td>Sequence Length</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Input Dim</td>
+<td>64（图像+语言特征）</td>
+</tr>
+<tr>
+<td>Embed Dim</td>
+<td>128</td>
+</tr>
+</tbody></table>
+<p>代码实现基于 PyTorch 框架，支持多任务训练与微调。每个任务模型独立训练并评估。</p>
+<hr>
+<h2 id="五、实验结果与分析"><a href="#五、实验结果与分析" class="headerlink" title="五、实验结果与分析"></a>五、实验结果与分析</h2><p>在官方验证平台上的评测结果如下（分数越高表示性能越优）：</p>
+<table>
+<thead>
+<tr>
+<th>任务名称</th>
+<th>得分</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>put_money_in_safe</td>
+<td>292.48</td>
+</tr>
+<tr>
+<td>stack_blocks</td>
+<td>219.12</td>
+</tr>
+<tr>
+<td>light_bulb_in</td>
+<td>284.34</td>
+</tr>
+<tr>
+<td>put_item_in_drawer</td>
+<td>320.00</td>
+</tr>
+<tr>
+<td>place_cups</td>
+<td>260.35</td>
+</tr>
+</tbody></table>
+<p>该结果表明我们的方法在多任务适配性与精度控制方面具有良好的表现，尤其是在插入与抓取精度要求高的任务中（如 drawer, light bulb）。</p>
+<hr>
+<h2 id="六、使用工具与环境"><a href="#六、使用工具与环境" class="headerlink" title="六、使用工具与环境"></a>六、使用工具与环境</h2><ul>
+<li>开发语言：Python 3.10</li>
+<li>框架库：PyTorch 2.1.0、NumPy、WandB（日志）、Matplotlib（可视化）</li>
+<li>环境配置：CUDA 12.1，Ubuntu 22.04</li>
+<li>ai工具：ChatGPT-4o</li>
+</ul>
+<hr>
+<h2 id="七、挑战与展望"><a href="#七、挑战与展望" class="headerlink" title="七、挑战与展望"></a>七、挑战与展望</h2><p>我们观察到如下挑战与优化方向：</p>
+<ul>
+<li><strong>多任务共享结构</strong>：虽然当前模型能适应多任务，但可能存在参数干扰问题。未来考虑引入任务提示向量（Task Prompt）进行条件控制。</li>
+<li><strong>语言与图像融合方式</strong>：当前仅使用预融合输入，未来可尝试引入 Cross-Attention 机制实现更强的模态融合。</li>
+<li><strong>动作输出结构优化</strong>：不同任务在输出精度要求差异大，可设计更细粒度的输出头或使用分层结构优化不同粒度的预测项。针对不同任务的特性进一步优化。</li>
+</ul>
+<hr>
+<h2 id="八、-部分代码展示"><a href="#八、-部分代码展示" class="headerlink" title="八、 部分代码展示"></a>八、 部分代码展示</h2><p>关键代码：</p>
+<h3 id="1-模型主干设计（BasePolicy）"><a href="#1-模型主干设计（BasePolicy）" class="headerlink" title="1. 模型主干设计（BasePolicy）"></a>1. 模型主干设计（BasePolicy）</h3><p>这是所有任务共享的基本网络结构，使用了 <code>ResNet18</code> 提取视觉特征，并用 <code>TransformerEncoder</code> 编码语言。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BasePolicy</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        resnet = resnet18(pretrained=<span class="hljs-literal">True</span>)<br>        <span class="hljs-variable language_">self</span>.vision_encoder = nn.Sequential(*<span class="hljs-built_in">list</span>(resnet.children())[:-<span class="hljs-number">1</span>])<br>        encoder_layer = nn.TransformerEncoderLayer(d_model=<span class="hljs-number">512</span>, nhead=<span class="hljs-number">8</span>)<br>        <span class="hljs-variable language_">self</span>.lang_encoder = nn.TransformerEncoder(encoder_layer, num_layers=<span class="hljs-number">2</span>)<br>        <span class="hljs-variable language_">self</span>.cross_modal = nn.MultiheadAttention(embed_dim=<span class="hljs-number">512</span>, num_heads=<span class="hljs-number">8</span>, batch_first=<span class="hljs-literal">True</span>)<br>        <span class="hljs-variable language_">self</span>.fc_out = nn.Sequential(<br>            nn.Linear(<span class="hljs-number">1024</span>, <span class="hljs-number">256</span>), nn.ReLU(),<br>            nn.Linear(<span class="hljs-number">256</span>, <span class="hljs-number">128</span>), nn.ReLU(),<br>            nn.Linear(<span class="hljs-number">128</span>, <span class="hljs-number">7</span>)<br>        )<br>        <span class="hljs-variable language_">self</span>.grip_cls = nn.Sequential(<br>            nn.Linear(<span class="hljs-number">1024</span>, <span class="hljs-number">64</span>), nn.ReLU(),<br>            nn.Linear(<span class="hljs-number">64</span>, <span class="hljs-number">2</span>)<br>        )<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-跨模态编码（视觉-语言）"><a href="#2-跨模态编码（视觉-语言）" class="headerlink" title="2. 跨模态编码（视觉 + 语言）"></a>2. <strong>跨模态编码（视觉 + 语言）</strong></h3><p>视觉特征和语言特征交叉融合，通过 Multi-Head Attention 得到联合特征。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">encode_inputs</span>(<span class="hljs-params">self, obs, instr</span>):<br>    B, C_view, Two, C, H, W = obs.shape<br>    obs = obs.view(B * C_view * Two, C, H, W)<br>    vision_feat = <span class="hljs-variable language_">self</span>.vision_encoder(obs).view(B, C_view * Two, -<span class="hljs-number">1</span>).mean(dim=<span class="hljs-number">1</span>)<br>    instr = instr.permute(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>)<br>    lang_feat_seq = <span class="hljs-variable language_">self</span>.lang_encoder(instr).permute(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>)<br>    lang_feat_att, _ = <span class="hljs-variable language_">self</span>.cross_modal(vision_feat.unsqueeze(<span class="hljs-number">1</span>), lang_feat_seq, lang_feat_seq)<br>    <span class="hljs-keyword">return</span> vision_feat, lang_feat_att.squeeze(<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-loss函数"><a href="#3-loss函数" class="headerlink" title="3. loss函数"></a>3. loss函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">multi_loss</span>(<span class="hljs-params">pred, target, task=<span class="hljs-literal">None</span>, epoch=<span class="hljs-number">0</span></span>):<br>    pos_loss = F.mse_loss(pred[:, :<span class="hljs-number">3</span>], target[:, :<span class="hljs-number">3</span>])<br>    rot_weight = <span class="hljs-built_in">min</span>(<span class="hljs-number">1.0</span>, epoch / <span class="hljs-number">20.0</span>)<br>    rot_loss = F.smooth_l1_loss(pred[:, <span class="hljs-number">3</span>:<span class="hljs-number">7</span>], target[:, <span class="hljs-number">3</span>:<span class="hljs-number">7</span>]) * rot_weight<br>    grip_target = target[:, <span class="hljs-number">7</span>:].long().squeeze(<span class="hljs-number">1</span>)<br>    grip_loss = F.cross_entropy(torch.cat([<span class="hljs-number">1</span> - pred[:, <span class="hljs-number">7</span>:], pred[:, <span class="hljs-number">7</span>:]], dim=<span class="hljs-number">1</span>), grip_target)<br><br>    <span class="hljs-keyword">if</span> task == <span class="hljs-string">&#x27;stack_blocks&#x27;</span>:<br>        rot_loss *= <span class="hljs-number">2.0</span><br>    <span class="hljs-keyword">elif</span> task == <span class="hljs-string">&#x27;put_money_in_safe&#x27;</span>:<br>        pos_loss *= <span class="hljs-number">1.5</span><br>    <span class="hljs-keyword">elif</span> task == <span class="hljs-string">&#x27;light_bulb_in&#x27;</span>:<br>        pos_loss *= <span class="hljs-number">1.3</span><br>        grip_loss *= <span class="hljs-number">1.2</span><br><br>    <span class="hljs-keyword">return</span> pos_loss + rot_loss + <span class="hljs-number">0.1</span> * grip_loss<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/AI/" class="category-chain-item">AI</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Ai新手赛部分题解</div>
+      <div>https://pqcu77.github.io/2025/04/29/ai新手赛部分题解/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/04/29/hello-world/" title="Hello World">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/29/4%E6%9C%88%E7%A2%8E%E7%A2%8E%E5%BF%B5/" title="4月碎碎念">
+                        <span class="hidden-mobile">4月碎碎念</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

@@ -1,0 +1,904 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="智能指针智能指针是一类数据结构，它们表现类似指针，但是也拥有额外的元数据和功能。  引用计数 （ reference counting ）智能指针类型。这种指针允许数据有多个所有者，它会记录所有者的数量，当没有所有者时清理数据。 在 Rust 中因为引用和借用，普通引用和智能指针的一个额外的区别是引用是一类 只借用数据的指针 ；相反，在大部分情况下，智能指针 拥有 它们指向的数据。  常用的智能指">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust_smart_pointer">
+<meta property="og:url" content="https://pqcu77.github.io/2025/02/19/Rust-smart-pointer/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="智能指针智能指针是一类数据结构，它们表现类似指针，但是也拥有额外的元数据和功能。  引用计数 （ reference counting ）智能指针类型。这种指针允许数据有多个所有者，它会记录所有者的数量，当没有所有者时清理数据。 在 Rust 中因为引用和借用，普通引用和智能指针的一个额外的区别是引用是一类 只借用数据的指针 ；相反，在大部分情况下，智能指针 拥有 它们指向的数据。  常用的智能指">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-02-19T03:56:48.000Z">
+<meta property="article:modified_time" content="2025-02-25T03:53:20.691Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="Rust">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Rust_smart_pointer - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+</head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Rust_smart_pointer"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-19 11:56" pubdate>
+          2025年2月19日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Rust_smart_pointer</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-02-25T11:53:20+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h1><p>智能指针是一类数据结构，它们表现类似指针，但是也拥有额外的元数据和功能。</p>
+<ul>
+<li><strong>引用计数</strong> （ <em>reference counting</em> ）智能指针类型。这种指针允许数据有多个所有者，它会记录所有者的数量，当没有所有者时清理数据。</li>
+<li>在 Rust 中因为引用和借用，普通引用和智能指针的一个额外的区别是引用是一类 <strong>只借用数据的指针</strong> ；相反，在大部分情况下，智能指针 <strong>拥有</strong> 它们指向的数据。</li>
+</ul>
+<p>常用的智能指针：</p>
+<ul>
+<li><code>Box&lt;T&gt;</code>，用于在堆上分配值</li>
+<li><code>Rc&lt;T&gt;</code>，一个引用计数类型，其数据可以有多个所有者</li>
+<li><code>Ref&lt;T&gt;</code> 和 <code>RefMut&lt;T&gt;</code>，通过 <code>RefCell&lt;T&gt;</code> 访问。（ <code>RefCell&lt;T&gt;</code> 是一个在运行时而不是在编译时执行借用规则的类型）。</li>
+</ul>
+<h2 id="使用Box-指向堆上的数据"><a href="#使用Box-指向堆上的数据" class="headerlink" title="使用Box &lt;T&gt;指向堆上的数据"></a>使用Box <code>&lt;T&gt;</code>指向堆上的数据</h2><p>box 允许你将一个值放在堆上而不是栈上。留在栈上的则是指向堆数据的指针。</p>
+<h3 id="使用Box-在堆上储存数据"><a href="#使用Box-在堆上储存数据" class="headerlink" title="使用Box &lt;T&gt;在堆上储存数据"></a>使用Box <code>&lt;T&gt;</code>在堆上储存数据</h3><ul>
+<li><code>let b = Box::new(5);</code></li>
+</ul>
+<h3 id="Box允许创建递归类型"><a href="#Box允许创建递归类型" class="headerlink" title="Box允许创建递归类型"></a>Box允许创建递归类型</h3><p> <strong>递归类型</strong> （ <em>recursive type</em> ）的值可以拥有另一个同类型的值作为其自身的一部分。</p>
+<ul>
+<li>cons list：<ul>
+<li><em>cons list</em> 是一个来源于 Lisp 编程语言及其方言的数据结构，它由嵌套的列表组成。（类似于c++的广义表）</li>
+<li>Box是指针，是可以知道大小的。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">List</span> &#123;<br>    <span class="hljs-title function_ invoke__">Cons</span>(<span class="hljs-type">i32</span>, <span class="hljs-type">Box</span>&lt;List&gt;),<br>    Nil,<br>&#125;<br><br><span class="hljs-keyword">use</span> crate::List::&#123;Cons, Nil&#125;;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">list</span> = <span class="hljs-title function_ invoke__">Cons</span>(<span class="hljs-number">1</span>, <span class="hljs-type">Box</span>::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-title function_ invoke__">Cons</span>(<span class="hljs-number">2</span>, <span class="hljs-type">Box</span>::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-title function_ invoke__">Cons</span>(<span class="hljs-number">3</span>, <span class="hljs-type">Box</span>::<span class="hljs-title function_ invoke__">new</span>(Nil))))));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="通过Deref-trait将智能指针当作常规引用处理"><a href="#通过Deref-trait将智能指针当作常规引用处理" class="headerlink" title="通过Deref trait将智能指针当作常规引用处理"></a>通过Deref trait将智能指针当作常规引用处理</h2><ul>
+<li>实现 <code>Deref</code> trait 允许我们重载 <strong>解引用运算符</strong></li>
+<li>解引用</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">x</span> = <span class="hljs-number">5</span>;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">y</span> = &amp;x;<br><br>    <span class="hljs-built_in">assert_eq!</span>(<span class="hljs-number">5</span>, x);<br>    <span class="hljs-built_in">assert_eq!</span>(<span class="hljs-number">5</span>, *y);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>像引用一样使用Box <code>&lt;T&gt;</code></li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">x</span> = <span class="hljs-number">5</span>;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">y</span> = <span class="hljs-type">Box</span>::<span class="hljs-title function_ invoke__">new</span>(x);<br><br>    <span class="hljs-built_in">assert_eq!</span>(<span class="hljs-number">5</span>, x);<br>    <span class="hljs-built_in">assert_eq!</span>(<span class="hljs-number">5</span>, *y);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>将 <code>y</code> 设置为一个指向 <code>x</code> 值拷贝的 <code>Box&lt;T&gt;</code> 实例，而不是指向 <code>x</code> 值的引用。</li>
+</ul>
+<h2 id="Rc-引用计数智能指针"><a href="#Rc-引用计数智能指针" class="headerlink" title="Rc &lt;T&gt;引用计数智能指针"></a>Rc <code>&lt;T&gt;</code>引用计数智能指针</h2><p>如果某个值有零个引用，就代表没有任何有效引用并可以被清理。</p>
+<ul>
+<li>使用Rc <code>&lt;T&gt;</code>共享数据</li>
+</ul>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">enum</span> <span class="hljs-title class_">List</span> &#123;<br>    <span class="hljs-title function_ invoke__">Cons</span>(<span class="hljs-type">i32</span>, Rc&lt;List&gt;),<br>    Nil,<br>&#125;<br><br><span class="hljs-keyword">use</span> crate::List::&#123;Cons, Nil&#125;;<br>**<span class="hljs-keyword">use</span> std::rc::Rc;**<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">a</span> = Rc::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-title function_ invoke__">Cons</span>(<span class="hljs-number">5</span>, Rc::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-title function_ invoke__">Cons</span>(<span class="hljs-number">10</span>, Rc::<span class="hljs-title function_ invoke__">new</span>(Nil)))));<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">b</span> = <span class="hljs-title function_ invoke__">Cons</span>(<span class="hljs-number">3</span>, Rc::<span class="hljs-title function_ invoke__">clone</span>(&amp;a));<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">c</span> = <span class="hljs-title function_ invoke__">Cons</span>(<span class="hljs-number">4</span>, Rc::<span class="hljs-title function_ invoke__">clone</span>(&amp;a));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>也可以调用 <code>a.clone()</code> 而不是 <code>Rc::clone(&amp;a)</code>，不过在这里 Rust 的习惯是使用 <code>Rc::clone</code>。</p>
+<ul>
+<li>克隆Rc <code>&lt;T&gt;</code>会增加引用计数</li>
+</ul>
+<ol>
+<li><strong><code>Rc::clone</code></strong> ：</li>
+</ol>
+<ul>
+<li><code>Rc::clone(&amp;sun)</code> 不会复制 <code>Sun</code> 实例，而是增加 <code>Rc</code> 的引用计数。</li>
+<li>所有行星共享同一个 <code>Sun</code> 实例。</li>
+</ul>
+<ol>
+<li><strong>引用计数</strong> ：</li>
+</ol>
+<ul>
+<li>每次调用 <code>Rc::clone(&amp;sun)</code>，引用计数加 1。</li>
+<li>每次调用 <code>drop</code>，引用计数减 1。</li>
+</ul>
+<ol>
+<li><strong><code>drop</code> 的作用</strong> ：</li>
+</ol>
+<ul>
+<li><code>drop</code> 用于手动释放所有权，减少引用计数。</li>
+<li>当引用计数为 0 时，<code>Rc</code> 会自动释放内存。</li>
+</ul>
+<h2 id="cow"><a href="#cow" class="headerlink" title="cow:"></a>cow:</h2><h3 id="Cow-的核心思想是："><a href="#Cow-的核心思想是：" class="headerlink" title="Cow 的核心思想是："></a><code>Cow</code> 的核心思想是：</h3><ul>
+<li>如果数据是 <strong>只读的</strong> ，直接 <strong>使用借用</strong> （<code>Borrowed</code>），避免复制。</li>
+<li>如果数据 <strong>需要修改</strong> ，则 <strong>复制数据并拥有所有权</strong> （<code>Owned</code>）。</li>
+</ul>
+<h2 id="Cow-的常用方法"><a href="#Cow-的常用方法" class="headerlink" title="Cow 的常用方法"></a><code>Cow</code> 的常用方法</h2><h3 id="1-to-mut：获取可变引用"><a href="#1-to-mut：获取可变引用" class="headerlink" title="(1) to_mut：获取可变引用"></a>(1) <code>to_mut</code>：获取可变引用</h3><p>如果 <code>Cow</code> 是 <code>Borrowed</code>，则复制数据并转换为 <code>Owned</code>；如果已经是 <code>Owned</code>，则直接返回可变引用。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">cow</span> = Cow::<span class="hljs-title function_ invoke__">Borrowed</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br><span class="hljs-keyword">let</span> <span class="hljs-variable">s</span> = cow.<span class="hljs-title function_ invoke__">to_mut</span>(); <span class="hljs-comment">// 复制数据并转换为 Owned</span><br>s.<span class="hljs-title function_ invoke__">push_str</span>(<span class="hljs-string">&quot; world&quot;</span>);<br><span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, s); <span class="hljs-comment">// 输出 &quot;hello world&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="2-into-owned：获取所有权"><a href="#2-into-owned：获取所有权" class="headerlink" title="(2) into_owned：获取所有权"></a>(2) <code>into_owned</code>：获取所有权</h3><p>将 <code>Cow</code> 转换为拥有所有权的数据。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">cow</span> = Cow::<span class="hljs-title function_ invoke__">Borrowed</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br><span class="hljs-keyword">let</span> <span class="hljs-variable">s</span>: <span class="hljs-type">String</span> = cow.<span class="hljs-title function_ invoke__">into_owned</span>(); <span class="hljs-comment">// 转换为 String</span><br><span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, s); <span class="hljs-comment">// 输出 &quot;hello&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-is-borrowed-和-is-owned：检查状态"><a href="#3-is-borrowed-和-is-owned：检查状态" class="headerlink" title="(3) is_borrowed 和 is_owned：检查状态"></a>(3) <code>is_borrowed</code> 和 <code>is_owned</code>：检查状态</h3><ul>
+<li><code>is_borrowed</code>：检查是否是 <code>Borrowed</code>。</li>
+<li><code>is_owned</code>：检查是否是 <code>Owned</code>。</li>
+</ul>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ceylon"><span class="hljs-keyword">let</span> cow = Cow::Borrowed(<span class="hljs-string">&quot;hello&quot;</span>);<br><span class="hljs-keyword">assert</span>!(cow.<span class="hljs-keyword">is</span><span class="hljs-number">_</span>borrowed());<br><span class="hljs-keyword">assert</span>!(!cow.<span class="hljs-keyword">is</span><span class="hljs-number">_</span>owned());<br></code></pre></td></tr></table></figure>
+
+<h2 id="使用Drop-Trait运行清理代码"><a href="#使用Drop-Trait运行清理代码" class="headerlink" title="使用Drop Trait运行清理代码"></a>使用Drop Trait运行清理代码</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">pub</span> <span class="hljs-keyword">trait</span> <span class="hljs-title class_">Drop</span> &#123;<br>    <span class="hljs-keyword">fn</span> <span class="hljs-title function_">drop</span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>drop方法在值离开作用域时<strong>自动调用</strong></p>
+<p>也可以手动调用drop()来清理代码</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">x</span> = MyStruct &#123; name: <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;x&quot;</span>) &#125;;<br>    <span class="hljs-title function_ invoke__">drop</span>(x); <span class="hljs-comment">// 手动调用 drop</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;x has been dropped&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Drop与所有权"><a href="#Drop与所有权" class="headerlink" title="Drop与所有权"></a>Drop与所有权</h3><ul>
+<li>当一个值的所有权转移时，drop不会立即调用，只有在<strong>值离开作用域时</strong>才会调用</li>
+<li>如果值被移动（如传递给函数），drop会在新作用域结束时调用</li>
+</ul>
+<h2 id="Drop与Copy"><a href="#Drop与Copy" class="headerlink" title="Drop与Copy"></a>Drop与Copy</h2><p>二者不能同时实现</p>
+<ul>
+<li><code>Copy</code> trait 表示类型可以通过位复制来复制值，而 <code>Drop</code> 表示类型需要清理操作。</li>
+<li>如果类型实现了 <code>Drop</code>，Rust 会阻止你实现 <code>Copy</code>，因为复制可能会<strong>导致资源被多次释放。</strong></li>
+</ul>
+<h2 id="RefCell-和内部可变模式"><a href="#RefCell-和内部可变模式" class="headerlink" title="RefCell &lt;T&gt;和内部可变模式"></a>RefCell <code>&lt;T&gt;</code>和内部可变模式</h2><ul>
+<li><strong>内部可变性</strong>是rust中的一个设计模式，它允许你 <strong>即使在有不可变引用时也可以改变数据</strong> 。</li>
+<li>该模式在数据结构中使用 <code>unsafe</code> 代码来模糊rust通常的可变性和借用规则。不安全代码表明我们在<strong>手动检查</strong>这些规则而不是让编译器替我们检查。</li>
+</ul>
+<h3 id="通过-RefCell在运行时检查借用规则"><a href="#通过-RefCell在运行时检查借用规则" class="headerlink" title="通过 RefCell&lt;T&gt;在运行时检查借用规则"></a>通过 <code>RefCell&lt;T&gt;</code>在运行时检查借用规则</h3><ul>
+<li>不同于 <code>Rc&lt;T&gt;</code>，<code>RefCell&lt;T&gt;</code> 代表其数据的唯一的所有权。</li>
+</ul>
+<p>如下为选择 <code>Box&lt;T&gt;</code>，<code>Rc&lt;T&gt;</code> 或 <code>RefCell&lt;T&gt;</code> 的理由：</p>
+<ul>
+<li><code>Rc&lt;T&gt;</code> 允许相同数据 <strong>有多个所有者</strong> ；<code>Box&lt;T&gt;</code> 和 <code>RefCell&lt;T&gt;</code> 有单一所有者。</li>
+<li><code>Box&lt;T&gt;</code> 允许在编译时执行不可变或可变借用检查；<code>Rc&lt;T&gt;</code>仅允许在编译时执行不可变借用检查；<code>RefCell&lt;T&gt;</code> 允许在运行时执行不可变或可变借用检查。</li>
+<li>因为 <code>RefCell&lt;T&gt;</code> 允许在运行时执行可变借用检查，所以我们可以在即便 <code>RefCell&lt;T&gt;</code> 自身是不可变的情况下修改其内部的值。</li>
+</ul>
+<h3 id="内部可变性：不可变值的可变借用"><a href="#内部可变性：不可变值的可变借用" class="headerlink" title="内部可变性：不可变值的可变借用"></a>内部可变性：不可变值的可变借用</h3><p>借用规则的一个推论是当有一个不可变值时，不能可变地借用它。</p>
+<ul>
+<li><strong>mock对象</strong><ul>
+<li><strong>mock 对象</strong> 是特定类型的 <strong>测试替身</strong> ，它们记录测试过程中发生了什么以便可以断言操作是正确的。</li>
+</ul>
+</li>
+</ul>
+<h3 id="主要方法"><a href="#主要方法" class="headerlink" title="主要方法"></a>主要方法</h3><ul>
+<li><code>borrow()</code>：获取一个不可变引用（<code>Ref&lt;T&gt;</code>）。如果已经有可变引用，会 panic。</li>
+<li><code>borrow_mut()</code>：获取一个可变引用（<code>RefMut&lt;T&gt;</code>）。如果已经有其他引用（可变或不可变），会 panic。</li>
+<li><code>try_borrow()</code> 和 <code>try_borrow_mut()</code>：与 <code>borrow()</code> 和 <code>borrow_mut()</code> 类似，但不会 panic，而是返回 <code>Result</code>。</li>
+</ul>
+<h2 id="Arc-：-Atomic-Reference-Counting-（原子引用计数）"><a href="#Arc-：-Atomic-Reference-Counting-（原子引用计数）" class="headerlink" title="Arc &lt;T&gt;： Atomic Reference Counting （原子引用计数）"></a>Arc <code>&lt;T&gt;</code>： <strong>Atomic Reference Counting</strong> （原子引用计数）</h2><ol>
+<li><strong>引用计数</strong> ：<code>Arc&lt;T&gt;</code> 会跟踪指向同一数据的引用数量。每次克隆 <code>Arc&lt;T&gt;</code> 时，引用计数会增加；当 <code>Arc&lt;T&gt;</code> 被丢弃时，引用计数会减少。当引用计数为 0 时，数据会被释放。</li>
+<li><strong>线程安全</strong> ：<code>Arc&lt;T&gt;</code> 是线程安全的，因为它的引用计数操作是原子的（atomic），这意味着多个线程可以安全地共享同一个 <code>Arc&lt;T&gt;</code>。</li>
+<li><strong>不可变性</strong> ：<code>Arc&lt;T&gt;</code> 本身是不可变的。如果需要修改内部数据，通常需要与 <code>Mutex&lt;T&gt;</code> 或 <code>RwLock&lt;T&gt;</code> 结合使用。</li>
+</ol>
+<h3 id="主要方法-1"><a href="#主要方法-1" class="headerlink" title="主要方法"></a>主要方法</h3><ul>
+<li><code>new(value: T) -&gt; Arc&lt;T&gt;</code>：创建一个新的 <code>Arc&lt;T&gt;</code>。</li>
+<li><code>clone(&amp;self) -&gt; Arc&lt;T&gt;</code>：<strong>克隆</strong> <code>Arc&lt;T&gt;</code>，增加引用计数。</li>
+<li><code>strong_count(&amp;self) -&gt; usize</code>：返回当前 <strong>强引用计数</strong> 。</li>
+<li><code>downgrade(&amp;self) -&gt; Weak&lt;T&gt;</code>：创建一个 <strong>弱引用</strong> （<code>Weak&lt;T&gt;</code>），<strong>不会增加引用计数。</strong></li>
+<li><code>try_unwrap(this: Arc&lt;T&gt;) -&gt; Result&lt;T, Arc&lt;T&gt;&gt;</code>：如果引用计数为 1，则返回内部数据；否则返回 <code>Arc&lt;T&gt;</code>。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Rust/" class="category-chain-item">Rust</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Rust/" class="print-no-link">#Rust</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Rust_smart_pointer</div>
+      <div>https://pqcu77.github.io/2025/02/19/Rust-smart-pointer/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年2月19日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/02/19/Rust-macro/" title="Rust_macro">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Rust_macro</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/02/19/Rust-iter/" title="Rust_iter">
+                        <span class="hidden-mobile">Rust_iter</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>
