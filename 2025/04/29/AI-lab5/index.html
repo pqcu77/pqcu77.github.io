@@ -1,0 +1,1137 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="理论内容回顾PyTorch重安装conda（虽然与pytorch没什么大关系）由于我将ai实验移动到ubuntu里来做，所以我重新在这里安装一下conda。（先使用miniconda了） 1wget https:&#x2F;&#x2F;repo.anaconda.com&#x2F;miniconda&#x2F;Miniconda3-latest-Linux-x86_64.sh 安装完如果发现重启了终端也无法查找到 conda --ver">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AI-Lab5">
+<meta property="og:url" content="https://pqcu77.github.io/2025/04/29/AI-lab5/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="理论内容回顾PyTorch重安装conda（虽然与pytorch没什么大关系）由于我将ai实验移动到ubuntu里来做，所以我重新在这里安装一下conda。（先使用miniconda了） 1wget https:&#x2F;&#x2F;repo.anaconda.com&#x2F;miniconda&#x2F;Miniconda3-latest-Linux-x86_64.sh 安装完如果发现重启了终端也无法查找到 conda --ver">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429151116933.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429151131189.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429151256138.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429151235438.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429151441026.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429151456910.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429152224887.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429152233048.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429161016822.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429161107780.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250502112212143.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250502112326957.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250502112502760.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250503095146360.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250503095522607.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250503095700734.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250503095800527.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250503101420291.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250503101455202.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250503101534982.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250503102731587.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250503102916495.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250504112430590.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250504112445890.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250504112508914.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250504112521791.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250504112538716.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250504112551762.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250504113529656.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250504113749402.png">
+<meta property="article:published_time" content="2025-04-29T06:32:13.000Z">
+<meta property="article:modified_time" content="2025-05-04T03:37:58.560Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250429151116933.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>AI-Lab5 - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="AI-Lab5"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-29 14:32" pubdate>
+          2025年4月29日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">AI-Lab5</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-04T11:37:58+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="理论内容回顾"><a href="#理论内容回顾" class="headerlink" title="理论内容回顾"></a>理论内容回顾</h1><h2 id="PyTorch"><a href="#PyTorch" class="headerlink" title="PyTorch"></a>PyTorch</h2><h3 id="重安装conda（虽然与pytorch没什么大关系）"><a href="#重安装conda（虽然与pytorch没什么大关系）" class="headerlink" title="重安装conda（虽然与pytorch没什么大关系）"></a>重安装conda（虽然与pytorch没什么大关系）</h3><p>由于我将ai实验移动到ubuntu里来做，所以我重新在这里安装一下conda。（先使用miniconda了）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh<br></code></pre></td></tr></table></figure>
+<p>安装完如果发现重启了终端也无法查找到 <code>conda --version</code> ，那么就输入命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 1. 运行安装脚本（注意用 root 权限）</span><br>bash Miniconda3-latest-Linux-x86_64.sh<br><br><span class="hljs-comment"># 2. 安装过程中注意以下选项：</span><br><span class="hljs-comment">#    - 按回车阅读协议，输入 `yes` 同意。</span><br><span class="hljs-comment">#    - 安装路径默认是 `/root/miniconda3`（root 用户）或 `~/miniconda3`（普通用户），直接回车即可。</span><br><span class="hljs-comment">#    - 提示 `Do you wish the installer to initialize Miniconda3?` 时，必须输入 `yes`（否则需手动配置 PATH）。</span><br></code></pre></td></tr></table></figure>
+<p>然后再重启终端，发现可以查看到版本号了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">(base) root@PQCU:~/2025AI# conda --version<br>conda 25.1.1<br></code></pre></td></tr></table></figure>
+
+<p>配置一下清华镜像源：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/<br>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/<br>conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/<br>conda config --<span class="hljs-built_in">set</span> show_channel_urls <span class="hljs-built_in">yes</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="一些常用命令："><a href="#一些常用命令：" class="headerlink" title="一些常用命令："></a>一些常用命令：</h4><p><strong>1. 环境管理</strong></p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>conda create --name myenv python=3.9</code></td>
+<td>创建名为 <code>myenv</code> 的 Python 3.9 环境</td>
+</tr>
+<tr>
+<td><code>conda activate myenv</code></td>
+<td>激活 <code>myenv</code> 环境</td>
+</tr>
+<tr>
+<td><code>conda deactivate</code></td>
+<td>退出当前环境</td>
+</tr>
+<tr>
+<td><code>conda env list</code></td>
+<td>列出所有环境</td>
+</tr>
+<tr>
+<td><code>conda remove --name myenv --all</code></td>
+<td>删除 <code>myenv</code> 环境</td>
+</tr>
+<tr>
+<td><code>conda env export &gt; environment.yml</code></td>
+<td>导出当前环境配置到 YAML 文件</td>
+</tr>
+<tr>
+<td><code>conda env create -f environment.yml</code></td>
+<td>从 YAML 文件创建环境</td>
+</tr>
+</tbody></table>
+<p><strong>2. 包管理</strong></p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>conda install numpy</code></td>
+<td>安装包（如 <code>numpy</code>）</td>
+</tr>
+<tr>
+<td><code>conda install -c conda-forge package_name</code></td>
+<td>从 <code>conda-forge</code> 渠道安装包</td>
+</tr>
+<tr>
+<td><code>conda list</code></td>
+<td>列出当前环境所有已安装包</td>
+</tr>
+<tr>
+<td><code>conda search numpy</code></td>
+<td>搜索包（查看可用版本）</td>
+</tr>
+<tr>
+<td><code>conda update numpy</code></td>
+<td>更新指定包</td>
+</tr>
+<tr>
+<td><code>conda remove numpy</code></td>
+<td>卸载包</td>
+</tr>
+<tr>
+<td><code>conda update --all</code></td>
+<td>更新所有包</td>
+</tr>
+</tbody></table>
+<p><strong>3. Conda 自身管理</strong></p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>conda --version</code></td>
+<td>查看 Conda 版本</td>
+</tr>
+<tr>
+<td><code>conda update conda</code></td>
+<td>更新 Conda 到最新版本</td>
+</tr>
+<tr>
+<td><code>conda clean --all</code></td>
+<td>清理缓存（减少占用空间）</td>
+</tr>
+</tbody></table>
+<ol start="4">
+<li><strong>查看&#x2F;修改配置</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>conda config --show</code></td>
+<td>查看当前配置</td>
+</tr>
+<tr>
+<td><code>conda config --remove-key channels</code></td>
+<td>恢复默认镜像源</td>
+</tr>
+<tr>
+<td><code>conda config --set auto_activate_base false</code></td>
+<td>禁止自动激活 <code>base</code> 环境</td>
+</tr>
+</tbody></table>
+<h3 id="pytorch安装"><a href="#pytorch安装" class="headerlink" title="pytorch安装"></a>pytorch安装</h3><p>直接去官网<a target="_blank" rel="noopener" href="https://pytorch.org/get-started/locally/">Start Locally | PyTorch官网</a>找到对应的版本号，然后复制命令安装即可。由于本人的电脑没有GPU，所有下载CPU版本。</p>
+<p>linux+CPU：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu<br></code></pre></td></tr></table></figure>
+
+<h3 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h3><p>英文版：<br><a target="_blank" rel="noopener" href="https://pytorch.org/docs/stable/index.html">PyTorch documentation — PyTorch 2.7 documentation</a><br>中文版：<br><a target="_blank" rel="noopener" href="https://pytorch.ac.cn/docs/stable/index.html">PyTorch 文档 — PyTorch 2.7 文档 - PyTorch 深度学习库</a><br><a target="_blank" rel="noopener" href="https://pytorch-cn.readthedocs.io/zh/latest/">主页 - PyTorch中文文档</a></p>
+<h3 id="tensor"><a href="#tensor" class="headerlink" title="tensor"></a>tensor</h3><ul>
+<li>pytorch的基本数据类型，在使用torch框架进行操作时，对象一般都是要求是tensor类型</li>
+</ul>
+<p>初始化tensor</p>
+<ul>
+<li><p>直接初始化<br><img src="/img/file-20250429151116933.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250429151131189.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>通过原始数据转化<br><img src="/img/file-20250429151256138.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250429151235438.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>通过numpy数据转化<br><img src="/img/file-20250429151441026.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250429151456910.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>也可以通过<code>torch.zeros()</code>，<code>torch.ones()</code>等创建指定大小的全0或全1张量<br><img src="/img/file-20250429152224887.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250429152233048.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>初始化未指定数据类型时，tensor会根据数据本身的类型自行判断</p>
+</li>
+</ul>
+<p>梯度计算：</p>
+<ul>
+<li><code>requires_grad=True</code> –pytorch会追踪该张量的所有计算（自动微分），以便后续进行反向传播计算梯度</li>
+</ul>
+<p>维度变换：</p>
+<ul>
+<li><code>torch.view()</code>或者<code>torch.reshape()</code> 维度重置（但总数要一致），若根据已有维度可推算出剩下的维度，可使用 -1 替代<ul>
+<li>用于<strong>改变张量的形状</strong>，但是总元素的数量必须保持不变。</li>
+<li>可以使用 <code>-1</code> 自动计算某一维度的大小</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>是否共享内存</th>
+<th>是否适用于非连续内存</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>view()</code></td>
+<td>✅ 是</td>
+<td>❌ 只能在连续内存上使用</td>
+<td>高效调整形状（不复制数据）</td>
+</tr>
+<tr>
+<td><code>reshape()</code></td>
+<td>✅ 是（如果可能）</td>
+<td>✅ 可以处理非连续内存</td>
+<td>更通用，但可能触发数据复制</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>torch.reshape()</code>也可以重置维度<ul>
+<li><strong>压缩（删除）大小为 1 的维度</strong>。</li>
+<li>如果不指定 <code>dim</code>，则<strong>删除所有大小为 1 的维度</strong>。</li>
+<li>如果指定 <code>dim</code>，则<strong>只压缩该维度</strong>（<strong>该维度必须为 1</strong>，否则报错）。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python">x = torch.randn(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>)  <span class="hljs-comment"># shape: [1, 3, 1, 2]</span><br><br><span class="hljs-comment"># 不指定 dim，删除所有大小为 1 的维度</span><br>x_squeeze = x.squeeze()  <span class="hljs-comment"># shape: [3, 2]</span><br><span class="hljs-built_in">print</span>(x_squeeze.shape)  <span class="hljs-comment"># torch.Size([3, 2])</span><br><br><span class="hljs-comment"># 指定 dim=2（第3个维度，从0开始计数）</span><br>x_squeeze_dim = x.squeeze(dim=<span class="hljs-number">2</span>)  <span class="hljs-comment"># shape: [1, 3, 2]</span><br><span class="hljs-built_in">print</span>(x_squeeze_dim.shape)  <span class="hljs-comment"># torch.Size([1, 3, 2])</span><br><br><span class="hljs-comment"># 如果 dim 不是 1，会报错</span><br>x.squeeze(dim=<span class="hljs-number">1</span>)  <span class="hljs-comment"># 报错，因为 dim=1 的大小是 3，不是 1</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li>torch.squeeze(dim) 若不指定维度，则会将tensor中为1的dim压缩，若指定只会压缩对应的维度</li>
+<li>torch.unsqueeze(dim) 维度扩展<ul>
+<li><strong>在指定位置插入一个大小为 1 的维度</strong>（与 <code>squeeze</code> 相反）。</li>
+<li>常用于<strong>扩展维度</strong>，以适应某些操作（如矩阵乘法、卷积等）。</li>
+</ul>
+</li>
+<li><code>torch.cat(List[tensor,tensor],dim)</code> 向量拼接，需要指定维度<ul>
+<li>输入一个张量列表</li>
+<li>dim指定沿哪个维度拼接</li>
+<li>非拼接维度的形状必须相同，否则会报错</li>
+<li>如果 <code>dim=0</code>（行拼接），则<strong>其他维度（如列数）必须相同</strong>。</li>
+<li>如果 <code>dim=1</code>（列拼接），则<strong>行数必须相同</strong>。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> torch<br><br><span class="hljs-comment"># 创建两个张量</span><br>x = torch.tensor([[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">3</span>, <span class="hljs-number">4</span>]])  <span class="hljs-comment"># shape: [2, 2]</span><br>y = torch.tensor([[<span class="hljs-number">5</span>, <span class="hljs-number">6</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">8</span>]])  <span class="hljs-comment"># shape: [2, 2]</span><br><br><span class="hljs-comment"># 沿第0维（行方向）拼接</span><br>z0 = torch.cat([x, y], dim=<span class="hljs-number">0</span>)<br><span class="hljs-built_in">print</span>(z0)<br><span class="hljs-comment"># tensor([[1, 2],</span><br><span class="hljs-comment">#         [3, 4],</span><br><span class="hljs-comment">#         [5, 6],</span><br><span class="hljs-comment">#         [7, 8]])  # shape: [4, 2]</span><br><br><span class="hljs-comment"># 沿第1维（列方向）拼接</span><br>z1 = torch.cat([x, y], dim=<span class="hljs-number">1</span>)<br><span class="hljs-built_in">print</span>(z1)<br><span class="hljs-comment"># tensor([[1, 2, 5, 6],</span><br><span class="hljs-comment">#         [3, 4, 7, 8]])  # shape: [2, 4]</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+<h3 id="torch-nn"><a href="#torch-nn" class="headerlink" title="torch.nn"></a>torch.nn</h3><p>自定义神经网络类的基本框架：继承 nn.Module 神经网络基本类，该类实例化后输入数据将<strong>自动调用 forward 前向计算</strong></p>
+<p>。有点没看懂。<br><img src="/img/file-20250429161016822.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/file-20250429161107780.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="网络训练一般步骤"><a href="#网络训练一般步骤" class="headerlink" title="网络训练一般步骤"></a>网络训练一般步骤</h3><p>实例化网络 net &#x3D; Net() 后，<strong>定义网络优化器</strong></p>
+<ul>
+<li>optim &#x3D; nn.optim.Adam(net.parameters(), lr&#x3D;lr)<br>计算得到 Loss，</li>
+<li>loss&#x3D;MSE(a,b)<br>在更新前，需清除上一步的梯度，即</li>
+<li>optim.zero_grad()<br>然后 Loss 反向传播：</li>
+<li>loss.backward()<br>最后优化器更新：</li>
+<li>optim.step()</li>
+</ul>
+<h2 id="CNN网络训练实例"><a href="#CNN网络训练实例" class="headerlink" title="CNN网络训练实例"></a>CNN网络训练实例</h2><p>手写数字识别作为样例<br>1.读入训练集和测试集中的数字图片信息以及对图片预处理<br>2.用pytorch搭建神经网络（包括卷积和全连接神经网络）<br>3.将一个batch的训练集中的图片输入至神经网络，得到所有数字的预测分类概率（总共10个数字,0123456789）</p>
+<p>4.根据真实标签和预测标签，利用交叉熵损失函数计算loss值，并进行梯度下降<br>5.根据测试集计算准确率，如果准确率没收敛，跳转回步骤3<br>6.画出loss、测试集准确率的曲线图<br>参考视频：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1Vx411j7kT?p=19">https://www.bilibili.com/video/BV1Vx411j7kT?p=19</a><br>参考代码：<a target="_blank" rel="noopener" href="https://github.com/MorvanZhou/PyTorchTutorial/blob/master/tutorial%02contents/401_CNN.py">https://github.com/MorvanZhou/PyTorchTutorial/blob/master/tutorialcontents/401_CNN.py</a></p>
+<h2 id="CNN卷积网络卷了什么？"><a href="#CNN卷积网络卷了什么？" class="headerlink" title="CNN卷积网络卷了什么？"></a>CNN卷积网络卷了什么？</h2><p>我们之前就知道图片的表示形式是一大堆数字（0-255），如果是灰色图数值代表的是灰度，而如果是彩色图记录的就是RGB颜色，使用三维张量或者三个矩阵来记录。</p>
+<ul>
+<li>每一个矩阵可以称为图片的一个channel，用宽高深来描述。</li>
+</ul>
+<p>传统的神经网络会导致物体如果处在同一个图片的不同位置，就可能会识别为不同物体，但是卷积神经网络可以捕捉图像中的局部特征而不受位置的影响。（不变性）</p>
+<h3 id="什么是卷积"><a href="#什么是卷积" class="headerlink" title="什么是卷积"></a>什么是卷积</h3><p>在信号与系统课程中我们与卷积打了不少交道<br>连续：$F(x) &#x3D; \int_{-\infty}^{\infty} f(\tau) g(x - \tau) d\tau$</p>
+<p>在卷积神经网络中，卷积操作是将一个<strong>可移动的小窗口</strong>（<strong>滤波器&#x2F;卷积核</strong>）与图像进行逐元素相乘然后相加的操作。滤波器相当于一组固定的权重。</p>
+<p>例如：将一个 <code>6*6</code> 的网格滤波成 <code>4*4</code> 的网格，保留下来的是特征<br>这里的卷积核是一个 <code>3*3</code> 的矩阵，通过将黄色部分和卷积核进行卷积得到一个值填入到特征矩阵中，进行特征提取。<br><img src="/img/file-20250502112212143.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/file-20250502112326957.png" srcset="/img/loading.gif" lazyload><br>这个时候发现了边缘的特征丢失了<br>使用 <code>padding</code> 扩充方式，将 <code>6*6</code>的像素图扩充成 <code>8*8</code> 的像素图（用0填充）<br><img src="/img/file-20250502112502760.png" srcset="/img/loading.gif" lazyload></p>
+<p>因此在设置卷积神经网络时，我们需要关注这些参数</p>
+<ul>
+<li>步长stride：每次滑动的位置步长（也就是小窗口移动的距离）</li>
+<li>卷积核的个数：决定输出的depth厚度</li>
+<li>填充值zero-padding：在外围边缘用0填充（要使得总长能被步长整除）</li>
+</ul>
+<p>动图：<br><a target="_blank" rel="noopener" href="https://i-blog.csdnimg.cn/blog_migrate/d0172774f7e42ae2f6310b63e59b4906.gif">https://i-blog.csdnimg.cn/blog_migrate/d0172774f7e42ae2f6310b63e59b4906.gif</a></p>
+<p>卷积神经网络模型：<br><img src="/img/file-20250503095146360.png" srcset="/img/loading.gif" lazyload><br>红色部分可以看做一个滤波器，多个滤波器叠加就成了卷积层</p>
+<p>最大池化：（max pooling）<br>将图片特征进一步压缩，仅反映最突出的特点，也就是将图像切割成如图多个 <code>2*2</code> 的网格，取出每个小矩阵中最大的值。<br>池化后的数据保留了原始图片中最精华的特征<br><img src="/img/file-20250503095522607.png" srcset="/img/loading.gif" lazyload></p>
+<p>扁平化处理：<br><img src="/img/file-20250503095700734.png" srcset="/img/loading.gif" lazyload><br>把池化后的数据进行扁平化处理：将两个 <code>3*3</code> 的像素图叠加转换为1维的数据条。<br>数据条作为输入，连接到全连接隐藏层，最终产生输出结果。（感觉做完转换后，得到的扁平化信息到最终输出结果就和MLP很类似了）</p>
+<p><img src="/img/file-20250503095800527.png" srcset="/img/loading.gif" lazyload></p>
+<p>如果想进一步理解复杂的cnn模型：<a target="_blank" rel="noopener" href="https://plantdraw2.samlab.cn/">CNN Explainer</a></p>
+<h1 id="实验任务"><a href="#实验任务" class="headerlink" title="实验任务"></a>实验任务</h1><h3 id="中药图片分类任务"><a href="#中药图片分类任务" class="headerlink" title="中药图片分类任务"></a>中药图片分类任务</h3><p>利用pytorch框架搭建神经网络实现中药图片分类，其中中药图片数据分为训练集 <code>train</code>和测试集 <code>test</code>，训练集仅用于网络训练阶段，测试集仅用于模型的性能测试阶段。训练集和测试集均包含五种不同类型的中药图片：<code>baihe</code>、<code>dangshen</code>、<code>gouqi</code>、<code>huaihua</code>、<code>jinyinhua</code>。请合理设计神经网络架构，利用训练集完成网络训练，统计网络模型的训练准确率和测试准确率，画出模型的训练过程的loss曲线、准确率曲线。</p>
+<h3 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h3><ol>
+<li>最后提交的代码只需包含性能最好的实现方法和参数设置. 只需提交一个代码文件, 请不要提交其他文件.</li>
+<li>本次作业可以使用 <code>pytorch</code>库、 <code>numpy</code>库、<code>matplotlib</code>库以及python标准库.</li>
+<li>数据集可以在Github上下载。</li>
+<li>模型的训练性能以及测试性能均作为本次作业的评分标准。</li>
+<li>测试集不可用于模型训练。</li>
+<li>不能使用开源的预训练模型进行训练。</li>
+</ol>
+<h3 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h3><p>我们看到训练集和测试集都是彩色图，所以我们要采用三通道卷积的方式来表示。<br><img src="/img/file-20250503101420291.png" srcset="/img/loading.gif" lazyload><br>也就是分别卷积后再相加得到结果。</p>
+<p>n通道的卷积过程：<br><img src="/img/file-20250503101455202.png" srcset="/img/loading.gif" lazyload><br>或<br><img src="/img/file-20250503101534982.png" srcset="/img/loading.gif" lazyload><br>卷积层：</p>
+<ul>
+<li><p><strong><code>nn.Conv1d</code></strong></p>
+<ul>
+<li>输入：<code>(batch_size, channels, length)</code></li>
+<li>处理<strong>一维序列数据</strong>（如时间序列、文本词向量）       </li>
+<li>例：音频波形、传感器数据、自然语言处理中的词嵌入序列。</li>
+</ul>
+</li>
+<li><p><strong><code>nn.Conv2d</code></strong>    </p>
+<ul>
+<li>输入：<code>(batch_size, channels, height, width)</code></li>
+<li>处理<strong>二维网格数据</strong>（如图像）。        </li>
+<li>例：RGB图像、二维频谱图。</li>
+</ul>
+</li>
+<li><p><strong><code>nn.Conv3d</code></strong></p>
+<ul>
+<li>输入：<code>(batch_size, channels, depth, height, width)</code>     </li>
+<li>处理<strong>三维体数据</strong>（如视频或医学扫描图像）。      </li>
+<li>例：视频帧（时间+空间）、CT&#x2F;MRI扫描的3D体素数据。</li>
+</ul>
+</li>
+<li><p><strong><code>Conv2d</code></strong>：</p>
+<ul>
+<li>卷积核沿<strong>2个方向（高度和宽度）滑动</strong>，输出二维特征图。    </li>
+<li>卷积核尺寸：<code>(kernel_size, kernel_size)</code>（如<code>3x3</code>）。</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>卷积类型</th>
+<th>适用场景示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Conv1d</code></td>
+<td>文本分类（词序列）、语音识别（音频帧）、股票预测（时间序列）</td>
+</tr>
+<tr>
+<td><code>Conv2d</code></td>
+<td>图像分类、目标检测、风格迁移（2D图像处理）</td>
+</tr>
+<tr>
+<td><code>Conv3d</code></td>
+<td>视频动作识别、医学影像分析（3D体数据）</td>
+</tr>
+</tbody></table>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">torch.nn.Conv2d(in_channels, out_channels, kernel_size, stride=<span class="hljs-number">1</span>, padding=<span class="hljs-number">0</span>, dilation=<span class="hljs-number">1</span>, groups=<span class="hljs-number">1</span>, bias=<span class="hljs-literal">True</span>)<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>in_channels</strong> (<a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/functions.html#int"><em>int</em></a>) – 输入图像中的通道数</li>
+<li><strong>out_channels</strong> (<a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/functions.html#int"><em>int</em></a>) – 卷积产生的通道数</li>
+<li><strong>kernel_size</strong> (<a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/functions.html#int"><em>int</em></a> <em>或</em> <a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/stdtypes.html#tuple"><em>tuple</em></a>) – 卷积核的大小</li>
+<li><strong>stride</strong> (<a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/functions.html#int"><em>int</em></a> <em>或</em> <a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/stdtypes.html#tuple"><em>tuple</em></a><em>,</em> <em>可选的</em>) – 卷积的步长。默认值：1</li>
+<li><strong>padding</strong> (<a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/functions.html#int"><em>int</em></a><em>,</em> <a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/stdtypes.html#tuple"><em>tuple</em></a> <em>或</em> <a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/stdtypes.html#str"><em>str</em></a><em>,</em> <em>可选的</em>) – 输入四边添加的填充。默认值：0</li>
+<li><strong>dilation</strong> (<a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/functions.html#int"><em>int</em></a> <em>或</em> <a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/stdtypes.html#tuple"><em>tuple</em></a><em>,</em> <em>可选的</em>) – 内核元素之间的间距。默认值：1</li>
+<li><strong>groups</strong> (<a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/functions.html#int"><em>int</em></a><em>,</em> <em>可选的</em>) – 从输入通道到输出通道的组连接数。默认值：1</li>
+<li><strong>bias</strong> (<a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/functions.html#bool"><em>bool</em></a><em>,</em> <em>可选的</em>) – 如果为 <code>True</code>，则向输出添加一个可学习的偏置项。默认值：<code>True</code></li>
+<li><strong>padding_mode</strong> (<a target="_blank" rel="noopener" href="https://docs.pythonlang.cn/3/library/stdtypes.html#str"><em>str</em></a><em>,</em> <em>可选的</em>) – <code>&#39;zeros&#39;</code>, <code>&#39;reflect&#39;</code>, <code>&#39;replicate&#39;</code> 或 <code>&#39;circular&#39;</code>。默认值：<code>&#39;zeros&#39;</code></li>
+</ul>
+<p>池化层：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">torch.nn.MaxPool2d(*kernel_size*, *stride=<span class="hljs-literal">None</span>*, *padding=<span class="hljs-number">0</span>*, *dilation=<span class="hljs-number">1</span>*, *return_indices=<span class="hljs-literal">False</span>*, *ceil_mode=<span class="hljs-literal">False</span>*)<br></code></pre></td></tr></table></figure>
+<p><img src="/img/file-20250503102731587.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/file-20250503102916495.png" srcset="/img/loading.gif" lazyload></p>
+<p>进行测试后发现，不够稳定：<br><img src="/img/file-20250504112430590.png" srcset="/img/loading.gif" lazyload alt="epoches&#x3D;15"></p>
+<p><img src="/img/file-20250504112445890.png" srcset="/img/loading.gif" lazyload alt="epoches&#x3D;30"></p>
+<p><img src="/img/file-20250504112508914.png" srcset="/img/loading.gif" lazyload alt="epoches&#x3D;100"></p>
+<p><img src="/img/file-20250504112521791.png" srcset="/img/loading.gif" lazyload alt="epoches&#x3D;500"><br><img src="/img/file-20250504112538716.png" srcset="/img/loading.gif" lazyload alt="epoches&#x3D;1000"><br><img src="/img/file-20250504112551762.png" srcset="/img/loading.gif" lazyload alt="epoches&#x3D;2000"><br>尝试添加归一化函数<code>nn.BatchNorm2d()</code>，并去掉了随机旋转和水平翻转（因为我观察到小规模测试集里的图片还是比较正的（））</p>
+<ul>
+<li>测试了一下50代，感觉效果一般<br><img src="/img/file-20250504113529656.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<p>又尝试在预处理数据部分添加了归一化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs python">transforms.Normalize(<br>            mean=[<span class="hljs-number">0.485</span>, <span class="hljs-number">0.456</span>, <span class="hljs-number">0.406</span>], std=[<span class="hljs-number">0.229</span>, <span class="hljs-number">0.224</span>, <span class="hljs-number">0.225</span>]<br>        ),  <span class="hljs-comment"># 常用的参数</span><br></code></pre></td></tr></table></figure>
+<p>发现在epoches&#x3D;50的情况下效果也好了很多，将进一步尝试更多代，寻找更加稳定的代数<br><img src="/img/file-20250504113749402.png" srcset="/img/loading.gif" lazyload alt="epoches&#x3D;50"></p>
+<p>资料：<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/AI_dataloads/article/details/133250229">【深度学习】一文搞懂卷积神经网络（CNN）的原理（超详细）_卷积神经网络原理-CSDN博客</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/m0_55697123/article/details/119464001">python标准库 —— os模块_python中os库的作用-CSDN博客</a><a target="_blank" rel="noopener" href="https://pytorch.ac.cn/docs/stable/nn.html#convolution-layers">torch.nn — PyTorch 2.7 文档 - PyTorch 深度学习库</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/163613814">python进度条库tqdm详解 - 知乎</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/" class="category-chain-item">AI</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>AI-Lab5</div>
+      <div>https://pqcu77.github.io/2025/04/29/AI-lab5/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/29/ai%E6%96%B0%E6%89%8B%E8%B5%9B%E9%83%A8%E5%88%86%E9%A2%98%E8%A7%A3/" title="Ai新手赛部分题解">
+                        <span class="hidden-mobile">Ai新手赛部分题解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>
