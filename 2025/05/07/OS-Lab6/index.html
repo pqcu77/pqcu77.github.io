@@ -1,0 +1,905 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="并发与锁机制实验概述使用硬件支持的原子指令来实现自旋锁SpinLock &#x3D;&gt; 可以用来实现线程互斥然后使用SpinLock来实现信号量，最后使用SpinLock和信号量来给出两个实现线程互斥的解决方案。 ddl：5.18 实验任务：Assignment 1 代码复现题1.1 代码复现在本章中，我们已经实现了自旋锁和信号量机制。现在，同学们需要复现教程中的自旋锁和信号量的实现方法，分">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS_Lab6">
+<meta property="og:url" content="https://pqcu77.github.io/2025/05/07/OS-Lab6/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="并发与锁机制实验概述使用硬件支持的原子指令来实现自旋锁SpinLock &#x3D;&gt; 可以用来实现线程互斥然后使用SpinLock来实现信号量，最后使用SpinLock和信号量来给出两个实现线程互斥的解决方案。 ddl：5.18 实验任务：Assignment 1 代码复现题1.1 代码复现在本章中，我们已经实现了自旋锁和信号量机制。现在，同学们需要复现教程中的自旋锁和信号量的实现方法，分">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250507155001149.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250507153855621.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250507170037315.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250507184526174.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250510181456865.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250507185504196.png">
+<meta property="og:image" content="https://gitee.com/kpyang5/sysu-2025-spring-operating-system/raw/main/lab6/gallery/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%90%E9%97%AE%E9%A2%98.jpeg">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250507195411767.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250507195511916.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250507195535572.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/77c4cb7b443f7e05b99484e4b0e2b52.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250507203711903.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250507143934453.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250507145633494.png">
+<meta property="article:published_time" content="2025-05-07T06:24:33.000Z">
+<meta property="article:modified_time" content="2025-05-10T10:15:20.316Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="OS_Labs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250507155001149.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>OS_Lab6 - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OS_Lab6"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-07 14:24" pubdate>
+          2025年5月7日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          34 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">OS_Lab6</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-10T18:15:20+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="并发与锁机制"><a href="#并发与锁机制" class="headerlink" title="并发与锁机制"></a>并发与锁机制</h1><h2 id="实验概述"><a href="#实验概述" class="headerlink" title="实验概述"></a>实验概述</h2><p>使用硬件支持的原子指令来实现自旋锁SpinLock &#x3D;&gt; 可以用来实现线程互斥<br>然后使用SpinLock来实现信号量，最后使用SpinLock和信号量来给出两个实现线程互斥的解决方案。</p>
+<p>ddl：5.18</p>
+<h2 id="实验任务："><a href="#实验任务：" class="headerlink" title="实验任务："></a>实验任务：</h2><h3 id="Assignment-1-代码复现题"><a href="#Assignment-1-代码复现题" class="headerlink" title="Assignment 1 代码复现题"></a>Assignment 1 代码复现题</h3><h4 id="1-1-代码复现"><a href="#1-1-代码复现" class="headerlink" title="1.1 代码复现"></a>1.1 代码复现</h4><p>在本章中，我们已经实现了自旋锁和信号量机制。现在，同学们需要<strong>复现教程中的自旋锁和信号量的实现方法</strong>，<strong>分别</strong>使用二者解决一个同步互斥问题，如消失的芝士汉堡问题。最后，将结果截图并说说你是怎么做的。</p>
+<h5 id="SpinLock复现"><a href="#SpinLock复现" class="headerlink" title="SpinLock复现"></a>SpinLock复现</h5><p>复现过程：<br>首先实现了SpinLock：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpinLock</span></span><br><span class="hljs-class">&#123;</span><br>private:<br>    uint32 bolt;<br>public:<br>    SpinLock();<br>    <span class="hljs-type">void</span> <span class="hljs-title function_">initialize</span><span class="hljs-params">()</span>;<br>    <span class="hljs-type">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">()</span>;<br>    <span class="hljs-type">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">()</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>具体定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c"><br>SpinLock::SpinLock()<br>&#123;<br>    initialize();<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">SpinLock::initialize</span><span class="hljs-params">()</span><br>&#123;<br>    bolt = <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">SpinLock::lock</span><span class="hljs-params">()</span><br>&#123;<br>    uint32 key = <span class="hljs-number">1</span>;<br><br>    <span class="hljs-keyword">do</span><br>    &#123;<br>        asm_atomic_exchange(&amp;key, &amp;bolt);<br>        <span class="hljs-comment">//printf(&quot;pid: %d\n&quot;, programManager.running-&gt;pid);</span><br>    &#125; <span class="hljs-keyword">while</span> (key);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">SpinLock::unlock</span><span class="hljs-params">()</span><br>&#123;<br>    bolt = <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>线程安排：可以看到在进入a_mother线程时上锁，保证 a_naughty_boy 线程无法同时访问临界区。然后在结束时再释放锁。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">a_mother</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    aLock.lock();<br>    <span class="hljs-type">int</span> delay = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;mother: start to make cheese burger, there are %d cheese burger now\n&quot;</span>, cheese_burger);<br>    <span class="hljs-comment">// make 10 cheese_burger</span><br>    cheese_burger += <span class="hljs-number">10</span>;<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;mother: oh, I have to hang clothes out.\n&quot;</span>);<br>    <span class="hljs-comment">// hanging clothes out</span><br>    delay = <span class="hljs-number">0xfffffff</span>;<br>    <span class="hljs-keyword">while</span> (delay)<br>        --delay;<br>    <span class="hljs-comment">// done</span><br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;mother: Oh, Jesus! There are %d cheese burgers\n&quot;</span>, cheese_burger);<br>    aLock.unlock();<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">a_naughty_boy</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    aLock.lock();<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;boy   : Look what I found!\n&quot;</span>);<br>    <span class="hljs-comment">// eat all cheese_burgers out secretly</span><br>    cheese_burger -= <span class="hljs-number">10</span>;<br>    <span class="hljs-comment">// run away as fast as possible</span><br>    aLock.unlock();<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>使用SpinLock复现结果:<br><img src="/img/file-20250507155001149.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="信号量复现"><a href="#信号量复现" class="headerlink" title="信号量复现"></a>信号量复现</h5><p>首先声明信号量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Semaphore</span></span><br><span class="hljs-class">&#123;</span><br>private:<br>    uint32 counter;<br>    List waiting;<br>    SpinLock semLock;<br><br>public:<br>    Semaphore();<br>    <span class="hljs-type">void</span> <span class="hljs-title function_">initialize</span><span class="hljs-params">(uint32 counter)</span>;<br>    <span class="hljs-type">void</span> <span class="hljs-title function_">P</span><span class="hljs-params">()</span>;<br>    <span class="hljs-type">void</span> <span class="hljs-title function_">V</span><span class="hljs-params">()</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>用counter来表示芝士汉堡的数量。调用P操作时会检查芝士汉堡数量是否足够，如果足够就会分配给请求的单元，如果不够就将请求这个资源的线程挂载到芝士汉堡信号量的阻塞队列中，直到有资源被释放，线程被唤醒。</p>
+<p>调用V操作时会释放芝士汉堡资源，同时检查阻塞队列中是否有线程存在，如果有就去唤醒。</p>
+<p>具体定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs c">Semaphore::Semaphore()<br>&#123;<br>    initialize(<span class="hljs-number">0</span>);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">Semaphore::initialize</span><span class="hljs-params">(uint32 counter)</span><br>&#123;<br>    this-&gt;counter = counter;<br>    semLock.initialize();<br>    waiting.initialize();<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">Semaphore::P</span><span class="hljs-params">()</span><br>&#123;<br>    PCB *cur = nullptr;<br><br>    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)<br>    &#123;<br>        semLock.lock();<br>        <span class="hljs-keyword">if</span> (counter &gt; <span class="hljs-number">0</span>)<br>        &#123;<br>            --counter;<br>            semLock.unlock();<br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br><br>        cur = programManager.running;<br>        waiting.push_back(&amp;(cur-&gt;tagInGeneralList));<br>        cur-&gt;status = ProgramStatus::BLOCKED;<br><br>        semLock.unlock();<br>        programManager.schedule();<br>    &#125;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">Semaphore::V</span><span class="hljs-params">()</span><br>&#123;<br>    semLock.lock();<br>    ++counter;<br>    <span class="hljs-keyword">if</span> (waiting.size())<br>    &#123;<br>        PCB *program = ListItem2PCB(waiting.front(), tagInGeneralList);<br>        waiting.pop_front();<br>        semLock.unlock();<br>        programManager.MESA_WakeUp(program);<br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>        semLock.unlock();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>线程设置：可以看到mother线程在最开始的时候请求访问临界区，然后在执行完之后再释放资源，这样子调皮小孩就没办法同时访问临界资源了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">a_mother</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    semaphore.P();<br>    <span class="hljs-type">int</span> delay = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;mother: start to make cheese burger, there are %d cheese burger now\n&quot;</span>, cheese_burger);<br>    <span class="hljs-comment">// make 10 cheese_burger</span><br>    cheese_burger += <span class="hljs-number">10</span>;<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;mother: oh, I have to hang clothes out.\n&quot;</span>);<br>    <span class="hljs-comment">// hanging clothes out</span><br>    delay = <span class="hljs-number">0xfffffff</span>;<br>    <span class="hljs-keyword">while</span> (delay)<br>        --delay;<br>    <span class="hljs-comment">// done</span><br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;mother: Oh, Jesus! There are %d cheese burgers\n&quot;</span>, cheese_burger);<br>    semaphore.V();<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">a_naughty_boy</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    semaphore.P();<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;boy   : Look what I found!\n&quot;</span>);<br>    <span class="hljs-comment">// eat all cheese_burgers out secretly</span><br>    cheese_burger -= <span class="hljs-number">10</span>;<br>    <span class="hljs-comment">// run away as fast as possible</span><br>    semaphore.V();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用信号量复现运行结果：<br><img src="/img/file-20250507153855621.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="1-2-锁机制的实现"><a href="#1-2-锁机制的实现" class="headerlink" title="1.2 锁机制的实现"></a>1.2 锁机制的实现</h4><p>我们使用了原子指令<code>xchg</code>来实现自旋锁。但是，这种方法并不是唯一的。例如，x86指令中提供了另外一个原子指令<code>bts</code>和<code>lock</code>前缀等，这些指令也可以用来实现锁机制。现在，同学们需要结合自己所学的知识，实现一个与本教程的实现方式不完全相同的锁机制。最后，测试你实现的锁机制，将结果截图并说说你是怎么做的。</p>
+<p>提示：在<code>asm_utils.asm</code>中实现你自己的原子操作<code>your_asm_atomic_exchange</code>，并在<code>sync.cpp</code>中做相应修改。</p>
+<p><strong>BTS指令</strong>：用于<strong>测试</strong>并<strong>设置</strong>指定位置的位值为1<br>指令：<code>BTS dest,src</code></p>
+<p><strong>LOCK前缀</strong>：指令前缀，用于在多处理器环境中以原子方式执行<br>语法：<code>LOCK instruction</code></p>
+<ul>
+<li><strong>工作原理</strong>：<ol>
+<li>当指令执行时，处理器会锁定系统总线或使用缓存一致性机制</li>
+<li>防止其他处理器在当前指令完成前访问同一内存位置</li>
+<li>确保指令的操作是原子的，不会被其他处理器的操作中断</li>
+</ol>
+</li>
+<li><strong>适用指令</strong>：只能用于某些特定指令，如ADD, ADC, AND, BTC, BTR, BTS, CMPXCHG, DEC, INC, NEG, NOT, OR, SBB, SUB, XOR等</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs asm">; void my_asm_atomic_exchange(uint32 *register, uint32 *memeory);<br>my_asm_atomic_exchange:<br>    push ebp<br>    mov ebp, esp<br>    pushad  ; 保存所有寄存器状态<br><br>    mov ebx, [ebp + 4 * 2] ; register<br>    mov ebx, [ebp + 4 * 3] ; memory<br>    <br>    mov ebx, [esi]         ; 获取register指向的值到ebx<br>    <br>exchange_loop:<br>    mov eax, [edi]         ; 获取当前内存值到eax<br>    <br>    ; 使用lock cmpxchg原子地比较并交换<br>    lock cmpxchg [edi], ebx  ; 如果[edi]==eax，则[edi]=ebx，否则eax=[edi]<br>    <br>    ; 如果交换失败(ZF=0)，eax已经包含了最新的内存值<br>    jnz exchange_loop      ; 如果交换失败，则重试<br>    <br>    ; 此时eax包含原始内存值，将其存回register指针<br>    mov [esi], eax<br>    <br>    popad<br>    pop ebp<br>    ret<br></code></pre></td></tr></table></figure>
+
+<p>执行结果：<br><img src="/img/file-20250507170037315.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="Assignment-2-生产者-消费者问题"><a href="#Assignment-2-生产者-消费者问题" class="headerlink" title="Assignment 2 生产者-消费者问题"></a>Assignment 2 生产者-消费者问题</h3><h4 id="2-1-Race-Condition"><a href="#2-1-Race-Condition" class="headerlink" title="2.1 Race Condition"></a>2.1 Race Condition</h4><p>同学们可以任取一个<strong>生产者-消费者问题</strong>，然后在lab6的代码环境下<strong>创建多个线程</strong>来模拟这个问题。在2.1中，我们不使用任何同步互斥的工具。因此，这些线程可能会产生冲突，进而无法产生我们预期的结果。同学们<u>需要将这个产生错误的场景呈现出来</u>，将结果截图并说说你是怎么做的。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs 伪代码">var items = 0, space = 10, mutex = 1;<br>var in = 0, out = 0;<br>item buf[10] = &#123; NULL &#125;;<br><br>producer &#123;<br>    while( true ) &#123;<br>        wait( space );  // 等待缓冲区有空闲位置， 在使用PV操作时，条件变量需要在互斥锁之前<br>        wait( mutex );  // 保证在product时不会有其他线程访问缓冲区<br><br>        // product<br>        buf.push( item, in );  // 将新资源放到buf[in]位置 <br>        in = ( in + 1 ) % 10;<br>        <br>        signal( mutex );  // 唤醒的顺序可以不同<br>        signal( items );  // 通知consumer缓冲区有资源可以取走<br>    &#125;<br>&#125;<br><br>consumer &#123;<br>    while( true ) &#123;<br>        wait( items );  // 等待缓冲区有资源可以使用<br>        wait( mutex );  // 保证在consume时不会有其他线程访问缓冲区<br><br>        // consume<br>        buf.pop( out );  // 将buf[out]位置的的资源取走<br>        out = ( out + 1 ) % 10;<br><br>        signal( mutex );  // 唤醒的顺序可以不同<br>        signal( space );  // 通知缓冲区有空闲位置<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>设计一个生产者消费者问题，假设有一个生产者和一个消费者，我们让生产者先生产一个资源，然后再消费者去获取资源。我发现在生产者把资源生产出来之前，消费者就去取了，还对外声称拿到了资源！<br><img src="/img/file-20250507184526174.png" srcset="/img/loading.gif" lazyload></p>
+<p>修改了一下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">producer</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    <span class="hljs-type">int</span> delay = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-type">int</span> before = resources;<br>    delay = <span class="hljs-number">0xfffffff</span>; <span class="hljs-comment">// 模拟耗时操作</span><br>    <span class="hljs-keyword">while</span> (delay--)<br>        ;<br><br>    resources = before + <span class="hljs-number">1</span>;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[Producer] Produced 1, resources = %d\n&quot;</span>, resources);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">consumer</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    <span class="hljs-type">int</span> delay = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-keyword">if</span> (resources &lt;= <span class="hljs-number">0</span>)<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[Consumer] No resources to consume! resources = %d\n&quot;</span>, resources);<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    <span class="hljs-type">int</span> before = resources;<br>    delay = <span class="hljs-number">0xfffffff</span>; <span class="hljs-comment">// 模拟耗时操作</span><br>    <span class="hljs-keyword">while</span> (delay--)<br>        ;<br><br>    resources = before - <span class="hljs-number">1</span>;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[Consumer] Consumed 1, resources = %d\n&quot;</span>, resources);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">first_thread</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    <span class="hljs-comment">// 清屏</span><br>    stdio.moveCursor(<span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">25</span> * <span class="hljs-number">80</span>; ++i)<br>        stdio.print(<span class="hljs-string">&#x27; &#x27;</span>);<br>    stdio.moveCursor(<span class="hljs-number">0</span>);<br><br>    resources = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-comment">// 创建多个生产者和消费者线程</span><br>    programManager.executeThread(producer, nullptr, <span class="hljs-string">&quot;producer1&quot;</span>, <span class="hljs-number">1</span>);<br>    programManager.executeThread(consumer, nullptr, <span class="hljs-string">&quot;consumer1&quot;</span>, <span class="hljs-number">1</span>);<br>    programManager.executeThread(consumer, nullptr, <span class="hljs-string">&quot;consumer2&quot;</span>, <span class="hljs-number">1</span>);<br>    programManager.executeThread(producer, nullptr, <span class="hljs-string">&quot;producer2&quot;</span>, <span class="hljs-number">1</span>);<br>    programManager.executeThread(consumer, nullptr, <span class="hljs-string">&quot;consumer3&quot;</span>, <span class="hljs-number">1</span>);<br><br>    asm_halt();<br>&#125;<br><br></code></pre></td></tr></table></figure>
+<p><img src="/img/file-20250510181456865.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="2-2-信号量解决方法"><a href="#2-2-信号量解决方法" class="headerlink" title="2.2 信号量解决方法"></a>2.2 信号量解决方法</h4><p>使用信号量解决上述你模拟的生产者-消费者问题。将结果截图并说说你是怎么做的。</p>
+<p>提示：</p>
+<p>①经典的生产者-消费者问题有读者-写者问题、有界缓冲区问题等，可任取一个来模拟。</p>
+<p>②模拟生产者-消费者问题的步骤：1、在代码中创建多个线程，分别代表生产者和消费者。2、编写生产者和消费者的线程函数。在这些函数中，根据问题的具体场景实现生产数据和消费数据的逻辑。3、创建并启动生产者和消费者线程。观察线程之间的交互并记录结果。4、展示没有使用同步互斥工具（如信号量）时，线程之间可能产生的冲突。5、使用信号量解决同步问题，并展示解决后的结果。</p>
+<p>③样例视频模拟了读者-写者问题的场景：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-comment">//模拟读错误</span><br><span class="hljs-comment">//创建线程读第1-4条记录</span><br>programManager.<span class="hljs-built_in">executeThread</span>(readFirstQuote, <span class="hljs-literal">nullptr</span>, <span class="hljs-string">&quot;second thread&quot;</span>, <span class="hljs-number">1</span>);<br>programManager.<span class="hljs-built_in">executeThread</span>(readSecondQuote, <span class="hljs-literal">nullptr</span>, <span class="hljs-string">&quot;third thread&quot;</span>, <span class="hljs-number">1</span>);<br>programManager.<span class="hljs-built_in">executeThread</span>(readThirdQuote, <span class="hljs-literal">nullptr</span>, <span class="hljs-string">&quot;fourth thread&quot;</span>, <span class="hljs-number">1</span>);<br>programManager.<span class="hljs-built_in">executeThread</span>(readFourthQuote, <span class="hljs-literal">nullptr</span>, <span class="hljs-string">&quot;fifth thread&quot;</span>, <span class="hljs-number">1</span>);<br><span class="hljs-comment">//创建线程，修改第2条和第4条记录为较长内容</span><br><span class="hljs-comment">//由于写时间较长，写线程运行时间大于RRschedule的time quantum</span><br>programManager.<span class="hljs-built_in">executeThread</span>(writeSecondQuote, <span class="hljs-literal">nullptr</span>, <span class="hljs-string">&quot;sixth thread&quot;</span>, <span class="hljs-number">1</span>);<br>programManager.<span class="hljs-built_in">executeThread</span>(writeFourthQuote, <span class="hljs-literal">nullptr</span>, <span class="hljs-string">&quot;seventh thread&quot;</span>, <span class="hljs-number">1</span>);<br><span class="hljs-comment">//创建线程读第2条和第4条记录</span><br><span class="hljs-comment">//发现没有读到修改后的项，而是输出了初始项</span><br>programManager.<span class="hljs-built_in">executeThread</span>(readSecondQuote, <span class="hljs-literal">nullptr</span>, <span class="hljs-string">&quot;eighth thread&quot;</span>, <span class="hljs-number">1</span>);<br>programManager.<span class="hljs-built_in">executeThread</span>(readFourthQuote, <span class="hljs-literal">nullptr</span>, <span class="hljs-string">&quot;ninth thread&quot;</span>, <span class="hljs-number">1</span>);<br></code></pre></td></tr></table></figure>
+
+<p>而使用信号量后，可以读到修改后的项。</p>
+<p>使用信号量之后，生产者消费者问题得到了很好的解决<br><img src="/img/file-20250507185504196.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="Assignment-3-哲学家就餐问题"><a href="#Assignment-3-哲学家就餐问题" class="headerlink" title="Assignment 3 哲学家就餐问题"></a>Assignment 3 哲学家就餐问题</h3><p>假设有 5 个哲学家，他们的生活只是思考和吃饭。这些哲学家共用一个圆桌，每位都有一把椅子。在桌子中央有一碗米饭，在桌子上放着 5 根筷子。</p>
+<p><img src="https://gitee.com/kpyang5/sysu-2025-spring-operating-system/raw/main/lab6/gallery/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%90%E9%97%AE%E9%A2%98.jpeg" srcset="/img/loading.gif" lazyload alt="哲学家就餐问题"></p>
+<p>当一位哲学家思考时，他与其他同事不交流。时而，他会感到饥饿，并试图拿起与他相近的两根筷子（筷子在他和他的左或右邻居之间）。一个哲学家一次只能拿起一根筷子。显然，他不能从其他哲学家手里拿走筷子。当一个饥饿的哲学家同时拥有两根筷子时，他就能吃。在吃完后，他会放下两根筷子，并开始思考。</p>
+<h4 id="3-1-初步解决方法"><a href="#3-1-初步解决方法" class="headerlink" title="3.1 初步解决方法"></a>3.1 初步解决方法</h4><p>同学们需要在本教程的代码环境下，创建多个线程来模拟哲学家就餐的场景。然后，同学们需要结合信号量来实现理论课教材中给出的关于哲学家就餐问题的方法。最后，将结果截图并说说你是怎么做的。</p>
+<p>该方案可能导致死锁，请举例出现死锁的场景和原因，并提出一种解决死锁的方案。</p>
+<p>让我们来看一下运行情况：<br>启动：<br><img src="/img/file-20250507195411767.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250507195511916.png" srcset="/img/loading.gif" lazyload><br>过了一段时间后，发现谁也拿不起来了，出现了<strong>死锁</strong>！<br><img src="/img/file-20250507195535572.png" srcset="/img/loading.gif" lazyload></p>
+<p>不出现死锁：<br><img src="/img/77c4cb7b443f7e05b99484e4b0e2b52.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="3-2-死锁解决方法（选做）"><a href="#3-2-死锁解决方法（选做）" class="headerlink" title="3.2 死锁解决方法（选做）"></a>3.2 死锁解决方法（选做）</h4><p>虽然3.1的解决方案保证两个邻居不能同时进食，但是它可能导致死锁。现在，同学们需要想办法将死锁的场景演示出来。提出一种解决死锁的方法并实现。最后，将结果截图并说说你是怎么做的。</p>
+<p>说明：</p>
+<p>①为演示死锁场景，可以在哲学家进食的线程中添加等待时间，使哲学家们的操作更接近于同时进行。</p>
+<p>②样例视频演示了等待时间较少——正常、等待时间较长——出现死锁。<br>通过设置同一时间只允许4个人就餐来避免死锁。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs c">Semaphore semaphore[<span class="hljs-number">5</span>];<br><span class="hljs-comment">// 限制同时就餐人数的信号量</span><br>Semaphore table;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">philosopher</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span><br>&#123;<br>    <span class="hljs-type">int</span> meals = <span class="hljs-number">0</span>; <span class="hljs-comment">// 用于计数和限制用餐次数，避免无限循环</span><br>    <span class="hljs-keyword">do</span><br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;philosopher %d is thinking\n&quot;</span>, i);<br>        <br>       <span class="hljs-comment">//同时只能有4人上桌</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;philosopher %d tries to sit at the table\n&quot;</span>, i);<br>        table.P();<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;philosopher %d sits at the table\n&quot;</span>, i);<br>        <br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;philosopher %d tries to pick up left chopstick\n&quot;</span>, i);<br>        semaphore[i].P();<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;philosopher %d picks up left chopstick\n&quot;</span>, i);<br>        <br>        <span class="hljs-comment">// thinking</span><br>        <span class="hljs-type">int</span> delay = <span class="hljs-number">0x1FFFFFF</span>;<br>        <span class="hljs-keyword">while</span> (delay) --delay;<br>        <br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;philosopher %d tries to pick up right chopstick\n&quot;</span>, i);<br>        semaphore[(i + <span class="hljs-number">1</span>) % <span class="hljs-number">5</span>].P();<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;philosopher %d picks up right chopstick\n&quot;</span>, i);<br>        <br>        <span class="hljs-comment">// 进餐</span><br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;philosopher %d is eating...\n&quot;</span>, i);<br>        delay = <span class="hljs-number">0x3FFFFFF</span>;<br>        <span class="hljs-keyword">while</span> (delay) --delay;<br>        <br>        <span class="hljs-comment">// 放下筷子</span><br>        semaphore[i].V();<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;philosopher %d puts down left chopstick\n&quot;</span>, i);<br>        <br>        semaphore[(i + <span class="hljs-number">1</span>) % <span class="hljs-number">5</span>].V();<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;philosopher %d puts down right chopstick\n&quot;</span>, i);<br>        <br>        <span class="hljs-comment">// 离开餐桌，让其他哲学家有机会</span><br>        table.V();<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;philosopher %d leaves the table\n&quot;</span>, i);<br>        <br>        meals++; <span class="hljs-comment">// 增加用餐计数</span><br>    &#125; <span class="hljs-keyword">while</span> (meals &lt; <span class="hljs-number">3</span>); <span class="hljs-comment">// 限制每个哲学家用餐3次</span><br>    <br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;philosopher %d finish eating\n&quot;</span>, i);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/file-20250507203711903.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="知识学习"><a href="#知识学习" class="headerlink" title="知识学习"></a>知识学习</h2><h3 id="消失的芝士汉堡"><a href="#消失的芝士汉堡" class="headerlink" title="消失的芝士汉堡"></a>消失的芝士汉堡</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">a_mother</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    <span class="hljs-type">int</span> delay = <span class="hljs-number">0</span>;<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;mother: start to make cheese burger, there are %d cheese burger now\n&quot;</span>, cheese_burger);<br>    <span class="hljs-comment">// make 10 cheese_burger</span><br>    cheese_burger += <span class="hljs-number">10</span>;<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;mother: oh, I have to hang clothes out.\n&quot;</span>);<br>    <span class="hljs-comment">// hanging clothes out</span><br>    delay = <span class="hljs-number">0xfffffff</span>;<br>    <span class="hljs-keyword">while</span> (delay)<br>        --delay;<br>    <span class="hljs-comment">// done</span><br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;mother: Oh, Jesus! There are %d cheese burgers\n&quot;</span>, cheese_burger);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">a_naughty_boy</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;boy   : Look what I found!\n&quot;</span>);<br>    <span class="hljs-comment">// eat all cheese_burgers out secretly</span><br>    cheese_burger -= <span class="hljs-number">10</span>;<br>    <span class="hljs-comment">// run away as fast as possible</span><br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">first_thread</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    <span class="hljs-comment">// 第1个线程不可以返回</span><br>    stdio.moveCursor(<span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">25</span> * <span class="hljs-number">80</span>; ++i)<br>    &#123;<br>        stdio.print(<span class="hljs-string">&#x27; &#x27;</span>);<br>    &#125;<br>    stdio.moveCursor(<span class="hljs-number">0</span>);<br><br>    cheese_burger = <span class="hljs-number">0</span>;<br>    <br>    programManager.executeThread(a_mother, nullptr, <span class="hljs-string">&quot;second thread&quot;</span>, <span class="hljs-number">1</span>);<br>    programManager.executeThread(a_naughty_boy, nullptr, <span class="hljs-string">&quot;third thread&quot;</span>, <span class="hljs-number">1</span>);<br><br>    asm_halt();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>执行结果：<br><img src="/img/file-20250507143934453.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h3><p>自旋锁的<strong>基本思想</strong>是定义一个<strong>共享变量</strong><code>bolt</code>，<code>bolt</code>会被初始化为0。在线程进入临界区之前，即访问共享变量之前，都需要去检查<code>bolt</code>是否为0。</p>
+<ul>
+<li>如果<code>bolt</code>为0，那么这个线程就会将<code>bolt</code>设置为1，然后进入临界区。待线程离开临界区后，线程会将<code>bolt</code>设置为0。</li>
+<li>如果线程在检查<code>bolt</code>时，发现<code>bolt</code>为1，说明有其他线程在临界区中。此时这个线程就会一直在<strong>循环检查</strong><code>bolt</code>的值（<u>类似陀螺在原地旋转，所以被称为自旋</u>），直到<code>bolt</code>为0，然后进入临界区。（不过会导致忙等待）<br>不能保证有限等待的原则</li>
+</ul>
+<h4 id="实现自旋锁"><a href="#实现自旋锁" class="headerlink" title="实现自旋锁"></a>实现自旋锁</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpinLock</span></span><br><span class="hljs-class">&#123;</span><br>private:<br>    uint32 bolt; <br>public:<br>    SpinLock();<br>    <span class="hljs-type">void</span> <span class="hljs-title function_">initialize</span><span class="hljs-params">()</span>;<br>    <span class="hljs-type">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">()</span>;<br>    <span class="hljs-type">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">()</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>常常将<code>SpinLock</code>定义为一个<strong>全局变量</strong>，而全局变量的构造函数在我们的操作系统实验中不会被自动调用，所以在使用 <code>SpinLock</code> 时需要手动调用 <code>SpinLock::initialize</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c">SpinLock::SpinLock()<br>&#123;<br>    initialize();<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">SpinLock::initialize</span><span class="hljs-params">()</span><br>&#123;<br>    bolt = <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">SpinLock::lock</span><span class="hljs-params">()</span><br>&#123;<br>    uint32 key = <span class="hljs-number">1</span>;<br><br>    <span class="hljs-keyword">do</span><br>    &#123;<br>        asm_atomic_exchange(&amp;key, &amp;bolt); <br>        <span class="hljs-comment">//printf(&quot;pid: %d\n&quot;, programManager.running-&gt;pid);</span><br>    &#125; <span class="hljs-keyword">while</span> (key);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">SpinLock::unlock</span><span class="hljs-params">()</span><br>&#123;<br>    bolt = <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>lock()：会不断检查是否能进入临界区，这里需要使用“原子”操作<code>asm_atomic_exchange(&amp;key, &amp;bolt)</code> 。但是实际上不是一个真正的原子指令，需要在某些条件下才是一个原子指令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs asm">; void asm_atomic_exchange(uint32 *register, uint32 *memeory);<br>asm_atomic_exchange:<br>    push ebp<br>    mov ebp, esp<br>    pushad<br><br>    mov ebx, [ebp + 4 * 2] ; register<br>    mov eax, [ebx]      ; 取出register指向的变量的值<br>    mov ebx, [ebp + 4 * 3] ; memory<br>    xchg [ebx], eax      ; 原子交换指令<br>    mov ebx, [ebp + 4 * 2] ; memory<br>    mov [ebx], eax      ; 将memory指向的值赋值给register指向的变量<br><br>    popad<br>    pop ebp<br>    ret<br></code></pre></td></tr></table></figure>
+<ul>
+<li>矛盾的根源就在于CPU提供的原子指令<code>xchg</code>的操作数要么是<strong>内存地址和寄存器</strong>，要么<strong>都是寄存器</strong>，而不存在两个操作数都是内存地址的情况</li>
+<li>因此，我们在实现 <code>asm_atomic_exchange</code> 的时候作了一个重要的假设——形式参数register指向的变量不是一个共享变量</li>
+</ul>
+<p>我们为芝士汉堡成功的上了锁，保证在执行完 <code>a_mother</code> 线程之后才会执行 <code>a_naughty_boy</code> 线程。</p>
+<p>执行结果：<br><img src="/img/file-20250507145633494.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><p>由于SpinLock存在如下的缺点：</p>
+<ul>
+<li>忙等待</li>
+<li>可能导致饥饿</li>
+<li>可能死锁</li>
+</ul>
+<p>定义一个非负整数counter表示邻接资源个数</p>
+<ul>
+<li>请求资源，执行P操作：检查counter数量，如果有可用资源，则分配；如果没有则挂载到信号量的阻塞队列当中</li>
+<li>释放资源，执行V操作：释放资源，同时检查挂载的阻塞队列中有没有线程，有则唤醒</li>
+</ul>
+<p>counter和阻塞队列是共享变量，需要实现互斥访问&#x3D;&gt;使用SpinLock</p>
+<p>信号量的定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Semaphore</span></span><br><span class="hljs-class">&#123;</span><br>private:<br>    uint32 counter;<br>    List waiting;<br>    SpinLock semLock;<br><br>public:<br>    Semaphore();<br>    <span class="hljs-type">void</span> <span class="hljs-title function_">initialize</span><span class="hljs-params">(uint32 counter)</span>;<br>    <span class="hljs-type">void</span> <span class="hljs-title function_">P</span><span class="hljs-params">()</span>;<br>    <span class="hljs-type">void</span> <span class="hljs-title function_">V</span><span class="hljs-params">()</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>P操作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">Semaphore::P</span><span class="hljs-params">()</span><br>&#123;<br>    PCB *cur = nullptr;<br><br>    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) <span class="hljs-comment">//</span><br>    &#123;<br>        semLock.lock(); <span class="hljs-comment">//共享资源，需要互斥访问</span><br>        <span class="hljs-keyword">if</span> (counter &gt; <span class="hljs-number">0</span>) <span class="hljs-comment">//存在可用资源</span><br>        &#123;<br>            --counter;<br>            semLock.unlock(); <br>            <span class="hljs-keyword">return</span>;<br>        &#125;<br>        <span class="hljs-comment">//不存在可用资源，挂载</span><br>        cur = programManager.running;<br>        waiting.push_back(&amp;(cur-&gt;tagInGeneralList));<br>        cur-&gt;status = ProgramStatus::BLOCKED;<br><br>        semLock.unlock();<br>        programManager.schedule();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>V操作：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">Semaphore::V</span><span class="hljs-params">()</span><br>&#123;<br>    semLock.lock();<br>    ++counter; <span class="hljs-comment">//释放资源</span><br>    <span class="hljs-keyword">if</span> (waiting.size()) <span class="hljs-comment">//查看是否需要唤醒线程</span><br>    &#123;<br>        PCB *program = ListItem2PCB(waiting.front(), tagInGeneralList);<br>        waiting.pop_front();<br>        semLock.unlock();<br>        programManager.MESA_WakeUp(program);<span class="hljs-comment">//唤醒</span><br>    &#125;<br>    <span class="hljs-keyword">else</span><br>    &#123;<br>        semLock.unlock();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>实际上线程的唤醒有三种方式。</p>
+<ul>
+<li><strong>MESA模型</strong>：阻塞队列中的阻塞线程被唤醒后，<strong>不会立即执行</strong>而是<strong>放入到就绪队列</strong>，等待下一次的调度运行。而正在运行的线程会继续执行，直到程序执行完毕。</li>
+<li><strong>Hasen 模型</strong>：阻塞队列中的阻塞线程被唤醒后，会在当前线程执行完成后<strong>立即运行刚被唤醒的阻塞线程</strong>。</li>
+<li><strong>Hoare 模型</strong>：阻塞队列中的阻塞线程被唤醒后，<strong>当前线程会立即中断</strong>，并<strong>运行刚刚被唤醒的阻塞线程</strong>，等阻塞线程完成再回来运行。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS-Labs/" class="category-chain-item">OS_Labs</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="/tags/OS-Labs/" class="print-no-link">#OS_Labs</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OS_Lab6</div>
+      <div>https://pqcu77.github.io/2025/05/07/OS-Lab6/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月7日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/11/OS-lab7/" title="OS_lab7">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OS_lab7</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/29/AI-lab5/" title="AI-Lab5">
+                        <span class="hidden-mobile">AI-Lab5</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

@@ -1,0 +1,1081 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="内存管理实验概述 学习如何使用位图和地址池来管理资源 实现在物理地址空间下的内存管理 学习并开启二级分页机制&#x3D;&gt;实现在虚拟地址空间下的内存管理  基于分页机制，我们可以将连续的虚拟地址空间映射到不连续的物理地址空间。对于同一个虚拟地址，在不同的页目录表和页表下，我们会得到不同的物理地址。开启了分页机制后，程序中使用的地址是虚拟地址。我们需要结合页目录表和页表才能确定虚拟地址对应的物">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS_lab7">
+<meta property="og:url" content="https://pqcu77.github.io/2025/05/11/OS-lab7/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="内存管理实验概述 学习如何使用位图和地址池来管理资源 实现在物理地址空间下的内存管理 学习并开启二级分页机制&#x3D;&gt;实现在虚拟地址空间下的内存管理  基于分页机制，我们可以将连续的虚拟地址空间映射到不连续的物理地址空间。对于同一个虚拟地址，在不同的页目录表和页表下，我们会得到不同的物理地址。开启了分页机制后，程序中使用的地址是虚拟地址。我们需要结合页目录表和页表才能确定虚拟地址对应的物">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250515222934277.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250516212322734.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250516212146391.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250511171720018.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250511171921574.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250511204118813.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250511204233581.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250514144239027.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250514150128997.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250514151918804.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250514152921204.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250514153122496.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250514153403449.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250514154039367.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250514154558623.png">
+<meta property="article:published_time" content="2025-05-11T09:05:19.000Z">
+<meta property="article:modified_time" content="2025-05-21T06:30:18.843Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="OS_Labs">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250515222934277.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>OS_lab7 - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OS_lab7"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-11 17:05" pubdate>
+          2025年5月11日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          6.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          54 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">OS_lab7</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-05-21T14:30:18+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h1><h2 id="实验概述"><a href="#实验概述" class="headerlink" title="实验概述"></a>实验概述</h2><ul>
+<li>学习如何使用<strong>位图</strong>和<strong>地址池</strong>来管理资源</li>
+<li>实现在物理地址空间下的内存管理</li>
+<li>学习并开启二级分页机制&#x3D;&gt;实现在虚拟地址空间下的内存管理</li>
+</ul>
+<p>基于分页机制，我们可以将连续的虚拟地址空间映射到不连续的物理地址空间。<br>对于同一个虚拟地址，在不同的页目录表和页表下，我们会得到不同的物理地址。<br>开启了分页机制后，程序中使用的地址是虚拟地址。我们需要结合页目录表和页表才能确定虚拟地址对应的物理地址。</p>
+<p>实验要求：</p>
+<ul>
+<li>ddl：6月1日</li>
+</ul>
+<h2 id="实验内容"><a href="#实验内容" class="headerlink" title="实验内容"></a>实验内容</h2><h3 id="Assignment-1"><a href="#Assignment-1" class="headerlink" title="Assignment 1"></a>Assignment 1</h3><p><strong>复现</strong>参考代码，实现<u>二级分页机制</u>，并能够在虚拟机地址空间中进行内存管理，包括内存的申请和释放等，截图并给出过程解释。</p>
+<h4 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h4><p>参考example一步步照着写。</p>
+<h3 id="Assignment-2"><a href="#Assignment-2" class="headerlink" title="Assignment 2"></a>Assignment 2</h3><p>参照理论课上的学习的<strong>物理内存分配算法</strong>如first-fit, best-fit等实现<strong>动态分区算法</strong>等，或者自行提出自己的算法。</p>
+<p>提示：基于scr&#x2F;3下的代码进行修改，你需要改动的文件：<br>src&#x2F;kernel&#x2F;setup.cpp</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">first_thread</span><span class="hljs-params">(<span class="hljs-type">void</span> *arg)</span><br>&#123;<br>    <span class="hljs-comment">// 第1个线程不可以返回</span><br>    <span class="hljs-comment">// stdio.moveCursor(0);</span><br>    <br>    <span class="hljs-comment">// 定义你自己分配想要分配的页数来模拟你实现的算法正确与否，这里我们提供了一个样例，你也可以自行修改：</span><br>    <span class="hljs-type">char</span> *pages_0 = (<span class="hljs-type">char</span> *)memoryManager.allocatePhysicalPages(AddressPoolType::KERNEL, <span class="hljs-number">128</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Allocated 128 pages for pages_0, starting at %d.\n&quot;</span>, pages_0);<br><br>    <span class="hljs-type">char</span> *pages_1 = (<span class="hljs-type">char</span> *)memoryManager.allocatePhysicalPages(AddressPoolType::KERNEL, <span class="hljs-number">64</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Allocated 64 pages for pages_1, starting at %d.\n&quot;</span>, pages_1);<br><br>    <span class="hljs-type">char</span> *pages_2 = (<span class="hljs-type">char</span> *)memoryManager.allocatePhysicalPages(AddressPoolType::KERNEL, <span class="hljs-number">16</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Allocated 16 pages for pages_2, starting at %d.\n&quot;</span>, pages_2);<br><br>    <span class="hljs-type">char</span> *pages_3 = (<span class="hljs-type">char</span> *)memoryManager.allocatePhysicalPages(AddressPoolType::KERNEL, <span class="hljs-number">8</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Allocated 8 pages for pages_3, starting at %d.\n&quot;</span>, pages_3);<br><br>    memoryManager.releasePhysicalPages(AddressPoolType::KERNEL, <span class="hljs-type">int</span>(pages_0), <span class="hljs-number">128</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Released 128 pages for pages_0.\n&quot;</span>);<br><br>    memoryManager.releasePhysicalPages(AddressPoolType::KERNEL, <span class="hljs-type">int</span>(pages_2), <span class="hljs-number">16</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Released 16 pages for pages_2.\n&quot;</span>);<br><br>    <span class="hljs-type">char</span> *pages_4 = (<span class="hljs-type">char</span> *)memoryManager.allocatePhysicalPages(AddressPoolType::KERNEL, <span class="hljs-number">16</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Allocated 16 pages for pages_4, starting at %d.\n&quot;</span>, pages_4);<br><br>    <span class="hljs-type">char</span> *pages_5 = (<span class="hljs-type">char</span> *)memoryManager.allocatePhysicalPages(AddressPoolType::KERNEL, <span class="hljs-number">129</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Allocated 129 pages for pages_5, starting at %d.\n&quot;</span>, pages_5);<br><br>    asm_halt();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>src&#x2F;utils&#x2F;bitmap.cpp</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">BitMap::allocate</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span>&#123;<br>	<span class="hljs-comment">// 你实现的算法</span><br>	...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>我选择实现best-fit（因为原本例子已经实现了first-fit了）<br>实现代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//best fit</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">BitMap::allocate</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span><br>&#123;<br>    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>)<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br><br>    <span class="hljs-type">int</span> index = <span class="hljs-number">0</span>, empty = <span class="hljs-number">0</span>, start = <span class="hljs-number">0</span>;<br>    <span class="hljs-type">int</span> best = length + <span class="hljs-number">1</span>, best_idx = <span class="hljs-number">-1</span>; <br><br>    <span class="hljs-keyword">while</span> (index &lt; length)<br>    &#123;<br>        <span class="hljs-comment">// 跳过已分配的资源</span><br>        <span class="hljs-keyword">while</span> (index &lt; length &amp;&amp; get(index))<br>            ++index;<br><br>        <span class="hljs-keyword">if</span> (index == length)<br>            <span class="hljs-keyword">break</span>;<br><br>        <span class="hljs-comment">// 记录空闲块的起始地址</span><br>        start = index;<br>        empty = <span class="hljs-number">0</span>;<br><br>        <span class="hljs-comment">// 计算当前空闲块的大小</span><br>        <span class="hljs-keyword">while</span> (index &lt; length &amp;&amp; !get(index))<br>        &#123;<br>            ++empty;<br>            ++index;<br>        &#125;<br><br>        <span class="hljs-comment">// 如果当前空闲块满足需求且更优，更新 best 和 best_idx</span><br>        <span class="hljs-keyword">if</span> (empty &gt;= count &amp;&amp; empty &lt; best)<br>        &#123;<br>            best = empty;<br>            best_idx = start;<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-comment">// 分配资源</span><br>    <span class="hljs-keyword">if</span> (best_idx != <span class="hljs-number">-1</span>)<br>    &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; count; i++)<br>        &#123;<br>            <span class="hljs-built_in">set</span>(best_idx + i, <span class="hljs-literal">true</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> best_idx;<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>; <span class="hljs-comment">// 无法分配</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>实现结果：<br><img src="/img/file-20250515222934277.png" srcset="/img/loading.gif" lazyload><br>分析一下：<br>我们可以看到，我先为pages0到pages3分配了对应的页大小，然后释放了pages0以及pages2,再次分配16页的空间给pages4，可以看到分配的空间的首地址在2883584，说明分配到了pages2原本的位置，这个位置是最佳的位置。然后再看我们为pages5分配129页的空间，发现前面无法满足，就再往后开辟了。</p>
+<h3 id="Assignment-3"><a href="#Assignment-3" class="headerlink" title="Assignment 3"></a>Assignment 3</h3><p><strong>复现</strong>“虚拟页内存管理”一节的代码，完成如下要求。</p>
+<ul>
+<li>结合代码分析虚拟页内存分配的三步过程和虚拟页内存释放。</li>
+<li>构造测试例子来分析虚拟页内存管理的实现是否存在bug。如果存在，则尝试修复并再次测试。否则，结合测例简要分析虚拟页内存管理的实现的正确性。</li>
+<li>（<strong>不做要求，对评分没有影响</strong>）如果你有想法，可以在自己的理解的基础上，参考ucore，《操作系统真象还原》，《一个操作系统的实现》等资料来实现自己的虚拟页内存管理。在完成之后，你需要指明相比较于本教程，你的实现的虚拟页内存管理的特点所在。</li>
+</ul>
+<h4 id="实现过程："><a href="#实现过程：" class="headerlink" title="实现过程："></a>实现过程：</h4><h5 id="补充初始化："><a href="#补充初始化：" class="headerlink" title="补充初始化："></a>补充初始化：</h5><p>地址空间包括用户虚拟地址空间、用户物理地址空间、内核虚拟地址空间、内核物理地址空间。其中用户虚拟地址池是局部的，放在PCB中。我们的MemoryManager只需要管理剩下的三个地址池。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 内核物理地址池</span><br>AddressPool kernelPhysical;<br><span class="hljs-comment">// 用户物理地址池</span><br>AddressPool userPhysical;<br><span class="hljs-comment">// 内核虚拟地址池</span><br>AddressPool kernelVirtual;<br></code></pre></td></tr></table></figure>
+<p>在初始化函数中，我们需要对这三个地址池进行初始化</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c">kernelPhysical.initialize(<br>    (<span class="hljs-type">char</span> *)kernelPhysicalBitMapStart,<br>    kernelPages,<br>    kernelPhysicalStartAddress);<br><br>userPhysical.initialize(<br>    (<span class="hljs-type">char</span> *)userPhysicalBitMapStart,<br>    userPages,<br>    userPhysicalStartAddress);<br><br>kernelVirtual.initialize(<br>    (<span class="hljs-type">char</span> *)kernelVirtualBitMapStart,<br>    kernelPages,<br>    KERNEL_VIRTUAL_START);<br></code></pre></td></tr></table></figure>
+
+<h5 id="页内存分配："><a href="#页内存分配：" class="headerlink" title="页内存分配："></a>页内存分配：</h5><p>虚拟页内存分配的三步过程：</p>
+<ul>
+<li>从虚拟地址池中<strong>分配连续的多个虚拟页</strong></li>
+<li>从物理地址池中为每一个虚拟页<strong>分配相应大小的物理页</strong></li>
+<li>在页目录表和页表中<strong>建立</strong>虚拟页和物理页之间的<strong>对应关系</strong></li>
+</ul>
+<p>页内存分配函数：<code>allocatePages(enum AddressPoolType type, const int count)</code></p>
+<p>分配连续的多个虚拟页：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 第一步：从虚拟地址池中分配若干虚拟页</span><br>    <span class="hljs-type">int</span> virtualAddress = allocateVirtualPages(type, count);<br>    <span class="hljs-keyword">if</span> (!virtualAddress)<br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br></code></pre></td></tr></table></figure>
+
+<p>分配虚拟页的函数：只分配内核虚拟页。这里的allocate是first-fit</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">allocateVirtualPages</span><span class="hljs-params">(<span class="hljs-keyword">enum</span> AddressPoolType type, <span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span><br>&#123;<br>    <span class="hljs-type">int</span> start = <span class="hljs-number">-1</span>;<br><br>    <span class="hljs-keyword">if</span> (type == AddressPoolType::KERNEL)<br>    &#123;<br>        start = kernelVrirtual.allocate(count);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> (start == <span class="hljs-number">-1</span>) ? <span class="hljs-number">0</span> : start;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>为每个虚拟页指定对应的物理页：<code>physicalPageAddress = allocatePhysicalPages(type, 1);</code>每次为一个虚拟页分配一个物理页，同时会对内核物理页和用户物理页做不同的区分</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">MemoryManager::allocatePhysicalPages</span><span class="hljs-params">(<span class="hljs-keyword">enum</span> AddressPoolType type, <span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span><br>&#123;<br>    <span class="hljs-type">int</span> start = <span class="hljs-number">-1</span>;<br><br>    <span class="hljs-keyword">if</span> (type == AddressPoolType::KERNEL)<br>    &#123;<br>        start = kernelPhysical.allocate(count);<br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == AddressPoolType::USER)<br>    &#123;<br>        start = userPhysical.allocate(count);<br>    &#125;<br>    <span class="hljs-keyword">return</span> (start == <span class="hljs-number">-1</span>) ? <span class="hljs-number">0</span> : start;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>建立虚拟页和物理页之间的对应关系：<br><code>flag=connectPhysicalVirtualPage(vaddress, physicalPageAddress);</code><br>建立对应的函数：<br>通过计算对应的地址，如果页目录项中没有对应的页表就会进行分配，如果有就直接将页表项指向物理页。</p>
+<ul>
+<li>这里计算对应的地址要记得二级分页机制下的虚拟地址可以分为三部分，页目录项+页表项+页内偏移。需要分别拆解，然后进行转换提取，最后得到物理地址。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">toPDE</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> virtualAddress)</span><br>&#123;<br>    <span class="hljs-keyword">return</span> (<span class="hljs-number">0xfffff000</span> + (((virtualAddress &amp; <span class="hljs-number">0xffc00000</span>) &gt;&gt; <span class="hljs-number">22</span>) * <span class="hljs-number">4</span>));<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">toPTE</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> virtualAddress)</span><br>&#123;<br>    <span class="hljs-keyword">return</span> (<span class="hljs-number">0xffc00000</span> + ((virtualAddress &amp; <span class="hljs-number">0xffc00000</span>) &gt;&gt; <span class="hljs-number">10</span>) + (((virtualAddress &amp; <span class="hljs-number">0x003ff000</span>) &gt;&gt; <span class="hljs-number">12</span>) * <span class="hljs-number">4</span>));<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>具体实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">bool</span> <span class="hljs-title function_">MemoryManager::connectPhysicalVirtualPage</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> virtualAddress, <span class="hljs-type">const</span> <span class="hljs-type">int</span> physicalPageAddress)</span><br>&#123;<br>    <span class="hljs-comment">// 计算虚拟地址对应的页目录项和页表项</span><br>    <span class="hljs-type">int</span> *pde = (<span class="hljs-type">int</span> *)toPDE(virtualAddress);<br>    <span class="hljs-type">int</span> *pte = (<span class="hljs-type">int</span> *)toPTE(virtualAddress);<br><br>    <span class="hljs-comment">// 页目录项无对应的页表，先分配一个页表</span><br>    <span class="hljs-keyword">if</span>(!(*pde &amp; <span class="hljs-number">0x00000001</span>)) <br>    &#123;<br>        <span class="hljs-comment">// 从内核物理地址空间中分配一个页表</span><br>        <span class="hljs-type">int</span> page = allocatePhysicalPages(AddressPoolType::KERNEL, <span class="hljs-number">1</span>);<br>        <span class="hljs-keyword">if</span> (!page)<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br><br>        <span class="hljs-comment">// 使页目录项指向页表</span><br>        *pde = page | <span class="hljs-number">0x7</span>;<br>        <span class="hljs-comment">// 初始化页表</span><br>        <span class="hljs-type">char</span> *pagePtr = (<span class="hljs-type">char</span> *)(((<span class="hljs-type">int</span>)pte) &amp; <span class="hljs-number">0xfffff000</span>);<br>        <span class="hljs-built_in">memset</span>(pagePtr, <span class="hljs-number">0</span>, PAGE_SIZE);<br>    &#125;<br><br>    <span class="hljs-comment">// 使页表项指向物理页</span><br>    *pte = physicalPageAddress | <span class="hljs-number">0x7</span>;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="页内存释放："><a href="#页内存释放：" class="headerlink" title="页内存释放："></a>页内存释放：</h4><p>在分配页内存时，如果遇到物理页无法分配的情况，之前成功分配的虚拟页和物理页需要释放掉（打回原形），否则会导致内存泄漏。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">MemoryManager::releasePages</span><span class="hljs-params">(<span class="hljs-keyword">enum</span> AddressPoolType type, <span class="hljs-type">const</span> <span class="hljs-type">int</span> virtualAddress, <span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span><br>&#123;<br>    <span class="hljs-type">int</span> vaddr = virtualAddress;<br>    <span class="hljs-type">int</span> *pte, *pde;<br>    <span class="hljs-type">bool</span> flag;<br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> ENTRY_NUM = PAGE_SIZE / <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>);<br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; count; ++i, vaddr += PAGE_SIZE)<br>    &#123;<br>        releasePhysicalPages(type, vaddr2paddr(vaddr), <span class="hljs-number">1</span>);<br><br>        <span class="hljs-comment">// 设置页表项为不存在，防止释放后被再次使用</span><br>        pte = (<span class="hljs-type">int</span> *)toPTE(vaddr);<br>        *pte = <span class="hljs-number">0</span>;<br>    &#125;<br><br>    releaseVirtualPages(type, virtualAddress, count);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>对于每一个虚拟页，释放为其分配的物理页：vaddr2paddr()函数实现了地址的转换。<br>然后将页表项设置为不存在，防止释放后被再次使用。<br>最后再释放虚拟页。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">MemoryManager::releaseVirtualPages</span><span class="hljs-params">(<span class="hljs-keyword">enum</span> AddressPoolType type, <span class="hljs-type">const</span> <span class="hljs-type">int</span> vaddr, <span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span><br>&#123;<br>    <span class="hljs-keyword">if</span> (type == AddressPoolType::KERNEL)<br>    &#123;<br>        kernelVirtual.release(vaddr, count);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+<p>测试例子：<br><img src="/img/file-20250516212322734.png" srcset="/img/loading.gif" lazyload><br>所做的测试内容是：<br>先为三个线程分配100，10，100页大小的空间，然后再释放线程2，再为线程2分配100页大小的空间，再分配10页的空间。<br>可以看到输出结果，由于虚拟页的分配是连续的：<br>(1)第一次分配：<br><code>p1 = allocatePages(KERNEL, 100)</code></p>
+<ul>
+<li>分配 100 页，地址跨度为：</li>
+</ul>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">100 </span>× <span class="hljs-number">4</span>KB = <span class="hljs-number">409600</span> 字节（<span class="hljs-number">0</span>x64000）<br></code></pre></td></tr></table></figure>
+<ul>
+<li>如果分配起始地址为 <code>0xC0100000</code>，则分配结束地址为：</li>
+</ul>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dns"><span class="hljs-number">0</span>xC<span class="hljs-number">0100000</span> + <span class="hljs-number">0x64000</span> = <span class="hljs-number">0</span>xC<span class="hljs-number">0164000</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>结果</strong>：<code>p1 = 0xC0100000</code></li>
+</ul>
+<p>(2)第二次分配：<code> </code>p2 &#x3D; allocatePages(KERNEL, 10)&#96;</p>
+<ul>
+<li>分配 10 页，地址跨度为：<br>10 × 4KB &#x3D; 40960 字节（0xA000）</li>
+<li>计算出地址：0xC0164000 + 0xA000 &#x3D; 0xC016E000</li>
+</ul>
+<p>(3)第三次分配：<br><code>p3 = allocatePages(KERNEL, 100)</code></p>
+<ul>
+<li>分配 100 页，地址跨度为：100 × 4KB &#x3D; 409600 字节（0x64000）</li>
+<li>计算出地址：0xC016E000 + 0x64000 &#x3D; 0xC01D2000</li>
+</ul>
+<p>（4）释放 10 页：<code> </code>releasePages(KERNEL, (int)p2, 10)&#96;</p>
+<ul>
+<li>释放 <code>p2</code> 指向的 10 页（<code>0xC0164000</code> 到 <code>0xC016E000</code>）。</li>
+<li>内存管理器将这段地址标记为可用。</li>
+</ul>
+<p>(5) 重新分配：<br><code>p2 = allocatePages(KERNEL, 100)</code></p>
+<ul>
+<li>内存管理器重新分配 100 页。</li>
+<li>根据分配策略（假设优先复用刚释放的地址），从 <code>0xC0164000</code> 开始分配：</li>
+</ul>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">0xC0164000</span> + <span class="hljs-number">0</span>x64000 = <span class="hljs-number">0</span>xC01D2000<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>结果</strong>：<code>p2 = 0xC0164000</code><br>(6) 再次分配：<br><code>p2 = allocatePages(KERNEL, 10)</code></li>
+<li>分配 10 页，地址跨度为：</li>
+</ul>
+<figure class="highlight basic"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs basic"><span class="hljs-symbol">10 </span>× <span class="hljs-number">4</span>KB = <span class="hljs-number">40960</span> 字节（<span class="hljs-number">0</span>xA000）<br></code></pre></td></tr></table></figure>
+<ul>
+<li>从上一次分配结束地址 <code>0xC01D2000</code> 开始分配：</li>
+</ul>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-number">0xC01D2000</span> + <span class="hljs-number">0xA000</span> = <span class="hljs-number">0xC01DC000</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>结果</strong>：<code>p2 = 0xC01D2000</code></li>
+</ul>
+<p>可以看出是很符合的。<br><img src="/img/file-20250516212146391.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="（选做）Assignment-4"><a href="#（选做）Assignment-4" class="headerlink" title="（选做）Assignment 4"></a>（选做）Assignment 4</h3><p>参照理论课上虚拟内存管理的<strong>页面置换算法</strong>如FIFO、LRU等，实现页面置换，也可以提出自己的算法。可以在ubuntu实验环境中实现，也可以在win环境使用cpp模拟。</p>
+<p>页面置换算法–进程运行时，若其<strong>访问的页面不在内存而需将其调入</strong>，但内存已无空闲空间时，就需要从内存中调出一页程序或数据，<strong>送入磁盘的对换区</strong>，其中选择调出页面的算法就称为页面置换算法。</p>
+<p>缺页（所需要的页面不在内存中）：</p>
+<ul>
+<li>先看TLB里是否有目标页面（但是我们这里没有实现TLB–skip）</li>
+<li>再看页表中是否有目标页面（如果有就不会缺页）</li>
+<li>页表中也没有就发生了缺页（需要去磁盘中调取）</li>
+</ul>
+<p>所以如果发现虚拟页没有成功分配物理页，就说明缺页了，需要进行页面置换。</p>
+<p>FIFO算法：</p>
+<ul>
+<li>需要一个变量来记录找到最先进来的虚拟页 <code>firstPage</code>，当虚拟页不够时，顺着这个list释放内存。</li>
+</ul>
+<h2 id="实验知识学习"><a href="#实验知识学习" class="headerlink" title="实验知识学习"></a>实验知识学习</h2><h3 id="Example1：内存的探查"><a href="#Example1：内存的探查" class="headerlink" title="Example1：内存的探查"></a>Example1：内存的探查</h3><p>获取操作系统重可管理的内存的容量：</p>
+<ul>
+<li>实模式下，可以通过int 15h中断来获取机器的内存大小。<br><img src="/img/file-20250511171720018.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250511171921574.png" srcset="/img/loading.gif" lazyload></li>
+<li>功能号为 <code>0xe801</code> 的 <code>15h</code> 中断获取内存较为简单：<ul>
+<li>在<code>ax</code>寄存器中存入功能号<code>0xe801</code>即可，无需其他的输入数据</li>
+<li>中断返回的结果是内存的大小，结果保存在寄存器中。返回结果分两部分存储，ax寄存器中存放0-15MB的内存大小（单位1KB），bx寄存器中存放的是16MB-4GB的内存大小（单位是64KB）</li>
+<li>内存总容量为$内存总容量&#x3D;(ax⋅1024+bx⋅64⋅1024) bytes$</li>
+</ul>
+</li>
+<li>由于15h只能在实模式下使用，所以我们在保护模式下如果要获取内存大小，则需要先在实模式下获取之后，保存在一个固定位置，最后在保护模式下建立内存管理时，从固定地址读取。</li>
+</ul>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs x86asm">...<br><span class="hljs-symbol"></span><br><span class="hljs-symbol">load_bootloader:</span> <br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">ax</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">bx</span><br>    <span class="hljs-keyword">call</span> asm_read_hard_disk  <span class="hljs-comment">; 读取硬盘</span><br>    <span class="hljs-keyword">add</span> <span class="hljs-built_in">sp</span>, <span class="hljs-number">4</span><br>    <span class="hljs-keyword">inc</span> <span class="hljs-built_in">ax</span><br>    <span class="hljs-keyword">add</span> <span class="hljs-built_in">bx</span>, <span class="hljs-number">512</span><br>    <span class="hljs-keyword">loop</span> load_bootloader<br><br>    <span class="hljs-comment">; 获取内存大小</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ax</span>, <span class="hljs-number">0xe801</span><br>    <span class="hljs-keyword">int</span> <span class="hljs-number">15h</span><br>    <span class="hljs-keyword">mov</span> [<span class="hljs-number">0x7c00</span>], <span class="hljs-built_in">ax</span><br>    <span class="hljs-keyword">mov</span> [<span class="hljs-number">0x7c00</span>+<span class="hljs-number">2</span>], <span class="hljs-built_in">bx</span><br>	//在跳转之前就获取了内存大小<br>    <span class="hljs-keyword">jmp</span> <span class="hljs-number">0x0000</span>:<span class="hljs-number">0x7e00</span>        <span class="hljs-comment">; 跳转到bootloader</span><br>    <br>...<br></code></pre></td></tr></table></figure>
+<ul>
+<li>在first_thread中读取内存大小</li>
+</ul>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs mel">...<br><br>void first_thread(void *arg)<br>&#123;<br>	...<br>	<br>    <span class="hljs-keyword">int</span> <span class="hljs-keyword">memory</span> = *((uint32 *)MEMORY_SIZE_ADDRESS);<br>    <span class="hljs-comment">// ax寄存器保存的内容</span><br>    <span class="hljs-keyword">int</span> low = <span class="hljs-keyword">memory</span> &amp; <span class="hljs-number">0xffff</span>;<br>    <span class="hljs-comment">// bx寄存器保存的内容</span><br>    <span class="hljs-keyword">int</span> high = (<span class="hljs-keyword">memory</span> &gt;&gt; <span class="hljs-number">16</span>) &amp; <span class="hljs-number">0xffff</span>;<br>    <span class="hljs-keyword">memory</span> = low * <span class="hljs-number">1024</span> + high * <span class="hljs-number">64</span> * <span class="hljs-number">1024</span>;<br>    printf(<span class="hljs-string">&quot;total memory: %d bytes (%d MB)\n&quot;</span>, <span class="hljs-keyword">memory</span>, <span class="hljs-keyword">memory</span> / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span>);<br><br>    asm_halt();<br>&#125;<br><br>...<br></code></pre></td></tr></table></figure>
+
+<p>ps：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-keyword">define</span> MEMORY_SIZE_ADDRESS 0x7c00</span><br></code></pre></td></tr></table></figure>
+
+<p>运行得到：<br><img src="/img/file-20250511204118813.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="位图"><a href="#位图" class="headerlink" title="位图"></a>位图</h3><ul>
+<li>用来<u>标识资源状态的位的集合</u>称为位图。</li>
+<li>BitMap使用<strong>一位</strong>来和<strong>一个资源单元</strong>建立映射关系<br><img src="/img/file-20250511204233581.png" srcset="/img/loading.gif" lazyload><br>对于4GB的内存，在分页机制下，设置一个物理页大小为4KB。那么BitMap的大小为$\frac{4GB}{8*4KB}&#x3D;128KB$</li>
+</ul>
+<h4 id="BitMap的实现"><a href="#BitMap的实现" class="headerlink" title="BitMap的实现"></a>BitMap的实现</h4><p>BitMap的成员包括</p>
+<ul>
+<li>一块<u>存放BitMap</u>的内存区域。</li>
+<li>BitMap<u>管理的资源单元数量</u>。</li>
+<li><u>单独</u>存取位和<u>批处理</u>存取位的方法。<br>定义：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BitMap</span></span><br><span class="hljs-class">&#123;</span><br>public:<br>    <span class="hljs-comment">// 被管理的资源个数，bitmap的总位数</span><br>    <span class="hljs-type">int</span> length;<br>    <span class="hljs-comment">// bitmap的起始地址</span><br>    <span class="hljs-type">char</span> *bitmap;<br>public:<br>    <span class="hljs-comment">// 初始化</span><br>    BitMap();<br>    <span class="hljs-comment">// 设置BitMap，bitmap=起始地址，length=总位数(被管理的资源个数)</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">initialize</span><span class="hljs-params">(<span class="hljs-type">char</span> *bitmap, <span class="hljs-type">const</span> <span class="hljs-type">int</span> length)</span>;<br>    <span class="hljs-comment">// 获取第index个资源的状态，true=allocated，false=free</span><br>    <span class="hljs-type">bool</span> <span class="hljs-title function_">get</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> index)</span> <span class="hljs-type">const</span>;<br>    <span class="hljs-comment">// 设置第index个资源的状态，true=allocated，false=free</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">set</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> index, <span class="hljs-type">const</span> <span class="hljs-type">bool</span> status)</span>;<br>    <span class="hljs-comment">// 分配count个连续的资源，若没有则返回-1，否则返回分配的第1个资源单元序号</span><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">allocate</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span>;<br>    <span class="hljs-comment">// 释放第index个资源开始的count个资源</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">release</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> index, <span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span>;<br>    <span class="hljs-comment">// 返回Bitmap存储区域</span><br>    <span class="hljs-type">char</span> *<span class="hljs-title function_">getBitmap</span><span class="hljs-params">()</span>;<br>    <span class="hljs-comment">// 返回Bitmap的大小</span><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">size</span><span class="hljs-params">()</span> <span class="hljs-type">const</span>;<br>private:<br>    <span class="hljs-comment">// 禁止Bitmap之间的赋值</span><br>    BitMap(<span class="hljs-type">const</span> BitMap &amp;) &#123;&#125;<br>    <span class="hljs-type">void</span> operator=(<span class="hljs-type">const</span> BitMap&amp;) &#123;&#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>我们是从外界向BitMap提供存储空间的，因为无法自己管理自己。所以我们会在内存中手动划分出一块区域来存储BitMap用来标识资源分配情况的位。</p>
+<blockquote>
+<p>[!NOTE]<br>注意，BitMap的成员是有<strong>指针</strong>的。一般情况下，成员涉及指针的对象的赋值都需要使用<strong>动态内存分配</strong>获得一个新的指针，但我们还没有实现动态内存分配。所以，我们将<code>copy constructor</code>和<code>operator=</code>定义为<strong>private</strong>，以<strong>禁止BitMap之间的直接赋值</strong>。这也是为什么我们在BitMap的初始化函数<code>initialize</code>中需要提供BitMap的存储区域。</p>
+</blockquote>
+<p>当我们使用指针来访问BitMap的存储区域时，<strong>最小的访问单位是字节</strong>，而资源单元的状态是使用一个位来表示的。<br>故给定一个资源单元的序号i，无法通过bitmap[i] 的方式来直接修改资源单元的状态，而是定位到这个位的字节序号pos，再确定这个位在字节中的偏移量，使用<strong>位运算</strong>来修改。<br>$i&#x3D;8·pos+offset,0\leq{offset}&lt;8$</p>
+<h3 id="地址池"><a href="#地址池" class="headerlink" title="地址池"></a>地址池</h3><p>目前只需要实现<strong>页内存管理</strong>（每次分配的内存大小是一个页，每次释放的内存大小也是一个页）</p>
+<p>也就是只需要使用一种结构（即<strong>地址池</strong>）来标识地址空间中的哪些页是已经被分配的，哪些是未被分配的。</p>
+<ul>
+<li>当需要页内存分配时，我们可以从地址池中取出一个空闲页。然后地址池便会<strong>标识</strong>（可以用BitMap）该空闲页已被分配，最后计算并返回该空闲页对应的地址。空闲页只要没有被释放，就不会被再次分配。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AddressPool</span></span><br><span class="hljs-class">&#123;</span><br>public:<br>    BitMap resources;<br>    <span class="hljs-type">int</span> startAddress;<br>public:<br>    AddressPool();<br>    <span class="hljs-comment">// 初始化地址池</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">initialize</span><span class="hljs-params">(<span class="hljs-type">char</span> *bitmap, <span class="hljs-type">const</span> <span class="hljs-type">int</span> length,<span class="hljs-type">const</span> <span class="hljs-type">int</span> startAddress)</span>;<br>    <span class="hljs-comment">// 从地址池中分配count个连续页，成功则返回第一个页的地址，失败则返回-1</span><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">allocate</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span>;<br>    <span class="hljs-comment">// 释放若干页的空间</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">release</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">int</span> address, <span class="hljs-type">const</span> <span class="hljs-type">int</span> amount)</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>$address&#x3D;startAddress+i×PAGE_SIZE$</p>
+<h3 id="物理页内存管理"><a href="#物理页内存管理" class="headerlink" title="物理页内存管理"></a>物理页内存管理</h3><p>物理内存划分为两部分：内核空间和用户空间</p>
+<ul>
+<li>内核需要的物理页只会从内核空间中分配，用户程序需要的物理页也只会从用户空间中分配。</li>
+<li>因此我们会使用<strong>两个地址池</strong>来对这两部分物理地址进行管理</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">AddressPoolType</span></span><br><span class="hljs-class">&#123;</span><br>    USER,<br>    KERNEL<br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>内存管理：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MemoryManager</span></span><br><span class="hljs-class">&#123;</span><br>public:<br>    <span class="hljs-comment">// 可管理的内存容量</span><br>    <span class="hljs-type">int</span> totalMemory;<br>    <span class="hljs-comment">// 内核物理地址池</span><br>    AddressPool kernelPhysical;<br>    <span class="hljs-comment">// 用户物理地址池</span><br>    AddressPool userPhysical;<br><br>public:<br>    MemoryManager();<br><br>    <span class="hljs-comment">// 初始化地址池</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">initialize</span><span class="hljs-params">()</span>;<br><br>    <span class="hljs-comment">// 从type类型的物理地址池中分配count个连续的页</span><br>    <span class="hljs-comment">// 成功，返回起始地址；失败，返回0</span><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">allocatePhysicalPages</span><span class="hljs-params">(<span class="hljs-keyword">enum</span> AddressPoolType type, <span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span>;<br><br>    <span class="hljs-comment">// 释放从paddr开始的count个物理页</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">releasePhysicalPages</span><span class="hljs-params">(<span class="hljs-keyword">enum</span> AddressPoolType type, <span class="hljs-type">const</span> <span class="hljs-type">int</span> paddr, <span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span>;<br><br>    <span class="hljs-comment">// 获取内存总容量</span><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">getTotalMemory</span><span class="hljs-params">()</span>;<br><br>&#125;;<br></code></pre></td></tr></table></figure>
+
+<p>初始化地址池：<br>获取全部内存大小；预留部分内存用于存放内核；计算剩余空间内存&#x3D;&gt;同时算出空闲页等。<br><img src="/img/file-20250514144239027.png" srcset="/img/loading.gif" lazyload></p>
+<p>实现物理内存管理：<br>分配物理页和释放物理页</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">MemoryManager::allocatePhysicalPages</span><span class="hljs-params">(<span class="hljs-keyword">enum</span> AddressPoolType type, <span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span><br>&#123;<br>    <span class="hljs-type">int</span> start = <span class="hljs-number">-1</span>;<br><br>    <span class="hljs-keyword">if</span> (type == AddressPoolType::KERNEL)<br>    &#123;<br>        start = kernelPhysical.allocate(count);<br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == AddressPoolType::USER)<br>    &#123;<br>        start = userPhysical.allocate(count);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> (start == <span class="hljs-number">-1</span>) ? <span class="hljs-number">0</span> : start;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">MemoryManager::releasePhysicalPages</span><span class="hljs-params">(<span class="hljs-keyword">enum</span> AddressPoolType type, <span class="hljs-type">const</span> <span class="hljs-type">int</span> paddr, <span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span><br>&#123;<br>    <span class="hljs-keyword">if</span> (type == AddressPoolType::KERNEL)<br>    &#123;<br>        kernelPhysical.release(paddr, count);<br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == AddressPoolType::USER)<br>    &#123;<br><br>        userPhysical.release(paddr, count);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="二级分页机制"><a href="#二级分页机制" class="headerlink" title="二级分页机制"></a>二级分页机制</h3><ul>
+<li>程序如何装入内存</li>
+<li>内存的保护是如何实现的</li>
+</ul>
+<h4 id="程序的装入"><a href="#程序的装入" class="headerlink" title="程序的装入"></a>程序的装入</h4><ul>
+<li>绝对装入：<strong>在链接时</strong>，知道程序将存放在内存的具体位置，则连接程序根据实际运行的地址来修改程序的标号的地址。<ul>
+<li>例如<code>ld</code>中的<code>-Ttext 0x00020000</code>，此时直接将程序加载到预先确定的位置便可运行。但是，当加载位置变化后，链接时的地址也要发生变化，否则必定发生错误。</li>
+</ul>
+</li>
+<li>静态重定位：<strong>在装入时</strong>，我们根据程序被加载的位置来修改程序的指令和数据地址。区别在于<strong>修改地址的时间</strong>。</li>
+<li>动态重定位：被装入内存后的程序起始地址依旧是从0开始。地址的转换被推迟到<strong>寻址</strong>的时候。使用MMU来进行变换（可以改变MMU的内容来实现不同的变换方式）。<ul>
+<li>即使对于相同的线性地址，在不同的变换方式下，得到的物理地址就会不同</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>[!NOTE]<br>对于绝对装入，程序的地址就是实际的使用的地址，而对于静态重定位，程序的地址依旧是从0开始，只有在被加载到内存时才会被修改。</p>
+</blockquote>
+<h5 id="分页机制"><a href="#分页机制" class="headerlink" title="分页机制"></a>分页机制</h5><p>一级页表：在分页机制下，内存被划分为大小相等的内存块，称为页（Page）</p>
+<ul>
+<li>未开启分页机制：$物理地址&#x3D;段地址+偏移地址$</li>
+<li>开启分页机制后：$虚拟地址&#x3D;段地址+偏移地址$ ，虚拟地址再经过MMU转换才能变成物理地址。</li>
+</ul>
+<p>一级页表的虚拟地址到物理地址的转换关系如下。</p>
+<ul>
+<li>先取虚拟地址的高20位，高20位的数值表示的是页号。而每一个页表项占4字节，所以高20位的数值乘4后才是对应的页表项的地址。</li>
+<li>从页表项中读出页地址后，由于低12位是<strong>页内偏移</strong>，使用物理页地址+低12位即可得出需要访问的物理地址。<br><img src="/img/file-20250514150128997.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h5 id="二级页表"><a href="#二级页表" class="headerlink" title="二级页表"></a>二级页表</h5><p>通过<strong>页目录表</strong>来访问页表，然后通过<strong>页表</strong>访问物理页的方式被称为<u>二级分页机制</u>。</p>
+<p>一个32位的虚拟地址被划分为3部分。</p>
+<ul>
+<li>31-22，共10位，是页目录项的序号，可以表示$2^{10}&#x3D;1024$个页目录项。</li>
+<li>21-12，共10位，是页表项的序号，可以表示$2^{10}&#x3D;1024$个页表项。</li>
+<li>11-0，共12位，是页内偏移，可以表示$2^{12}&#x3D;4KB$的物理页内的偏移地址。</li>
+</ul>
+<p>二级页表的虚拟地址到物理地址的转换关系：</p>
+<ul>
+<li>给定一个虚拟地址，先看页目录表项，其数值<u>乘4</u>之后得到页目录表现在页目录表的偏移地址。这个偏移地址加上<strong>页目录表的物理地址</strong>后得到<strong>页目录项的物理地址</strong>。</li>
+<li>取页目录项中的内容，得到页表的物理地址。页表的物理地址加上21-12位<u>乘4</u>的结果后，得到页表项的物理地址。</li>
+<li>取页表项的内容，即物理页的物理地址，加上11-0位的内容后便得到实际的物理地址。<br><img src="/img/file-20250514151918804.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h4 id="开启二级页表分页机制"><a href="#开启二级页表分页机制" class="headerlink" title="开启二级页表分页机制"></a>开启二级页表分页机制</h4><p>具体请看：<br><a target="_blank" rel="noopener" href="https://gitee.com/kpyang5/sysu-2025-spring-operating-system/blob/main/lab7/README.md#%E5%BC%80%E5%90%AF%E4%BA%8C%E7%BA%A7%E9%A1%B5%E8%A1%A8%E5%88%86%E9%A1%B5%E6%9C%BA%E5%88%B6">https://gitee.com/kpyang5/sysu-2025-spring-operating-system/blob/main/lab7/README.md#%E5%BC%80%E5%90%AF%E4%BA%8C%E7%BA%A7%E9%A1%B5%E8%A1%A8%E5%88%86%E9%A1%B5%E6%9C%BA%E5%88%B6</a></p>
+<p>启动分页机制的流程：</p>
+<ul>
+<li>规划好页目录表和页表在内存中的位置（在内存中特意划分出位置），然后初始化。</li>
+<li>将页目录表的地址写入cr3。</li>
+<li>将cr0的PG位置1。</li>
+</ul>
+<p><strong>第一步，规划好页目录表和页表在内存中的位置并写入内容</strong>。</p>
+<ul>
+<li>页目录表和页表的物理地址必须是4KB的整数倍，也就是低12位为0。</li>
+<li>根据线性地址空间的大小来确定需要分配的页表的数量和位置。</li>
+<li>页目录项：<br><img src="/img/file-20250514152921204.png" srcset="/img/loading.gif" lazyload></li>
+<li><strong>31-12位</strong>是页表的物理地址位的<strong>高20位</strong>，这也是为什么规定了页目录表的地址必须是<strong>4KB的整数倍</strong>。页目录表和页表实际上也是内存中的一个页，而内存被划分成了大小为4KB的页。自然地，这些物理页的起始就是4KB的整数倍。</li>
+<li><strong>P位</strong>是存在位，1表示存在，0表示不存在。</li>
+<li><strong>RW位</strong>，read&#x2F;write。1表示可读写，0表示可读不可写。</li>
+<li><strong>US位</strong>，user&#x2F;supervisor。若为1时，表示处于User级，任意级别（ 0、 1、 2、3）特权的程序都可以访问该页。若为0，表示处于 Supervisor 级，特权级别为3的程序不允许访问该页，该页只允许特权级别为0、1、2的程序可以访问。  </li>
+<li><strong>PWT位</strong>，这里置0。PWT， Page-level Write-Through，意为页级通写位，也称页级写透位。若为 1 表示此项采用通写方式，表示该页不仅是普通内存，还是高速缓存。</li>
+<li><strong>PCD位</strong>，这里置0。PCD， Page-level Cache Disable，意为页级高速缓存禁止位。若为 1 表示该页启用高速缓存，为 0 表示禁止将该页缓存。</li>
+<li><strong>A位</strong>，访问位。1表示被访问过，0表示未被访问，由CPU自动置位。</li>
+<li><strong>D位</strong>，Dirty，意为脏页位。当CPU对一个页面执行写操作时，就会设置对应页表项的D位为1。此项 仅针对页表项有效，并不会修改页目录项中的D位。</li>
+<li><strong>G位</strong>，这里置0，和TLB相关。</li>
+<li><strong>PAT</strong>， 这里置0。Page Attribute Table，意为页属性表位，能够在页面一级的粒度上设置内存属性。</li>
+</ul>
+<p>页表项：（结构和页表项完全类似）<br><img src="/img/file-20250514153122496.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>第二步，将页目录表的地址写入cr3</strong><br>cr3寄存器保存的是<strong>页目录表的地址</strong>。使得CPU的MMU能够找到页目录表的地址，然后自动地将线性地址转换成物理地址。<br>建立好页目录表和页表之后，要把页目录表地址放到CR3寄存器（页目录基址寄存器PDBR）–可以使用mov赋值<br><img src="/img/file-20250514153403449.png" srcset="/img/loading.gif" lazyload></p>
+<p><strong>第三步，将cr0的PG位置1</strong><br>启动分页机制的开关是将控制寄存器 cr0 的 PG 位置 1，PG 位是cr0寄存器的第31位，PG位为1后便进入了内存分页运行机制。</p>
+<p>运行结果：<br><img src="/img/file-20250514154039367.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="虚拟页内存管理"><a href="#虚拟页内存管理" class="headerlink" title="虚拟页内存管理"></a>虚拟页内存管理</h3><ul>
+<li><strong>从虚拟地址池中分配连续的多个虚拟页</strong>。注意，虚拟页之间的虚拟地址是连续的。</li>
+<li><strong>从物理地址池中为每一个虚拟页分配相应大小的物理页</strong>。</li>
+<li><strong>在页目录表和页表中建立虚拟页和物理页之间的对应关系</strong>。此时，由于分页机制的存在，物理页的地址可以不连续。CPU的MMU会在程序执行过程中将虚拟地址翻译成物理地址。<br><img src="/img/file-20250514154558623.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><p>对于虚拟地址空间中的地址，要建立一个虚拟地址池来管理（虚拟地址池可以有多个）</p>
+<ul>
+<li>每个进程有自己的用户虚拟地址池，放在PCB中，并不是全局。</li>
+<li>全局的：用户物理地址池，内核物理地址池和内核虚拟地址池</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">MemoryManager::initialize</span><span class="hljs-params">()</span><br>&#123;<br>    this-&gt;totalMemory = <span class="hljs-number">0</span>;<br>    this-&gt;totalMemory = getTotalMemory();<br><br>    <span class="hljs-comment">// 预留的内存</span><br>    <span class="hljs-type">int</span> usedMemory = <span class="hljs-number">256</span> * PAGE_SIZE + <span class="hljs-number">0x100000</span>;<br>    <span class="hljs-keyword">if</span> (this-&gt;totalMemory &lt; usedMemory)<br>    &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;memory is too small, halt.\n&quot;</span>);<br>        asm_halt();<br>    &#125;<br>    <span class="hljs-comment">// 剩余的空闲的内存</span><br>    <span class="hljs-type">int</span> freeMemory = this-&gt;totalMemory - usedMemory;<br><br>    <span class="hljs-type">int</span> freePages = freeMemory / PAGE_SIZE;<br>    <span class="hljs-type">int</span> kernelPages = freePages / <span class="hljs-number">2</span>;<br>    <span class="hljs-type">int</span> userPages = freePages - kernelPages;<br><br>    <span class="hljs-type">int</span> kernelPhysicalStartAddress = usedMemory;<br>    <span class="hljs-type">int</span> userPhysicalStartAddress = usedMemory + kernelPages * PAGE_SIZE;<br><br>    <span class="hljs-type">int</span> kernelPhysicalBitMapStart = BITMAP_START_ADDRESS;<br>    <span class="hljs-type">int</span> userPhysicalBitMapStart = kernelPhysicalBitMapStart + <span class="hljs-built_in">ceil</span>(kernelPages, <span class="hljs-number">8</span>);<br>    <span class="hljs-type">int</span> kernelVirtualBitMapStart = userPhysicalBitMapStart + <span class="hljs-built_in">ceil</span>(userPages, <span class="hljs-number">8</span>);<br><br>    kernelPhysical.initialize(<br>        (<span class="hljs-type">char</span> *)kernelPhysicalBitMapStart,<br>        kernelPages,<br>        kernelPhysicalStartAddress);<br><br>    userPhysical.initialize(<br>        (<span class="hljs-type">char</span> *)userPhysicalBitMapStart,<br>        userPages,<br>        userPhysicalStartAddress);<br><br>    kernelVirtual.initialize(<br>        (<span class="hljs-type">char</span> *)kernelVirtualBitMapStart,<br>        kernelPages,<br>        KERNEL_VIRTUAL_START);<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;total memory: %d bytes ( %d MB )\n&quot;</span>,<br>           this-&gt;totalMemory,<br>           this-&gt;totalMemory / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span>);<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;kernel pool\n&quot;</span><br>           <span class="hljs-string">&quot;    start address: 0x%x\n&quot;</span><br>           <span class="hljs-string">&quot;    total pages: %d ( %d MB )\n&quot;</span><br>           <span class="hljs-string">&quot;    bitmap start address: 0x%x\n&quot;</span>,<br>           kernelPhysicalStartAddress,<br>           kernelPages, kernelPages * PAGE_SIZE / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span>,<br>           kernelPhysicalBitMapStart);<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;user pool\n&quot;</span><br>           <span class="hljs-string">&quot;    start address: 0x%x\n&quot;</span><br>           <span class="hljs-string">&quot;    total pages: %d ( %d MB )\n&quot;</span><br>           <span class="hljs-string">&quot;    bit map start address: 0x%x\n&quot;</span>,<br>           userPhysicalStartAddress,<br>           userPages, userPages * PAGE_SIZE / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span>,<br>           userPhysicalBitMapStart);<br><br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;kernel virtual pool\n&quot;</span><br>           <span class="hljs-string">&quot;    start address: 0x%x\n&quot;</span><br>           <span class="hljs-string">&quot;    total pages: %d  ( %d MB ) \n&quot;</span><br>           <span class="hljs-string">&quot;    bit map start address: 0x%x\n&quot;</span>,<br>           KERNEL_VIRTUAL_START,<br>           userPages, kernelPages * PAGE_SIZE / <span class="hljs-number">1024</span> / <span class="hljs-number">1024</span>,<br>           kernelVirtualBitMapStart);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="页内存分配"><a href="#页内存分配" class="headerlink" title="页内存分配"></a>页内存分配</h4><p>页内存分配步骤：</p>
+<ul>
+<li>从虚拟地址池中分配若干连续的虚拟页。</li>
+<li>对每一个虚拟页，从物理地址池中分配1页。</li>
+<li>为虚拟页建立页目录项和页表项，使虚拟页内的地址经过分页机制变换到物理页内。</li>
+</ul>
+<p>分配虚拟页：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">allocateVirtualPages</span><span class="hljs-params">(<span class="hljs-keyword">enum</span> AddressPoolType type, <span class="hljs-type">const</span> <span class="hljs-type">int</span> count)</span><br>&#123;<br>    <span class="hljs-type">int</span> start = <span class="hljs-number">-1</span>;<br><br>    <span class="hljs-keyword">if</span> (type == AddressPoolType::KERNEL)<br>    &#123;<br>        start = kernelVrirtual.allocate(count);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> (start == <span class="hljs-number">-1</span>) ? <span class="hljs-number">0</span> : start;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>由于没有实现用户进程，此时能够分配页内存的地址池只有内核虚拟地址池，</li>
+</ul>
+<p>为每个虚拟页分配一个物理页：使用 <code>allocatePhysicalPages()</code>来实现</p>
+<p>为虚拟页建立页目录项和页表项，使虚拟页内的地址经过分页机制能变换到物理页内：</p>
+<ul>
+<li>建立虚拟页到物理页的映射关系通过函数<code>connectPhysicalVirtualPage</code>来实现</li>
+</ul>
+<blockquote>
+<p>[!NOTE]<br>只有程序才会使用虚拟地址，cr3寄存器，页目录项，页表项和CPU寻址中的地址都是物理地址。</p>
+</blockquote>
+<p>…</p>
+<h4 id="页内存释放"><a href="#页内存释放" class="headerlink" title="页内存释放"></a>页内存释放</h4><p>如果遇到物理页无法分配的情况，之前成功分配的虚拟页和物理页都要释放。否则就会造成内存泄漏，这部分内存无法再被分配</p>
+<p>页内存的释放是页内存分配的过程，分两个步骤完成。</p>
+<ul>
+<li>对每一个虚拟页，释放为其分配的物理页。</li>
+<li>释放虚拟页。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS-Labs/" class="category-chain-item">OS_Labs</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="/tags/OS-Labs/" class="print-no-link">#OS_Labs</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OS_lab7</div>
+      <div>https://pqcu77.github.io/2025/05/11/OS-lab7/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/12/AI-lab6/" title="AI_lab6（未整理，乱七八糟）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">AI_lab6（未整理，乱七八糟）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/07/OS-Lab6/" title="OS_Lab6">
+                        <span class="hidden-mobile">OS_Lab6</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>
