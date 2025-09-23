@@ -26,19 +26,45 @@
 <meta property="og:site_name" content="linqt&#39;s blog">
 <meta property="og:description" content="从内核态到用户态实验概述在本章中，我们首先会简单讨论保护模式下的特权级的相关内容。特权级保护是保护模式的特点之一，通过特权级保护，我们区分了内核态和用户态，从而限制用户态的代码对特权指令的使用或对资源的访问等。但是，用户态的代码有时不得不使用一些特权指令，如输入输出等。因此，我们介绍了系统调用的概念和如何通过中断来实现系统调用。通过系统调用，我们可以实现从用户态到内核态转移，然后在内核态下执行特权">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250529215818360.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250529233953273.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250529221256982.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250529224841333.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250529224806947.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250529225311662.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250529225250335.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250529225458882.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250529234233693.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250529234205512.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250529234306427.png">
 <meta property="og:image" content="https://pqcu77.github.io/img/file-20250521163432894.png">
 <meta property="og:image" content="https://pqcu77.github.io/img/file-20250521171218899.png">
 <meta property="og:image" content="https://pqcu77.github.io/img/file-20250526172538639.png">
 <meta property="og:image" content="https://pqcu77.github.io/img/file-20250526173209395.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250527142346877.png">
 <meta property="og:image" content="https://pqcu77.github.io/img/file-20250527141632953.png">
 <meta property="og:image" content="https://pqcu77.github.io/img/file-20250527141711207.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250527142704640.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250527143217290.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250527145126571.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250527145256478.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250527145927760.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250528142526437.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250528143152035.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250528143141941.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250528143828794.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250528144000064.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250528144058832.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250528144128110.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250528151907932.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250528151956291.png">
 <meta property="article:published_time" content="2025-05-21T07:27:13.000Z">
-<meta property="article:modified_time" content="2025-05-27T06:19:50.445Z">
+<meta property="article:modified_time" content="2025-06-01T13:36:44.439Z">
 <meta property="article:author" content="linqt">
 <meta property="article:tag" content="学习笔记">
 <meta property="article:tag" content="OS_Labs">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250521163432894.png">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250529215818360.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -239,7 +265,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2.7k 字
+          6.3k 字
         
       </span>
     
@@ -251,7 +277,7 @@
         
         
           <!-- compatible with older versions-->
-          23 分钟
+          53 分钟
         
       </span>
     
@@ -302,7 +328,7 @@
               <p id="updated-time" class="note note-info" style="display: none">
                 
                   
-                    本文最后更新于 2025-05-27T14:19:50+08:00
+                    本文最后更新于 2025-06-01T21:36:44+08:00
                   
                   
 
@@ -318,14 +344,76 @@
 <ul>
 <li>展现系统调用执行结果的正确性，结果截图并说说你的实现思路。</li>
 <li>分析执行系统调用后的栈的变化情况。</li>
-<li>说明TSS在系统调用执行过程中的作用。</li>
+<li>说明TSS在系统调用执行过程中的作用</li>
 </ul>
+<p>实现getpid()：<br>实现思路是通过调用getpid，然后去到PCB中获取当前正在运行的进程，获取对应的pid然后返回。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">//第3个系统调用, getpid</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">getpid</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;system call:getpid\n&quot;</span>);<br>    <span class="hljs-keyword">return</span> asm_system_call(<span class="hljs-number">3</span>);<br>&#125;<br><br><span class="hljs-type">int</span> <span class="hljs-title function_">syscall_getpid</span><span class="hljs-params">()</span>&#123;<br>    <span class="hljs-comment">// 获取当前运行的进程并返回其PID</span><br>    PCB* currentProcess = programManager.running;<br>    <span class="hljs-keyword">if</span> (currentProcess) &#123;<br>        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;success!\n&quot;</span>);<br>        <span class="hljs-keyword">return</span> currentProcess-&gt;pid;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;  <span class="hljs-comment">// 如果没有当前进程，返回错误值</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p><img src="/img/file-20250529215818360.png" srcset="/img/loading.gif" lazyload><br>从运行结果中可以看到，我们成功地调用了getpid系统调用，然后成功进入到了内核态，并从PCB获取pid返回。</p>
+<p>执行系统调用后的栈的变化情况：<br>设置断点：<br><img src="/img/file-20250529233953273.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250529221256982.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250529224841333.png" srcset="/img/loading.gif" lazyload><br>看到在调用getpid之前，esp保存的是0x8048fd4，这是用户栈的位置；eax等都是0<br><img src="/img/file-20250529224806947.png" srcset="/img/loading.gif" lazyload><br>ss保存的是0x3b，cs保存的是0x2b，eflags保存的是0x296</p>
+<p>cs&#x3D;0010 1011<br>特权级CPL刨保存在cs的低2位上，也就是二进制：(11)–十进制（3）<br>说明我们现在处在用户态中。</p>
+<p>调用getpid之后，我们会进入到内核态<br>这里esp的位置就是内核栈的位置<br><img src="/img/file-20250529225311662.png" srcset="/img/loading.gif" lazyload><br>这里的cs&#x3D;0x20，CRL&#x3D;0，说明我们确实在内核态中。<br><img src="/img/file-20250529225250335.png" srcset="/img/loading.gif" lazyload><br>单步进入，我们可以看到我们的栈往上移动了0x10，仍然处于内核态中。<br><img src="/img/file-20250529225458882.png" srcset="/img/loading.gif" lazyload></p>
+<p>TSS的功能：<br>目前TSS的作用仅限于为CPU提供<strong>0特权级栈</strong>所在的地址和段选择子（只用到esp0和ss0）<br>CPU从TSS中取出高特权级的段选择子和栈指针，分别送入ss和esp。<br>CPU通过读取TR寄存器中TSS的地址，从而读取到TSS的内容</p>
+<p>设置断点，然后查看tss的内容<br><img src="/img/file-20250529234233693.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250529234205512.png" srcset="/img/loading.gif" lazyload><br>变化后：发现esp0的值是内核栈的地址空间。<br>说明tss的作用就是将0特权级的栈取出来送到ss和esp。<br><img src="/img/file-20250529234306427.png" srcset="/img/loading.gif" lazyload></p>
 <h3 id="Assignment-2-Fork的奥秘"><a href="#Assignment-2-Fork的奥秘" class="headerlink" title="Assignment 2 Fork的奥秘"></a>Assignment 2 Fork的奥秘</h3><p>实现fork函数，并回答以下问题。</p>
 <ul>
-<li>请根据代码逻辑和执行结果来分析fork实现的基本思路。</li>
-<li>从子进程第一次被调度执行时开始，逐步跟踪子进程的执行流程一直到子进程从<code>fork</code>返回，根据gdb来分析子进程的跳转地址、数据寄存器和段寄存器的变化。同时，比较上述过程和父进程执行完<code>ProgramManager::fork</code>后的返回过程的异同。</li>
+<li>请根据<strong>代码逻辑和执行结果</strong>来分析fork实现的基本思路。</li>
+<li>从子进程第一次被调度执行时开始，逐步跟踪子进程的执行流程一直到子进程从<code>fork</code>返回，根据gdb来分析子进程的<strong>跳转地址</strong>、<strong>数据寄存器</strong>和<strong>段寄存器</strong>的变化。同时，比较上述过程和父进程执行完<code>ProgramManager::fork</code>后的返回过程的异同。</li>
 <li>请根据代码逻辑和gdb来解释fork是如何保证子进程的<code>fork</code>返回值是0，而父进程的<code>fork</code>返回值是子进程的pid。</li>
 </ul>
+<p>需要解决的四个问题：</p>
+<ol>
+<li><p>如何实现父子进程的代码段共享？<br>进程又划分了3GB~4GB的空间来实现内核共享，进程的代码天然就是共享的</p>
+</li>
+<li><p>如何使得父子进程从相同的返回点开始执行？<br>通过保存和恢复 <code>eip</code> 以及复制用户态栈，实现父子进程从同一返回点继续执行。</p>
+</li>
+</ol>
+<p>实现机制：</p>
+<ul>
+<li>父进程暂停与eip保存。<ul>
+<li>在 <code>ProgramStartProcess</code> 中保存了父进程的 <code>eip</code>，该 <code>eip</code> 实际上是 <code>asm_system_call_handler</code> 的返回地址。</li>
+</ul>
+</li>
+<li>子进程eip恢复与跳转<ul>
+<li>创建子进程后，通过 <code>asm_start_process</code> 启动子进程。</li>
+<li><code>asm_start_process</code> 的最后会执行 <code>iret</code> 指令，将0特权级栈中保存的 <code>eip</code> （也就是父进程暂停时的返回地址）装载到子进程的 <code>eip</code> 中。</li>
+<li>这样，子进程会从与父进程相同的返回点（即 <code>asm_system_call_handler</code> 的返回地址）开始执行。</li>
+</ul>
+</li>
+<li>逐步返回与栈复制<ul>
+<li>后续子进程会依次返回到 <code>asm_start_process</code>、<code>asm_system_call</code>，最终回到 <code>fork</code> 的调用点。</li>
+<li>因为会复制父进程的3特权级（用户态）栈到子进程，3特权级栈中保存了父进程在执行 <code>int 0x80</code> 软中断后的逐步返回地址。</li>
+<li>因此，父子进程的逐步返回地址完全一致。</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li><p>除代码段外，进程包含的资源有哪些？<br>进程包含的资源有0特权级栈，PCB、虚拟地址池、页目录表、页表及其指向的物理页。</p>
+</li>
+<li><p>如何实现进程的资源在进程之间的复制？<br>借助于内核空间的中转页。<br>首先在父进程的虚拟地址空间下将数据复制到中转页中，再切换到子进程的虚拟地址空间中，然后将中转页复制到子进程对应的位置。</p>
+</li>
+</ol>
+<p>（1）fork实现的基本思路<br>见上文&amp;后文<br>（2）使用gdb跟踪逻辑<br>![[file-20250531234900823.png]]</p>
+<p>![[file-20250531235408725.png]]</p>
+<p>![[file-20250531235424121.png]]<br>这里处于用户态CRL&#x3D;3<br>![[file-20250531235504479.png]]<br>准备进入系统调用，这里将会调用进程管理器的fork函数<br>![[file-20250531235612819.png]]<br>![[file-20250531235624684.png]]<br>从地址空间和CRL&#x3D;0，可以看出进入了内核态。</p>
+<p>这里准备进入复制函数<br>![[file-20250531235745309.png]]<br>复制进程中会复制0级栈，同时手动将子进程中的寄存器eax设置为0，同时设置子进程的PCB（大部分复制父进程）<br>复制用户虚拟地址池（与父进程共用）<br>复制父进程页表</p>
+<p>fork返回时，父进程的eax会被设置为子进程的pid<br>iret指令完成了：</p>
+<ul>
+<li>从栈中弹出返回地址，将其放入程序计数器和代码段寄存器</li>
+<li>如果CPU在保护模式下运行，会从栈中弹出EFLAGS的内容，将其恢复到标志寄存器中</li>
+<li>处理优先级切换。</li>
+</ul>
+<p>（3）怎么保证父进程获得子进程pid和子进程返回0<br>内核空间创建子进程结构：</p>
+<ul>
+<li>fork时，内核会为子进程分配一个新的PCB和栈，并把父进程的大部分上下文复制给子进程</li>
+</ul>
+<p>专门设置fork返回值：<br>在内核空间，fork会有专门的代码逻辑，在父进程的返回路径上把eax设置为子进程的pid，在子进程的返回路径上把eax设置为0。让我们看看代码中如何实现这样子的设置：</p>
+<p>我们在copyProcess的时候，有一行：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">    <span class="hljs-comment">// 设置子进程的返回值为0</span><br>    childpss-&gt;eax = <span class="hljs-number">0</span>;<br></code></pre></td></tr></table></figure>
+<p>而我们知道，在调用完函数，我们要获取返回值的时候，是会去读取eax的值。也就是说，如果我们后续没有修改子进程的eax，最后子进程fork返回的也就会是0。（确实我们后面也没有再去修改了）</p>
+<p>父进程fork返回的pid，就是executeProcess创建的新子进程的pid，在fork返回时直接返回给父进程。然后内核会把这个返回值放到父进程的eax里。<br>![[file-20250601202918743.png]]</p>
+<p>进入fork前：eax为0<br>![[file-20250601203229851.png]]<br>进入了之后，eax被设置为2</p>
+<p>![[file-20250601203501156.png]]<br>![[file-20250601203527506.png]]<br>这里返回了pid，会保存到父进程的eax中，也就是子进程的pid。<br>![[file-20250601203702692.png]]<br>![[file-20250601203817217.png]]<br>可以看到确实返回的是2</p>
+<p>这里我们将会进入到复制进程函数中，这里会设置子进程的eax为0。<br>![[file-20250601204107707.png]]<br>设置eax前：可以看到，由于我们直接复制了父进程的内容，会出现eax也跟着复制的情况。<br>![[file-20250601204607789.png]]<br>执行之后：<br>![[file-20250601204443027.png]]<br>可以看到设置为0了。<br>如图，确实如此。<br>![[file-20250601204008354.png]]</p>
 <h3 id="Assignment-3-哼哈二将-wait-exit"><a href="#Assignment-3-哼哈二将-wait-exit" class="headerlink" title="Assignment 3 哼哈二将 wait &amp; exit"></a>Assignment 3 哼哈二将 wait &amp; exit</h3><p>实现wait函数和exit函数，并回答以下问题。</p>
 <ul>
 <li>请结合代码逻辑和具体的实例来分析exit的执行过程。</li>
@@ -333,6 +421,29 @@
 <li>请结合代码逻辑和具体的实例来分析wait的执行过程。</li>
 <li>如果一个父进程先于子进程退出，那么子进程在退出之前会被称为孤儿进程。子进程在退出后，从状态被标记为<code>DEAD</code>开始到被回收，子进程会被称为僵尸进程。请分析src&#x2F;6代码实例中，实现回收僵尸进程的有效方法。</li>
 </ul>
+<p>exit的实现原理：<br>结合代码分析：<br>直接看教程<br>结束一个进程只需要释放掉其所占用的物理页内存和占用的虚拟地址池空间，只保留一个PCB并将进程状态设置为0.</p>
+<p>exit的实现实际上是通过<code>ProgramManager::exit</code>来完成的，总的来看，exit的实现主要分为三步。</p>
+<ol>
+<li>标记PCB状态为<code>DEAD</code>并放入返回值。</li>
+<li>如果PCB标识的是进程，则释放进程所占用的物理页、页表、页目录表和虚拟地址池bitmap的空间。否则不做处理。</li>
+<li>立即执行线程&#x2F;进程调度。</li>
+</ol>
+<p>wait的实现原理：</p>
+<p>分析进程退出后能隐式调用exit和此时的exit返回值是0的原因：<br>隐式调用exit：没有显示的调用exit()的时候，操作系统会自动的在返回时调用。</p>
+<p>实现方法是：在进程的3特权级栈的顶部放入exit的地址和参数即可，当执行进程的函数退出后会主动跳转到exit。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 设置进程返回地址</span><br><span class="hljs-type">int</span> *userStack = (<span class="hljs-type">int</span> *)interruptStack-&gt;esp;<br>userStack -= <span class="hljs-number">3</span>;<br>userStack[<span class="hljs-number">0</span>] = (<span class="hljs-type">int</span>)<span class="hljs-built_in">exit</span>;<br>userStack[<span class="hljs-number">1</span>] = <span class="hljs-number">0</span>;<br>userStack[<span class="hljs-number">2</span>] = <span class="hljs-number">0</span>;<br></code></pre></td></tr></table></figure>
+<p>这段代码中，我们将3特权级栈中的栈顶处userStack[0]放入exit的地址，然后CPU会认为userStack[1]是exit的返回地址，userStack[2]是exit的参数。</p>
+<p>请结合代码逻辑和具体的实例来分析wait的执行过程：<br>看教程</p>
+<p>如果一个父进程先于子进程退出，那么子进程在退出之前会被称为孤儿进程。子进程在退出后，从状态被标记为<code>DEAD</code>开始到被回收，子进程会被称为僵尸进程。请分析src&#x2F;6代码实例中，实现回收僵尸进程的有效方法。</p>
+<p><strong>生成僵尸进程</strong>：进程exit退出时，进程状态被标记为dead，退出返回值保存在PCB中，物理内存资源被释放，但是PCB本身并未被释放，需要等待父进程回收。</p>
+<ol>
+<li><strong>进程退出时</strong>变成僵尸进程，保留PCB和退出状态</li>
+<li><strong>父进程通过wait()系统调用</strong>主动回收僵尸子进程</li>
+<li><strong>循环等待机制</strong>确保所有子进程都被回收</li>
+<li><strong>资源管理策略</strong>分两阶段：先释放内存，后释放PCB</li>
+</ol>
+<p>wait系统调用主动回收僵尸子进程：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">ProgramManager::wait</span><span class="hljs-params">(<span class="hljs-type">int</span> *retval)</span><br>&#123;<br>    PCB *child;<br>    ListItem *item;<br>    <span class="hljs-type">bool</span> interrupt, flag;<br><br>    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>)<br>    &#123;<br>        interrupt = interruptManager.getInterruptStatus();<br>        interruptManager.disableInterrupt();<br><br>        item = this-&gt;allPrograms.head.next;<br><br>        <span class="hljs-comment">// 查找子进程</span><br>        flag = <span class="hljs-literal">true</span>;<br>        <span class="hljs-keyword">while</span> (item)<br>        &#123;<br>            child = ListItem2PCB(item, tagInAllList);<br>            <span class="hljs-keyword">if</span> (child-&gt;parentPid == this-&gt;running-&gt;pid)  <span class="hljs-comment">// 找到子进程</span><br>            &#123;<br>                flag = <span class="hljs-literal">false</span>;<br>                <span class="hljs-keyword">if</span> (child-&gt;status == ProgramStatus::DEAD)  <span class="hljs-comment">// 子进程已死亡</span><br>                &#123;<br>                    <span class="hljs-keyword">break</span>;  <span class="hljs-comment">// 找到僵尸子进程</span><br>                &#125;<br>            &#125;<br>            item = item-&gt;next;<br>        &#125;<br><br>        <span class="hljs-keyword">if</span> (item) <span class="hljs-comment">// 找到一个可回收的僵尸子进程</span><br>        &#123;<br>            <span class="hljs-keyword">if</span> (retval)<br>            &#123;<br>                *retval = child-&gt;retValue;  <span class="hljs-comment">// 获取子进程退出值</span><br>            &#125;<br><br>            <span class="hljs-type">int</span> pid = child-&gt;pid;<br>            releasePCB(child);  <span class="hljs-comment">// 释放子进程PCB，完成回收</span><br>            interruptManager.setInterruptStatus(interrupt);<br>            <span class="hljs-keyword">return</span> pid;  <span class="hljs-comment">// 返回被回收子进程的PID</span><br>        &#125;<br>        <span class="hljs-keyword">else</span> <br>        &#123;<br>            <span class="hljs-keyword">if</span> (flag) <span class="hljs-comment">// 没有子进程了</span><br>            &#123;<br>                interruptManager.setInterruptStatus(interrupt);<br>                <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>            &#125;<br>            <span class="hljs-keyword">else</span> <span class="hljs-comment">// 存在子进程，但子进程还没死亡</span><br>            &#123;<br>                interruptManager.setInterruptStatus(interrupt);<br>                schedule();  <span class="hljs-comment">// 让出CPU，等待子进程结束</span><br>            &#125;<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h2 id="实验知识"><a href="#实验知识" class="headerlink" title="实验知识"></a>实验知识</h2><h3 id="特权级"><a href="#特权级" class="headerlink" title="特权级"></a>特权级</h3><p>CPU的特权级分4个：0,1,2,3。（特权级依次降低）</p>
 <ul>
 <li>本次实验中使用0和3；</li>
@@ -401,7 +512,7 @@
 <li>在每个页表高端3-4GB地方，保留一段虚拟地址，映射到内核实际的物理地址处（0-1MB）</li>
 <li>这样子在用户空间的高端和内核空间的地址映射到的是同一块物理内存</li>
 <li>这样，进程在进入内核态时（比如系统调用），可以<u>直接用高地址访问到内核的数据结构</u>（如 <code>programManager</code>），<strong>不会和进程自己的0~1MB冲突</strong>。</li>
-<li>实际上就将第0项和第768项指向同一个页表，就实现了。<br>同步地，需要修改makefile，保证我们的偏移不会出错</li>
+<li>实际上就将第0项和第768项指向同一个页表，就实现了。<br>  同步地，需要修改makefile，保证我们的偏移不会出错</li>
 </ul>
 </li>
 </ul>
@@ -414,8 +525,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> USER_CODE_SELECTOR;  <span class="hljs-comment">// 用户代码段选择子</span><br><span class="hljs-type">int</span> USER_DATA_SELECTOR;  <span class="hljs-comment">// 用户数据段选择子</span><br><span class="hljs-type">int</span> USER_STACK_SELECTOR; <span class="hljs-comment">// 用户栈段选择子</span><br></code></pre></td></tr></table></figure>
 
 <p>进程的<strong>运行环境</strong>需要用到<u>TSS、特权级3下的平坦模式代码段和数据段描述符</u><br><img src="/img/file-20250526173209395.png" srcset="/img/loading.gif" lazyload><br>这三个描述符的DPL为3</p>
-<p>添加前的GDT:<br>+——–+——–+——–+——–+<br>|  描述符0 |  描述符1 |  描述符2 |  …   |<br>+——–+——–+——–+——–+<br>^                                   ^<br>基地址                            界限+1</p>
-<p>添加后的GDT:<br>+——–+——–+——–+——–+——–+<br>|  描述符0 |  描述符1 |  描述符2 |  …   | 新描述符 |<br>+——–+——–+——–+——–+——–+<br>^                                           ^<br>基地址                                    新界限+1</p>
+<p><img src="/img/file-20250527142346877.png" srcset="/img/loading.gif" lazyload></p>
 <p>低特权级-&gt;高特权级：</p>
 <ul>
 <li>CPU会先在<strong>TSS</strong>中找到高特权级栈的<strong>段选择子和栈指针</strong>，送入SS、ESP</li>
@@ -426,10 +536,98 @@
 <li>TSS也是存储数据的内存区域<ul>
 <li>段基址的意思是TSS的起始地址&amp;tss</li>
 <li>段界限是TSS的<strong>实际长度-1</strong></li>
-<li>B为表示任务是否忙，0-不忙，1-忙<br><img src="/img/file-20250527141711207.png" srcset="/img/loading.gif" lazyload><br>TR寄存器：保存TSS描述符的选择子，以便于CPU在发生特权级切换时能自动加载TSS中的内容</li>
+<li>B为表示任务是否忙，0-不忙，1-忙<br>  <img src="/img/file-20250527141711207.png" srcset="/img/loading.gif" lazyload><br>  TR寄存器：保存TSS描述符的选择子，以便于CPU在发生特权级切换时能自动加载TSS中的内容</li>
 </ul>
 </li>
 </ul>
+<p>TSS的初始化<br><img src="/img/file-20250527142704640.png" srcset="/img/loading.gif" lazyload><br>我们只需要得到高特权级（也就是0特权级）下的栈指针和栈段选择子：ss0和esp0</p>
+<h3 id="进程的创建"><a href="#进程的创建" class="headerlink" title="进程的创建"></a>进程的创建</h3><p>三步：</p>
+<ul>
+<li>创建进程的PCB</li>
+<li>初始化进程的页目录表</li>
+<li>初始化进程的虚拟地址池<br><img src="/img/file-20250527143217290.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<p>首先是中断保护机制：保存当前中断状态–关中断</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">bool</span> status = interruptManager.getInterruptStatus();<br>interruptManager.disableInterrupt();<br></code></pre></td></tr></table></figure>
+
+<p>基于线程机制创建进程PCB：创建线程</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> pid = executeThread((ThreadFunction)load_process,<br>                        (<span class="hljs-type">void</span> *)filename, filename, priority);<br><span class="hljs-keyword">if</span> (pid == <span class="hljs-number">-1</span>)<br>&#123;<br>    interruptManager.setInterruptStatus(status);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>获取新建的PCB：<br>新建的PCB会放在 <code>allPrograms</code> 链表的末尾</p>
+<ul>
+<li><code>tagInAllList</code> 指定了PCB在全局程序列表中的链表节点字段</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">PCB *process = ListItem2PCB(allPrograms.back(), tagInAllList);<br></code></pre></td></tr></table></figure>
+
+<p>进程页目录表：调用函数创建，如果创建失败就将进程标记为dead</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c">process-&gt;pageDirectoryAddress = createProcessPageDirectory();<br><span class="hljs-keyword">if</span> (!process-&gt;pageDirectoryAddress)<br>&#123;<br>    process-&gt;status = ThreadStatus::DEAD;<br>    interruptManager.setInterruptStatus(status);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>创建虚拟地址池：也是调用函数来创建，如果创建失败也将进程标记为dead</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">bool</span> res = createUserVirtualPool(process);<br><span class="hljs-keyword">if</span> (!res)<br>&#123;<br>    process-&gt;status = ThreadStatus::DEAD;<br>    interruptManager.setInterruptStatus(status);<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>最后，恢复中断状态并返回</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">interruptManager.setInterruptStatus(status);<br><span class="hljs-keyword">return</span> pid;<br></code></pre></td></tr></table></figure>
+
+<p>详细查看创建页目录表：</p>
+<ul>
+<li>从内核地址池中分配一页存储页目录表</li>
+<li>复制内核目录项到虚拟地址的高1GB</li>
+<li>用户进程页目录表的<strong>最后一项</strong>指向用户进程页目录表本身<br><img src="/img/file-20250527145126571.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<p><code>ProgramStartStack</code> 来表示启动进程之前栈放入的内容<br><img src="/img/file-20250527145256478.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="进程的调度"><a href="#进程的调度" class="headerlink" title="进程的调度"></a>进程的调度</h3><ul>
+<li>src&#x2F;3<br>进程的调度只需要在原先的进程的线程调度的基础上加入：</li>
+<li>切换页目录表</li>
+<li>更新TSS中特权级0的栈<br><img src="/img/file-20250527145927760.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h3 id="fork"><a href="#fork" class="headerlink" title="fork()"></a>fork()</h3><p>用于创建一个新进程，两个进程从fork的返回点开始执行。</p>
+<ul>
+<li>只调用一次fork，但能够<strong>返回两次</strong><ul>
+<li>父进程中，fork返回子进程的pid</li>
+<li>子进程中，fork返回0</li>
+<li>如果创建失败，fork返回一个负值<br>  父子进程共享代码段，但不共享数据段、栈段等资源。<br>  数据段和栈段等资源会被<strong>复制</strong>到子进程中。<br>  <img src="/img/file-20250528142526437.png" srcset="/img/loading.gif" lazyload><br>  运行：<br>  <img src="/img/file-20250528143152035.png" srcset="/img/loading.gif" lazyload><br>  得到结果：<br>  <img src="/img/file-20250528143141941.png" srcset="/img/loading.gif" lazyload><br>  可以看到父进程返回了子进程的pid&#x3D;1343，子进程返回了0</li>
+</ul>
+</li>
+</ul>
+<h4 id="实现fork"><a href="#实现fork" class="headerlink" title="实现fork()"></a>实现fork()</h4><p>需要解决4个问题：</p>
+<ul>
+<li>父子进程代码段的共享</li>
+<li>父子进程从相同的返回点开始执行</li>
+<li>除代码段外，进程包含的资源有哪些？</li>
+<li>如何实现进程资源在进程间的复制</li>
+</ul>
+<p>PCB中需要添加父进程pid<br><img src="/img/file-20250528143828794.png" srcset="/img/loading.gif" lazyload></p>
+<p>fork()作为一个系统调用，需要在syscall.h中加入fork()<u>系统调用</u>和<u>系统调用处理函数</u>的定义<br><img src="/img/file-20250528144000064.png" srcset="/img/loading.gif" lazyload><br>同时设置好系统调用<br><img src="/img/file-20250528144058832.png" srcset="/img/loading.gif" lazyload></p>
+<p>实现基本的函数：<br><img src="/img/file-20250528144128110.png" srcset="/img/loading.gif" lazyload><br>fork这里就相当于调用2号系统调用，然后会进入到内核态，进入内核态之后，需要调用<code>programManager.fork()</code>来完成后续工作</p>
+<ul>
+<li>首先保留中断状态，然后关中断</li>
+<li>禁止内核线程调用，设置父进程状态为运行之后，判断是否存在页目录地址（内核线程没有独立的页目录），通过这个来禁止。</li>
+<li>创建子进程</li>
+<li>初始化子进程（涉及到复制进程资源）<code>bool flag = copyProcess(parent, child);</code><ul>
+<li>复制进程启动栈</li>
+<li>设置子进程栈指针</li>
+<li>拷贝<strong>PCB</strong>属性</li>
+<li>复制虚拟地址池</li>
+<li>准备内存拷贝</li>
+<li>页目录表复制</li>
+<li>页表和物理页复制</li>
+<li>清理和返回</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">ProgramManager::fork</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">bool</span> status = interruptManager.getInterruptStatus();<br>    interruptManager.disableInterrupt();<br><br>    <span class="hljs-comment">// 禁止内核线程调用</span><br>    PCB *parent = this-&gt;running;<br>    <span class="hljs-keyword">if</span> (!parent-&gt;pageDirectoryAddress)<br>    &#123;<br>        interruptManager.setInterruptStatus(status);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// 创建子进程</span><br>    <span class="hljs-type">int</span> pid = executeProcess(<span class="hljs-string">&quot;&quot;</span>, <span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">if</span> (pid == <span class="hljs-number">-1</span>)<br>    &#123;<br>        interruptManager.setInterruptStatus(status);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// 初始化子进程</span><br>    PCB *child = ListItem2PCB(this-&gt;allPrograms.back(), tagInAllList);<br>    <span class="hljs-type">bool</span> flag = copyProcess(parent, child);<br><br>    <span class="hljs-keyword">if</span> (!flag)<br>    &#123;<br>        child-&gt;status = ProgramStatus::DEAD;<br>        interruptManager.setInterruptStatus(status);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>;<br>    &#125;<br><br>    interruptManager.setInterruptStatus(status);<br>    <span class="hljs-keyword">return</span> pid;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>进程包含的资源：<br>0特权级栈、PCB、虚拟地址池、页目录表、页表极其指向的物理页</p>
+<p><img src="/img/file-20250528151907932.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="exit"><a href="#exit" class="headerlink" title="exit()"></a>exit()</h3><p>用于进程和线程的主动结束运行<br>在进程或线程调用exit后，我们会释放其占用的所有资源，只保留PCB。<br>进程或线程状态标记为DEAD，PCB会由专门的进程or线程来回收</p>
+<p>exit的实现实际上是通过<code>ProgramManager::exit</code>来完成的，总的来看，exit的实现主要分为三步。</p>
+<ol>
+<li>标记PCB状态为<code>DEAD</code>并放入返回值。</li>
+<li>如果PCB标识的是进程，则释放进程所占用的物理页、页表、页目录表和虚拟地址池bitmap的空间。否则不做处理。</li>
+<li>立即执行线程&#x2F;进程调度。</li>
+</ol>
+<p><img src="/img/file-20250528151956291.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="wait"><a href="#wait" class="headerlink" title="wait()"></a>wait()</h3><p>wait的参数<code>retval</code>用来存放子进程的返回值，如果<code>retval==nullptr</code>，则说明父进程不关心子进程的返回值。wait的返回值是被回收的子进程的pid。如果没有子进程，则wait返回<code>-1</code>。在父进程调用了wait后，如果存在子进程但子进程的状态不是<code>DEAD</code>，则父进程会被阻塞，即wait不会返回直到子进程结束。</p>
 
                 
               </div>
@@ -528,6 +726,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/06/09/ai-agent/" title="Ai-Agent">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Ai-Agent</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

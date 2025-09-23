@@ -1,0 +1,1206 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="slide  books-chap3&#x2F;4  notes  hw  Lecture2| intermediate SQL 什么是SQL (Structured Query Language)？  读作Sequel SQL是一种用于管理和操作关系型数据库的标准语言 用于与数据库交互：查询数据、插入数据、更新数据、删除数据、创建和修改数据库结构     类型 说明 示例    查询语句 检">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DB_Lec2">
+<meta property="og:url" content="https://pqcu77.github.io/2025/07/18/DB-Lec2/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="slide  books-chap3&#x2F;4  notes  hw  Lecture2| intermediate SQL 什么是SQL (Structured Query Language)？  读作Sequel SQL是一种用于管理和操作关系型数据库的标准语言 用于与数据库交互：查询数据、插入数据、更新数据、删除数据、创建和修改数据库结构     类型 说明 示例    查询语句 检">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719104929350.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719105304123.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719105810542.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719110324488.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719110411787.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719110513245.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719110650934.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719110759538.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719111000907.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719111040388.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719111211574.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250720153144731.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250720153345540.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719111600887.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719172538091.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719172530098.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250719160500302.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250724102243905.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250720165942906.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250720172505438.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250721104536521.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250721110747212.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250721113629379.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250721162839308.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250721121833680.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250721122737926.png">
+<meta property="article:published_time" content="2025-07-18T03:39:34.000Z">
+<meta property="article:modified_time" content="2025-07-24T03:04:00.967Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="database">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250719104929350.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>DB_Lec2 - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="DB_Lec2"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-18 11:39" pubdate>
+          2025年7月18日 中午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          4.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          38 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">DB_Lec2</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-07-24T11:04:00+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <ul>
+<li><input checked="" disabled="" type="checkbox"> slide</li>
+<li><input checked="" disabled="" type="checkbox"> books-chap3&#x2F;4</li>
+<li><input checked="" disabled="" type="checkbox"> notes</li>
+<li><input checked="" disabled="" type="checkbox"> hw</li>
+</ul>
+<h1 id="Lecture2"><a href="#Lecture2" class="headerlink" title="Lecture2"></a>Lecture2</h1><p>| intermediate SQL</p>
+<p>什么是SQL (Structured Query Language)？</p>
+<ul>
+<li>读作Sequel</li>
+<li>SQL是一种用于管理和操作关系型数据库的标准语言</li>
+<li>用于与数据库交互：查询数据、插入数据、更新数据、删除数据、创建和修改数据库结构</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>查询语句</strong></td>
+<td>检索数据</td>
+<td><code>SELECT name FROM users;</code></td>
+</tr>
+<tr>
+<td><strong>插入语句</strong></td>
+<td>插入新记录</td>
+<td><code>INSERT INTO users(name) VALUES(&#39;Alice&#39;);</code></td>
+</tr>
+<tr>
+<td><strong>更新语句</strong></td>
+<td>修改已有记录</td>
+<td><code>UPDATE users SET age = 25 WHERE name = &#39;Alice&#39;;</code></td>
+</tr>
+<tr>
+<td><strong>删除语句</strong></td>
+<td>删除记录</td>
+<td><code>DELETE FROM users WHERE age &lt; 18;</code></td>
+</tr>
+<tr>
+<td><strong>定义语句</strong></td>
+<td>创建&#x2F;修改数据库结构（DDL）</td>
+<td><code>CREATE TABLE users(id INT, name TEXT);</code></td>
+</tr>
+<tr>
+<td>这是<strong>声明式语言</strong>，只需要说明你需要什么数据，不需要指定如何拿到</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>MySQL和SQLite是DBMS，用于创建、管理、操作数据库</p>
+</li>
+<li><p>SQL is based on <strong>bags</strong> not set<br>bags和set的区别是bags允许有重复的键</p>
+</li>
+</ul>
+<h2 id="SQL数据定义"><a href="#SQL数据定义" class="headerlink" title="SQL数据定义"></a>SQL数据定义</h2><h3 id="SQL基本类型："><a href="#SQL基本类型：" class="headerlink" title="SQL基本类型："></a>SQL基本类型：</h3><p><img src="/img/file-20250719104929350.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="基本模式定义"><a href="#基本模式定义" class="headerlink" title="基本模式定义"></a>基本模式定义</h3><p>使用 <code>create table</code> 命令定义SQL关系，例子：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs SQL"><span class="hljs-keyword">create table</span> department<br>	(dept_name <span class="hljs-type">varchar</span>(<span class="hljs-number">20</span>),<br>	building <span class="hljs-type">varchar</span>(<span class="hljs-number">15</span>),<br>	budget <span class="hljs-type">numeric</span>(<span class="hljs-number">12</span>,<span class="hljs-number">2</span>),<br>	<span class="hljs-keyword">primary key</span> (dept_name));<br></code></pre></td></tr></table></figure>
+
+<p>create table命令还指明了dept_name属性是department关系的<strong>主码</strong><br>create table命令的通用形式：<br><img src="/img/file-20250719105304123.png" srcset="/img/loading.gif" lazyload><br>r是关系名，$A_i$是关系r模式中的一个属性名，$D_i$是属性$A_i$的域，即$D_i$制定了$A_i$的类型以及可选的约束，用于限制所允许的$A_i$取指的集合<br>主要使用的完整性约束：</p>
+<ul>
+<li>primary key：声明表述属性构成关系的主码。主码属性必须非空且唯一——没有一个元组在主码属性上取空值，关系中也没有两个元组在所有主码属性上取指相同。</li>
+<li>foreign key：声明表示关系中任意元组在属性上的取指必须对应于关系s中某元组在主码属性上的取值</li>
+<li>not null：表明属性上不允许空值<br><img src="/img/file-20250719105810542.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h2 id="SQL查询"><a href="#SQL查询" class="headerlink" title="SQL查询"></a>SQL查询</h2><p>查询：基本结构由三个子句构成–<code>select</code>、<code>from</code>、<code>where</code></p>
+<h3 id="单关系查询"><a href="#单关系查询" class="headerlink" title="单关系查询"></a>单关系查询</h3><p>e.g:</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">select</span> <span class="hljs-type">name</span> <br><span class="hljs-keyword">from</span> instructor;<br></code></pre></td></tr></table></figure>
+<p>去掉重复的</p>
+<figure class="highlight n1ql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs n1ql"><span class="hljs-keyword">select</span> <span class="hljs-keyword">distinct</span> dept_name<br><span class="hljs-keyword">from</span> instructor;<br></code></pre></td></tr></table></figure>
+<p>显式指明保留所有</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">select</span> <span class="hljs-attribute">all</span> dept_name<br><span class="hljs-selector-tag">from</span> instructor;<br></code></pre></td></tr></table></figure>
+
+<p>同时，select子句还可以含有+、-、* 、&#x2F; 运算符的算数表达式<br><img src="/img/file-20250719110324488.png" srcset="/img/loading.gif" lazyload></p>
+<p>where 子句允许我们只选出那些在from子句的结果关系中<strong>满足特定谓词的元组</strong><br><img src="/img/file-20250719110411787.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="多关系查询"><a href="#多关系查询" class="headerlink" title="多关系查询"></a>多关系查询</h3><p>例子：<br><img src="/img/file-20250719110513245.png" srcset="/img/loading.gif" lazyload></p>
+<p>总述：<br><img src="/img/file-20250719110650934.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250719110759538.png" srcset="/img/loading.gif" lazyload></p>
+<p>自然连接：<br><img src="/img/file-20250719111000907.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250719111040388.png" srcset="/img/loading.gif" lazyload><br>其中每个$E_i$可以是单个关系或一个包含自然连接的表达式</p>
+<p>更名：as<br>字符串运算：<br><img src="/img/file-20250719111211574.png" srcset="/img/loading.gif" lazyload><br>例子：</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs axapta"><span class="hljs-keyword">select</span> dept_name<br><span class="hljs-keyword">from</span> department<br><span class="hljs-keyword">where</span> building <span class="hljs-keyword">like</span> <span class="hljs-string">&#x27;%Watson%&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>属性说明：<code>*</code>可以用在select子句中表示所有的属性</p>
+<p>显式次序，<code>order by</code><br><img src="/img/file-20250720153144731.png" srcset="/img/loading.gif" lazyload></p>
+<p><code>LIMIT &lt; count &gt; [offset]</code><br>用于限制返回元组的数量<br><img src="/img/file-20250720153345540.png" srcset="/img/loading.gif" lazyload></p>
+<p>LIMIT 10 则会限制只返回前10条符合条件的记录</p>
+<p>LIMIT 20 OFFSET 10 表示跳过前面10条记录，返回接下来的20条</p>
+<p>集合运算<br>聚集函数：以值的一个<strong>集合为输入</strong>、<strong>返回单个值</strong>的函数。<br><img src="/img/file-20250719111600887.png" srcset="/img/loading.gif" lazyload><br>group by：<br><img src="/img/file-20250719172538091.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250719172530098.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="中级SQL"><a href="#中级SQL" class="headerlink" title="中级SQL"></a>中级SQL</h2><h3 id="连接表达式"><a href="#连接表达式" class="headerlink" title="连接表达式"></a>连接表达式</h3><p>连接就是将一个或多个表的列合并起来，并产生一个新的表。</p>
+<p>连接条件：</p>
+<ul>
+<li>自然连接–join…using子句</li>
+<li><strong>自然连接（Natural Join）</strong> 是 SQL 中的一种连接方式，它会<strong>自动根据两个表中所有同名且类型相同的列</strong>来进行连接，不需要手动指定连接条件</li>
+<li>on条件允许在参与连接的关系上设置通用的谓词，出现在连接表达式的末尾<br>例子：</li>
+</ul>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">select</span> *<br><span class="hljs-keyword">from</span> student <span class="hljs-keyword">join</span> takes <span class="hljs-keyword">on</span> student.ID=takes.ID;<br></code></pre></td></tr></table></figure>
+<p>on条件表明：如果一个来自student的元组和一个来自takes的元组在ID上的取值相同，那么他们是匹配的</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span><br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">NATURAL</span> <span class="hljs-keyword">JOIN</span> Score;<br></code></pre></td></tr></table></figure>
+<p>等价于：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> Student.id, name, age, course, score<br><span class="hljs-keyword">FROM</span> Student<br><span class="hljs-keyword">JOIN</span> Score<br><span class="hljs-keyword">ON</span> Student.id <span class="hljs-operator">=</span> Score.id;<br></code></pre></td></tr></table></figure>
+
+<p>on条件可以表示任何SQL谓词，从而使用on条件的连接表达式就可以表示比自然连接更为丰富的连接条件</p>
+<h4 id="外连接"><a href="#外连接" class="headerlink" title="外连接"></a>外连接</h4><ul>
+<li><p>左外连接：只保留出现在左外连接运算后之前（左边）的关系中的元组</p>
+</li>
+<li><p>右外连接：只保留出现在右外连接运算后之后（右边边）的关系中的元组</p>
+</li>
+<li><p>全外链接：保留出现在两个关系中的元组</p>
+</li>
+<li><p><strong>内连接</strong>只返回“两个表中都匹配的”数据。</p>
+</li>
+<li><p><strong>外连接</strong>则会返回<strong>至少在一个表中存在的数据</strong>，即：<br>➤ 先做内连接找出匹配的行，<br>➤ 然后保留“未匹配上的一侧表的行”，并用 <code>NULL</code> 填充缺失部分。</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>说明</th>
+<th>典型用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LEFT JOIN</td>
+<td>保留左表所有数据，右表匹配或为 NULL</td>
+<td>主表为左侧，比如“所有学生”</td>
+</tr>
+<tr>
+<td>RIGHT JOIN</td>
+<td>保留右表所有数据，左表匹配或为 NULL</td>
+<td>主表为右侧，比如“所有工资”</td>
+</tr>
+<tr>
+<td>FULL OUTER JOIN</td>
+<td>保留两边所有数据，不匹配填 NULL</td>
+<td>汇总所有记录</td>
+</tr>
+</tbody></table>
+<p>内连接：inner join</p>
+<ul>
+<li>join子句中没有使用outer前缀，默认是内连接</li>
+</ul>
+<h2 id="视图"><a href="#视图" class="headerlink" title="视图"></a>视图</h2><p>视图可以理解为一个<strong>虚拟表</strong>，它是<strong>基于一个或多个表的查询结果</strong>创建的</p>
+<ul>
+<li>视图本事不存储数据，而是存储一个SQL查询语句的逻辑定义<br>视图&#x3D;保存的SQL查询</li>
+</ul>
+<h3 id="视图定义"><a href="#视图定义" class="headerlink" title="视图定义"></a>视图定义</h3><p>使用 <code>create view</code> 命令定义视图<br><code>create view v as &lt; query expression &gt;</code><br>&lt; query expression &gt; 可以是任何合法的查询表达式，v表示视图名<br><img src="/img/file-20250719160500302.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create</span> <span class="hljs-keyword">view</span> physics_fall_2009 <span class="hljs-keyword">as</span><br><span class="hljs-keyword">select</span> course.course_id, sec_id, building, room_number<br><span class="hljs-keyword">from</span> course, section<br><span class="hljs-keyword">where</span> course.course_id <span class="hljs-operator">=</span> section.course_id<br>  <span class="hljs-keyword">and</span> course.dept_name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Physics&#x27;</span><br>  <span class="hljs-keyword">and</span> section.semester <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Fall&#x27;</span><br>  <span class="hljs-keyword">and</span> section.year <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;2009&#x27;</span>;<br><br></code></pre></td></tr></table></figure>
+
+<h4 id="物化视图"><a href="#物化视图" class="headerlink" title="物化视图"></a>物化视图</h4><p>特定数据库系统允许存储视图关系，但它们保证：如果用于定义视图的实际关系改变，视图也跟着修改，这样子的视图称为物化视图</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>普通视图（View）</th>
+<th>物化视图（Materialized View）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>是否存储数据</td>
+<td>❌ 不存储，只保存查询逻辑</td>
+<td>✅ 存储查询结果（像一张表）</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>查询时重新执行原 SQL</td>
+<td>查询时读取已保存的数据，性能更高</td>
+</tr>
+<tr>
+<td>是否自动更新</td>
+<td>✅ 总是最新</td>
+<td>❌ 默认不自动更新，需要手动或定时刷新</td>
+</tr>
+<tr>
+<td>是否实时</td>
+<td>✅ 实时</td>
+<td>❌ 非实时，取决于刷新策略</td>
+</tr>
+</tbody></table>
+<h3 id="视图更新"><a href="#视图更新" class="headerlink" title="视图更新"></a>视图更新</h3><p>SQL视图可更新：</p>
+<ul>
+<li>from子句中只有一个数据库关系</li>
+<li>select子句只包含关系的属性名，不包含任何表达式、聚集或distinct声明</li>
+<li>任何没有出现在select子句中的属性可以取空值</li>
+<li>查询中不含有group nby或having子句<br>允许update、insert和delete</li>
+</ul>
+<h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><p>事务由查询和（或）更新语句的序列组成<br>SQL标准规定当一条SQL语句被执行，就隐式地开始了一个事务<br><strong>事务</strong>是数据库中的一个操作单元，<strong>由一组 SQL 语句组成，要么全部执行成功，要么全部失败回滚</strong>。</p>
+<p>特性：<br>原子性、一致性、隔离性、持久性</p>
+<h3 id="DATE和TIME"><a href="#DATE和TIME" class="headerlink" title="DATE和TIME"></a>DATE和TIME</h3><p>例子：<br>查询今天的日期</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> NOW();<br></code></pre></td></tr></table></figure>
+<p>然后就会返回今天的日期</p>
+<p>利用一些数据库定义的函数，可以得到某天到某天之间的日期差，等等</p>
+<h3 id="NESTED-QUERIES-内部查询"><a href="#NESTED-QUERIES-内部查询" class="headerlink" title="NESTED QUERIES 内部查询"></a>NESTED QUERIES 内部查询</h3><p>嵌套查询就是在一个 <code>SELECT</code>、<code>INSERT</code>、<code>UPDATE</code> 或 <code>DELETE</code> 语句中，<strong>再写一个完整的 SELECT 查询</strong>，用来提供中间结果或条件。</p>
+<p>例子：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> name<br><span class="hljs-keyword">FROM</span> student<br><span class="hljs-keyword">WHERE</span> sid <span class="hljs-keyword">IN</span> (<br>    <span class="hljs-keyword">SELECT</span> sid<br>    <span class="hljs-keyword">FROM</span> enrolled<br>    <span class="hljs-keyword">WHERE</span> cid <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;CS101&#x27;</span><br>);<br></code></pre></td></tr></table></figure>
+<p>即，先查出上了CS101的学生编号，再查询他们的名字<br>Nested Query Results Expressions:<br>• ALL: Must satisfy expression for all rows in sub-query.<br>• ANY: Must satisfy expression for at least one row in sub-query.<br>• IN: Equivalent to &#x3D;ANY(). SELECT * FROM course<br>• EXISTS: At least one row is returned.</p>
+<table>
+<thead>
+<tr>
+<th>关键词</th>
+<th>作用</th>
+<th>举例说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ALL</code></td>
+<td>与所有子查询结果比较</td>
+<td><code>x &gt; ALL(...)</code>：大于全部</td>
+</tr>
+<tr>
+<td><code>ANY</code></td>
+<td>与任一子查询结果比较</td>
+<td><code>x &gt; ANY(...)</code>：大于其中一个</td>
+</tr>
+<tr>
+<td><code>IN</code></td>
+<td>是否出现在子查询结果中</td>
+<td><code>x IN (...)</code> 等价于 <code>x = ANY(...)</code></td>
+</tr>
+<tr>
+<td><code>EXISTS</code></td>
+<td>子查询是否返回至少一行</td>
+<td>有记录就为 TRUE</td>
+</tr>
+</tbody></table>
+<h3 id="窗口函数"><a href="#窗口函数" class="headerlink" title="窗口函数"></a>窗口函数</h3><p>窗口函数时一种对一组相关记录（窗口）进行计算的函数，它不会像普通的聚合函数那样把多行变成一行，而是保留原来的行数并添加新列。 </p>
+<p>Common Table Expressions（CTE）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">WITH</span> 临时表名 <span class="hljs-keyword">AS</span> (<br>    子查询<br>)<br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> 临时表名;<br></code></pre></td></tr></table></figure>
+
+<h2 id="高级SQL"><a href="#高级SQL" class="headerlink" title="高级SQL"></a>高级SQL</h2><ul>
+<li>学习如何通过通用程序设计语言来访问SQL<ul>
+<li>通过拓展SQL语言来支持程序的操作</li>
+<li>数据库中执行程序语言中定义的函数</li>
+</ul>
+</li>
+<li>触发器：用于说明当特定事件发生时自动执行的操作</li>
+<li>递归查询和高级聚集特性</li>
+</ul>
+<h3 id="使用程序设计语言访问数据库"><a href="#使用程序设计语言访问数据库" class="headerlink" title="使用程序设计语言访问数据库"></a>使用程序设计语言访问数据库</h3><p>原因：</p>
+<ul>
+<li>SQL没有提供通用程序设计语言那样的表达能力，不能表达所有查询要求</li>
+<li>非声明性的动作都不能用SQL实现</li>
+</ul>
+<p>实现：</p>
+<ul>
+<li>动态SQL：通用程序设计语言可以通过函数或者方法来连接数据库服务器并与之交互。<ul>
+<li>在运行时以字符串形式构建SQL查询，提交查询，如何把结果存入程序变量中，每次一个元组</li>
+</ul>
+</li>
+<li>嵌入式SQL：嵌入式SQL语句必须在编译时全部确定，并交给预处理器</li>
+</ul>
+<p>嵌入式SQL：<br><img src="/img/file-20250724102243905.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="Homework"><a href="#Homework" class="headerlink" title="Homework"></a>Homework</h1><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>The first homework is to construct a set of SQL queries for analysing a dataset that will be provided to you. For this, you will look into <a target="_blank" rel="noopener" href="https://www.imdb.com/interfaces/">IMDB data</a>. This homework is an opportunity to: (1) learn basic and certain advanced SQL features, and (2) get familiar with using a full-featured DBMS, <a target="_blank" rel="noopener" href="https://www.sqlite.org/">SQLite</a>, that can be useful for you in the future.</p>
+<p>第一个作业是构建一组 SQL 查询，用于分析将提供给您的数据集。为此，您将研究 <a target="_blank" rel="noopener" href="https://www.imdb.com/interfaces/">IMDB 数据</a>。这个家庭作业是一个机会：（1） 学习基本和某些高级 SQL 功能，以及 （2） 熟悉使用功能齐全的 <a target="_blank" rel="noopener" href="https://www.sqlite.org/">DBMS SQLite</a>，这对您将来可能很有用。</p>
+<p>作业共包含10道题，满分100分。对于每个问题，您需要构建一个 SQL 查询，从 SQLite DBMS 获取所需的数据。完成问题可能需要大约 6-8 小时。</p>
+<p>提交：<br>使用将用于每个问题的空 SQL 文件创建占位符提交文件夹：</p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs livescript">$ mkdir placeholder<br>$ cd placeholder<br>$ touch <span class="hljs-string">\</span><br>  q1_sample.sql <span class="hljs-string">\</span><br>  q2_sci_fi.sql <span class="hljs-string">\</span><br>  q3_oldest_people.sql <span class="hljs-string">\</span><br>  q4_crew_appears_most.sql <span class="hljs-string">\</span><br>  q5_decade_ratings.sql <span class="hljs-string">\</span><br>  q6_cruiseing_altitude.sql <span class="hljs-string">\</span><br>  q7_year_of_thieves.sql <span class="hljs-string">\</span><br>  q8_kidman_colleagues.sql <span class="hljs-string">\</span><br>  q9_9th_decile_ratings.sql <span class="hljs-string">\</span><br>  q10_house_of_the_dragon.sql<br>$ cd ..<br></code></pre></td></tr></table></figure>
+
+<p>填写查询后，您可以通过运行以下命令来压缩文件夹：</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">$ zip -<span class="hljs-keyword">j </span><span class="hljs-keyword">submission.zip </span>placeholder<span class="hljs-comment">/*.sql</span><br></code></pre></td></tr></table></figure>
+
+<p>该标志允许您压缩 zip 文件中的所有 SQL 查询，而不提供路径信息。除非您这样做，否则评分脚本将<strong>无法</strong>正常工作。<code>-j</code></p>
+<p>指示：</p>
+<ol>
+<li><p>设置SQLite<br>选择在Linux上安装SQLite3<br>发现现在的ubuntu linux几乎都自带了SQLite3，检查了一下，确实存在。<br><img src="/img/file-20250720165942906.png" srcset="/img/loading.gif" lazyload><br>过了一会发现，这个是安装在python虚拟环境下的sqlite3，所以打算重新安装。</p>
+</li>
+<li><p>成功打开sqlite3和课程提供的数据库</p>
+</li>
+<li><p>发现数据库中有六个表</p>
+</li>
+</ol>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gams">sqlite&gt; .<span class="hljs-keyword">table</span><br>akas      crew      episodes  people    ratings   titles<br></code></pre></td></tr></table></figure>
+<ol start="4">
+<li>在SQLite中使用命令，创建索引</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> INDEX ix_people_name <span class="hljs-keyword">ON</span> people (name);<br><span class="hljs-keyword">CREATE</span> INDEX ix_titles_type <span class="hljs-keyword">ON</span> titles (type);<br><span class="hljs-keyword">CREATE</span> INDEX ix_titles_primary_title <span class="hljs-keyword">ON</span> titles (primary_title);<br><span class="hljs-keyword">CREATE</span> INDEX ix_titles_original_title <span class="hljs-keyword">ON</span> titles (original_title);<br><span class="hljs-keyword">CREATE</span> INDEX ix_akas_title_id <span class="hljs-keyword">ON</span> akas (title_id);<br><span class="hljs-keyword">CREATE</span> INDEX ix_akas_title <span class="hljs-keyword">ON</span> akas (title);<br><span class="hljs-keyword">CREATE</span> INDEX ix_crew_title_id <span class="hljs-keyword">ON</span> crew (title_id);<br><span class="hljs-keyword">CREATE</span> INDEX ix_crew_person_id <span class="hljs-keyword">ON</span> crew (person_id);<br></code></pre></td></tr></table></figure>
+
+<p>查看每张表的结构（schema）：使用命令 <code>.schema $TABLE_NAME</code><br>比如：<br><code>.schema akas</code> 就可以看到</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> .schema akas<br><span class="hljs-keyword">CREATE TABLE</span> akas (<br>  title_id <span class="hljs-type">VARCHAR</span>, <span class="hljs-comment">-- REFERENCES titles (title_id),</span><br>  title <span class="hljs-type">VARCHAR</span>,<br>  region <span class="hljs-type">VARCHAR</span>,<br>  <span class="hljs-keyword">language</span> <span class="hljs-type">VARCHAR</span>,<br>  types <span class="hljs-type">VARCHAR</span>,<br>  attributes <span class="hljs-type">VARCHAR</span>,<br>  is_original_title <span class="hljs-type">INTEGER</span><br>);<br><span class="hljs-keyword">CREATE</span> INDEX ix_akas_title_id <span class="hljs-keyword">ON</span> akas (title_id);<br><span class="hljs-keyword">CREATE</span> INDEX ix_akas_title <span class="hljs-keyword">ON</span> akas (title);<br></code></pre></td></tr></table></figure>
+
+<p>检查完之后就可以开始构造SQL查询了</p>
+<p>模板：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 说明：选择列，过滤条件，排序方式，分组逻辑</span><br><span class="hljs-keyword">SELECT</span><br>    column1,<br>    column2,<br>    ...<br><span class="hljs-keyword">FROM</span><br>    table_name<br><span class="hljs-keyword">WHERE</span><br>    <span class="hljs-keyword">condition</span><br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span><br>    column1  <span class="hljs-comment">-- 如果需要聚合（可选）</span><br><span class="hljs-keyword">HAVING</span><br>    condition_on_group  <span class="hljs-comment">-- 分组后筛选（可选）</span><br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span><br>    column1 <span class="hljs-keyword">ASC</span><span class="hljs-operator">|</span><span class="hljs-keyword">DESC</span><br>LIMIT<br>    N;  <span class="hljs-comment">-- 限制结果条数（可选）</span><br></code></pre></td></tr></table></figure>
+
+<p>Q1：q1_sample<br>此查询的目的是确保 您的输出格式与我们的自动评分脚本的格式完全匹配。</p>
+<p>详：列出按字母顺序排序的所有类别名称。<br><strong>答案</strong>：以下是正确的 SQL 查询和预期输出<br><img src="/img/file-20250720172505438.png" srcset="/img/loading.gif" lazyload><br>将查询的sql语句粘贴到文件中即可。</p>
+<p>Q2 [5 分] （q2_sci_fi）：<br>找到运行时间最长的 10 部“科幻”作品。<br>详：打印作品的标题、首播日期和运行时间。 列出运行时的列应以字符串 “ （mins）” 为后缀， 例如，如果 <code>runtime_mins</code> 值为 ‘12’，则应输出 <code>12 (mins)</code> 。Note a work is <code>Sci-Fi</code> even if it is categorized in multiple genres, as long as <code>Sci-Fi</code> is one of the genres.<br>您的第一行应如下所示：<br><code>Cicak-Man 2: Planet Hitam|2008|999 (mins)</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span><br>    primary_title,<br>    premiered,<br>    runtime_minutes <span class="hljs-operator">||</span> <span class="hljs-string">&#x27; (mins)&#x27;</span> <span class="hljs-keyword">AS</span> runtime_mins<br><span class="hljs-keyword">FROM</span> titles<br><span class="hljs-keyword">WHERE</span> genres <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;%Sci-Fi%&#x27;</span><br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> runtime_minutes <span class="hljs-keyword">DESC</span><br>LIMIT <span class="hljs-number">10</span>;<br><br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/file-20250721104536521.png" srcset="/img/loading.gif" lazyload></p>
+<p>Q3 [5 分] （q3_oldest_people）：<br>确定数据集中出生于 1900 年或之后的最年长的人。 您应该假设一个没有已知死亡年份的人还活着。</p>
+<p>详：打印每个人的姓名和年龄。人们应该 按年龄的复合值排序，其次是他们的名字 按字母顺序排列。返回前 20 个结果。<br>输出的格式应为：<code>NAME|AGE</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> name <span class="hljs-keyword">as</span> NAME,<span class="hljs-built_in">COALESCE</span>(died, <span class="hljs-number">2022</span>)<span class="hljs-operator">-</span>born <span class="hljs-keyword">AS</span> AGE<br><span class="hljs-keyword">FROM</span> people<br><span class="hljs-keyword">WHERE</span> born<span class="hljs-operator">&gt;=</span><span class="hljs-number">1900</span> <br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> AGE <span class="hljs-keyword">DESC</span>,NAME <span class="hljs-keyword">ASC</span><br>LIMIT <span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/image-20250721110747212.png" srcset="/img/loading.gif" lazyload></p>
+<p>Q4 [10 分] （q4_crew_appears_most）：<br>查找最常以船员身份出现的人。</p>
+<p>详：打印20人的姓名和出场次数 最多的船员出场次数按出场次数排序 以下降的方式。<br>您的输出应如下所示：<code>NAME|NUM_APPEARANCES</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> crew (<br>  title_id <span class="hljs-type">VARCHAR</span>, <span class="hljs-comment">-- REFERENCES titles (title_id),</span><br>  person_id <span class="hljs-type">VARCHAR</span>, <span class="hljs-comment">-- REFERENCES people (person_id),</span><br>  category <span class="hljs-type">VARCHAR</span>,<br>  job <span class="hljs-type">VARCHAR</span>,<br>  characters <span class="hljs-type">VARCHAR</span><br>);<br><span class="hljs-keyword">CREATE TABLE</span> people (<br>  person_id <span class="hljs-type">VARCHAR</span> <span class="hljs-keyword">PRIMARY KEY</span>,<br>  name <span class="hljs-type">VARCHAR</span>,<br>  born <span class="hljs-type">INTEGER</span>,<br>  died <span class="hljs-type">INTEGER</span><br>);<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> people.name <span class="hljs-keyword">AS</span> NAME, <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">AS</span> NUM_APPEARANCES<br><span class="hljs-keyword">FROM</span> crew<br><span class="hljs-keyword">JOIN</span> people <span class="hljs-keyword">ON</span> crew.person_id <span class="hljs-operator">=</span> people.person_id<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> crew.person_id, people.name<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> NUM_APPEARANCES <span class="hljs-keyword">DESC</span><br>LIMIT <span class="hljs-number">20</span>;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/image-20250721113629379.png" srcset="/img/loading.gif" lazyload alt="image-20250721113629379"></p>
+<p>问题 5 [10 分] （q5_decade_ratings）：</p>
+<p>计算每十年内容评级的有趣统计数据。</p>
+<p>**详：**获取平均评分（四舍五入到小数点后两位）、最高评分、 最小评级，以及每个十年的发布次数。排除尚未首映（即首映的位置 <code>NULL</code> ）。打印相关 decade 以更奇特的格式构建一个如下所示的字符串：<code>1990s</code> .按降序的平均评分对几十年进行排序 时尚，其次是十年，上升，断绝关系。<br>输出的格式应为：<code>DECADE|AVG_RATING|TOP_RATING|MIN_RATING|NUM_RELEASES</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span><br>  <span class="hljs-built_in">CAST</span>((premiered <span class="hljs-operator">/</span> <span class="hljs-number">10</span>) <span class="hljs-operator">*</span> <span class="hljs-number">10</span> <span class="hljs-keyword">AS</span> TEXT) <span class="hljs-operator">||</span> <span class="hljs-string">&#x27;s&#x27;</span> <span class="hljs-keyword">AS</span> DECADE,<br>  ROUND(<span class="hljs-built_in">AVG</span>(rating), <span class="hljs-number">2</span>) <span class="hljs-keyword">AS</span> AVG_RATING,<br>  <span class="hljs-built_in">MAX</span>(rating) <span class="hljs-keyword">AS</span> TOP_RATING,<br>  <span class="hljs-built_in">MIN</span>(rating) <span class="hljs-keyword">AS</span> MIN_RATING,<br>  <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">AS</span> NUM_RELEASES<br><span class="hljs-keyword">FROM</span> titles<br><span class="hljs-keyword">JOIN</span> ratings <span class="hljs-keyword">ON</span> titles.title_id <span class="hljs-operator">=</span> ratings.title_id<br><span class="hljs-keyword">WHERE</span> premiered <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span><br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> DECADE<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> AVG_RATING <span class="hljs-keyword">DESC</span>, DECADE <span class="hljs-keyword">ASC</span>;<br><br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/image-20250721162839308.png" srcset="/img/loading.gif" lazyload alt="image-20250721162839308"></p>
+<p>COUNT(*)：统计符合条件的所有行数，无论这些行中有没有NULL值</p>
+<p>FROM只写了titles是因为，我通过自然连接，把ratings的信息给并过来了，他们合成一个表，所以就只用写titles</p>
+<p>问题 6 [10 分] （q6_cruiseing_altitude）：</p>
+<p>找出由出生于 1962 年、名字中包含 “Cruise” 的人参与的、最受欢迎（投票数最多）的作品。</p>
+<p>**详：**获得得票最多且剧组中有一人的作品 他们的名字中带有“Cruise”，出生于 1962 年。返回 工作和投票数，并仅按顺序列出前 10 名结果 从多到最少的选票。确保输出的格式如下：<code>Top Gun|408389</code></p>
+<p>查询逻辑：</p>
+<ul>
+<li>从people表中找出所有名字里含Cruise且出生于1962年的人</li>
+<li>再找出这些人参与的作品，到crew表中得到title_id</li>
+<li>到ratings表中得到投票数，到titles表中找到作品名</li>
+<li>按照投票数降序排列，取前10名</li>
+<li>格式<code>Top Gun|408389</code></li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <br>	titles.primary_title,<br>	ratings.votes<br><span class="hljs-keyword">FROM</span> people<br><span class="hljs-keyword">JOIN</span> crew <span class="hljs-keyword">ON</span> people.person_id <span class="hljs-operator">=</span> crew.person_id<br><span class="hljs-keyword">JOIN</span> ratings <span class="hljs-keyword">ON</span> crew.title_id<span class="hljs-operator">=</span>ratings.title_id<br><span class="hljs-keyword">JOIN</span> titles <span class="hljs-keyword">ON</span> crew.title_id<span class="hljs-operator">=</span>titles.title_id<br><span class="hljs-keyword">WHERE</span> name <span class="hljs-keyword">LIKE</span> <span class="hljs-string">&#x27;%Cruise%&#x27;</span> <span class="hljs-keyword">AND</span> born <span class="hljs-operator">=</span> <span class="hljs-number">1962</span><br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> ratings.votes <span class="hljs-keyword">DESC</span><br>LIMIT <span class="hljs-number">10</span>;<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/image-20250721121833680.png" srcset="/img/loading.gif" lazyload></p>
+<p>问题7 [15分] （q7_year_of_thieves）：</p>
+<p>列出与“Army of Thieves”同年首播的作品数量。</p>
+<p>**详：**仅打印作品总数。答案应该包括 “Army of Thieves”本身。对于这个问题，通过<code>title_id</code>确定不同的作品，而不是他们的名字。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> titles (<br>  title_id <span class="hljs-type">VARCHAR</span> <span class="hljs-keyword">PRIMARY KEY</span>,<br>  type <span class="hljs-type">VARCHAR</span>,<br>  primary_title <span class="hljs-type">VARCHAR</span>,<br>  original_title <span class="hljs-type">VARCHAR</span>,<br>  is_adult <span class="hljs-type">INTEGER</span>,<br>  premiered <span class="hljs-type">INTEGER</span>,<br>  ended <span class="hljs-type">INTEGER</span>,<br>  runtime_minutes <span class="hljs-type">INTEGER</span>,<br>  genres <span class="hljs-type">VARCHAR</span><br>);<br></code></pre></td></tr></table></figure>
+
+<p>查询步骤：</p>
+<ul>
+<li><p>先得到Army of Thieves的播放年份</p>
+</li>
+<li><p>然后查询与这个年份同一年播放的所有作品的title_id</p>
+</li>
+<li><p>数一下</p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-keyword">DISTINCT</span> title_id)<br><span class="hljs-keyword">FROM</span> titles<br><span class="hljs-keyword">WHERE</span> premiered <span class="hljs-operator">=</span> (<br>    <span class="hljs-keyword">SELECT</span> premiered <span class="hljs-keyword">FROM</span> titles <span class="hljs-keyword">WHERE</span> primary_title <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Army of Thieves&#x27;</span><br>);<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/image-20250721122737926.png" srcset="/img/loading.gif" lazyload></p>
+<p>问题8 [15分] （q8_kidman_colleagues）：</p>
+<p>找出曾与 Nicole Kidman 合作出演（出演同一部作品）的所有演员和女演员的名字。</p>
+<p>输出格式要求如下：</p>
+<ul>
+<li>只输出 <code>name</code>（不包含 id 或其他字段）；</li>
+<li>按字母表排序；</li>
+<li>不允许重复（所以需要用 <code>DISTINCT</code>）；</li>
+<li><strong>包含 Nicole Kidman 本人</strong>！</li>
+</ul>
+<p>判断某人是否在某部作品中“出演”，需要看 <code>crew</code> 表里的 <code>category</code> 字段；</p>
+<p>其中，“actor” 和 “actress” 是两种不同的角色标签；</p>
+<p>所以你必须同时找 category &#x3D; ‘actor’ <strong>和</strong> category &#x3D; ‘actress’ 的人（不能只找其中一种）；</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> crew (<br>  title_id <span class="hljs-type">VARCHAR</span>, <span class="hljs-comment">-- REFERENCES titles (title_id),</span><br>  person_id <span class="hljs-type">VARCHAR</span>, <span class="hljs-comment">-- REFERENCES people (person_id),</span><br>  category <span class="hljs-type">VARCHAR</span>,<br>  job <span class="hljs-type">VARCHAR</span>,<br>  characters <span class="hljs-type">VARCHAR</span><br>);<br><span class="hljs-keyword">CREATE TABLE</span> people (<br>  person_id <span class="hljs-type">VARCHAR</span> <span class="hljs-keyword">PRIMARY KEY</span>,<br>  name <span class="hljs-type">VARCHAR</span>,<br>  born <span class="hljs-type">INTEGER</span>,<br>  died <span class="hljs-type">INTEGER</span><br>);<br></code></pre></td></tr></table></figure>
+
+<p>查询逻辑：</p>
+<ol>
+<li>在people表中得到Nicole Kidman的person_id</li>
+<li>然后在crew表中找到与Nicole Kidman有相同的title_id的人，查看他是actor还是actress，回到people找到人名</li>
+<li>我们可以通过自然连接把people表和crew表连接起来</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DISTINCT</span> p.name<br><span class="hljs-keyword">FROM</span> people p<br><span class="hljs-keyword">JOIN</span> crew c <span class="hljs-keyword">ON</span> p.person_id <span class="hljs-operator">=</span> c.person_id<br><span class="hljs-keyword">WHERE</span> c.title_id <span class="hljs-keyword">IN</span> (<br>    <span class="hljs-keyword">SELECT</span> c2.title_id<br>    <span class="hljs-keyword">FROM</span> crew c2<br>    <span class="hljs-keyword">JOIN</span> people p2 <span class="hljs-keyword">ON</span> c2.person_id <span class="hljs-operator">=</span> p2.person_id<br>    <span class="hljs-keyword">WHERE</span> p2.name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Nicole Kidman&#x27;</span> <span class="hljs-keyword">AND</span> p2.born <span class="hljs-operator">=</span> <span class="hljs-number">1967</span><br>)<br><span class="hljs-keyword">AND</span> (c.category <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;actor&#x27;</span> <span class="hljs-keyword">OR</span> c.category <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;actress&#x27;</span>)<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> p.name;<br></code></pre></td></tr></table></figure>
+
+<p>这里要注意的是NK可能参演了多部作品，这个时候title_id是用 <code>IN</code> 而不能用等号</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs sql">sqlite<span class="hljs-operator">&gt;</span> <span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DISTINCT</span> p.name<br><span class="hljs-keyword">FROM</span> people p<br><span class="hljs-keyword">JOIN</span> crew c <span class="hljs-keyword">ON</span> p.person_id <span class="hljs-operator">=</span> c.person_id<br><span class="hljs-keyword">WHERE</span> c.title_id <span class="hljs-keyword">IN</span> (<br>    <span class="hljs-keyword">SELECT</span> c2.title_id<br>    <span class="hljs-keyword">FROM</span> crew c2<br>    <span class="hljs-keyword">JOIN</span> people p2 <span class="hljs-keyword">ON</span> c2.person_id <span class="hljs-operator">=</span> p2.person_id<br>    <span class="hljs-keyword">WHERE</span> p2.name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Nicole Kidman&#x27;</span> <span class="hljs-keyword">AND</span> p2.born <span class="hljs-operator">=</span> <span class="hljs-number">1967</span><br>)<br><span class="hljs-keyword">AND</span> (c.category <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;actor&#x27;</span> <span class="hljs-keyword">OR</span> c.category <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;actress&#x27;</span>)<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> p.name;<br>Betty Gilpin<br>Casey Affleck<br>Colin Farrell<br>Crista Flanagan<br>Danny Huston<br>Dennis Miller<br>Donald Sutherland<br>Ed Mantell<br>Fionnula Flanagan<br>Flora <span class="hljs-keyword">Cross</span><br>Fredrik Skavlan<br>Gus Mercurio<br>Halle Berry<br>Harris Yulin<br>J.K. Simmons<br>Jackson Bond<br>James Corden<br>Jason Bateman<br>Javier Bardem<br>Jesper Christensen<br>John Lithgow<br>Julianne Moore<br>Kai Lewins<br>Kyle Mooney<br>Lisa Flanagan<br>Liz Burch<br>Mahershala Ali<br>Maria Tran<br>Mark Strong<br>Nicholas Eadie<br>Nicole Kidman<br>Paul Bettany<br>Pauline Chan<br>Robert Pattinson<br>Russell Crowe<br>Sam Neill<br>Shailene Woodley<br>Sherie Graham<br>Simon Baker<br>Stellan Skarsgård<br>Tom Cruise<br>Valerie Yu<br>Veronica Lang<br>Will Ferrell<br></code></pre></td></tr></table></figure>
+
+<p>问题 9 [15 分] （q9_9th_decile_ratings）：</p>
+<p>找出所有 <strong>出生于 1955 年</strong> 的人，获取他们的名字，以及他们职业生涯中参与过的电影的 <strong>平均评分</strong>。</p>
+<p>输出这些人中<strong>职业平均评分位于第 9 分位数（decile）的人</strong>的名字和平均评分。</p>
+<p><strong>详：<strong>计算 1955 年出生的每个人的平均评分 只有他们参与过的</strong>电影</strong>。计算每个分位数 使用 <a target="_blank" rel="noopener" href="https://www.sqlitetutorial.net/sqlite-window-functions/sqlite-ntile/">NTILE（10）</a> 的个人平均评分。<br>确保您的输出格式如下（将平均评分四舍五入为 最接近的百分之一，结果应按复合值 他们的评级降序，其次是他们的名字，按字母顺序排列）：<code>Stanley Nelson|7.13</code><br>**注意：**您应该在处理平均职业后取分位数个人的电影评级。换句话说，找到那些拥有职业生涯电影的平均评分在所有人的第 9 个十分位数。</p>
+<p>查询步骤：</p>
+<ul>
+<li>找到所有出身于1955年的人，获取名字（people表）、职业生涯中演过的电影（crew表）的平均评分（ratings表)</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> people (<br>  person_id <span class="hljs-type">VARCHAR</span> <span class="hljs-keyword">PRIMARY KEY</span>,<br>  name <span class="hljs-type">VARCHAR</span>,<br>  born <span class="hljs-type">INTEGER</span>,<br>  died <span class="hljs-type">INTEGER</span><br>);<br><span class="hljs-keyword">CREATE TABLE</span> crew (<br>  title_id <span class="hljs-type">VARCHAR</span>, <span class="hljs-comment">-- REFERENCES titles (title_id),</span><br>  person_id <span class="hljs-type">VARCHAR</span>, <span class="hljs-comment">-- REFERENCES people (person_id),</span><br>  category <span class="hljs-type">VARCHAR</span>,<br>  job <span class="hljs-type">VARCHAR</span>,<br>  characters <span class="hljs-type">VARCHAR</span><br>);<br><span class="hljs-keyword">CREATE TABLE</span> ratings (<br>  title_id <span class="hljs-type">VARCHAR</span> <span class="hljs-keyword">PRIMARY KEY</span>, <span class="hljs-comment">-- REFERENCES titles (title_id),</span><br>  rating <span class="hljs-type">FLOAT</span>,<br>  votes <span class="hljs-type">INTEGER</span><br>);<br></code></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> name , ROUND(average_rating, <span class="hljs-number">2</span>)<br><span class="hljs-keyword">FROM</span> (<br>    <span class="hljs-keyword">SELECT</span> <br>        p.name,<br>        <span class="hljs-built_in">AVG</span>(r.rating) <span class="hljs-keyword">AS</span> average_rating,<br>        <span class="hljs-built_in">NTILE</span>(<span class="hljs-number">10</span>) <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-built_in">AVG</span>(r.rating) <span class="hljs-keyword">DESC</span>) <span class="hljs-keyword">AS</span> decile<br>    <span class="hljs-keyword">FROM</span> people p<br>    <span class="hljs-keyword">JOIN</span> crew c <span class="hljs-keyword">ON</span> p.person_id <span class="hljs-operator">=</span> c.person_id<br>    <span class="hljs-keyword">JOIN</span> ratings r <span class="hljs-keyword">ON</span> c.title_id <span class="hljs-operator">=</span> r.title_id<br>    <span class="hljs-keyword">WHERE</span> p.born <span class="hljs-operator">=</span> <span class="hljs-number">1955</span><br>    <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> p.person_id, p.name<br>)<br><span class="hljs-keyword">WHERE</span> decile <span class="hljs-operator">=</span> <span class="hljs-number">9</span><br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> average_rating <span class="hljs-keyword">DESC</span>, name <span class="hljs-keyword">ASC</span>;<br></code></pre></td></tr></table></figure>
+
+<p>内层查询先计算每个人的平均评分和所在十分位 <code>decile</code>；</p>
+<p>外层查询只筛选第 9 十分位 (<code>decile = 9</code>)；</p>
+<p>拼接输出格式为 <code>名字|评分</code>，评分四舍五入保留两位小数；</p>
+<p>问题10 [15分] （q10_house_of_the_dragon）：</p>
+<p>请将《House of the Dragon》这部剧的所有独特标题（title）拼接成一个按字母顺序排列、逗号 + 空格分隔的单个字符串csv。</p>
+<ul>
+<li><p>查找 TV 节目名称为 <code>&quot;House of the Dragon&quot;</code> 的所有标题（包括被翻译&#x2F;配音后的标题，即 dubbed titles）。</p>
+</li>
+<li><p>去重，区分大小写（<code>&quot;foo&quot;</code> 和 <code>&quot;Foo&quot;</code> 被视为不同）。</p>
+</li>
+<li><p>按<strong>字母升序</strong>排列这些标题。</p>
+</li>
+<li><p>使用 <strong>逗号 + 空格（<code>, </code>）</strong> 作为分隔符，将所有标题拼接成一个字符串返回。</p>
+</li>
+<li><p>推荐使用 <strong>递归 CTE（WITH RECURSIVE）</strong> 实现字符串拼接。</p>
+</li>
+<li><p>最终输出是一个<strong>单行字符串</strong>，如：<code>foo, Hello World, zzz</code></p>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">WITH</span> <span class="hljs-keyword">RECURSIVE</span><br><span class="hljs-comment">-- Step 1: 获取所有和 House of the Dragon 对应的 title_id</span><br>target_titles <span class="hljs-keyword">AS</span> (<br>  <span class="hljs-keyword">SELECT</span> title_id<br>  <span class="hljs-keyword">FROM</span> titles<br>  <span class="hljs-keyword">WHERE</span> primary_title <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;House of the Dragon&#x27;</span><br>),<br><span class="hljs-comment">-- Step 2: 获取所有不同语言的翻译标题，并排序</span><br>sorted_titles <span class="hljs-keyword">AS</span> (<br>  <span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">DISTINCT</span> akas.title<br>  <span class="hljs-keyword">FROM</span> akas<br>  <span class="hljs-keyword">JOIN</span> target_titles <span class="hljs-keyword">ON</span> akas.title_id <span class="hljs-operator">=</span> target_titles.title_id<br>  <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> akas.title<br>),<br><span class="hljs-comment">-- Step 3: 给每个标题加上行号</span><br>numbered_titles <span class="hljs-keyword">AS</span> (<br>  <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">ROW_NUMBER</span>() <span class="hljs-keyword">OVER</span> () <span class="hljs-keyword">AS</span> rn, title<br>  <span class="hljs-keyword">FROM</span> sorted_titles<br>),<br><span class="hljs-comment">-- Step 4: 使用递归拼接字符串</span><br>agg(rn, title_str) <span class="hljs-keyword">AS</span> (<br>  <span class="hljs-keyword">SELECT</span> rn, title <span class="hljs-keyword">FROM</span> numbered_titles <span class="hljs-keyword">WHERE</span> rn <span class="hljs-operator">=</span> <span class="hljs-number">1</span><br>  <span class="hljs-keyword">UNION</span> <span class="hljs-keyword">ALL</span><br>  <span class="hljs-keyword">SELECT</span> n.rn, a.title_str <span class="hljs-operator">||</span> <span class="hljs-string">&#x27;, &#x27;</span> <span class="hljs-operator">||</span> n.title<br>  <span class="hljs-keyword">FROM</span> agg a<br>  <span class="hljs-keyword">JOIN</span> numbered_titles n <span class="hljs-keyword">ON</span> n.rn <span class="hljs-operator">=</span> a.rn <span class="hljs-operator">+</span> <span class="hljs-number">1</span><br>)<br><span class="hljs-comment">-- 最终结果：只保留最后一行（拼接完成的）</span><br><span class="hljs-keyword">SELECT</span> title_str<br><span class="hljs-keyword">FROM</span> agg<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> rn <span class="hljs-keyword">DESC</span><br>LIMIT <span class="hljs-number">1</span>;<br><br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/database/" class="category-chain-item">database</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="/tags/database/" class="print-no-link">#database</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>DB_Lec2</div>
+      <div>https://pqcu77.github.io/2025/07/18/DB-Lec2/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/24/DB-Lec3/" title="DB_Lec3">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">DB_Lec3</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/17/databases/" title="Databases">
+                        <span class="hidden-mobile">Databases</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

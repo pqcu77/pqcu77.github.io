@@ -1,0 +1,952 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="资料 cs-self-learning&#x2F;docs&#x2F;数据库系统&#x2F;15445.md at master · PKUFlyingPig&#x2F;cs-self-learning Schedule | CMU 15-445&#x2F;645 :: Intro to Database Systems (Spring 2023)  由于2022的有对应的网课， 我觉得使用202">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Databases">
+<meta property="og:url" content="https://pqcu77.github.io/2025/07/17/databases/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="资料 cs-self-learning&#x2F;docs&#x2F;数据库系统&#x2F;15445.md at master · PKUFlyingPig&#x2F;cs-self-learning Schedule | CMU 15-445&#x2F;645 :: Intro to Database Systems (Spring 2023)  由于2022的有对应的网课， 我觉得使用202">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250717214232397.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250718112528744.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250726102623185.png">
+<meta property="article:published_time" content="2025-07-17T13:13:04.000Z">
+<meta property="article:modified_time" content="2025-07-27T03:29:34.563Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="database">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250717214232397.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Databases - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Databases"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-17 21:13" pubdate>
+          2025年7月17日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Databases</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-07-27T11:29:34+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://github.com/PKUFlyingPig/cs-self-learning/blob/master/docs/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/15445.md">cs-self-learning&#x2F;docs&#x2F;数据库系统&#x2F;15445.md at master · PKUFlyingPig&#x2F;cs-self-learning</a></li>
+<li><a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/spring2023/schedule.html">Schedule | CMU 15-445&#x2F;645 :: Intro to Database Systems (Spring 2023)</a></li>
+</ol>
+<p>由于2022的有对应的网课， 我觉得使用2022的配套练习会比较合适。<br><a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/fall2022/schedule.html">Schedule | CMU 15-445&#x2F;645 :: Intro to Database Systems (Fall 2022)</a><br>other year:<a target="_blank" rel="noopener" href="https://15445.courses.cs.cmu.edu/fall2025/">CMU 15-445 :: Intro to Database Systems (Fall 2025)</a><br>discord Channel:<br><a target="_blank" rel="noopener" href="https://discord.com/channels/724929902075445281/752529819148877904">Discord | #welcome | CMU 15-445&#x2F;645 (unofficial)</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/623770086">(16 封私信 &#x2F; 42 条消息) 2022 CMU-15445 全总结 - 知乎</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/twentyonepilots/article/details/120868216">CMU15-445 数据库实验全满分通过笔记 2021 Fall bustub-cmudb lab_github cmu 15-445 2021-CSDN博客</a><br><a target="_blank" rel="noopener" href="https://zhenghe.gitbook.io/open-courses/cmu-15-445-645-database-systems/relational-data-model">Relational Data Model | open-courses</a></p>
+<h1 id="Lecture1"><a href="#Lecture1" class="headerlink" title="Lecture1"></a>Lecture1</h1><p>此课程重点是如何构建数据库，而不是如何使用数据库。</p>
+<p>非官方学生通过这个来评测<br><img src="/img/file-20250717214232397.png" srcset="/img/loading.gif" lazyload></p>
+<p>测评：<a target="_blank" rel="noopener" href="https://www.gradescope.com/courses/425272">15-445&#x2F;645 (Non-CMU) Dashboard | Gradescope</a></p>
+<p>什么是数据库？<br>数据库是组织化的、相互关联的数据集合。<br>e.g:创建一个数字音乐商店数据库，包含艺术家和专辑信息。</p>
+<p>关系模型：</p>
+<ul>
+<li>关系模型：基于关系的数据库抽象，避免维护开销。</li>
+<li>三个组成部分：<ul>
+<li>结构：定义数据库的关系及其内容。</li>
+<li>完整性：确保数据库内容满足约束条件。</li>
+<li>操作：<strong>访问和修改</strong>数据库内容的编程接口。</li>
+</ul>
+</li>
+<li>关系是一个无序的集合，包含代表实体的属性关系</li>
+<li>主键：唯一表示关系中的一个元组</li>
+<li>外键：指定一个关系中的属性必须映射到另一个关系中的元组</li>
+</ul>
+<p>关系代数：</p>
+<ul>
+<li><strong>关系代数</strong>：用于检索和操作关系中的元组的基本操作。</li>
+<li><strong>操作符</strong>：<ul>
+<li><strong>选择（σ）</strong>：根据条件筛选元组。</li>
+<li><strong>投影（π）</strong>：选择特定的属性。</li>
+<li><strong>并集（∪）</strong>：合并两个关系的元组。</li>
+<li><strong>交集（∩）</strong>：找出两个关系中共有的元组。</li>
+<li><strong>差集（–）</strong>：找出第一个关系中有而第二个关系中没有的元组。</li>
+<li><strong>笛卡尔积（×）</strong>：生成两个关系中所有可能的元组组合。</li>
+<li><strong>连接（⋈）</strong>：根据共同属性组合两个关系的元组。</li>
+</ul>
+</li>
+<li><strong>额外操作符</strong>：重命名（ρ）、赋值（←）、去重（δ）、聚合（γ）、排序（τ）和除法（÷）。</li>
+</ul>
+<h2 id="Notes1："><a href="#Notes1：" class="headerlink" title="Notes1："></a>Notes1：</h2><h3 id="FlatFile-Strawman"><a href="#FlatFile-Strawman" class="headerlink" title="FlatFile Strawman"></a>FlatFile Strawman</h3><p>数据库经常以CSV(comma-separated value)文件的形式存储，由DBMS进行管理。每次应用程序要读取或者更新记录时，都必须解析文件</p>
+<p>以数字音乐商店的例子，会有两个文件，一是艺术家，二是专辑。</p>
+<p>每个实体都有自己的属性集，所以在每个文件中，不同的记录都用新的<strong>行</strong>来划分，而一条记录中的每个相应属性都用<strong>逗号</strong>隔开</p>
+<p>e.g:</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">Wu</span>-Tang Clan, <span class="hljs-number">1992</span>, USA <br><span class="hljs-attribute">Notorious</span> BIG, <span class="hljs-number">1992</span>, USA <br><span class="hljs-attribute">GZE</span>, <span class="hljs-number">1990</span>, USA<br></code></pre></td></tr></table></figure>
+
+<p>Flat File：</p>
+<ul>
+<li>Data Integrity 数据完整性</li>
+<li>Implementation 实现</li>
+<li>Durability 持久性<br><img src="/img/file-20250718112528744.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<h3 id="DBMS"><a href="#DBMS" class="headerlink" title="DBMS"></a>DBMS</h3><p>DBMS(database management system): a software that allows applications to store and analyze infomation in a database</p>
+<ul>
+<li>允许增删查改</li>
+<li><strong>Data model：</strong><br>数据模型是描述数据库中数据的概念的集合。</li>
+<li><strong>Schema：</strong><br>模式是对基于数据模型的特定数据集合的描述。</li>
+</ul>
+<h3 id="关系模型"><a href="#关系模型" class="headerlink" title="关系模型"></a>关系模型</h3><p>The relational model defines a database abstraction based on relations to <strong>avoid maintenance overhead</strong>. It has three key points:<br>• Store database in simple <strong>data structures</strong> (relations).<br>• Access data through <strong>high-level language</strong>, DBMS figures out best execution strategy.<br>• Physical storage left up to the DBMS implementation.</p>
+<ul>
+<li>用简单的数据结构保存，用高级语言来访问，让DBMS来执行最优策略以及处理物理层存储</li>
+</ul>
+<p>关系模型定义的三个概念:</p>
+<ul>
+<li>Structure：关系定义和内容。也就是关系具有的属性以及可以有的值。</li>
+<li>Integrity：确保数据库的内容满足约束条件。比如：年份必须是数字。</li>
+<li>Manipulation:如何访问和修改数据库的内容。</li>
+</ul>
+<p>关系是一组无序的集合。因为是无序的，所以DBMS可以用它想要的任何方式存储它们，并允许优化。<br>元组指的是关系中的一组属性值<br>A relation with <strong>n attributes</strong> is called an <strong>n-ary relation</strong>、</p>
+<h3 id="键–Key"><a href="#键–Key" class="headerlink" title="键–Key"></a>键–Key</h3><ul>
+<li><p>A relation’s primary key uniquely identifies a single tuple.<br>一个关系的<strong>primary key</strong>唯一的定义了单个元组。很多DBMSs都支持autogenerated keys，所以程序就不需要手动增加了，但primary key还是在某些DBMSs是需要的。</p>
+</li>
+<li><p>Primary key：唯一的定义了单个元组。</p>
+</li>
+<li><p>Foreign key：指定一个关系中的属性必须映射到另一个关系中的元组。</p>
+</li>
+</ul>
+<h3 id="DML"><a href="#DML" class="headerlink" title="DML"></a>DML</h3><ul>
+<li>Procedural: The query specifies the (high-level) strategy the DBMS should use to find the desired result based on sets &#x2F; bags. (relational algebra)<br>过程化DML：要求用户指定需要什么数据以及如何获得数据</li>
+<li>Non-Procedural (Declarative): The query specifies only what data is wanted and not how to find it. (relational calculus)<br>声明式DML：只要求指定需要什么数据</li>
+</ul>
+<h3 id="关系代数"><a href="#关系代数" class="headerlink" title="关系代数"></a>关系代数</h3><p>一组基本操作，用于检索和操作关系中的图元。（跟离散数学关系比较大）</p>
+<ul>
+<li><strong>操作符</strong>：<ul>
+<li><strong>选择（σ）</strong>：根据条件筛选元组。</li>
+<li><strong>投影（π）</strong>：选择特定的属性。</li>
+<li><strong>并集（∪）</strong>：合并两个关系的元组。</li>
+<li><strong>交集（∩）</strong>：找出两个关系中共有的元组。</li>
+<li><strong>差集（–）</strong>：找出第一个关系中有而第二个关系中没有的元组。</li>
+<li><strong>笛卡尔积（×）</strong>：生成两个关系中所有可能的元组组合。</li>
+<li><strong>连接（⋈）</strong>：根据共同属性组合两个关系的元组。</li>
+</ul>
+</li>
+</ul>
+<p>书本内容：</p>
+<h2 id="chap1"><a href="#chap1" class="headerlink" title="chap1"></a>chap1</h2><p>数据库管理系统（DBMS）由一个互相关联的<strong>数据的集合</strong>和一组用以<strong>访问这些数据的程序</strong>组成。<u>这个数据集合称为数据库。<br></u></p>
+<p>文件系统存储组织信息的弊端：</p>
+<ul>
+<li>数据的冗余和不一致：可能出现重复存储，这种冗余可能进一步导致不一致性</li>
+<li>数据访问困难</li>
+<li>数据孤立：数据分散在不同文件中</li>
+<li>完整性问题</li>
+<li>原子性问题</li>
+<li>并发访问异常</li>
+<li>安全性问题</li>
+</ul>
+<h3 id="数据视图"><a href="#数据视图" class="headerlink" title="数据视图"></a>数据视图</h3><p>数据库给用户提供数据的抽象视图。<br>数据库可以分为三个层次：物理层、逻辑层和视图层<br><strong>物理层</strong>描述了数据是如何存储的<br><strong>逻辑层</strong>描述了数据库中存储什么数据以及数据之间的关系<br><strong>视图层</strong>只描述整个数据库的某个部分</p>
+<ul>
+<li>视图层有多个视图，每个用户只需要访问数据库的一部分，通过划分视图来简化用户与系统的交互。</li>
+</ul>
+<h4 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h4><p>数据模型：描述数据、数据联系、数据语义以及一致性约束的概念工具集合<br>数据模型提供了一种描述物理层、逻辑层以及视图层数据库设计的方式</p>
+<p>数据模型可以分为四类：</p>
+<ul>
+<li><strong>关系模型</strong>：用表的集合来表示数据和数据间的联系。是基于记录的模型的一种。</li>
+<li>实体-联系模型</li>
+<li>基于对象的数据模型</li>
+<li>半结构化数据模型</li>
+</ul>
+<h3 id="数据库语言"><a href="#数据库语言" class="headerlink" title="数据库语言"></a>数据库语言</h3><p>数据库系统提供<u>数据定义语言</u>来定义数据库模式，以及<u>数据操纵语言</u>来表达数据库的查询和更新</p>
+<h4 id="数据操纵语言DML"><a href="#数据操纵语言DML" class="headerlink" title="数据操纵语言DML"></a>数据操纵语言DML</h4><p>使得用户可以访问或操纵数据，进行增删查改<br>过程化DML：要求用户指定需要什么数据以及如何获得数据<br>声明式DML：只要求指定需要什么数据</p>
+<h4 id="数据定义语言DDL"><a href="#数据定义语言DDL" class="headerlink" title="数据定义语言DDL"></a>数据定义语言DDL</h4><p>用于定义数据库模式的实现细节</p>
+<p>关系数据库<br>关系数据库基于关系模型。</p>
+<h1 id="Project-0"><a href="#Project-0" class="headerlink" title="Project 0"></a>Project 0</h1><p>需要实现一个基于并发Trie（字典树）的键值存储系统。</p>
+<h2 id="项目要求："><a href="#项目要求：" class="headerlink" title="项目要求："></a>项目要求：</h2><ol>
+<li>单线程Trie实现<ul>
+<li>实现 <code>TrieNode</code> 类：表示Trie中的单个节点，存储一个字符和子节点映射</li>
+<li>实现 <code>TrieNodeWithValue</code> 类：继承自 <code>TrieNOde</code> ，表示存储值的终端节点</li>
+<li>实现 <code>Trie</code> 类：支持插入、删除和查找操作</li>
+</ul>
+</li>
+<li>并发Trie实现<ul>
+<li>使用读写锁实现线程安全</li>
+<li>查找操作获取读锁，插入和删除操作获得写锁</li>
+</ul>
+</li>
+</ol>
+<h2 id="关键概念理解"><a href="#关键概念理解" class="headerlink" title="关键概念理解"></a>关键概念理解</h2><p>Trie字典树，例如存储”HELLO”、”HAT”和”HAVE”<br><img src="/img/file-20250726102623185.png" srcset="/img/loading.gif" lazyload><br> 需要实现的功能：</p>
+<ul>
+<li>插入操作<ul>
+<li>沿着键的字符便利Trie，必要时创建新节点</li>
+<li>处理三种情况<ul>
+<li>终端节点不存在–创建新终端节点</li>
+<li>节点存在但不是终端节点–转换为终端节点</li>
+<li>已经是终端节点–返回失败（不允许重复键）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>删除操作<ul>
+<li>找到键对应的终端节点</li>
+<li>将 <code>is_end_</code> 标志为false</li>
+<li>递归删除没有子节点的空节点</li>
+</ul>
+</li>
+<li>查找操作<ul>
+<li>遍历Trie找到终端节点</li>
+<li>检查值类型是否匹配</li>
+<li>使用dynamic_cast检查类型</li>
+</ul>
+</li>
+</ul>
+<h2 id="实现建议"><a href="#实现建议" class="headerlink" title="实现建议"></a>实现建议</h2><ul>
+<li>分步实现<ul>
+<li>先完成单线程版本，再添加并发支持</li>
+<li>仔细处理unique_ptr的所有权</li>
+</ul>
+</li>
+<li>并发控制<ul>
+<li>使用读写锁保护根节点</li>
+<li>查找使用读锁，插入&#x2F;删除使用写锁</li>
+<li>确保在函数返回前释放锁</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/database/" class="category-chain-item">database</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="/tags/database/" class="print-no-link">#database</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Databases</div>
+      <div>https://pqcu77.github.io/2025/07/17/databases/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月17日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/18/DB-Lec2/" title="DB_Lec2">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">DB_Lec2</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/12/kaiwu/" title="Kaiwu">
+                        <span class="hidden-mobile">Kaiwu</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

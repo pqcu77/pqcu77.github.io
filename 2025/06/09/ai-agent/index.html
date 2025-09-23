@@ -1,0 +1,970 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="理论知识agent的定义：大模型时代的 AI Agent &#x3D; LLM × （规划+记忆+工具） Al Agent是一种能够感知环境、进行决策和执行动作的智能实体。 运行过程：接受用户输入 → 推理 + 记忆检索 → 工具调用 → 更新状态 → 再次行动  接受外部输入:（例如用户查询） 结合短期和长期记忆进行推理：（例如利用 CoT、ReAct 等推理框架） 调用外部工具或数据库：（如检">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ai-Agent">
+<meta property="og:url" content="https://pqcu77.github.io/2025/06/09/ai-agent/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="理论知识agent的定义：大模型时代的 AI Agent &#x3D; LLM × （规划+记忆+工具） Al Agent是一种能够感知环境、进行决策和执行动作的智能实体。 运行过程：接受用户输入 → 推理 + 记忆检索 → 工具调用 → 更新状态 → 再次行动  接受外部输入:（例如用户查询） 结合短期和长期记忆进行推理：（例如利用 CoT、ReAct 等推理框架） 调用外部工具或数据库：（如检">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-09T08:26:06.000Z">
+<meta property="article:modified_time" content="2025-07-08T10:14:07.150Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="学习笔记">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Ai-Agent - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Ai-Agent"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-09 16:26" pubdate>
+          2025年6月9日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Ai-Agent</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-07-08T18:14:07+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="理论知识"><a href="#理论知识" class="headerlink" title="理论知识"></a>理论知识</h1><h2 id="agent的定义："><a href="#agent的定义：" class="headerlink" title="agent的定义："></a>agent的定义：</h2><p>大模型时代的 <u>AI Agent &#x3D; LLM × （规划+记忆+工具）</u></p>
+<p>Al Agent是一种能够感知环境、进行决策和执行动作的智能实体。</p>
+<p>运行过程：接受用户输入 → 推理 + 记忆检索 → 工具调用 → 更新状态 → 再次行动</p>
+<ul>
+<li>接受外部输入:（例如用户查询）</li>
+<li>结合短期和长期记忆进行推理：（例如利用 CoT、ReAct 等推理框架）</li>
+<li>调用外部工具或数据库：（如检索增强生成 RAG、搜索引擎、API 接口等）</li>
+<li>更新状态并决定下一步行动：（例如基于策略调整决策）</li>
+<li>持续执行，直到任务完成或达到终止条件。<br>![[file-20250609163836448.png]]</li>
+</ul>
+<h2 id="基本组件"><a href="#基本组件" class="headerlink" title="基本组件"></a>基本组件</h2><ul>
+<li><strong>推理&#x2F;规划方法</strong>：包括 Prompting、CoT（思维链）、ReAct、ToT（思维树）、Reflection 等</li>
+<li><strong>记忆机制</strong>：短期记忆（Working Memory）、长期记忆（Episodic&#x2F;Semantic Memory）等</li>
+<li><strong>工具使用</strong>：RAG、搜索引擎、API（如天气、票价）、计算模块等</li>
+</ul>
+<h3 id="推理-规划"><a href="#推理-规划" class="headerlink" title="推理&#x2F;规划"></a>推理&#x2F;规划</h3><p>推理：从已知知识出发，进行思考分析和推到，得到新的结论或判断</p>
+<p>规划：在特定目标或任务的引导下，设计和选择执行步骤的过程（划分出一些子目标）</p>
+<p>提升推理、规划的方法：提示工程、改进模型or系统结构、改进学习范式</p>
+<p>提示词工程：<br>通过精心设计的 prompt，我们可以引导语言模型进行<strong>分步骤思考</strong>、<strong>自我验证</strong>甚至<strong>反思决策</strong></p>
+<p>CoT：</p>
+<ul>
+<li>逐步采样中间推理步骤<br>![[file-20250609164802513.png]]</li>
+<li>计算最终答案<br>![[file-20250609164812232.png]]<br>CoT方法在提示词输入时，给出CoT的形式输入&lt;输入，思维链，输出&gt;示例</li>
+</ul>
+<p>self-consistency:</p>
+<ul>
+<li>k次思维链采样：<br>![[file-20250609164901767.png]]</li>
+<li>多数投票选择最终答案<br>![[file-20250609164916459.png]]</li>
+</ul>
+<p>ToT：先分步骤，然后每个步骤多个结果，在每一步的多个结果中进行选择后再进行下一步，输出多个结果。（开销更大，效果好）<br>![[file-20250609165102709.png]]</p>
+<p>至此，上面都没有使用到环境的反馈；下面的方法会考虑到环境反馈。</p>
+<p>ReAct：（现在agent系统易出现）</p>
+<p>ReAct执行流程：</p>
+<ul>
+<li>任务理解：首先对任务进行理解，提取关键信息。</li>
+<li>推理阶段：对任务进行推理以生可能的解决方案或路径。</li>
+<li>行动阶段：ReAct框架根据推理的结果采取实际的行动。。</li>
+<li>反馈和调整：一旦采取行动后，系统会根据反馈调整策略。<br>![[file-20250609165250304.png]]</li>
+</ul>
+<p>Reflection：把agent执行流程建模为一个MDP过程<br>一种通过自我反思之前采取的action，获得一些反思后的experience，作为接下来行动的prompt。<br>![[file-20250609165558360.png]]</p>
+<h3 id="记忆机制"><a href="#记忆机制" class="headerlink" title="记忆机制"></a>记忆机制</h3><p>可以建立知识库等。<br>![[file-20250609165731672.png]]</p>
+<h3 id="工具使用"><a href="#工具使用" class="headerlink" title="工具使用"></a>工具使用</h3><p>openai：function call<br>下面就call了Temperature这个函数<br>![[file-20250609170120491.png]]</p>
+<h2 id="Multi-agent"><a href="#Multi-agent" class="headerlink" title="Multi-agent"></a>Multi-agent</h2><p>![[file-20250609170408061.png]]</p>
+<ul>
+<li><strong>优势</strong>：<ul>
+<li>职责分离、并行协作、可扩展性强   </li>
+<li>可模拟合作&#x2F;竞争&#x2F;辩论关系</li>
+</ul>
+</li>
+<li><strong>通信方式</strong>：<ul>
+<li>合作、辩论、竞争</li>
+</ul>
+</li>
+<li><strong>通信结构</strong>：<ul>
+<li>层级&#x2F;中心化&#x2F;去中心化&#x2F;共享信息池</li>
+</ul>
+</li>
+<li><strong>推荐框架</strong>：<ul>
+<li>LangGraph（支持流程控制、图结构建模）</li>
+<li>AutoGen（对话协作易用）</li>
+<li>CrewAI（任务分配与团队协作</li>
+<li>LlamaIndex（专注RAG与文档问答）</li>
+</ul>
+</li>
+</ul>
+<h3 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h3><p>agent所处环境种类：</p>
+<ul>
+<li>sandbox</li>
+<li>真实物理环境</li>
+<li>无环境（无需环境或文本环境）</li>
+</ul>
+<p>agent profile来源：</p>
+<ul>
+<li>预定义（人工生成）</li>
+<li>模型生成</li>
+<li>根据<strong>真实数据集派生</strong>（例如，数据集中存在某一个虚拟人物的详细介绍，直接把这个赋予给agent）</li>
+</ul>
+<p>multi-agent的通信：<br>通信范式：</p>
+<ul>
+<li>合作</li>
+<li>辩论</li>
+<li>竞争</li>
+</ul>
+<p>通信结构：</p>
+<ul>
+<li>层级结构</li>
+<li>去中心化结构</li>
+<li>中心化结构</li>
+<li>共享信息池<br>![[file-20250609170835134.png]]</li>
+</ul>
+<h2 id="框架介绍"><a href="#框架介绍" class="headerlink" title="框架介绍"></a>框架介绍</h2><p>![[file-20250609171055819.png]]<br>langAgent：状态机</p>
+<p>AutoGen：开创性的多智能体<strong>对话式</strong>ai应用框架<br>![[file-20250609171501144.png]]<br>![[file-20250609171515308.png]]<br>![[file-20250609171520859.png]]<br>CrewAI：编排角色扮演、自主ai智能体框架<br>![[file-20250609171537987.png]]<br>![[file-20250609171525806.png]]<br>![[file-20250609171636066.png]]</p>
+<p>LangGraph：基于图结构的智能体开发框架<br>![[file-20250609171711424.png]]<br>![[file-20250609171715931.png]]<br>![[file-20250609171729603.png]]</p>
+<h1 id="实验任务"><a href="#实验任务" class="headerlink" title="实验任务"></a>实验任务</h1><p>尝试利用开源的框架（推荐LangGraph、可以不造轮子）设计一个多智能体系统，要求：</p>
+<ul>
+<li><p>场景&#x2F;任务不限（任务求解、场景模拟、效率工具等）</p>
+</li>
+<li><p>包含Agent推理&#x2F;规划方法的实现（ToT、ReAct、Reflection 等）</p>
+</li>
+<li><p>设计2种以上记忆机制（长期记忆、短期记忆）</p>
+</li>
+<li><p>使用2种以上的工具（rag检索、搜索引擎、计算工具等）也可自己定义工具。</p>
+</li>
+<li><p>说明1：尽量在已有的框架下去设计这些要素，这样可以避免无用的劳动。</p>
+</li>
+<li><p>说明2：模型api的使用推荐：<br><a target="_blank" rel="noopener" href="https://dashscope.console.aliyun.com/billing">https://dashscope.console.aliyun.com/billing</a></p>
+</li>
+</ul>
+<p>多智能体系统中智能体数目&gt;&#x3D;4</p>
+<ul>
+<li>每个智能体的功能有良好定位</li>
+<li>每个智能体应该有适宜的提示词适配自己的任务</li>
+<li>智能体间分工和运行流程合理</li>
+<li>在系统中应至少实现一种智能体的推理&#x2F;规划方法</li>
+<li>在系统中设计智能体的长期记忆和短期记忆</li>
+<li>在系统中至少使用两种类型以上的工具调用</li>
+<li>请至少包含以上工作，成绩按照工作量和任务场景下的实现效果进行评判</li>
+</ul>
+<p>langGraph使用文档：<br><a target="_blank" rel="noopener" href="https://langchain-ai.github.io/langgraph/concepts/why-langgraph/">概述</a><br>百炼：<br><a target="_blank" rel="noopener" href="https://bailian.console.aliyun.com/?utm_content=se_1021227512#/home">百炼控制台</a></p>
+<h1 id="提交要求"><a href="#提交要求" class="headerlink" title="提交要求"></a>提交要求</h1><p>ddl 2025 7月6日</p>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><h2 id="实现目标"><a href="#实现目标" class="headerlink" title="实现目标"></a>实现目标</h2><p>旅游规划助手：从用户的模糊需求出发，生成详细可行的旅游行程，结合搜索、天气、预算等多方面信息，体现智能体之间的协同和推理能力</p>
+<p>系统架构：</p>
+<table>
+<thead>
+<tr>
+<th>Agent名称</th>
+<th>功能简介</th>
+<th>使用的推理方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UserIntentAgent</td>
+<td>理解用户需求（出发地、偏好、预算等）</td>
+<td>ReAct</td>
+</tr>
+<tr>
+<td>DestinationAgent</td>
+<td>通过 RAG 检索 + 搜索引擎获取推荐目的地及热门景点</td>
+<td>ReAct</td>
+</tr>
+<tr>
+<td>ItineraryAgent</td>
+<td>使用 Tree-of-Thought 规划行程（日程安排、景点组合）</td>
+<td>ToT</td>
+</tr>
+<tr>
+<td>InfoToolAgent</td>
+<td>获取实时天气、票价、交通等外部信息</td>
+<td>ReAct</td>
+</tr>
+<tr>
+<td>BudgetPlannerAgent</td>
+<td>分析成本并优化路线以满足预算（住宿、交通、门票等）</td>
+<td>Reflection</td>
+</tr>
+<tr>
+<td>SummaryAgent</td>
+<td>汇总为旅行计划PDF或markdown文档，供用户保存</td>
+<td>无（简单组合</td>
+</tr>
+</tbody></table>
+<p>工具使用：</p>
+<ul>
+<li>RAG<ul>
+<li>用于景点介绍、用户意图对话历史向量检索。</li>
+</ul>
+</li>
+<li>搜索引擎工具<ul>
+<li>实时获取票价、天气、景点开放时间。</li>
+</ul>
+</li>
+<li>计算工具（LangChain Math工具链）<ul>
+<li>计算预算、路线距离、时间总和等。</li>
+</ul>
+</li>
+<li>自定义工具（天气查询API、自建票价API）</li>
+</ul>
+<p>记忆机制：</p>
+<ul>
+<li>短期记忆<ul>
+<li>存储本轮对话内容、当前用户需求、暂存行程</li>
+<li>用 LangChain 的 <code>ConversationBufferMemory</code> 管理。</li>
+</ul>
+</li>
+<li>长期记忆<ul>
+<li>存储用户历史偏好（城市、预算、交通方式等）</li>
+<li>景点介绍、城市数据使用向量数据库（FAISS + RAG）</li>
+<li>每个Agent访问记忆时有不同的过滤机制</li>
+</ul>
+</li>
+</ul>
+<h1 id="构建基本聊天机器人"><a href="#构建基本聊天机器人" class="headerlink" title="构建基本聊天机器人"></a>构建基本聊天机器人</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">pip <span class="hljs-keyword">install</span> -U langgraph langsmith<br></code></pre></td></tr></table></figure>
+
+<p>尝试使用提供的与openai兼容的来调用并与大模型进行对话。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/" class="category-chain-item">AI</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/" class="print-no-link">#AI</a>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Ai-Agent</div>
+      <div>https://pqcu77.github.io/2025/06/09/ai-agent/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月9日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/11/OS-lab9/" title="OS_lab9">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OS_lab9</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/21/OS-lab8/" title="OS_lab8">
+                        <span class="hidden-mobile">OS_lab8</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

