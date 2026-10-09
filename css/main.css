@@ -8,52 +8,59 @@
     "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-mono: "JetBrains Mono", "SFMono-Regular", "SF Mono", Menlo, Consolas,
     "Liberation Mono", "Courier New", monospace;
+  /* 书卷感衬线：标题与正文首字用，营造古籍 / 魔法书气质 */
+  --font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong",
+    Georgia, "Times New Roman", "SimSun", serif;
 
   --radius: 8px;
   --radius-lg: 12px;
-  --max-width: 760px;
-  --header-h: 56px;
+  --max-width: 780px;
+  --header-h: 58px;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* 暗色：魔法深夜（墨蓝 + 鎏金 + 学院绿） */
 :root[data-theme="dark"] {
-  --bg: #0d1117;
-  --bg-soft: #11161d;
-  --surface: #141a22;
-  --surface-hover: #1a212b;
-  --border: #212a35;
-  --border-soft: #1a212b;
-  --text: #c2cdd9;
-  --text-strong: #e8eef5;
-  --muted: #78868f;
-  --faint: #5a666f;
-  --accent: #7aa2f7;
-  --accent-soft: rgba(122, 162, 247, 0.13);
-  --code-bg: #10151c;
+  --bg: #0c1014;
+  --bg-soft: #12181f;
+  --surface: #162029;
+  --surface-hover: #1d2832;
+  --border: #26323f;
+  --border-soft: #1a232d;
+  --text: #cdbfa6;          /* 暖羊皮纸白 */
+  --text-strong: #f1e7d0;
+  --muted: #8a9aa6;
+  --faint: #5f7080;
+  --accent: #c9a44c;        /* 鎏金 */
+  --accent-2: #3f9d6d;      /* 学院绿 */
+  --accent-soft: rgba(201, 164, 76, 0.14);
+  --code-bg: #0f151b;
   --code-gutter: #6b7681;
-  --mark: rgba(122, 162, 247, 0.28);
-  --shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
-  --mask: rgba(5, 8, 12, 0.72);
+  --mark: rgba(201, 164, 76, 0.28);
+  --shadow: 0 10px 34px rgba(0, 0, 0, 0.5);
+  --mask: rgba(6, 9, 12, 0.74);
 }
 
+/* 亮色：羊皮纸（米黄 + 墨褐 + 古金 / 学院绿） */
 :root[data-theme="light"] {
-  --bg: #ffffff;
-  --bg-soft: #fbfbfc;
-  --surface: #ffffff;
-  --surface-hover: #f4f6f8;
-  --border: #e5e8ec;
-  --border-soft: #eef0f3;
-  --text: #363b42;
-  --text-strong: #16191d;
-  --muted: #8a929c;
-  --faint: #a9b0b8;
-  --accent: #2f6fdb;
-  --accent-soft: rgba(47, 111, 219, 0.09);
-  --code-bg: #f7f8fa;
-  --code-gutter: #b0b7bf;
-  --mark: rgba(47, 111, 219, 0.18);
-  --shadow: 0 8px 30px rgba(20, 24, 30, 0.12);
-  --mask: rgba(240, 242, 245, 0.78);
+  --bg: #f4ead2;            /* 羊皮纸 */
+  --bg-soft: #efe2c4;
+  --surface: #fbf3df;
+  --surface-hover: #f3e8cd;
+  --border: #dcc99e;
+  --border-soft: #e8dab8;
+  --text: #3a2f22;          /* 墨褐 */
+  --text-strong: #221a10;
+  --muted: #6f5d42;
+  --faint: #9a8763;
+  --accent: #a9802f;        /* 古金 */
+  --accent-2: #1f6f4a;      /* 学院绿 */
+  --accent-soft: rgba(169, 128, 47, 0.12);
+  --code-bg: #efe3c6;
+  --code-gutter: #b09a6f;
+  --mark: rgba(169, 128, 47, 0.22);
+  --shadow: 0 10px 30px rgba(80, 60, 30, 0.18);
+  --mask: rgba(244, 234, 210, 0.82);
 }
 
 /* --- Base --------------------------------------------------------------- */
@@ -67,7 +74,7 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
   font-size: 15.5px;
@@ -76,6 +83,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+/* 亮色：羊皮纸光泽；暗色：星夜微光 */
+:root[data-theme="light"] body {
+  background-image:
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.45), transparent 42%),
+    radial-gradient(circle at 82% 6%, rgba(201, 164, 76, 0.10), transparent 46%),
+    radial-gradient(circle at 50% 118%, rgba(31, 111, 74, 0.06), transparent 60%);
+  background-attachment: fixed;
+}
+:root[data-theme="dark"] body {
+  background-image:
+    radial-gradient(circle at 50% -12%, rgba(201, 164, 76, 0.07), transparent 55%),
+    radial-gradient(circle at 50% 122%, rgba(63, 157, 109, 0.05), transparent 55%);
+  background-attachment: fixed;
 }
 
 a {
@@ -182,6 +204,65 @@ img { max-width: 100%; height: auto; }
 :root[data-theme="dark"] #themeToggle .icon-moon { display: block; }
 :root[data-theme="light"] #themeToggle .icon-moon { display: none; }
 :root[data-theme="light"] #themeToggle .icon-sun { display: block; }
+
+/* --- 魔法书风格（羊皮纸 / 衬线 / 鎏金） ------------------------------- */
+.site-brand,
+.post-title,
+.page-title,
+.archive-year,
+.term-item,
+.hero-sub,
+.post-body h1, .post-body h2, .post-body h3, .post-body h4, .post-body h5, .post-body h6 {
+  font-family: var(--font-serif);
+  letter-spacing: 0.01em;
+}
+
+/* 文章首字下沉，仿古籍 / 魔典首字母 */
+.post-body > p:first-of-type::first-letter {
+  font-family: var(--font-serif);
+  font-size: 2.7em;
+  line-height: 0.78;
+  float: left;
+  margin: 0.06em 0.14em 0 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* 鎏金星标分隔线 */
+.post-header { position: relative; border-bottom: 1px solid var(--border-soft); }
+.post-header::after {
+  content: "✦";
+  position: absolute;
+  left: 50%;
+  bottom: -11px;
+  transform: translateX(-50%);
+  background: var(--bg);
+  padding: 0 12px;
+  color: var(--accent);
+  font-size: 13px;
+}
+.page-head { position: relative; }
+.page-head::after {
+  content: "✦";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  transform: translateX(-50%);
+  padding: 0 10px;
+  background: var(--bg);
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.post-body blockquote {
+  border-left: 3px solid var(--accent-2);
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--muted);
+  background: var(--accent-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 6px 0 6px 16px;
+}
 
 /* --- Main --------------------------------------------------------------- */
 .main {
@@ -623,7 +704,7 @@ img { max-width: 100%; height: auto; }
 :root[data-theme="dark"] .highlight :is(.hljs-keyword, .keyword, .hljs-selector-tag, .selector-tag, .hljs-literal, .literal, .hljs-doctag, .doctag, .hljs-formula, .formula) { color: #a9b1db; }
 :root[data-theme="dark"] .highlight :is(.hljs-string, .string, .hljs-regexp, .regexp, .hljs-addition, .addition, .hljs-attribute, .attribute, .hljs-meta .hljs-string, .meta .string) { color: #8fbf9f; }
 :root[data-theme="dark"] .highlight :is(.hljs-number, .number, .hljs-variable, .variable, .hljs-template-variable, .template-variable, .hljs-type, .type, .hljs-selector-class, .selector-class, .hljs-selector-attr, .selector-attr, .hljs-selector-pseudo, .selector-pseudo) { color: #d3a77a; }
-:root[data-theme="dark"] .highlight :is(.hljs-title, .title, .hljs-section, .section, .hljs-name, .name) { color: #7aa2f7; }
+:root[data-theme="dark"] .highlight :is(.hljs-title, .title, .hljs-section, .section, .hljs-name, .name) { color: #c9a44c; }
 :root[data-theme="dark"] .highlight :is(.hljs-attr, .attr, .hljs-symbol, .symbol, .hljs-bullet, .bullet, .hljs-link, .link, .hljs-meta, .meta) { color: #8fb3c9; }
 :root[data-theme="dark"] .highlight :is(.hljs-built_in, .built_in) { color: #7fb3c4; }
 :root[data-theme="dark"] .highlight :is(.hljs-deletion, .deletion) { color: #c98a8a; }
@@ -634,7 +715,7 @@ img { max-width: 100%; height: auto; }
 :root[data-theme="light"] .highlight :is(.hljs-keyword, .keyword, .hljs-selector-tag, .selector-tag, .hljs-literal, .literal, .hljs-doctag, .doctag, .hljs-formula, .formula) { color: #a4629b; }
 :root[data-theme="light"] .highlight :is(.hljs-string, .string, .hljs-regexp, .regexp, .hljs-addition, .addition, .hljs-attribute, .attribute, .hljs-meta .hljs-string, .meta .string) { color: #2b7a4b; }
 :root[data-theme="light"] .highlight :is(.hljs-number, .number, .hljs-variable, .variable, .hljs-template-variable, .template-variable, .hljs-type, .type, .hljs-selector-class, .selector-class, .hljs-selector-attr, .selector-attr, .hljs-selector-pseudo, .selector-pseudo) { color: #b1691f; }
-:root[data-theme="light"] .highlight :is(.hljs-title, .title, .hljs-section, .section, .hljs-name, .name) { color: #2f6fdb; }
+:root[data-theme="light"] .highlight :is(.hljs-title, .title, .hljs-section, .section, .hljs-name, .name) { color: #a9802f; }
 :root[data-theme="light"] .highlight :is(.hljs-attr, .attr, .hljs-symbol, .symbol, .hljs-bullet, .bullet, .hljs-link, .link, .hljs-meta, .meta) { color: #3d7a8c; }
 :root[data-theme="light"] .highlight :is(.hljs-built_in, .built_in) { color: #2a6f7a; }
 :root[data-theme="light"] .highlight :is(.hljs-deletion, .deletion) { color: #b33a3a; }
