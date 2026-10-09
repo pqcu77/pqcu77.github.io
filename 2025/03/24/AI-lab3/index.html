@@ -1,325 +1,89 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
+<html lang="zh-CN" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
-  
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="linqt">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="AI-Lab3–搜索算法任务List 利用盲目搜索解决迷宫问题（无需提交） 利用启发式搜索解决15-Puzzle问题 利用博弈树搜索实现象棋AI（无需提交） 利用遗传算法求解TSP问题  任务1：利用盲目搜索解决迷宫问题尝试利用DFS、BFS、深度受限算法、迭代加深算法、双向搜索算法解决迷宫问题:  S表示起点; E表示终点; 1表示墙; 0是可通行。迷宫样例图：  123456789101112">
-<meta property="og:type" content="article">
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="generator" content="Hexo">
+<title>AI-Lab3 · linqt&#39;s blog</title>
+<meta name="description" content="">
+<meta name="author" content="linqt">
+<link rel="icon" href="/img/cute.jpg">
+<link rel="alternate" href="/atom.xml" title="linqt&#39;s blog" type="application/atom+xml">
 <meta property="og:title" content="AI-Lab3">
-<meta property="og:url" content="https://pqcu77.github.io/2025/03/24/AI-lab3/index.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pqcu77.github.io/2025/03/24/AI-lab3/">
 <meta property="og:site_name" content="linqt&#39;s blog">
-<meta property="og:description" content="AI-Lab3–搜索算法任务List 利用盲目搜索解决迷宫问题（无需提交） 利用启发式搜索解决15-Puzzle问题 利用博弈树搜索实现象棋AI（无需提交） 利用遗传算法求解TSP问题  任务1：利用盲目搜索解决迷宫问题尝试利用DFS、BFS、深度受限算法、迭代加深算法、双向搜索算法解决迷宫问题:  S表示起点; E表示终点; 1表示墙; 0是可通行。迷宫样例图：  123456789101112">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://pqcu77.github.io/img/image-20250324172954172.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250330115435358.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250329203607439.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250329203936669.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331220621299.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331170514223.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331170528207.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331170610602.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331172623564.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/9a1dfe9d663af4eb0c6989344df3c6f.jpg">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331173623765.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331173701655.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250331173729854.png">
-<meta property="article:published_time" content="2025-03-24T09:07:32.000Z">
-<meta property="article:modified_time" content="2025-04-17T11:15:12.868Z">
-<meta property="article:author" content="linqt">
-<meta property="article:tag" content="AI">
-<meta property="article:tag" content="学习笔记">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://pqcu77.github.io/img/image-20250324172954172.png">
-  
-  
-    <meta name="referrer" content="no-referrer-when-downgrade">
-  
-  
-  <title>AI-Lab3 - linqt&#39;s blog</title>
+<meta name="theme-color" content="#0d1117">
+<link rel="stylesheet" href="/css/main.css">
+<style>
+  :root[data-theme="dark"] { --accent: #7aa2f7; }
+  :root[data-theme="light"] { --accent: #2f6fdb; }
+</style>
+<script>
+  // 避免刷新时主题闪烁
+  (function () {
+    try {
+      var saved = localStorage.getItem('ink-theme');
+      var d = 'dark';
+      var t = (saved === 'light' || saved === 'dark') ? saved
+        : (d === 'auto' ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : d);
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-  
-<link rel="stylesheet" href="/custom/custom.css">
-<link rel="stylesheet" href="/custom/welcome.css">
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-
-  
-<meta name="generator" content="Hexo 7.3.0"></head>
-
-
-<body>
-  
-
-  <header>
-    
-
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>PQCU&#39; blog</strong>
+</head>
+<body class=" page-post    ">
+  <div class="progress-bar" id="progressBar"></div>
+  <header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a class="site-brand" href="/">
+      PQCU&#39; blog
     </a>
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
+    <nav class="site-nav">
+      
+        <a class="nav-link" href="/archives/">文章</a>
+      
+        <a class="nav-link" href="/categories/">分类</a>
+      
+        <a class="nav-link" href="/tags/">标签</a>
+      
+        <a class="nav-link" href="/about/">关于</a>
+      
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/" target="_self">
-                <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/" target="_self">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/" target="_self">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/" target="_self">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-          </li>
-        
-      </ul>
+      
+        <button class="icon-btn" id="searchBtn" aria-label="搜索" title="搜索 (Ctrl+K)">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+        </button>
+      
+
+      
+        <button class="icon-btn" id="themeToggle" aria-label="切换主题" title="切换明暗">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        </button>
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="container main">
+    
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">AI-Lab3</h1>
+    <div class="post-meta">
+      <time datetime="2025-03-24T09:07:32.000Z">2025-03-24</time>
+      <span class="dot">·</span><span>5956 字</span>
+      <span class="dot">·</span><span>17 分钟</span>
+      <span class="dot">·</span><span>更新于 2025-04-17</span>
     </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="AI-Lab3"></span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-03-24 17:07" pubdate>
-          2025年3月24日 下午
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          <!-- compatible with older versions-->
-          3.1k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          <!-- compatible with older versions-->
-          27 分钟
-        
-      </span>
-    
-
-    
-    
-      
-        <span id="busuanzi_container_page_pv" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="busuanzi_value_page_pv"></span>次
-        </span>
-        
-
-      
-    
-  </div>
-
-
-        
-      </div>
-
-      
-    </div>
-  </div>
-</div>
-
-</div>
-
   </header>
 
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <h1 id="seo-header">AI-Lab3</h1>
-            
-              <p id="updated-time" class="note note-info" style="display: none">
-                
-                  
-                    本文最后更新于 2025-04-17T19:15:12+08:00
-                  
-                  
-
-                
-              </p>
-            
-            
-              <div class="markdown-body">
-                
-                <h1 id="AI-Lab3–搜索算法"><a href="#AI-Lab3–搜索算法" class="headerlink" title="AI-Lab3–搜索算法"></a>AI-Lab3–搜索算法</h1><h2 id="任务List"><a href="#任务List" class="headerlink" title="任务List"></a>任务List</h2><ol>
+  <div class="post-layout">
+    <div class="post-body" id="postBody">
+      <h1 id="AI-Lab3–搜索算法"><a href="#AI-Lab3–搜索算法" class="headerlink" title="AI-Lab3–搜索算法"></a>AI-Lab3–搜索算法</h1><h2 id="任务List"><a href="#任务List" class="headerlink" title="任务List"></a>任务List</h2><ol>
 <li>利用盲目搜索解决迷宫问题（无需提交）</li>
 <li>利用启发式搜索解决15-Puzzle问题</li>
 <li>利用博弈树搜索实现象棋AI（无需提交）</li>
@@ -332,22 +96,22 @@
 <li>1表示墙;</li>
 <li>0是可通行。<br>迷宫样例图：</li>
 </ul>
-<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-number">111111111111111111111111111111111111</span><br><span class="hljs-number">1000000000000000000000000000000000</span><span class="hljs-built_in">S1</span><br><span class="hljs-number">101111111111111111111111101111111101</span><br><span class="hljs-number">101100010001000000111111100011000001</span><br><span class="hljs-number">101101010101011110111111111011011111</span><br><span class="hljs-number">101101010101000000000000011011000001</span><br><span class="hljs-number">101101010101010111100111000011111101</span><br><span class="hljs-number">101001010100010000110111111110000001</span><br><span class="hljs-number">101101010111111110110000000011011111</span><br><span class="hljs-number">101101000110000000111111111011000001</span><br><span class="hljs-number">100001111110111111100000011011111101</span><br><span class="hljs-number">111111000000100000001111011010000001</span><br><span class="hljs-number">100000011111101111101000011011011111</span><br><span class="hljs-number">101111110000001000000011111011000001</span><br><span class="hljs-number">100000000111111011111111111011001101</span><br><span class="hljs-number">111111111100000000000000000011111101</span><br><span class="hljs-number">1</span>E0000000001111111111111111000000001<br><span class="hljs-number">111111111111111111111111111111111111</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">111111111111111111111111111111111111</span><br><span class="line">1000000000000000000000000000000000S1</span><br><span class="line">101111111111111111111111101111111101</span><br><span class="line">101100010001000000111111100011000001</span><br><span class="line">101101010101011110111111111011011111</span><br><span class="line">101101010101000000000000011011000001</span><br><span class="line">101101010101010111100111000011111101</span><br><span class="line">101001010100010000110111111110000001</span><br><span class="line">101101010111111110110000000011011111</span><br><span class="line">101101000110000000111111111011000001</span><br><span class="line">100001111110111111100000011011111101</span><br><span class="line">111111000000100000001111011010000001</span><br><span class="line">100000011111101111101000011011011111</span><br><span class="line">101111110000001000000011111011000001</span><br><span class="line">100000000111111011111111111011001101</span><br><span class="line">111111111100000000000000000011111101</span><br><span class="line">1E0000000001111111111111111000000001</span><br><span class="line">111111111111111111111111111111111111</span><br></pre></td></tr></table></figure>
 
 
 
 <h2 id="任务2：利用启发式搜索解决15-Puzzle问题"><a href="#任务2：利用启发式搜索解决15-Puzzle问题" class="headerlink" title="任务2：利用启发式搜索解决15-Puzzle问题"></a>任务2：利用启发式搜索解决15-Puzzle问题</h2><p>尝试使用<code>A*</code>与<code>IDA*</code>算法解决15-Puzzle问题，启发式函数可以自己选取，最好多尝试几种不同的启发式函数</p>
-<p><img src="/img/image-20250324172954172.png" srcset="/img/loading.gif" lazyload alt="样例_15puzzle"></p>
+<p><img src="/img/image-20250324172954172.png" alt="样例_15puzzle"></p>
 <p>利用A*算法和IDA*算法解决15-Puzzle问题, 可自定义启发式函数. Puzzle问题的输入数据类型为二维嵌套list, 空位置用 <code>0</code>表示. 输出的解数据类型为 <code>list</code>, 是移动数字方块的次序.</p>
 <p>若选择A*算法, 则函数名为 <code>A_star</code>; 若选择IDA*算法, 则函数名为 <code>IDA_star</code>.</p>
 <p>例子: 输入</p>
-<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs inform7">puzzle = <span class="hljs-comment">[<span class="hljs-comment">[1,2,3,4]</span>,<span class="hljs-comment">[5,6,7,8]</span>,<span class="hljs-comment">[9,10,11,12]</span>,<span class="hljs-comment">[0,13,14,15]</span>]</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">puzzle = [[1,2,3,4],[5,6,7,8],[9,10,11,12],[0,13,14,15]]</span><br></pre></td></tr></table></figure>
 
 <p>则调用 <code>A_star(puzzle)</code>或 <code>IDA_star(puzzle)</code>后输出解</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-string">[13,14,15]</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[13,14,15]</span><br></pre></td></tr></table></figure>
 
 <p>相关知识：<br><code>A*</code>算法的必要知识点：<br>&#x3D;&#x3D;算法描述&#x3D;&#x3D;：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs text">* 初始化open_set和close_set；<br>* 将起点加入open_set中，并设置优先级为0（优先级最高）；<br>* 如果open_set不为空，则从open_set中选取优先级最高的节点n：<br>    * 如果节点n为终点，则：<br>        * 从终点开始逐步追踪parent节点，一直达到起点；<br>        * 返回找到的结果路径，算法结束；<br>    * 如果节点n不是终点，则：<br>        * 将节点n从open_set中删除，并加入close_set中；<br>        * 遍历节点n所有的邻近节点：<br>            * 如果邻近节点m在close_set中，则：<br>                * 跳过，选取下一个邻近节点<br>            * 如果邻近节点m也不在open_set中，则：<br>                * 设置节点m的parent为节点n<br>                * 计算节点m的优先级<br>                * 将节点m加入open_set中<br></code></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">* 初始化open_set和close_set；</span><br><span class="line">* 将起点加入open_set中，并设置优先级为0（优先级最高）；</span><br><span class="line">* 如果open_set不为空，则从open_set中选取优先级最高的节点n：</span><br><span class="line">    * 如果节点n为终点，则：</span><br><span class="line">        * 从终点开始逐步追踪parent节点，一直达到起点；</span><br><span class="line">        * 返回找到的结果路径，算法结束；</span><br><span class="line">    * 如果节点n不是终点，则：</span><br><span class="line">        * 将节点n从open_set中删除，并加入close_set中；</span><br><span class="line">        * 遍历节点n所有的邻近节点：</span><br><span class="line">            * 如果邻近节点m在close_set中，则：</span><br><span class="line">                * 跳过，选取下一个邻近节点</span><br><span class="line">            * 如果邻近节点m也不在open_set中，则：</span><br><span class="line">                * 设置节点m的parent为节点n</span><br><span class="line">                * 计算节点m的优先级</span><br><span class="line">                * 将节点m加入open_set中</span><br></pre></td></tr></table></figure>
 <p>&#x3D;&#x3D;启发式函数：&#x3D;&#x3D; <code>f(n)=g(n)+h(n)</code></p>
 <ul>
 <li>f(n)是节点n的<strong>综合</strong>优先级。（每次选择会选择总和优先级最高，也就是<strong>f(n)值最小</strong>的节点&#x3D;&gt;维护一个优先队列）</li>
@@ -361,7 +125,7 @@
 <li>欧几里得距离–适用于允许朝任何方向移动</li>
 </ul>
 <p>&#x3D;&gt;计算曼哈顿距离的函数：</p>
-<figure class="highlight gml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gml">def heuristic(node):<br>	dx=<span class="hljs-built_in">abs</span>(node.<span class="hljs-variable language_">x</span>-goal.<span class="hljs-variable language_">x</span>)<br>	dy=<span class="hljs-built_in">abs</span>(node.<span class="hljs-variable language_">y</span>-goal.<span class="hljs-variable language_">y</span>)<br>	<span class="hljs-keyword">return</span> cost*(dx+dy)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def heuristic(node):</span><br><span class="line">	dx=abs(node.x-goal.x)</span><br><span class="line">	dy=abs(node.y-goal.y)</span><br><span class="line">	return cost*(dx+dy)</span><br></pre></td></tr></table></figure>
 
 <p><code>IDA*</code>算法：<br><code>IDA*</code>算法是在DFS的基础上，添加启发信息的启发式搜索算法。（IDA * 为采用了<strong>迭代加深算法的 A * 算法</strong>。）<br>优点：（相对于A*)</p>
 <ul>
@@ -369,13 +133,13 @@
 <li><strong>空间需求减少</strong>：每个深度下实际上是一个深度优先搜索，不过有深度限制，使用DFS可以减小空间消耗<br>缺点：<br>重复搜索：当深度变大后每次都要从头搜索（不记忆-节省内存）</li>
 </ul>
 <p>&#x3D;&#x3D;算法描述&#x3D;&#x3D;：</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">1、开始时，计算起点所有邻居结点的估价函数，选取估价函数最小的结点作为下一个访问结点。(?)<br><br>2、重复步骤一，在递归过程中，若当前结点的估价函数大于阈值bound，则返回当前结点的估价得分。<br><br>3、若当前结点是目标结点，则得到最优解，返回路径。<br></code></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1、开始时，计算起点所有邻居结点的估价函数，选取估价函数最小的结点作为下一个访问结点。(?)</span><br><span class="line"></span><br><span class="line">2、重复步骤一，在递归过程中，若当前结点的估价函数大于阈值bound，则返回当前结点的估价得分。</span><br><span class="line"></span><br><span class="line">3、若当前结点是目标结点，则得到最优解，返回路径。</span><br></pre></td></tr></table></figure>
 
 
-<p><img src="/img/file-20250330115435358.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/file-20250330115435358.png"></p>
 <p>算法思路：</p>
 <h3 id="Resources"><a href="#Resources" class="headerlink" title="Resources:"></a>Resources:</h3><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54510444">路径规划之 A* 算法 - 知乎</a><br><a target="_blank" rel="noopener" href="https://witchpuff.github.io/posts/astar/#2-%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81%E5%B1%95%E7%A4%BA">Solving 15-Puzzle with A* and IDA* | CyberWitch</a></p>
-<p><img src="/img/file-20250329203607439.png" srcset="/img/loading.gif" lazyload alt="1"><br><img src="/img/file-20250329203936669.png" srcset="/img/loading.gif" lazyload alt="2"><br><img src="/img/file-20250331220621299.png" srcset="/img/loading.gif" lazyload alt="3"></p>
+<p><img src="/img/file-20250329203607439.png" alt="1"><br><img src="/img/file-20250329203936669.png" alt="2"><br><img src="/img/file-20250331220621299.png" alt="3"></p>
 <h2 id="任务3：利用博弈树搜索实现象棋AI"><a href="#任务3：利用博弈树搜索实现象棋AI" class="headerlink" title="任务3：利用博弈树搜索实现象棋AI"></a>任务3：利用博弈树搜索实现象棋AI</h2><p>编写一个中国象棋博弈程序，要求用alpha-beta剪枝算法，可以实现两个AI对弈。</p>
 <ul>
 <li>一方由人类点击或者AI算法控制。</li>
@@ -402,7 +166,7 @@
 <h3 id="steps："><a href="#steps：" class="headerlink" title="steps："></a>steps：</h3><ul>
 <li>读取文件，提取出城市维度和城市坐标</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">read_tsp</span>(<span class="hljs-params">filename</span>):<br><br>    nodes=[]<br><br>    dimension=<span class="hljs-number">0</span><br><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(filename) <span class="hljs-keyword">as</span> file:<br><br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> file:<br><br>            <span class="hljs-keyword">if</span> line.strip().startswith(<span class="hljs-string">&#x27;DIMENSION&#x27;</span>):<br><br>                <span class="hljs-comment">#获取维度信息</span><br><br>                dimension=line.split(<span class="hljs-string">&#x27;:&#x27;</span>)[<span class="hljs-number">1</span>].strip()<br><br>            <span class="hljs-comment">#节点信息获取</span><br><br>            <span class="hljs-keyword">if</span> line.strip().startswith(<span class="hljs-string">&#x27;NODE_COORD_SECTION&#x27;</span>):<br><br>                <span class="hljs-keyword">break</span><br><br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> file:<br><br>            line = line.strip()<br><br>            <span class="hljs-keyword">if</span> line==<span class="hljs-string">&#x27;EOF&#x27;</span> <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> line:<br><br>                <span class="hljs-keyword">break</span>  <span class="hljs-comment">#结束</span><br><br>            parts=line.split()<br><br>            <span class="hljs-comment">#去掉开头编号，生成元组</span><br><br>            nodes.append((<span class="hljs-built_in">float</span>(parts[<span class="hljs-number">1</span>]),<span class="hljs-built_in">float</span>(parts[<span class="hljs-number">2</span>])))<br><br>    location=np.array(nodes)<br><br>    <span class="hljs-keyword">return</span> dimension,location<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">read_tsp</span>(<span class="params">filename</span>):</span><br><span class="line"></span><br><span class="line">    nodes=[]</span><br><span class="line"></span><br><span class="line">    dimension=<span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename) <span class="keyword">as</span> file:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> file:</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> line.strip().startswith(<span class="string">&#x27;DIMENSION&#x27;</span>):</span><br><span class="line"></span><br><span class="line">                <span class="comment">#获取维度信息</span></span><br><span class="line"></span><br><span class="line">                dimension=line.split(<span class="string">&#x27;:&#x27;</span>)[<span class="number">1</span>].strip()</span><br><span class="line"></span><br><span class="line">            <span class="comment">#节点信息获取</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> line.strip().startswith(<span class="string">&#x27;NODE_COORD_SECTION&#x27;</span>):</span><br><span class="line"></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> file:</span><br><span class="line"></span><br><span class="line">            line = line.strip()</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> line==<span class="string">&#x27;EOF&#x27;</span> <span class="keyword">or</span> <span class="keyword">not</span> line:</span><br><span class="line"></span><br><span class="line">                <span class="keyword">break</span>  <span class="comment">#结束</span></span><br><span class="line"></span><br><span class="line">            parts=line.split()</span><br><span class="line"></span><br><span class="line">            <span class="comment">#去掉开头编号，生成元组</span></span><br><span class="line"></span><br><span class="line">            nodes.append((<span class="built_in">float</span>(parts[<span class="number">1</span>]),<span class="built_in">float</span>(parts[<span class="number">2</span>])))</span><br><span class="line"></span><br><span class="line">    location=np.array(nodes)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dimension,location</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>初始化种族：在城市数较少时使用<strong>随机数</strong>生成法，中等城市数可以考虑部分贪婪（？，大体量城市再考虑其他</li>
@@ -435,8 +199,8 @@
 </ul>
 <h3 id="算法优点"><a href="#算法优点" class="headerlink" title="算法优点"></a>算法优点</h3><p><strong>不管函数形式多复杂，模拟退火算法更有可能找到全局最优解。</strong></p>
 <p>过程图：</p>
-<p><img src="/img/file-20250331170514223.png" srcset="/img/loading.gif" lazyload></p>
-<p>伪代码：<br><img src="/img/file-20250331170528207.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250331170610602.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/file-20250331170514223.png"></p>
+<p>伪代码：<br><img src="/img/file-20250331170528207.png"><br><img src="/img/file-20250331170610602.png"></p>
 <p>resources：<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/382426984">模拟退火算法超详细教程 - 知乎</a></p>
 <h2 id="遗传算法"><a href="#遗传算法" class="headerlink" title="遗传算法"></a>遗传算法</h2><blockquote>
 <p>[!NOTE]<br>遗传算法是受自然进化理论启发的一系列搜索算法。</p>
@@ -482,476 +246,71 @@
 <li>子代有几率变异，子代的适应度被重新计算</li>
 <li>循环直到满足优化准则</li>
 </ul>
-<p>伪代码：<br><img src="/img/file-20250331172623564.png" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/img/9a1dfe9d663af4eb0c6989344df3c6f.jpg" srcset="/img/loading.gif" lazyload></p>
+<p>伪代码：<br><img src="/img/file-20250331172623564.png"></p>
+<p><img src="/img/9a1dfe9d663af4eb0c6989344df3c6f.jpg"></p>
 <p>resources：<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/436453994">遗传算法 (Genetic Algorithm, GA) 详解与实现 - 知乎</a></p>
-<h2 id="旅行商问题–解的表示"><a href="#旅行商问题–解的表示" class="headerlink" title="旅行商问题–解的表示"></a>旅行商问题–解的表示</h2><p><img src="/img/file-20250331173623765.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250331173701655.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250331173729854.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="旅行商问题–解的表示"><a href="#旅行商问题–解的表示" class="headerlink" title="旅行商问题–解的表示"></a>旅行商问题–解的表示</h2><p><img src="/img/file-20250331173623765.png"><br><img src="/img/file-20250331173701655.png"><br><img src="/img/file-20250331173729854.png"></p>
 
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
+    </div>
 
-<span class="category-chains">
-  
-  
     
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-    <span>></span>
+      <aside class="toc" id="toc" aria-label="目录">
+        <div class="toc-title">目录</div>
+        <nav class="toc-list" id="tocList"></nav>
+      </aside>
     
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/" class="category-chain-item">AI</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/AI/" class="print-no-link">#AI</a>
-      
-        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
-      
-    </div>
-  
-</div>
-
-
-              
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>AI-Lab3</div>
-      <div>https://pqcu77.github.io/2025/03/24/AI-lab3/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>linqt</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2025年3月24日</div>
-        </div>
-      
-      
-      
-        <div class="license-meta-item">
-          <div>许可协议</div>
-          <div>
-            
-              
-              
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-cc-by"></i>
-                  </span>
-                </a>
-              
-            
-          </div>
-        </div>
-      
-    </div>
-    <div class="license-icon iconfont"></div>
   </div>
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2025/03/28/eBPF-learning/" title="eBPF_learning">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">eBPF_learning</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2025/03/16/HTML-Notes/" title="HTML_Notes">
-                        <span class="hidden-mobile">HTML_Notes</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-          </article>
-        </div>
-      </div>
+  
+    <div class="post-footer-tags">
+      <a class="tag" href="/tags/AI/">AI</a><a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
     </div>
+  
 
-    <div class="side-col d-none d-lg-block col-lg-2">
+  
+    <nav class="post-nav">
       
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>目录</span>
-  </p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
+        <a class="post-nav-item prev" href="/2025/03/28/eBPF-learning/">
+          <span class="post-nav-label">上一篇</span>
+          <span class="post-nav-title">eBPF_learning</span>
+        </a>
+      
+      
+        <a class="post-nav-item next" href="/2025/03/16/HTML-Notes/">
+          <span class="post-nav-label">下一篇</span>
+          <span class="post-nav-title">HTML_Notes</span>
+        </a>
+      
+    </nav>
   
+</article>
 
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-
-    
   </main>
+  <footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-text">
+      
+      
+      
+      
+      © 2025 - 2026 linqt · Powered by Hexo · Theme Ink
+    </p>
+  </div>
+</footer>
 
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  <div class="search-modal" id="searchModal" data-search-path="/search.json" hidden>
+  <div class="search-mask" data-close></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="搜索文章">
+    <div class="search-field">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+      <input type="text" id="searchInput" placeholder="搜索标题、标签、正文…" autocomplete="off" spellcheck="false">
+      <kbd>ESC</kbd>
     </div>
-  
-  
-  
+    <div class="search-results" id="searchResults"></div>
+  </div>
 </div>
 
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
-<script>
-  var relativeDate = function() {
-    var updatedTime = document.getElementById('updated-time');
-    if (updatedTime) {
-      var text = updatedTime.textContent;
-      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
-      var matchs = text.match(reg);
-      if (matchs) {
-        var relativeTime = moment(matchs[0]).fromNow();
-        updatedTime.textContent = text.replace(reg, relativeTime);
-      }
-      updatedTime.style.display = '';
-    }
-  };
-  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
-    if (!'zh-cn'.startsWith('en')) {
-      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
-        relativeDate();
-      });
-    } else {
-      relativeDate();
-    }
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init(Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc));
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-      }
-    });
-  });
-</script>
-
-
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  
-      <script>
-        if (!window.MathJax) {
-          window.MathJax = {
-            tex    : {
-              inlineMath: { '[+]': [['$', '$']] }
-            },
-            loader : {
-              load: ['ui/lazy']
-            },
-            options: {
-              renderActions: {
-                insertedScript: [200, () => {
-                  document.querySelectorAll('mjx-container').forEach(node => {
-                    let target = node.parentNode;
-                    if (target.nodeName.toLowerCase() === 'li') {
-                      target.parentNode.classList.add('has-jax');
-                    }
-                  });
-                }, '', false]
-              }
-            }
-          };
-        } else {
-          MathJax.startup.document.state(0);
-          MathJax.texReset();
-          MathJax.typeset();
-          MathJax.typesetPromise();
-        }
-
-        Fluid.events.registerRefreshCallback(function() {
-          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
-            MathJax.startup.document.state(0);
-            MathJax.texReset();
-            MathJax.typeset();
-            MathJax.typesetPromise();
-          }
-        });
-      </script>
-    
-
-  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
-
-  <script  src="/js/local-search.js" ></script>
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-  
-<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-<script src="/custom/custom.js"></script>
-<script src="/custom/firework.js"></script>
-<script src="/custom/label-page.js"></script>
-<script src="/custom/moving.js"></script>
-<script src="/custom/welcome.css.js"></script>
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  <button class="back-to-top" id="backToTop" aria-label="回到顶部" title="回到顶部">↑</button>
+  <script src="/js/main.js"></script>
 </body>
 </html>
-<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
-<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
-<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
-<script type="text/javascript" src="/custom/firework.js"></script>

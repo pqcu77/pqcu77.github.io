@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="generator" content="Hexo">
+<title>JavaWeb_SpringBootWeb · linqt&#39;s blog</title>
+<meta name="description" content="">
+<meta name="author" content="linqt">
+<link rel="icon" href="/img/cute.jpg">
+<link rel="alternate" href="/atom.xml" title="linqt&#39;s blog" type="application/atom+xml">
+<meta property="og:title" content="JavaWeb_SpringBootWeb">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pqcu77.github.io/2025/11/18/JavaWeb-SpringBootWeb/">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta name="theme-color" content="#0d1117">
+<link rel="stylesheet" href="/css/main.css">
+<style>
+  :root[data-theme="dark"] { --accent: #7aa2f7; }
+  :root[data-theme="light"] { --accent: #2f6fdb; }
+</style>
+<script>
+  // 避免刷新时主题闪烁
+  (function () {
+    try {
+      var saved = localStorage.getItem('ink-theme');
+      var d = 'dark';
+      var t = (saved === 'light' || saved === 'dark') ? saved
+        : (d === 'auto' ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : d);
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+
+</head>
+<body class=" page-post    ">
+  <div class="progress-bar" id="progressBar"></div>
+  <header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a class="site-brand" href="/">
+      PQCU&#39; blog
+    </a>
+
+    <nav class="site-nav">
+      
+        <a class="nav-link" href="/archives/">文章</a>
+      
+        <a class="nav-link" href="/categories/">分类</a>
+      
+        <a class="nav-link" href="/tags/">标签</a>
+      
+        <a class="nav-link" href="/about/">关于</a>
+      
+
+      
+        <button class="icon-btn" id="searchBtn" aria-label="搜索" title="搜索 (Ctrl+K)">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+        </button>
+      
+
+      
+        <button class="icon-btn" id="themeToggle" aria-label="切换主题" title="切换明暗">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        </button>
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="container main">
+    
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">JavaWeb_SpringBootWeb</h1>
+    <div class="post-meta">
+      <time datetime="2025-11-18T02:36:27.000Z">2025-11-18</time>
+      <span class="dot">·</span><span>9042 字</span>
+      <span class="dot">·</span><span>26 分钟</span>
+      <span class="dot">·</span><span>更新于 2025-11-25</span>
+    </div>
+  </header>
+
+  <div class="post-layout">
+    <div class="post-body" id="postBody">
+      <ul>
+<li>BS架构：Browser&#x2F;Server，<strong>浏览器&#x2F;服务器</strong>架构模式。客户端只需要浏览器，应用程序的逻辑和数据都存储在服务端。<ul>
+<li>优点：维护方便  </li>
+<li>缺点：体验一般</li>
+</ul>
+</li>
+<li>CS架构：Client&#x2F;Server，<strong>客户端&#x2F;服务器</strong>架构模式。需要单独开发维护客户端。<ul>
+<li>优点：体验不错    </li>
+<li>缺点：开发维护麻烦</li>
+</ul>
+</li>
+</ul>
+<h1 id="SprintBootWeb"><a href="#SprintBootWeb" class="headerlink" title="SprintBootWeb"></a>SprintBootWeb</h1><h2 id="入门程序"><a href="#入门程序" class="headerlink" title="入门程序"></a>入门程序</h2><p>需求：基于SpringBoot的方式开发一个web应用，浏览器发起请求&#x2F;hello后，给浏览器返回字符串 “Hello xxx ~”。</p>
+<h3 id="开发步骤"><a href="#开发步骤" class="headerlink" title="开发步骤"></a>开发步骤</h3><p>第1步：创建SpringBoot工程，并勾选Web开发相关依赖<br>第2步：定义HelloController类，添加方法hello，并添加注解</p>
+<h4 id="创建Spring-Boot-工程"><a href="#创建Spring-Boot-工程" class="headerlink" title="创建Spring Boot 工程"></a>创建Spring Boot 工程</h4><p>由于我的IDEA版本是社区版，没有办法直接从插件处下载Sprintboot插件，所以要采取一些其他方法。</p>
+<ul>
+<li>参考方法：<a target="_blank" rel="noopener" href="https://developer.aliyun.com/article/1625955">springboot学习一：idea社区版本创建springboot项目的三种方式（第三种为主）-阿里云开发者社区</a></li>
+</ul>
+<p>方法2和方法3都比较方便。<br>方法2：<br>使用Spring initializr插件来创建。</p>
+<ul>
+<li>发现这个插件也变成专业版了！！为什么！</li>
+</ul>
+<p>方法3：通过maven来创建<br>需要修改pom.xml来添加依赖：</p>
+<ul>
+<li>需要新增父项目配置</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span>  </span><br><span class="line">  <span class="comment">&lt;!-- 使用更新的稳定版本 --&gt;</span>  </span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.7.18<span class="tag">&lt;/<span class="name">version</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>用于继承Springboot的默认配置，统一依赖管理版本</p>
+<ul>
+<li>加入Spring bott核心依赖</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在这里引入依赖坐标，提供了web开发所需的全部依赖（Spring mvc，内嵌tomcat等）</p>
+<ul>
+<li>引入Spring boot maven插件</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>用于打包可执行jar，允许spring boot应用，热部署支持</p>
+<ul>
+<li>引入测试依赖更新</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.junit.jupiter<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit-jupiter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>方便我们使用JUnit5进行Spring boot测试</p>
+<p>在主类App.java中import：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.example; </span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.SpringApplication; <span class="keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;</span><br></pre></td></tr></table></figure>
+
+<p>运行成功：<br><img src="/img/file-20251119102521432.png"></p>
+<p>完整的SpringBoot项目还需要添加资源文件<br><img src="/img/file-20251119102734501.png"></p>
+<p>定义HelloController类，添加方法hello<br><img src="/img/file-20251119103600321.png"></p>
+<p>运行测试：<br>打开浏览器，输入 <code>localhost:8080/hello?name=土豆</code><br>可以看到<br><img src="/img/file-20251119103442556.png"></p>
+<h4 id="回顾一下"><a href="#回顾一下" class="headerlink" title="回顾一下"></a>回顾一下</h4><p>在入门程序中，我们发现只需要一个main方法就可以将web应用启动起来，然后可以打开浏览器访问了。<br>why？<br>因为我们在创建springboot项目的时候，选择了web开发的<strong>起步依赖</strong> <code>spring-boot-starter-web</code>。而<code>spring-boot-starter-web</code>依赖，又依赖了<code>spring-boot-starter-tomcat</code>，由于maven的依赖传递特性，那么在我们创建的springboot项目中也就已经有了tomcat的依赖，这个其实就是springboot中内嵌的tomcat。</p>
+<ul>
+<li>spring-boot-starter-web：包含了web应用开发所需要的常见依赖。    </li>
+<li>spring-boot-starter-test：包含了单元测试所需要的常见依赖。</li>
+</ul>
+<h2 id="HTTP协议"><a href="#HTTP协议" class="headerlink" title="HTTP协议"></a>HTTP协议</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p><strong>HTTP</strong>：Hyper Text Transfer Protocol(超文本传输协议)，规定了浏览器与服务器之间数据传输的规则。（应用层协议）</p>
+<ul>
+<li>http协议又分为请求协议和相应协议</li>
+<li>规定数据传输的格式：请求数据+响应数据</li>
+</ul>
+<h4 id="特点"><a href="#特点" class="headerlink" title="特点"></a>特点</h4><ul>
+<li>基于TCP协议：面向连接，安全<ul>
+<li>TCP是面向连接的协议，需要三次握手</li>
+</ul>
+</li>
+<li>基于请求-响应模型：一次请求对应一次响应</li>
+<li>http协议是无状态协议：对于数据没有记忆能力，每次请求-响应都是独立的<ul>
+<li>我们为了有“记忆”引入了cookie等技术</li>
+</ul>
+</li>
+</ul>
+<h3 id="HTTP请求协议"><a href="#HTTP请求协议" class="headerlink" title="HTTP请求协议"></a>HTTP请求协议</h3><p>请求协议就是浏览器将数据以请求格式发送到服务器。包括：请求行、请求头、请求体。</p>
+<p>请求方式：GET&#x2F;POST</p>
+<h4 id="GET方式的请求协议："><a href="#GET方式的请求协议：" class="headerlink" title="GET方式的请求协议："></a>GET方式的请求协议：</h4><p><img src="/img/file-20251119112433528.png"></p>
+<ul>
+<li>请求行：<ul>
+<li>请求方式：GET</li>
+<li>资源路径：&#x2F;brand&#x2F;findAll?name&#x3D;OPPO&amp;status&#x3D;1<ul>
+<li>请求路径：&#x2F;brand&#x2F;findAll  </li>
+<li>请求参数：name&#x3D;OPPO&amp;status&#x3D;1    <ul>
+<li>请求参数是以key&#x3D;value形式出现     </li>
+<li>多个请求参数之间使用<code>&amp;</code>连接</li>
+</ul>
+</li>
+<li>请求路径和请求参数之间使用<code>?</code>连接</li>
+</ul>
+</li>
+<li>协议&#x2F;版本：HTTP&#x2F;1.1</li>
+</ul>
+</li>
+<li>请求头：key:value<ul>
+<li>http是个无状态的协议，所以在请求头设置浏览器的一些自身信息和想要响应的形式。</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>请求头</td>
+<td>含义</td>
+</tr>
+<tr>
+<td>Host</td>
+<td>表示请求的主机名</td>
+</tr>
+<tr>
+<td>User-Agent</td>
+<td>浏览器版本。 例如：Chrome浏览器的标识类似Mozilla&#x2F;5.0 …Chrome&#x2F;79 ，IE浏览器的标识类似Mozilla&#x2F;5.0 (Windows NT …)like Gecko</td>
+</tr>
+<tr>
+<td>Accept</td>
+<td>表示浏览器能接收的资源类型，如text&#x2F;*，image&#x2F;<em>或者</em>&#x2F;*表示所有；</td>
+</tr>
+<tr>
+<td>Accept-Language</td>
+<td>表示浏览器偏好的语言，服务器可以据此返回不同语言的网页；</td>
+</tr>
+<tr>
+<td>Accept-Encoding</td>
+<td>表示浏览器可以支持的压缩类型，例如gzip, deflate等。</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>请求主体的数据类型</td>
+</tr>
+<tr>
+<td>Content-Length</td>
+<td>数据主体的大小（单位：字节）</td>
+</tr>
+</tbody></table>
+<ul>
+<li>请求体：存储请求参数（但是这里的GET方式请求参数在请求行中，不需要设置请求体）</li>
+</ul>
+<h4 id="POST方式"><a href="#POST方式" class="headerlink" title="POST方式"></a>POST方式</h4><p><img src="/img/file-20251119112439634.png"><br>请求行：包含请求方式、资源路径、协议版本<br>请求头：格式key:value<br>请求体：存储请求参数，请求体于请求头之间是有一行空格隔开（便于标记）</p>
+<table>
+<thead>
+<tr>
+<th>区别方式</th>
+<th>GET请求</th>
+<th>POST请求</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>请求参数</td>
+<td>请求参数在请求行中。<br/>例：&#x2F;brand&#x2F;findAll?name&#x3D;OPPO&amp;status&#x3D;1</td>
+<td>请求参数在请求体中</td>
+</tr>
+<tr>
+<td>请求参数长度</td>
+<td>请求参数长度有限制(浏览器不同限制也不同)</td>
+<td>请求参数长度没有限制</td>
+</tr>
+<tr>
+<td>安全性</td>
+<td>安全性低。原因：请求参数暴露在浏览器地址栏中。</td>
+<td>安全性相对高</td>
+</tr>
+</tbody></table>
+<h4 id="获取请求数据"><a href="#获取请求数据" class="headerlink" title="获取请求数据"></a>获取请求数据</h4><p><img src="/img/file-20251119112718851.png"></p>
+<h3 id="HTTP响应协议"><a href="#HTTP响应协议" class="headerlink" title="HTTP响应协议"></a>HTTP响应协议</h3><p>响应协议：服务器将数据以响应格式返回给浏览器。包括：相应行、响应头、响应体<br><img src="/img/file-20251119112955130.png"></p>
+<p><img src="/img/file-20251119113018561.png"></p>
+<ul>
+<li><code>200 ok</code> 客户端请求成功</li>
+<li><code>404 Not Found</code> 请求资源不存在</li>
+<li><code>500 Internal Server Error</code> 服务端发生不可预期的错误</li>
+</ul>
+<h4 id="响应数据"><a href="#响应数据" class="headerlink" title="响应数据"></a>响应数据</h4><p>Web服务器对http协议的响应数据进行了封装（HttpServletResponse），并在调用Controller方法时传递了该方法。类似的，在请求协议里也进行了封装（HttpServletRequest）</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>希望实现：<br><img src="/img/file-20251119113313709.png"><br>当在浏览器中访问前端静态页面 <code>localhost:8080/user.html</code>后，在前端页面上回发送ajax请求，请求服务端 <code>localhost:8080/list</code> ，服务器端程序加载user.txt文件中的数据，读取出来后最终给前端页面响应json格式的数据，前端页面再将数据渲染展示在表格中</p>
+<p><img src="/img/file-20251119115619993.png"></p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>本案例要展示的核心功能：</p>
+<ul>
+<li>前端展示：希望通过静态html页面，展示用户数据表格</li>
+<li>后端服务：<ul>
+<li>读取user.txt中的数据</li>
+<li>将数据解析为User对象集合</li>
+<li>通过RESTful接口返回json格式数据<br><img src="/img/file-20251119120002461.png"></li>
+</ul>
+</li>
+</ul>
+<p>涉及到的知识点：<br>SpringBoot</p>
+<ul>
+<li><code>@RestController</code>注解：组合了<code>@Controller</code>和<code>@ResponseBody</code>，直接返回JSON数据</li>
+<li>在使用 <code>@RestController</code> 注解标记的类中，每个方法的返回值都会以 JSON 或 XML 的形式直接写入 HTTP 响应体中，相当于在每个方法上都添加了 <code>@ResponseBody</code> 注解。</li>
+</ul>
+<p>文件操作：</p>
+<ul>
+<li>资源文件加载：ClassLoader.getResourceAsStream()</li>
+<li>Hutool工具库的IoUtil.readLines()高效读取文件</li>
+<li>文件路径：src&#x2F;main&#x2F;resources下的文件会被打包到classpath</li>
+</ul>
+<p>三层架构思想</p>
+<ul>
+<li>Controller：接收请求和响应数据</li>
+<li>Service：业务逻辑处理（虽然本示例未显式分层，但隐含该思想）    </li>
+<li>DAO：数据访问（本示例中直接操作文件）</li>
+</ul>
+<p>我们定义了一个实体类User：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span> <span class="comment">// Lombok自动生成getter/setter</span></span><br><span class="line"><span class="meta">@NoArgsConstructor</span> <span class="comment">// 无参构造</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span> <span class="comment">// 全参构造</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">User</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String username;</span><br><span class="line">    <span class="comment">// 其他字段...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里使用了Lombok自动生成getter和setter<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/ThinkWon/article/details/101392808">Lombok简介、使用、工作原理、优缺点-CSDN博客</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@Setter 注解在类或字段，注解在类时为所有字段生成setter方法，注解在字段上时只为该字段生成setter方法。</span><br><span class="line">@Getter 使用方法同上，区别在于生成的是getter方法。</span><br><span class="line">@ToString 注解在类，添加toString方法。</span><br><span class="line">@EqualsAndHashCode 注解在类，生成hashCode和equals方法。</span><br><span class="line">@NoArgsConstructor 注解在类，生成无参的构造方法。</span><br><span class="line">@RequiredArgsConstructor 注解在类，为类中需要特殊处理的字段生成构造方法，比如final和被@NonNull注解的字段。</span><br><span class="line">@AllArgsConstructor 注解在类，生成包含类中所有字段的构造方法。</span><br><span class="line">@Data 注解在类，生成setter/getter、equals、canEqual、hashCode、toString方法，如为final属性，则不会为该属性生成setter方法。</span><br><span class="line">@Slf4j 注解在类，生成log变量，严格意义来说是常量。private static final Logger log = LoggerFactory.getLogger(UserController.class);</span><br></pre></td></tr></table></figure>
+
+<p>控制器：（这里给页面响应的代码全部堆积了，实际开发时我们会采用分层解耦的方法）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span> <span class="comment">// = @Controller + @ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/list&quot;)</span> <span class="comment">// 映射请求路径</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">list</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 1. 文件读取</span></span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">in</span> <span class="operator">=</span> getClass().getResourceAsStream(<span class="string">&quot;user.txt&quot;</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 2. 数据转换</span></span><br><span class="line">        List&lt;User&gt; users = lines.stream().map(line -&gt; &#123;</span><br><span class="line">            <span class="comment">// 字符串解析逻辑...</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">User</span>(id, username,...);</span><br><span class="line">        &#125;).collect(Collectors.toList());</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 3. 返回JSON</span></span><br><span class="line">        <span class="keyword">return</span> JSONUtil.toJsonStr(users);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里用到了<strong>RESTful</strong>接口设计</p>
+<p>前端交互部分：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">fetch</span>(<span class="string">&quot;/list&quot;</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> res.<span class="title function_">json</span>())</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 动态渲染表格</span></span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>前端通过<strong>AJAX</strong>消费后端API</p>
+<h2 id="分层解耦"><a href="#分层解耦" class="headerlink" title="分层解耦"></a>分层解耦</h2><h3 id="三层架构"><a href="#三层架构" class="headerlink" title="三层架构"></a>三层架构</h3><ul>
+<li>在进行程序设计及开发时，尽可能让每天接口、类、方法的职责更单一（单一职责）</li>
+</ul>
+<p>前面入门程序：<br><img src="/img/file-20251119153240714.png"><br>但现在，我们应该把它拆开</p>
+<ul>
+<li>数据访问：负责业务数据的维护操作（增删改查）</li>
+<li>逻辑处理：负责业务的逻辑代码</li>
+<li>请求处理、响应数据：负责，接收页面的请求，给页面响应数据。<br><img src="/img/file-20251119153428587.png"></li>
+<li>Controller：控制层。接收前端发送的请求，对请求进行处理，并响应数据。</li>
+<li>Service：业务逻辑层。处理具体的业务逻辑。</li>
+<li>Dao：数据访问层(Data Access Object)，也称为持久层。负责数据访问操作，包括数据的增、删、改、查。</li>
+</ul>
+<p><strong>高内聚低耦合</strong></p>
+<ul>
+<li><strong>内聚：</strong> 软件中各个功能模块内部的功能联系。</li>
+<li><strong>耦合：</strong> 衡量软件中各个层&#x2F;模块之间的依赖、关联的程度。</li>
+</ul>
+<h4 id="解耦思路"><a href="#解耦思路" class="headerlink" title="解耦思路"></a>解耦思路</h4><p>不要在层里new 对象，很容易导致层与层之间代码耦合。<br>&#x3D;&gt;将要用的对象交给一个<strong>容器</strong>管理<br>&#x3D;&gt;应用程序中要到这个对象就从容器中获取<br><img src="/img/file-20251119160843239.png"></p>
+<p>设计到两个概念：控制反转和依赖注入</p>
+<ul>
+<li><strong>控制反转：</strong> Inversion Of Control，简称<strong>IOC</strong>。对象的创建控制权由程序自身<strong>转移到外部（容器）</strong>，这种思想称为控制反转。<ul>
+<li><u>对象的创建权由程序员主动创建转移到容器</u>(由容器创建、管理对象)。这个容器称为：<u>IOC容器或Spring容器</u>。</li>
+</ul>
+</li>
+<li><strong>依赖注入：</strong> Dependency Injection，简称<strong>DI</strong>。容器为应用程序提供运行时，所依赖的资源，称之为依赖注入。<ul>
+<li>程序运行时需要某个资源，此时容器就为其提供这个资源。</li>
+<li>例：EmpController程序运行时需要EmpService对象，Spring容器就为其提供并注入EmpService对象。</li>
+</ul>
+</li>
+<li><strong>bean对象：</strong> IOC容器中创建、管理的对象，称之为：bean对象。</li>
+</ul>
+<h4 id="IOC和DI"><a href="#IOC和DI" class="headerlink" title="IOC和DI"></a>IOC和DI</h4><p><strong>1). 将Service及Dao层的实现类，交给IOC容器管理</strong><br>在实现类加上 <strong><code>@Component</code></strong> 注解，就代表把当前类产生的对象交给IOC容器管理。<br><strong>2). 为Controller 及 Service注入运行时所依赖的对象</strong><br><code>@Autowired</code> &#x2F;&#x2F; 应用程序运行时,会自动查询该类型的bean对象,并赋值给该成员变量</p>
+<table>
+<thead>
+<tr>
+<th>说明</th>
+<th>位置</th>
+<th>注解</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>声明bean的基础注解</td>
+<td>不属于以下三类时，用此注解</td>
+<td>@Component</td>
+</tr>
+<tr>
+<td>@Component的衍生注解</td>
+<td>标注在控制层类上</td>
+<td>@Controller</td>
+</tr>
+<tr>
+<td>@Component的衍生注解</td>
+<td>标注在业务层类上</td>
+<td>@Service</td>
+</tr>
+<tr>
+<td>@Component的衍生注解</td>
+<td>标注在数据访问层类上（由于与mybatis整合，用的少）</td>
+<td>@Repository</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>[!NOTE]<br><strong>注意1</strong>：声明bean的时候，可以通过注解的value属性指定bean的名字，如果没有指定，默认为类名首字母小写。<br><strong>注意2</strong>：使用以上四个注解都可以声明bean，但是在springboot集成web开发中，声明控制器bean只能用@Controller。<br>Bean对象：由Spring IOC容器创建、组装和管理的Java对象（也就是被Spring托管的对象）</p>
+</blockquote>
+<ul>
+<li>生命周期：<br><img src="/img/file-20251119170127319.png"><br>创建Bean的例子：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. Service层Bean</span></span><br><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserServiceImpl</span> <span class="keyword">implements</span> <span class="title class_">UserService</span> &#123;</span><br><span class="line">    <span class="comment">// Spring会自动创建这个类的实例并管理</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. Controller层Bean  </span></span><br><span class="line"><span class="meta">@RestController</span>  <span class="comment">// = @Controller + @ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line">    <span class="comment">// Spring会自动创建并管理</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. Dao层Bean</span></span><br><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserDaoImpl</span> <span class="keyword">implements</span> <span class="title class_">UserDao</span> &#123;</span><br><span class="line">    <span class="comment">// Spring会自动创建并管理</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4. 普通组件Bean</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SomeUtil</span> &#123;</span><br><span class="line">    <span class="comment">// 通用组件</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Bean的依赖注入：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span>  <span class="comment">// Spring自动注入Bean</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;  <span class="comment">// 这里注入的是Bean对象</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 使用注入的Bean</span></span><br><span class="line">    <span class="meta">@RequestMapping(&quot;/list&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;User&gt; <span class="title function_">list</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> userService.findAll();  <span class="comment">// 调用Bean的方法</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从bean的生命周期图中看到，为了让bean生效，还需要让它被组件扫描<code>@ComponentScan</code></p>
+<ul>
+<li>该注解虽然没有显式配置，但是实际上已经包含在了启动类声明注解 <code>@SpringBootApplication</code> 中，<u>默认扫描的范围是启动类所在包及其子包。</u></li>
+</ul>
+<h4 id="DI"><a href="#DI" class="headerlink" title="DI"></a>DI</h4><p>依赖注入，是指IOC容器要为应用程序<strong>去提供运行时所依赖的资源</strong>，而资源指的就是对象。<br><code>@Autowired</code>注解，默认是按照<strong>类型</strong>进行自动装配的（去IOC容器中找某个类型的对象，然后完成注入操作）</p>
+<h5 id="Autowired用法"><a href="#Autowired用法" class="headerlink" title="@Autowired用法"></a>@Autowired用法</h5><p><strong>属性注入</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//方式一: 属性注入</span></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个类依赖了哪些外部组件，通过属性注入是无法一眼看出来的。你必须阅读整个类的所有字段才能知道。（缺点：隐藏了类之间的依赖关系、可能会破坏类的封装性。）</p>
+<p><strong>构造函数注入</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//方式二: 构造器注入</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span> <span class="comment">//如果当前类中只存在一个构造函数, @Autowired可以省略</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">UserController</span><span class="params">(UserService userService)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.userService = userService;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"> &#125;   </span><br></pre></td></tr></table></figure>
+<ul>
+<li>优点：能清晰地看到类的依赖关系、提高了代码的安全性。</li>
+<li>缺点：代码繁琐、如果构造参数过多，可能会导致构造函数臃肿。</li>
+</ul>
+<p><strong>setter注入</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 用户信息Controller</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserController</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//方式三: setter注入</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setUserService</span><span class="params">(UserService userService)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.userService = userService;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
+<ul>
+<li>优点：保持了类的封装性，依赖关系更清晰。</li>
+<li>缺点：需要额外编写setter方法，增加了代码量。</li>
+</ul>
+<p>如果我们定义了多个相同的类，容器里会存在多个相同类型的bean，而框架不知道具体要注入哪个bean使用，会报错。</p>
+<ul>
+<li>@Primary（存在相同的bean注入时，有这个注解的是默认的实现）</li>
+<li>@Qualifier（指定当前要注入的bean对象–指定注入的bean名称）<ul>
+<li>@Qualifier注解不能单独使用，必须配合@Autowired使用。</li>
+</ul>
+</li>
+<li>@Resource（是按照bean的名称进行注入。通过name属性指定要注入的bean的名称。）</li>
+</ul>
+<p>@Autowired和@Resource区别：</p>
+<ul>
+<li>前者是spring框架提供的注解，而后者是JDK提供的注解</li>
+<li>@Autowired默认是按类型注入，而后者是按照名称注入</li>
+</ul>
+
+    </div>
+
+    
+      <aside class="toc" id="toc" aria-label="目录">
+        <div class="toc-title">目录</div>
+        <nav class="toc-list" id="tocList"></nav>
+      </aside>
+    
+  </div>
+
+  
+    <div class="post-footer-tags">
+      <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="tag" href="/tags/%E5%90%8E%E7%AB%AF/">后端</a><a class="tag" href="/tags/javaWeb/">javaWeb</a>
+    </div>
+  
+
+  
+    <nav class="post-nav">
+      
+        <a class="post-nav-item prev" href="/2025/11/25/JavaWeb-DB/">
+          <span class="post-nav-label">上一篇</span>
+          <span class="post-nav-title">JavaWeb_DB</span>
+        </a>
+      
+      
+        <a class="post-nav-item next" href="/2025/11/16/JavaWeb/">
+          <span class="post-nav-label">下一篇</span>
+          <span class="post-nav-title">JavaWeb</span>
+        </a>
+      
+    </nav>
+  
+</article>
+
+  </main>
+  <footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-text">
+      
+      
+      
+      
+      © 2025 - 2026 linqt · Powered by Hexo · Theme Ink
+    </p>
+  </div>
+</footer>
+
+  <div class="search-modal" id="searchModal" data-search-path="/search.json" hidden>
+  <div class="search-mask" data-close></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="搜索文章">
+    <div class="search-field">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+      <input type="text" id="searchInput" placeholder="搜索标题、标签、正文…" autocomplete="off" spellcheck="false">
+      <kbd>ESC</kbd>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+  <button class="back-to-top" id="backToTop" aria-label="回到顶部" title="回到顶部">↑</button>
+  <script src="/js/main.js"></script>
+</body>
+</html>

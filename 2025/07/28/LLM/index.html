@@ -1,792 +1,165 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
+<html lang="zh-CN" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
-  
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="linqt">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="datawhalechina&#x2F;self-llm: 《开源大模型食用指南》针对中国宝宝量身打造的基于Linux环境快速微调（全参数&#x2F;Lora）、部署国内外开源大模型（LLM）&#x2F;多模态大模型（MLLM）教程 大模型（LLM）狭义上指基于深度学习算法进行训练的自然语言处理（NLP）模型，主要应用于自然语言理解和生成等领域，广义上还包括机器视觉（CV）大模型、多模态大模型和科">
-<meta property="og:type" content="article">
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="generator" content="Hexo">
+<title>LLM · linqt&#39;s blog</title>
+<meta name="description" content="">
+<meta name="author" content="linqt">
+<link rel="icon" href="/img/cute.jpg">
+<link rel="alternate" href="/atom.xml" title="linqt&#39;s blog" type="application/atom+xml">
 <meta property="og:title" content="LLM">
-<meta property="og:url" content="https://pqcu77.github.io/2025/07/28/LLM/index.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pqcu77.github.io/2025/07/28/LLM/">
 <meta property="og:site_name" content="linqt&#39;s blog">
-<meta property="og:description" content="datawhalechina&#x2F;self-llm: 《开源大模型食用指南》针对中国宝宝量身打造的基于Linux环境快速微调（全参数&#x2F;Lora）、部署国内外开源大模型（LLM）&#x2F;多模态大模型（MLLM）教程 大模型（LLM）狭义上指基于深度学习算法进行训练的自然语言处理（NLP）模型，主要应用于自然语言理解和生成等领域，广义上还包括机器视觉（CV）大模型、多模态大模型和科">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-07-28T02:22:01.000Z">
-<meta property="article:modified_time" content="2025-07-28T04:03:59.099Z">
-<meta property="article:author" content="linqt">
-<meta property="article:tag" content="学习笔记">
-<meta property="article:tag" content="LLM">
-<meta name="twitter:card" content="summary_large_image">
-  
-  
-    <meta name="referrer" content="no-referrer-when-downgrade">
-  
-  
-  <title>LLM - linqt&#39;s blog</title>
+<meta name="theme-color" content="#0d1117">
+<link rel="stylesheet" href="/css/main.css">
+<style>
+  :root[data-theme="dark"] { --accent: #7aa2f7; }
+  :root[data-theme="light"] { --accent: #2f6fdb; }
+</style>
+<script>
+  // 避免刷新时主题闪烁
+  (function () {
+    try {
+      var saved = localStorage.getItem('ink-theme');
+      var d = 'dark';
+      var t = (saved === 'light' || saved === 'dark') ? saved
+        : (d === 'auto' ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : d);
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-  
-<link rel="stylesheet" href="/custom/custom.css">
-<link rel="stylesheet" href="/custom/welcome.css">
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-
-  
-<meta name="generator" content="Hexo 7.3.0"></head>
-
-
-<body>
-  
-
-  <header>
-    
-
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>PQCU&#39; blog</strong>
+</head>
+<body class=" page-post    ">
+  <div class="progress-bar" id="progressBar"></div>
+  <header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a class="site-brand" href="/">
+      PQCU&#39; blog
     </a>
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/" target="_self">
-                <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/" target="_self">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/" target="_self">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/" target="_self">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="LLM"></span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-07-28 10:22" pubdate>
-          2025年7月28日 上午
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          <!-- compatible with older versions-->
-          1.6k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          <!-- compatible with older versions-->
-          14 分钟
-        
-      </span>
-    
-
-    
-    
+    <nav class="site-nav">
       
-        <span id="busuanzi_container_page_pv" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="busuanzi_value_page_pv"></span>次
-        </span>
-        
+        <a class="nav-link" href="/archives/">文章</a>
+      
+        <a class="nav-link" href="/categories/">分类</a>
+      
+        <a class="nav-link" href="/tags/">标签</a>
+      
+        <a class="nav-link" href="/about/">关于</a>
+      
 
       
-    
+        <button class="icon-btn" id="searchBtn" aria-label="搜索" title="搜索 (Ctrl+K)">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+        </button>
+      
+
+      
+        <button class="icon-btn" id="themeToggle" aria-label="切换主题" title="切换明暗">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        </button>
+      
+    </nav>
   </div>
+</header>
 
-
-        
-      </div>
-
+  <main class="container main">
+    
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">LLM</h1>
+    <div class="post-meta">
+      <time datetime="2025-07-28T02:22:01.000Z">2025-07-28</time>
+      <span class="dot">·</span><span>7995 字</span>
+      <span class="dot">·</span><span>23 分钟</span>
       
     </div>
-  </div>
-</div>
-
-</div>
-
   </header>
 
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <h1 id="seo-header">LLM</h1>
-            
-              <p id="updated-time" class="note note-info" style="display: none">
-                
-                  
-                    本文最后更新于 2025-07-28T12:03:59+08:00
-                  
-                  
-
-                
-              </p>
-            
-            
-              <div class="markdown-body">
-                
-                <p><a target="_blank" rel="noopener" href="https://github.com/datawhalechina/self-llm">datawhalechina&#x2F;self-llm: 《开源大模型食用指南》针对中国宝宝量身打造的基于Linux环境快速微调（全参数&#x2F;Lora）、部署国内外开源大模型（LLM）&#x2F;多模态大模型（MLLM）教程</a></p>
+  <div class="post-layout">
+    <div class="post-body" id="postBody">
+      <p><a target="_blank" rel="noopener" href="https://github.com/datawhalechina/self-llm">datawhalechina&#x2F;self-llm: 《开源大模型食用指南》针对中国宝宝量身打造的基于Linux环境快速微调（全参数&#x2F;Lora）、部署国内外开源大模型（LLM）&#x2F;多模态大模型（MLLM）教程</a></p>
 <p>大模型（LLM）狭义上指基于深度学习算法进行训练的自然语言处理（NLP）模型，主要应用于自然语言理解和生成等领域，广义上还包括机器视觉（CV）大模型、多模态大模型和科学计算大模型等。</p>
 <ul>
 <li>学习实现国内外主流开源LLM的部署、使用与微调教程</li>
 </ul>
 <h1 id="Qwen1-5"><a href="#Qwen1-5" class="headerlink" title="Qwen1.5"></a>Qwen1.5</h1><h2 id="模型下载"><a href="#模型下载" class="headerlink" title="模型下载"></a>模型下载</h2><p>通过指令下载模型到缓存文件夹</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># model_download.py</span><br><span class="hljs-keyword">from</span> modelscope <span class="hljs-keyword">import</span> snapshot_download<br><br>model_dir = snapshot_download(<span class="hljs-string">&#x27;qwen/Qwen1.5-7B-Chat&#x27;</span>, cache_dir=<span class="hljs-string">&#x27;/root/autodl-tmp&#x27;</span>, revision=<span class="hljs-string">&#x27;master&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># model_download.py</span></span><br><span class="line"><span class="keyword">from</span> modelscope <span class="keyword">import</span> snapshot_download</span><br><span class="line"></span><br><span class="line">model_dir = snapshot_download(<span class="string">&#x27;qwen/Qwen1.5-7B-Chat&#x27;</span>, cache_dir=<span class="string">&#x27;/root/autodl-tmp&#x27;</span>, revision=<span class="string">&#x27;master&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
 <h2 id="代码准备"><a href="#代码准备" class="headerlink" title="代码准备"></a>代码准备</h2><p>在autodl-tmp路径下新建api.py文件，并输入以下内容</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI, Request<br><span class="hljs-keyword">from</span> transformers <span class="hljs-keyword">import</span> AutoTokenizer, AutoModelForCausalLM, GenerationConfig<br><span class="hljs-keyword">import</span> uvicorn<br><span class="hljs-keyword">import</span> json<br><span class="hljs-keyword">import</span> datetime<br><span class="hljs-keyword">import</span> torch<br><br><span class="hljs-comment"># 设置设备参数</span><br>DEVICE = <span class="hljs-string">&quot;cuda&quot;</span>  <span class="hljs-comment"># 使用CUDA</span><br>DEVICE_ID = <span class="hljs-string">&quot;0&quot;</span>  <span class="hljs-comment"># CUDA设备ID，如果未设置则为空</span><br>CUDA_DEVICE = <span class="hljs-string">f&quot;<span class="hljs-subst">&#123;DEVICE&#125;</span>:<span class="hljs-subst">&#123;DEVICE_ID&#125;</span>&quot;</span> <span class="hljs-keyword">if</span> DEVICE_ID <span class="hljs-keyword">else</span> DEVICE  <span class="hljs-comment"># 组合CUDA设备信息</span><br><br><span class="hljs-comment"># 清理GPU内存函数</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">torch_gc</span>():<br>    <span class="hljs-keyword">if</span> torch.cuda.is_available():  <span class="hljs-comment"># 检查是否可用CUDA</span><br>        <span class="hljs-keyword">with</span> torch.cuda.device(CUDA_DEVICE):  <span class="hljs-comment"># 指定CUDA设备</span><br>            torch.cuda.empty_cache()  <span class="hljs-comment"># 清空CUDA缓存</span><br>            torch.cuda.ipc_collect()  <span class="hljs-comment"># 收集CUDA内存碎片</span><br><br><span class="hljs-comment"># 创建FastAPI应用</span><br>app = FastAPI()<br><br><span class="hljs-comment"># 处理POST请求的端点</span><br><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">&quot;/&quot;</span></span>)</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">create_item</span>(<span class="hljs-params">request: Request</span>):<br>    <span class="hljs-keyword">global</span> model, tokenizer  <span class="hljs-comment"># 声明全局变量以便在函数内部使用模型和分词器</span><br>    json_post_raw = <span class="hljs-keyword">await</span> request.json()  <span class="hljs-comment"># 获取POST请求的JSON数据</span><br>    json_post = json.dumps(json_post_raw)  <span class="hljs-comment"># 将JSON数据转换为字符串</span><br>    json_post_list = json.loads(json_post)  <span class="hljs-comment"># 将字符串转换为Python对象</span><br>    prompt = json_post_list.get(<span class="hljs-string">&#x27;prompt&#x27;</span>)  <span class="hljs-comment"># 获取请求中的提示</span><br><br>    messages = [<br>            &#123;<span class="hljs-string">&quot;role&quot;</span>: <span class="hljs-string">&quot;system&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>: <span class="hljs-string">&quot;You are a helpful assistant.&quot;</span>&#125;,<br>            &#123;<span class="hljs-string">&quot;role&quot;</span>: <span class="hljs-string">&quot;user&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>: prompt&#125;<br>    ]<br><br>    <span class="hljs-comment"># 调用模型进行对话生成</span><br>    input_ids = tokenizer.apply_chat_template(messages,tokenize=<span class="hljs-literal">False</span>,add_generation_prompt=<span class="hljs-literal">True</span>)<br>    model_inputs = tokenizer([input_ids], return_tensors=<span class="hljs-string">&quot;pt&quot;</span>).to(<span class="hljs-string">&#x27;cuda&#x27;</span>)<br>    generated_ids = model.generate(model_inputs.input_ids,max_new_tokens=<span class="hljs-number">512</span>)<br>    generated_ids = [<br>        output_ids[<span class="hljs-built_in">len</span>(input_ids):] <span class="hljs-keyword">for</span> input_ids, output_ids <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(model_inputs.input_ids, generated_ids)<br>    ]<br>    response = tokenizer.batch_decode(generated_ids, skip_special_tokens=<span class="hljs-literal">True</span>)[<span class="hljs-number">0</span>]<br>    now = datetime.datetime.now()  <span class="hljs-comment"># 获取当前时间</span><br>    time = now.strftime(<span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)  <span class="hljs-comment"># 格式化时间为字符串</span><br>    <span class="hljs-comment"># 构建响应JSON</span><br>    answer = &#123;<br>        <span class="hljs-string">&quot;response&quot;</span>: response,<br>        <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-number">200</span>,<br>        <span class="hljs-string">&quot;time&quot;</span>: time<br>    &#125;<br>    <span class="hljs-comment"># 构建日志信息</span><br>    log = <span class="hljs-string">&quot;[&quot;</span> + time + <span class="hljs-string">&quot;] &quot;</span> + <span class="hljs-string">&#x27;&quot;, prompt:&quot;&#x27;</span> + prompt + <span class="hljs-string">&#x27;&quot;, response:&quot;&#x27;</span> + <span class="hljs-built_in">repr</span>(response) + <span class="hljs-string">&#x27;&quot;&#x27;</span><br>    <span class="hljs-built_in">print</span>(log)  <span class="hljs-comment"># 打印日志</span><br>    torch_gc()  <span class="hljs-comment"># 执行GPU内存清理</span><br>    <span class="hljs-keyword">return</span> answer  <span class="hljs-comment"># 返回响应</span><br><br><span class="hljs-comment"># 主函数入口</span><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-comment"># 加载预训练的分词器和模型</span><br>    model_name_or_path = <span class="hljs-string">&#x27;/root/autodl-tmp/qwen/Qwen1.5-7B-Chat&#x27;</span><br>    tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=<span class="hljs-literal">False</span>)<br>    model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map=<span class="hljs-string">&quot;auto&quot;</span>, torch_dtype=torch.bfloat16)<br><br>    <span class="hljs-comment"># 启动FastAPI应用</span><br>    <span class="hljs-comment"># 用6006端口可以将autodl的端口映射到本地，从而在本地使用api</span><br>    uvicorn.run(app, host=<span class="hljs-string">&#x27;0.0.0.0&#x27;</span>, port=<span class="hljs-number">6006</span>, workers=<span class="hljs-number">1</span>)  <span class="hljs-comment"># 在指定端口和主机上启动应用</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, Request</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer, AutoModelForCausalLM, GenerationConfig</span><br><span class="line"><span class="keyword">import</span> uvicorn</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置设备参数</span></span><br><span class="line">DEVICE = <span class="string">&quot;cuda&quot;</span>  <span class="comment"># 使用CUDA</span></span><br><span class="line">DEVICE_ID = <span class="string">&quot;0&quot;</span>  <span class="comment"># CUDA设备ID，如果未设置则为空</span></span><br><span class="line">CUDA_DEVICE = <span class="string">f&quot;<span class="subst">&#123;DEVICE&#125;</span>:<span class="subst">&#123;DEVICE_ID&#125;</span>&quot;</span> <span class="keyword">if</span> DEVICE_ID <span class="keyword">else</span> DEVICE  <span class="comment"># 组合CUDA设备信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 清理GPU内存函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">torch_gc</span>():</span><br><span class="line">    <span class="keyword">if</span> torch.cuda.is_available():  <span class="comment"># 检查是否可用CUDA</span></span><br><span class="line">        <span class="keyword">with</span> torch.cuda.device(CUDA_DEVICE):  <span class="comment"># 指定CUDA设备</span></span><br><span class="line">            torch.cuda.empty_cache()  <span class="comment"># 清空CUDA缓存</span></span><br><span class="line">            torch.cuda.ipc_collect()  <span class="comment"># 收集CUDA内存碎片</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建FastAPI应用</span></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理POST请求的端点</span></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">create_item</span>(<span class="params">request: Request</span>):</span><br><span class="line">    <span class="keyword">global</span> model, tokenizer  <span class="comment"># 声明全局变量以便在函数内部使用模型和分词器</span></span><br><span class="line">    json_post_raw = <span class="keyword">await</span> request.json()  <span class="comment"># 获取POST请求的JSON数据</span></span><br><span class="line">    json_post = json.dumps(json_post_raw)  <span class="comment"># 将JSON数据转换为字符串</span></span><br><span class="line">    json_post_list = json.loads(json_post)  <span class="comment"># 将字符串转换为Python对象</span></span><br><span class="line">    prompt = json_post_list.get(<span class="string">&#x27;prompt&#x27;</span>)  <span class="comment"># 获取请求中的提示</span></span><br><span class="line"></span><br><span class="line">    messages = [</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;system&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;You are a helpful assistant.&quot;</span>&#125;,</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: prompt&#125;</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 调用模型进行对话生成</span></span><br><span class="line">    input_ids = tokenizer.apply_chat_template(messages,tokenize=<span class="literal">False</span>,add_generation_prompt=<span class="literal">True</span>)</span><br><span class="line">    model_inputs = tokenizer([input_ids], return_tensors=<span class="string">&quot;pt&quot;</span>).to(<span class="string">&#x27;cuda&#x27;</span>)</span><br><span class="line">    generated_ids = model.generate(model_inputs.input_ids,max_new_tokens=<span class="number">512</span>)</span><br><span class="line">    generated_ids = [</span><br><span class="line">        output_ids[<span class="built_in">len</span>(input_ids):] <span class="keyword">for</span> input_ids, output_ids <span class="keyword">in</span> <span class="built_in">zip</span>(model_inputs.input_ids, generated_ids)</span><br><span class="line">    ]</span><br><span class="line">    response = tokenizer.batch_decode(generated_ids, skip_special_tokens=<span class="literal">True</span>)[<span class="number">0</span>]</span><br><span class="line">    now = datetime.datetime.now()  <span class="comment"># 获取当前时间</span></span><br><span class="line">    time = now.strftime(<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)  <span class="comment"># 格式化时间为字符串</span></span><br><span class="line">    <span class="comment"># 构建响应JSON</span></span><br><span class="line">    answer = &#123;</span><br><span class="line">        <span class="string">&quot;response&quot;</span>: response,</span><br><span class="line">        <span class="string">&quot;status&quot;</span>: <span class="number">200</span>,</span><br><span class="line">        <span class="string">&quot;time&quot;</span>: time</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 构建日志信息</span></span><br><span class="line">    log = <span class="string">&quot;[&quot;</span> + time + <span class="string">&quot;] &quot;</span> + <span class="string">&#x27;&quot;, prompt:&quot;&#x27;</span> + prompt + <span class="string">&#x27;&quot;, response:&quot;&#x27;</span> + <span class="built_in">repr</span>(response) + <span class="string">&#x27;&quot;&#x27;</span></span><br><span class="line">    <span class="built_in">print</span>(log)  <span class="comment"># 打印日志</span></span><br><span class="line">    torch_gc()  <span class="comment"># 执行GPU内存清理</span></span><br><span class="line">    <span class="keyword">return</span> answer  <span class="comment"># 返回响应</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 主函数入口</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># 加载预训练的分词器和模型</span></span><br><span class="line">    model_name_or_path = <span class="string">&#x27;/root/autodl-tmp/qwen/Qwen1.5-7B-Chat&#x27;</span></span><br><span class="line">    tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=<span class="literal">False</span>)</span><br><span class="line">    model = AutoModelForCausalLM.from_pretrained(model_name_or_path, device_map=<span class="string">&quot;auto&quot;</span>, torch_dtype=torch.bfloat16)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 启动FastAPI应用</span></span><br><span class="line">    <span class="comment"># 用6006端口可以将autodl的端口映射到本地，从而在本地使用api</span></span><br><span class="line">    uvicorn.run(app, host=<span class="string">&#x27;0.0.0.0&#x27;</span>, port=<span class="number">6006</span>, workers=<span class="number">1</span>)  <span class="comment"># 在指定端口和主机上启动应用</span></span><br></pre></td></tr></table></figure>
 
 <p>但是很可惜，我没有gpu，所以我需要做出相应的修改</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> fastapi <span class="hljs-keyword">import</span> FastAPI, Request<br><span class="hljs-keyword">from</span> transformers <span class="hljs-keyword">import</span> AutoTokenizer, AutoModelForCausalLM, GenerationConfig<br><span class="hljs-keyword">import</span> uvicorn<br><span class="hljs-keyword">import</span> json<br><span class="hljs-keyword">import</span> datetime<br><span class="hljs-keyword">import</span> torch<br><br><span class="hljs-comment"># 设置设备参数</span><br>DEVICE = <span class="hljs-string">&quot;cpu&quot;</span>  <span class="hljs-comment"># 使用CUDA</span><br>DEVICE_ID = <span class="hljs-string">&quot;0&quot;</span>  <span class="hljs-comment"># CUDA设备ID，如果未设置则为空</span><br>CUDA_DEVICE = DEVICE  <span class="hljs-comment"># 组合CUDA设备信息</span><br><br><span class="hljs-comment"># 清理GPU内存函数</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">torch_gc</span>():<br>	<span class="hljs-keyword">pass</span><br><br><span class="hljs-comment"># 创建FastAPI应用</span><br>app = FastAPI()<br><br><span class="hljs-comment"># 处理POST请求的端点</span><br><span class="hljs-meta">@app.post(<span class="hljs-params"><span class="hljs-string">&quot;/&quot;</span></span>)</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">def</span> <span class="hljs-title function_">create_item</span>(<span class="hljs-params">request: Request</span>):<br>    <span class="hljs-keyword">global</span> model, tokenizer  <span class="hljs-comment"># 声明全局变量以便在函数内部使用模型和分词器</span><br>    json_post_raw = <span class="hljs-keyword">await</span> request.json()  <span class="hljs-comment"># 获取POST请求的JSON数据</span><br>    json_post = json.dumps(json_post_raw)  <span class="hljs-comment"># 将JSON数据转换为字符串</span><br>    json_post_list = json.loads(json_post)  <span class="hljs-comment"># 将字符串转换为Python对象</span><br>    prompt = json_post_list.get(<span class="hljs-string">&#x27;prompt&#x27;</span>)  <span class="hljs-comment"># 获取请求中的提示</span><br><br>    messages = [<br>            &#123;<span class="hljs-string">&quot;role&quot;</span>: <span class="hljs-string">&quot;system&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>: <span class="hljs-string">&quot;You are a helpful assistant.&quot;</span>&#125;,<br>            &#123;<span class="hljs-string">&quot;role&quot;</span>: <span class="hljs-string">&quot;user&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>: prompt&#125;<br>    ]<br><br>    <span class="hljs-comment"># 调用模型进行对话生成</span><br>    input_ids = tokenizer.apply_chat_template(messages,tokenize=<span class="hljs-literal">False</span>,add_generation_prompt=<span class="hljs-literal">True</span>)<br>    model_inputs = tokenizer([input_ids], return_tensors=<span class="hljs-string">&quot;pt&quot;</span>).to(<span class="hljs-string">&#x27;cpu&#x27;</span>)<br>    generated_ids = model.generate(model_inputs.input_ids,max_new_tokens=<span class="hljs-number">512</span>)<br>    generated_ids = [<br>        output_ids[<span class="hljs-built_in">len</span>(input_ids):] <span class="hljs-keyword">for</span> input_ids, output_ids <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(model_inputs.input_ids, generated_ids)<br>    ]<br>    response = tokenizer.batch_decode(generated_ids, skip_special_tokens=<span class="hljs-literal">True</span>)[<span class="hljs-number">0</span>]<br>    now = datetime.datetime.now()  <span class="hljs-comment"># 获取当前时间</span><br>    time = now.strftime(<span class="hljs-string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)  <span class="hljs-comment"># 格式化时间为字符串</span><br>    <span class="hljs-comment"># 构建响应JSON</span><br>    answer = &#123;<br>        <span class="hljs-string">&quot;response&quot;</span>: response,<br>        <span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-number">200</span>,<br>        <span class="hljs-string">&quot;time&quot;</span>: time<br>    &#125;<br>    <span class="hljs-comment"># 构建日志信息</span><br>    log = <span class="hljs-string">&quot;[&quot;</span> + time + <span class="hljs-string">&quot;] &quot;</span> + <span class="hljs-string">&#x27;&quot;, prompt:&quot;&#x27;</span> + prompt + <span class="hljs-string">&#x27;&quot;, response:&quot;&#x27;</span> + <span class="hljs-built_in">repr</span>(response) + <span class="hljs-string">&#x27;&quot;&#x27;</span><br>    <span class="hljs-built_in">print</span>(log)  <span class="hljs-comment"># 打印日志</span><br>    torch_gc()  <span class="hljs-comment"># 执行GPU内存清理</span><br>    <span class="hljs-keyword">return</span> answer  <span class="hljs-comment"># 返回响应</span><br><br><span class="hljs-comment"># 主函数入口</span><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    <span class="hljs-comment"># 加载预训练的分词器和模型</span><br>	model_name_or_path = <span class="hljs-string">&#x27;/root/autodl-tmp/qwen/Qwen1.5-0.5B-Chat&#x27;</span><br>    tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=<span class="hljs-literal">False</span>)<br>	model = AutoModelForCausalLM.from_pretrained(model_name_or_path).to(<span class="hljs-string">&quot;cpu&quot;</span>)<br><br>    <span class="hljs-comment"># 启动FastAPI应用</span><br>    <span class="hljs-comment"># 用6006端口可以将autodl的端口映射到本地，从而在本地使用api</span><br>    uvicorn.run(app, host=<span class="hljs-string">&#x27;0.0.0.0&#x27;</span>, port=<span class="hljs-number">6006</span>, workers=<span class="hljs-number">1</span>)  <span class="hljs-comment"># 在指定端口和主机上启动应用</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> fastapi <span class="keyword">import</span> FastAPI, Request</span><br><span class="line"><span class="keyword">from</span> transformers <span class="keyword">import</span> AutoTokenizer, AutoModelForCausalLM, GenerationConfig</span><br><span class="line"><span class="keyword">import</span> uvicorn</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置设备参数</span></span><br><span class="line">DEVICE = <span class="string">&quot;cpu&quot;</span>  <span class="comment"># 使用CUDA</span></span><br><span class="line">DEVICE_ID = <span class="string">&quot;0&quot;</span>  <span class="comment"># CUDA设备ID，如果未设置则为空</span></span><br><span class="line">CUDA_DEVICE = DEVICE  <span class="comment"># 组合CUDA设备信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 清理GPU内存函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">torch_gc</span>():</span><br><span class="line">	<span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建FastAPI应用</span></span><br><span class="line">app = FastAPI()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 处理POST请求的端点</span></span><br><span class="line"><span class="meta">@app.post(<span class="params"><span class="string">&quot;/&quot;</span></span>)</span></span><br><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">create_item</span>(<span class="params">request: Request</span>):</span><br><span class="line">    <span class="keyword">global</span> model, tokenizer  <span class="comment"># 声明全局变量以便在函数内部使用模型和分词器</span></span><br><span class="line">    json_post_raw = <span class="keyword">await</span> request.json()  <span class="comment"># 获取POST请求的JSON数据</span></span><br><span class="line">    json_post = json.dumps(json_post_raw)  <span class="comment"># 将JSON数据转换为字符串</span></span><br><span class="line">    json_post_list = json.loads(json_post)  <span class="comment"># 将字符串转换为Python对象</span></span><br><span class="line">    prompt = json_post_list.get(<span class="string">&#x27;prompt&#x27;</span>)  <span class="comment"># 获取请求中的提示</span></span><br><span class="line"></span><br><span class="line">    messages = [</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;system&quot;</span>, <span class="string">&quot;content&quot;</span>: <span class="string">&quot;You are a helpful assistant.&quot;</span>&#125;,</span><br><span class="line">            &#123;<span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>, <span class="string">&quot;content&quot;</span>: prompt&#125;</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 调用模型进行对话生成</span></span><br><span class="line">    input_ids = tokenizer.apply_chat_template(messages,tokenize=<span class="literal">False</span>,add_generation_prompt=<span class="literal">True</span>)</span><br><span class="line">    model_inputs = tokenizer([input_ids], return_tensors=<span class="string">&quot;pt&quot;</span>).to(<span class="string">&#x27;cpu&#x27;</span>)</span><br><span class="line">    generated_ids = model.generate(model_inputs.input_ids,max_new_tokens=<span class="number">512</span>)</span><br><span class="line">    generated_ids = [</span><br><span class="line">        output_ids[<span class="built_in">len</span>(input_ids):] <span class="keyword">for</span> input_ids, output_ids <span class="keyword">in</span> <span class="built_in">zip</span>(model_inputs.input_ids, generated_ids)</span><br><span class="line">    ]</span><br><span class="line">    response = tokenizer.batch_decode(generated_ids, skip_special_tokens=<span class="literal">True</span>)[<span class="number">0</span>]</span><br><span class="line">    now = datetime.datetime.now()  <span class="comment"># 获取当前时间</span></span><br><span class="line">    time = now.strftime(<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)  <span class="comment"># 格式化时间为字符串</span></span><br><span class="line">    <span class="comment"># 构建响应JSON</span></span><br><span class="line">    answer = &#123;</span><br><span class="line">        <span class="string">&quot;response&quot;</span>: response,</span><br><span class="line">        <span class="string">&quot;status&quot;</span>: <span class="number">200</span>,</span><br><span class="line">        <span class="string">&quot;time&quot;</span>: time</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># 构建日志信息</span></span><br><span class="line">    log = <span class="string">&quot;[&quot;</span> + time + <span class="string">&quot;] &quot;</span> + <span class="string">&#x27;&quot;, prompt:&quot;&#x27;</span> + prompt + <span class="string">&#x27;&quot;, response:&quot;&#x27;</span> + <span class="built_in">repr</span>(response) + <span class="string">&#x27;&quot;&#x27;</span></span><br><span class="line">    <span class="built_in">print</span>(log)  <span class="comment"># 打印日志</span></span><br><span class="line">    torch_gc()  <span class="comment"># 执行GPU内存清理</span></span><br><span class="line">    <span class="keyword">return</span> answer  <span class="comment"># 返回响应</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 主函数入口</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="comment"># 加载预训练的分词器和模型</span></span><br><span class="line">	model_name_or_path = <span class="string">&#x27;/root/autodl-tmp/qwen/Qwen1.5-0.5B-Chat&#x27;</span></span><br><span class="line">    tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, use_fast=<span class="literal">False</span>)</span><br><span class="line">	model = AutoModelForCausalLM.from_pretrained(model_name_or_path).to(<span class="string">&quot;cpu&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 启动FastAPI应用</span></span><br><span class="line">    <span class="comment"># 用6006端口可以将autodl的端口映射到本地，从而在本地使用api</span></span><br><span class="line">    uvicorn.run(app, host=<span class="string">&#x27;0.0.0.0&#x27;</span>, port=<span class="number">6006</span>, workers=<span class="number">1</span>)  <span class="comment"># 在指定端口和主机上启动应用</span></span><br></pre></td></tr></table></figure>
 
 
 
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 导入所需的库</span><br><span class="hljs-keyword">from</span> transformers <span class="hljs-keyword">import</span> AutoTokenizer, AutoModelForCausalLM, GenerationConfig<br><span class="hljs-keyword">import</span> torch<br><span class="hljs-keyword">import</span> streamlit <span class="hljs-keyword">as</span> st<br><br><span class="hljs-comment"># 在侧边栏中创建一个标题和一个链接</span><br><span class="hljs-keyword">with</span> st.sidebar:<br>    st.markdown(<span class="hljs-string">&quot;## Qwen1.5 LLM&quot;</span>)<br>    <span class="hljs-string">&quot;[开源大模型食用指南 self-llm](https://github.com/datawhalechina/self-llm.git)&quot;</span><br>    <span class="hljs-comment"># 创建一个滑块，用于选择最大长度，范围在0到1024之间，默认值为512</span><br>    max_length = st.slider(<span class="hljs-string">&quot;max_length&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1024</span>, <span class="hljs-number">512</span>, step=<span class="hljs-number">1</span>)<br><br><span class="hljs-comment"># 创建一个标题和一个副标题</span><br>st.title(<span class="hljs-string">&quot;💬 Qwen1.5 Chatbot&quot;</span>)<br>st.caption(<span class="hljs-string">&quot;🚀 A streamlit chatbot powered by Self-LLM&quot;</span>)<br><br><span class="hljs-comment"># 定义模型路径</span><br>mode_name_or_path = <span class="hljs-string">&#x27;/root/autodl-tmp/qwen/Qwen1.5-0.5B-Chat&#x27;</span><br><br><span class="hljs-comment"># 定义一个函数，用于获取模型和tokenizer</span><br><span class="hljs-meta">@st.cache_resource</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_model</span>():<br>    <span class="hljs-comment"># 从预训练的模型中获取tokenizer</span><br>    tokenizer = AutoTokenizer.from_pretrained(mode_name_or_path, use_fast=<span class="hljs-literal">False</span>)<br>    <span class="hljs-comment"># 从预训练的模型中获取模型，并设置模型参数</span><br>    model = AutoModelForCausalLM.from_pretrained(mode_name_or_path, torch_dtype=torch.bfloat16,  device_map=<span class="hljs-string">&quot;auto&quot;</span>)<br>  <br>    <span class="hljs-keyword">return</span> tokenizer, model<br><br><span class="hljs-comment"># 加载Qwen1.5-4B-Chat的model和tokenizer</span><br>tokenizer, model = get_model()<br><br><span class="hljs-comment"># 如果session_state中没有&quot;messages&quot;，则创建一个包含默认消息的列表</span><br><span class="hljs-keyword">if</span> <span class="hljs-string">&quot;messages&quot;</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> st.session_state:<br>    st.session_state[<span class="hljs-string">&quot;messages&quot;</span>] = [&#123;<span class="hljs-string">&quot;role&quot;</span>: <span class="hljs-string">&quot;assistant&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>: <span class="hljs-string">&quot;有什么可以帮您的？&quot;</span>&#125;]<br><br><span class="hljs-comment"># 遍历session_state中的所有消息，并显示在聊天界面上</span><br><span class="hljs-keyword">for</span> msg <span class="hljs-keyword">in</span> st.session_state.messages:<br>    st.chat_message(msg[<span class="hljs-string">&quot;role&quot;</span>]).write(msg[<span class="hljs-string">&quot;content&quot;</span>])<br><br><span class="hljs-comment"># 如果用户在聊天输入框中输入了内容，则执行以下操作</span><br><span class="hljs-keyword">if</span> prompt := st.chat_input():<br>    <span class="hljs-comment"># 将用户的输入添加到session_state中的messages列表中</span><br>    st.session_state.messages.append(&#123;<span class="hljs-string">&quot;role&quot;</span>: <span class="hljs-string">&quot;user&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>: prompt&#125;)<br>    <span class="hljs-comment"># 在聊天界面上显示用户的输入</span><br>    st.chat_message(<span class="hljs-string">&quot;user&quot;</span>).write(prompt)<br>    <br>    <span class="hljs-comment"># 构建输入     </span><br>    input_ids = tokenizer.apply_chat_template(st.session_state.messages,tokenize=<span class="hljs-literal">False</span>,add_generation_prompt=<span class="hljs-literal">True</span>)<br>    model_inputs = tokenizer([input_ids], return_tensors=<span class="hljs-string">&quot;pt&quot;</span>).to(<span class="hljs-string">&#x27;cuda&#x27;</span>)<br>    generated_ids = model.generate(model_inputs.input_ids, max_new_tokens=<span class="hljs-number">512</span>)<br>    generated_ids = [<br>        output_ids[<span class="hljs-built_in">len</span>(input_ids):] <span class="hljs-keyword">for</span> input_ids, output_ids <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(model_inputs.input_ids, generated_ids)<br>    ]<br>    response = tokenizer.batch_decode(generated_ids, skip_special_tokens=<span class="hljs-literal">True</span>)[<span class="hljs-number">0</span>]<br>    <span class="hljs-comment"># 将模型的输出添加到session_state中的messages列表中</span><br>    st.session_state.messages.append(&#123;<span class="hljs-string">&quot;role&quot;</span>: <span class="hljs-string">&quot;assistant&quot;</span>, <span class="hljs-string">&quot;content&quot;</span>: response&#125;)<br>    <span class="hljs-comment"># 在聊天界面上显示模型的输出</span><br>    st.chat_message(<span class="hljs-string">&quot;assistant&quot;</span>).write(response)<br>    <span class="hljs-comment"># print(st.session_state)</span><br></code></pre></td></tr></table></figure>
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"># 导入所需的库</span><br><span class="line">from transformers import AutoTokenizer, AutoModelForCausalLM, GenerationConfig</span><br><span class="line">import torch</span><br><span class="line">import streamlit as st</span><br><span class="line"></span><br><span class="line"># 在侧边栏中创建一个标题和一个链接</span><br><span class="line">with st.sidebar:</span><br><span class="line">    st.markdown(&quot;## Qwen1.5 LLM&quot;)</span><br><span class="line">    &quot;[开源大模型食用指南 self-llm](https://github.com/datawhalechina/self-llm.git)&quot;</span><br><span class="line">    # 创建一个滑块，用于选择最大长度，范围在0到1024之间，默认值为512</span><br><span class="line">    max_length = st.slider(&quot;max_length&quot;, 0, 1024, 512, step=1)</span><br><span class="line"></span><br><span class="line"># 创建一个标题和一个副标题</span><br><span class="line">st.title(&quot;💬 Qwen1.5 Chatbot&quot;)</span><br><span class="line">st.caption(&quot;🚀 A streamlit chatbot powered by Self-LLM&quot;)</span><br><span class="line"></span><br><span class="line"># 定义模型路径</span><br><span class="line">mode_name_or_path = &#x27;/root/autodl-tmp/qwen/Qwen1.5-0.5B-Chat&#x27;</span><br><span class="line"></span><br><span class="line"># 定义一个函数，用于获取模型和tokenizer</span><br><span class="line">@st.cache_resource</span><br><span class="line">def get_model():</span><br><span class="line">    # 从预训练的模型中获取tokenizer</span><br><span class="line">    tokenizer = AutoTokenizer.from_pretrained(mode_name_or_path, use_fast=False)</span><br><span class="line">    # 从预训练的模型中获取模型，并设置模型参数</span><br><span class="line">    model = AutoModelForCausalLM.from_pretrained(mode_name_or_path, torch_dtype=torch.bfloat16,  device_map=&quot;auto&quot;)</span><br><span class="line">  </span><br><span class="line">    return tokenizer, model</span><br><span class="line"></span><br><span class="line"># 加载Qwen1.5-4B-Chat的model和tokenizer</span><br><span class="line">tokenizer, model = get_model()</span><br><span class="line"></span><br><span class="line"># 如果session_state中没有&quot;messages&quot;，则创建一个包含默认消息的列表</span><br><span class="line">if &quot;messages&quot; not in st.session_state:</span><br><span class="line">    st.session_state[&quot;messages&quot;] = [&#123;&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: &quot;有什么可以帮您的？&quot;&#125;]</span><br><span class="line"></span><br><span class="line"># 遍历session_state中的所有消息，并显示在聊天界面上</span><br><span class="line">for msg in st.session_state.messages:</span><br><span class="line">    st.chat_message(msg[&quot;role&quot;]).write(msg[&quot;content&quot;])</span><br><span class="line"></span><br><span class="line"># 如果用户在聊天输入框中输入了内容，则执行以下操作</span><br><span class="line">if prompt := st.chat_input():</span><br><span class="line">    # 将用户的输入添加到session_state中的messages列表中</span><br><span class="line">    st.session_state.messages.append(&#123;&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt&#125;)</span><br><span class="line">    # 在聊天界面上显示用户的输入</span><br><span class="line">    st.chat_message(&quot;user&quot;).write(prompt)</span><br><span class="line">    </span><br><span class="line">    # 构建输入     </span><br><span class="line">    input_ids = tokenizer.apply_chat_template(st.session_state.messages,tokenize=False,add_generation_prompt=True)</span><br><span class="line">    model_inputs = tokenizer([input_ids], return_tensors=&quot;pt&quot;).to(&#x27;cuda&#x27;)</span><br><span class="line">    generated_ids = model.generate(model_inputs.input_ids, max_new_tokens=512)</span><br><span class="line">    generated_ids = [</span><br><span class="line">        output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)</span><br><span class="line">    ]</span><br><span class="line">    response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]</span><br><span class="line">    # 将模型的输出添加到session_state中的messages列表中</span><br><span class="line">    st.session_state.messages.append(&#123;&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: response&#125;)</span><br><span class="line">    # 在聊天界面上显示模型的输出</span><br><span class="line">    st.chat_message(&quot;assistant&quot;).write(response)</span><br><span class="line">    # print(st.session_state)</span><br></pre></td></tr></table></figure>
+    </div>
 
-<span class="category-chains">
-  
-  
     
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-    <span>></span>
+      <aside class="toc" id="toc" aria-label="目录">
+        <div class="toc-title">目录</div>
+        <nav class="toc-list" id="tocList"></nav>
+      </aside>
     
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/LLM/" class="category-chain-item">LLM</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
-      
-        <a href="/tags/LLM/" class="print-no-link">#LLM</a>
-      
-    </div>
-  
-</div>
-
-
-              
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>LLM</div>
-      <div>https://pqcu77.github.io/2025/07/28/LLM/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>linqt</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2025年7月28日</div>
-        </div>
-      
-      
-      
-        <div class="license-meta-item">
-          <div>许可协议</div>
-          <div>
-            
-              
-              
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-cc-by"></i>
-                  </span>
-                </a>
-              
-            
-          </div>
-        </div>
-      
-    </div>
-    <div class="license-icon iconfont"></div>
   </div>
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2025/07/30/DB-Lec4/" title="DB_Lec4">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">DB_Lec4</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2025/07/24/DB-Lec3/" title="DB_Lec3">
-                        <span class="hidden-mobile">DB_Lec3</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-          </article>
-        </div>
-      </div>
+  
+    <div class="post-footer-tags">
+      <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="tag" href="/tags/LLM/">LLM</a>
     </div>
+  
 
-    <div class="side-col d-none d-lg-block col-lg-2">
+  
+    <nav class="post-nav">
       
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>目录</span>
-  </p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
+        <a class="post-nav-item prev" href="/2025/07/30/DB-Lec4/">
+          <span class="post-nav-label">上一篇</span>
+          <span class="post-nav-title">DB_Lec4</span>
+        </a>
+      
+      
+        <a class="post-nav-item next" href="/2025/07/24/DB-Lec3/">
+          <span class="post-nav-label">下一篇</span>
+          <span class="post-nav-title">DB_Lec3</span>
+        </a>
+      
+    </nav>
   
+</article>
 
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-
-    
   </main>
+  <footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-text">
+      
+      
+      
+      
+      © 2025 - 2026 linqt · Powered by Hexo · Theme Ink
+    </p>
+  </div>
+</footer>
 
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  <div class="search-modal" id="searchModal" data-search-path="/search.json" hidden>
+  <div class="search-mask" data-close></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="搜索文章">
+    <div class="search-field">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+      <input type="text" id="searchInput" placeholder="搜索标题、标签、正文…" autocomplete="off" spellcheck="false">
+      <kbd>ESC</kbd>
     </div>
-  
-  
-  
+    <div class="search-results" id="searchResults"></div>
+  </div>
 </div>
 
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
-<script>
-  var relativeDate = function() {
-    var updatedTime = document.getElementById('updated-time');
-    if (updatedTime) {
-      var text = updatedTime.textContent;
-      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
-      var matchs = text.match(reg);
-      if (matchs) {
-        var relativeTime = moment(matchs[0]).fromNow();
-        updatedTime.textContent = text.replace(reg, relativeTime);
-      }
-      updatedTime.style.display = '';
-    }
-  };
-  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
-    if (!'zh-cn'.startsWith('en')) {
-      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
-        relativeDate();
-      });
-    } else {
-      relativeDate();
-    }
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init(Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc));
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-      }
-    });
-  });
-</script>
-
-
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  
-      <script>
-        if (!window.MathJax) {
-          window.MathJax = {
-            tex    : {
-              inlineMath: { '[+]': [['$', '$']] }
-            },
-            loader : {
-              load: ['ui/lazy']
-            },
-            options: {
-              renderActions: {
-                insertedScript: [200, () => {
-                  document.querySelectorAll('mjx-container').forEach(node => {
-                    let target = node.parentNode;
-                    if (target.nodeName.toLowerCase() === 'li') {
-                      target.parentNode.classList.add('has-jax');
-                    }
-                  });
-                }, '', false]
-              }
-            }
-          };
-        } else {
-          MathJax.startup.document.state(0);
-          MathJax.texReset();
-          MathJax.typeset();
-          MathJax.typesetPromise();
-        }
-
-        Fluid.events.registerRefreshCallback(function() {
-          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
-            MathJax.startup.document.state(0);
-            MathJax.texReset();
-            MathJax.typeset();
-            MathJax.typesetPromise();
-          }
-        });
-      </script>
-    
-
-  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
-
-  <script  src="/js/local-search.js" ></script>
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-  
-<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-<script src="/custom/custom.js"></script>
-<script src="/custom/firework.js"></script>
-<script src="/custom/label-page.js"></script>
-<script src="/custom/moving.js"></script>
-<script src="/custom/welcome.css.js"></script>
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  <button class="back-to-top" id="backToTop" aria-label="回到顶部" title="回到顶部">↑</button>
+  <script src="/js/main.js"></script>
 </body>
 </html>
-<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
-<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
-<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
-<script type="text/javascript" src="/custom/firework.js"></script>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="generator" content="Hexo">
+<title>JavaWeb_DB · linqt&#39;s blog</title>
+<meta name="description" content="">
+<meta name="author" content="linqt">
+<link rel="icon" href="/img/cute.jpg">
+<link rel="alternate" href="/atom.xml" title="linqt&#39;s blog" type="application/atom+xml">
+<meta property="og:title" content="JavaWeb_DB">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pqcu77.github.io/2025/11/25/JavaWeb-DB/">
+<meta property="og:site_name" content="linqt&#39;s blog">
+<meta name="theme-color" content="#0d1117">
+<link rel="stylesheet" href="/css/main.css">
+<style>
+  :root[data-theme="dark"] { --accent: #7aa2f7; }
+  :root[data-theme="light"] { --accent: #2f6fdb; }
+</style>
+<script>
+  // 避免刷新时主题闪烁
+  (function () {
+    try {
+      var saved = localStorage.getItem('ink-theme');
+      var d = 'dark';
+      var t = (saved === 'light' || saved === 'dark') ? saved
+        : (d === 'auto' ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : d);
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+
+</head>
+<body class=" page-post    ">
+  <div class="progress-bar" id="progressBar"></div>
+  <header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a class="site-brand" href="/">
+      PQCU&#39; blog
+    </a>
+
+    <nav class="site-nav">
+      
+        <a class="nav-link" href="/archives/">文章</a>
+      
+        <a class="nav-link" href="/categories/">分类</a>
+      
+        <a class="nav-link" href="/tags/">标签</a>
+      
+        <a class="nav-link" href="/about/">关于</a>
+      
+
+      
+        <button class="icon-btn" id="searchBtn" aria-label="搜索" title="搜索 (Ctrl+K)">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+        </button>
+      
+
+      
+        <button class="icon-btn" id="themeToggle" aria-label="切换主题" title="切换明暗">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        </button>
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="container main">
+    
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">JavaWeb_DB</h1>
+    <div class="post-meta">
+      <time datetime="2025-11-25T11:29:19.000Z">2025-11-25</time>
+      <span class="dot">·</span><span>11008 字</span>
+      <span class="dot">·</span><span>31 分钟</span>
+      <span class="dot">·</span><span>更新于 2025-11-26</span>
+    </div>
+  </header>
+
+  <div class="post-layout">
+    <div class="post-body" id="postBody">
+      <p>安装和运行MySQL：<br>﻿<a target="_blank" rel="noopener" href="https://heuqqdmbyk.feishu.cn/wiki/ZRSFwACsRiBD2NkV7bmcrJhInme">​⁠⁠﻿‍‌​﻿​​‌​​﻿‬​​​‍​⁠​​​​​﻿​‍‌​‬​‍⁠​‌‌﻿﻿​​﻿​​​﻿​MySQL安装文档 - 飞书云文档</a><br>﻿现在已经安装好了。<br>﻿运行步骤：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql <span class="operator">-</span>uroot <span class="operator">-</span>p[YourKey]</span><br><span class="line"><span class="keyword">or</span></span><br><span class="line">mysql <span class="operator">-</span>uroot <span class="operator">-</span>p</span><br><span class="line"><span class="comment">-- 然后在命令行中输入密码后回车</span></span><br></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -u用户名 -p密码 [-h数据库服务器的IP地址 -P端口号]</span><br></pre></td></tr></table></figure>
+<p>-h参数不加，则默认连接的是本地127.0.0.1MySQL服务器<br>-P参数不加，默认连接端口号是3306</p>
+<p>退出：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<h1 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h1><ul>
+<li>关系型数据库<br>基于二维表存储数据的数据库就成为关系型数据库，不是基于二维表存储数据的数据库，就是非关系型数据库（比Redis，就属于非关系型数据库）。</li>
+</ul>
+<p>在Mysql数据库服务器当中存储数据，你需要：</p>
+<ol>
+<li>先去创建数据库（可以创建多个数据库，之间是相互独立的）</li>
+<li>在数据库下再去创建数据表（一个数据库下可以创建多张表）</li>
+<li>再将数据存放在数据表中（一张表可以存储多行数据）</li>
+</ol>
+<h1 id="SQL语句"><a href="#SQL语句" class="headerlink" title="SQL语句"></a>SQL语句</h1><h2 id="DDL"><a href="#DDL" class="headerlink" title="DDL"></a>DDL</h2><p>DDL语句是数据定义语句，查询、创建、使用、删除。<br>查询数据库</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> databases;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/file-20251125212046354.png"><br>查询当前数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select database()</span><br></pre></td></tr></table></figure>
+<p><img src="/img/file-20251125212104987.png"></p>
+<ul>
+<li>要操作某一个数据库，需要切换到对应数据库中</li>
+</ul>
+<p>创建数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create database name;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/file-20251125212214990.png"></p>
+<ul>
+<li>同一个数据库服务器中，数据库名称不可重复</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> database [ if <span class="keyword">not</span> <span class="keyword">exists</span> ] 数据库名  [<span class="keyword">default</span> charset utf8mb4];</span><br></pre></td></tr></table></figure>
+
+<p>使用数据库（切换数据库）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use name;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/file-20251125212347349.png"></p>
+<p>删除数据库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop database [if exists] name;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/file-20251125212436656.png"></p>
+<p>上述语法中的database可以替换为schema</p>
+<p>创建表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create table</span>  表名(</span><br><span class="line">        字段<span class="number">1</span>  字段<span class="number">1</span>类型 [约束]  [comment  字段<span class="number">1</span>注释 ],</span><br><span class="line">        字段<span class="number">2</span>  字段<span class="number">2</span>类型 [约束]  [comment  字段<span class="number">2</span>注释 ],</span><br><span class="line">        ......</span><br><span class="line">        字段n  字段n类型 [约束]  [comment  字段n注释 ] </span><br><span class="line">) [ comment  表注释 ] ;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/file-20251125221127747.png"></p>
+<p>如果我们直接手动插入数据，虽然我们一开始设置了id是唯一标识，但是并没有加约束，所以这个唯一标识不过是应该备注信息（给人看罢了）。</p>
+<p>约束<br><img src="/img/file-20251125221344990.png"><br>约束是作用于表中字段上的，可以在创建表&#x2F;修改表的时候添加约束。</p>
+<p>auto_increment关键字：<br>每次插入新的行记录时，数据库自动生成id字段下的值<br>具有auto_increment的数据列是一个正数序列开始增长</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create table</span> tb_user (</span><br><span class="line">    id <span class="type">int</span> <span class="keyword">primary key</span> auto_increment comment <span class="string">&#x27;ID,唯一标识&#x27;</span>, #主键自动增长</span><br><span class="line">    username <span class="type">varchar</span>(<span class="number">20</span>) <span class="keyword">not null</span> <span class="keyword">unique</span> comment <span class="string">&#x27;用户名&#x27;</span>,</span><br><span class="line">    name <span class="type">varchar</span>(<span class="number">10</span>) <span class="keyword">not null</span> comment <span class="string">&#x27;姓名&#x27;</span>,</span><br><span class="line">    age <span class="type">int</span> comment <span class="string">&#x27;年龄&#x27;</span>,</span><br><span class="line">    gender <span class="type">char</span>(<span class="number">1</span>) <span class="keyword">default</span> <span class="string">&#x27;男&#x27;</span> comment <span class="string">&#x27;性别&#x27;</span></span><br><span class="line">) comment <span class="string">&#x27;用户表&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>数据类型<br><img src="/img/file-20251125221944435.png"><br><img src="/img/file-20251125221958413.png"><img src="/img/file-20251125222009018.png"><br>查询数据库表：<br>查看指定的表结构</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 查询当前数据库的所有表</span></span><br><span class="line"><span class="keyword">show</span> tables;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查看指定的表结构</span></span><br><span class="line"><span class="keyword">desc</span> 表名 ;   <span class="comment">-- 可以查看指定表的字段、字段的类型、是否可以为NULL、是否存在默认值等信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 查询指定表的建表语句</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">create table</span> 表名 ;</span><br></pre></td></tr></table></figure>
+<p>修改数据库表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 添加字段</span></span><br><span class="line"><span class="keyword">alter table</span> 表名 </span><br><span class="line"><span class="keyword">add</span>  字段名  类型(长度)  [comment 注释]  [约束];</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 比如： 为tb_emp表添加字段qq，字段类型为 varchar(11)</span></span><br><span class="line"><span class="keyword">alter table</span> tb_emp <span class="keyword">add</span>  qq  <span class="type">varchar</span>(<span class="number">11</span>) comment <span class="string">&#x27;QQ号码&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>修改字段：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 修改字段类型</span></span><br><span class="line"><span class="keyword">alter table</span> 表名 modify  字段名  新数据类型(长度);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 比如： 修改qq字段的字段类型，将其长度由11修改为13</span></span><br><span class="line"><span class="keyword">alter table</span> tb_emp modify qq <span class="type">varchar</span>(<span class="number">13</span>) comment <span class="string">&#x27;QQ号码&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 修改字段名，字段类型</span></span><br><span class="line"><span class="keyword">alter table</span> 表名 change  旧字段名  新字段名  类型(长度)  [comment 注释]  [约束];</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 比如： 修改qq字段名为 qq_num，字段类型varchar(13)</span></span><br><span class="line"><span class="keyword">alter table</span> tb_emp change qq qq_num <span class="type">varchar</span>(<span class="number">13</span>) comment <span class="string">&#x27;QQ号码&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>删除字段</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 删除字段</span></span><br><span class="line"><span class="keyword">alter table</span> 表名 <span class="keyword">drop</span> 字段名;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 比如： 删除tb_emp表中的qq_num字段</span></span><br><span class="line"><span class="keyword">alter table</span> tb_emp <span class="keyword">drop</span> qq_num;</span><br></pre></td></tr></table></figure>
+
+<p>修改表名：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 修改表名</span></span><br><span class="line">rename <span class="keyword">table</span> 表名 <span class="keyword">to</span>  新表名;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 比如: 将当前的emp表的表名修改为tb_emp</span></span><br><span class="line">rename <span class="keyword">table</span> emp <span class="keyword">to</span> tb_emp;</span><br></pre></td></tr></table></figure>
+
+<p>删除表结构</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 删除表</span></span><br><span class="line"><span class="keyword">drop</span>  <span class="keyword">table</span> [ if <span class="keyword">exists</span> ]  表名;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 比如：如果tb_emp表存在，则删除tb_emp表</span></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> if <span class="keyword">exists</span> tb_emp;  <span class="comment">-- 在删除表时，表中的全部数据也会被删除。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="DML语句（数据操作语言）"><a href="#DML语句（数据操作语言）" class="headerlink" title="DML语句（数据操作语言）"></a>DML语句（数据操作语言）</h2><p>对数据库中表的数据进行<strong>增删改</strong><br>增加：</p>
+<ul>
+<li>向指定字段添加数据</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert into</span> 表名 (字段名<span class="number">1</span>, 字段名<span class="number">2</span>) <span class="keyword">values</span> (值<span class="number">1</span>, 值<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>向全部字段添加数据</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert into</span> 表名 <span class="keyword">values</span> (值<span class="number">1</span>, 值<span class="number">2</span>, ...);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>批量添加数据</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert into</span> 表名 (字段名<span class="number">1</span>, 字段名<span class="number">2</span>) <span class="keyword">values</span> (值<span class="number">1</span>, 值<span class="number">2</span>), (值<span class="number">1</span>, 值<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert into</span> 表名 (值<span class="number">1</span>,值<span class="number">2</span>,...),(值<span class="number">1</span>,值<span class="number">2</span>,...);</span><br></pre></td></tr></table></figure>
+
+<p>修改</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> 表名 <span class="keyword">set</span> 字段名<span class="number">1</span> <span class="operator">=</span> 值<span class="number">1</span> , 字段名<span class="number">2</span> <span class="operator">=</span> 值<span class="number">2</span> , .... [<span class="keyword">where</span> 条件] ;</span><br></pre></td></tr></table></figure>
+<p>删除</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> 表名  [<span class="keyword">where</span>  条件] ;</span><br></pre></td></tr></table></figure>
+
+<h2 id="DQL-语句（数据查询语句）"><a href="#DQL-语句（数据查询语句）" class="headerlink" title="DQL 语句（数据查询语句）"></a>DQL 语句（数据查询语句）</h2><p>用于查询数据库表中的记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span></span><br><span class="line">        字段列表</span><br><span class="line"><span class="keyword">FROM</span></span><br><span class="line">        表名列表</span><br><span class="line"><span class="keyword">WHERE</span></span><br><span class="line">        条件列表</span><br><span class="line"><span class="keyword">GROUP</span>  <span class="keyword">BY</span></span><br><span class="line">        分组字段列表</span><br><span class="line"><span class="keyword">HAVING</span></span><br><span class="line">        分组后条件列表</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span></span><br><span class="line">        排序字段列表</span><br><span class="line">LIMIT</span><br><span class="line">        分页参数</span><br></pre></td></tr></table></figure>
+
+<p>这里只说明一些之前在sql sever没有使用过的</p>
+<p>分页查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span>  字段列表  <span class="keyword">from</span>  表名  limit  起始索引, 查询记录数 ;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Java操作数据库"><a href="#Java操作数据库" class="headerlink" title="Java操作数据库"></a>Java操作数据库</h1><p>需要用到 <strong>JDBC</strong> ：使用Java语言操作关系型数据库的API<br>但是这个接口太底层了，所以我们一般会使用JDBC封装的高级框架，比如：Mybatis,MybatisPlus,Hibernate,SpringDataJPA</p>
+<h2 id="JDBC"><a href="#JDBC" class="headerlink" title="JDBC"></a>JDBC</h2><p><img src="/img/file-20251125224132066.png"><br><img src="/img/file-20251125224207801.png"></p>
+<h3 id="入门程序"><a href="#入门程序" class="headerlink" title="入门程序"></a>入门程序</h3><p>基于JDBC实现用户登陆功能：<br>本质就是基于JDBC程序，执行select语句，并将查询的结果输出到控制台。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user where username=&#x27;daqiao&#x27; and password=&#x27;123456&#x27;;</span><br></pre></td></tr></table></figure>
+
+<p>首先创建一个数据库Web，并创建user表。<br>用于我们登陆时查找用户名和密码是否匹配。</p>
+<p>然后在pom.xml中添加需要使用的依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- MySQL JDBC driver --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>8.0.30<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.junit.jupiter<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit-jupiter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.9.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>第一个是MySQL JDBC驱动依赖。</p>
+<ul>
+<li>用于连接和操作MySQL数据库<br>Java需要通过JDBC驱动作为桥梁，才可以与MySQL数据库通信</li>
+</ul>
+<p>第二个是用于测试。</p>
+<ul>
+<li>编写和运行单元测试</li>
+</ul>
+<p>我们要实现一个查询，需要有以下几个步骤：</p>
+<ul>
+<li>获取连接</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Connection conn=DriverManager.getConnection(<span class="string">&quot;jdbc:mysql://localhose:3306/web&quot;</span>,<span class="string">&quot;root&quot;</span>,<span class="string">&quot;yourKey&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>如果不希望将用户名和密码暴露，且这两个值应该是动态的（页面传递给服务端–用户输入–不同用户值不同）<br>我们可以基于JUnit中的参数化测试进行单元测试</p>
+<ul>
+<li><code>@ParameterizedTest</code>参数化测试</li>
+<li><code>@CsvSource</code>提供<strong>测试参数</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">JDBCTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 编写JDBC程序, 查询数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ParameterizedTest</span></span><br><span class="line">    <span class="meta">@CsvSource(&#123;&quot;daqiao,123456&quot;&#125;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testJdbc</span><span class="params">(String _username, String _password)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">// 获取连接</span></span><br><span class="line">        <span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> DriverManager.getConnection(<span class="string">&quot;jdbc:mysql://localhost:3306/web&quot;</span>, <span class="string">&quot;root&quot;</span>, <span class="string">&quot;1234&quot;</span>);</span><br><span class="line">        <span class="comment">// 创建预编译的PreparedStatement对象</span></span><br><span class="line">        <span class="type">PreparedStatement</span> <span class="variable">pstmt</span> <span class="operator">=</span> conn.prepareStatement(<span class="string">&quot;SELECT * FROM user WHERE username = ? AND password = ?&quot;</span>);</span><br><span class="line">        <span class="comment">// 设置参数</span></span><br><span class="line">        pstmt.setString(<span class="number">1</span>, _username); <span class="comment">// 第一个问号对应的参数</span></span><br><span class="line">        pstmt.setString(<span class="number">2</span>, _password); <span class="comment">// 第二个问号对应的参数</span></span><br><span class="line">        <span class="comment">// 执行查询</span></span><br><span class="line">        <span class="type">ResultSet</span> <span class="variable">rs</span> <span class="operator">=</span> pstmt.executeQuery();</span><br><span class="line">        <span class="comment">// 处理结果集</span></span><br><span class="line">        <span class="keyword">while</span> (rs.next()) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">id</span> <span class="operator">=</span> rs.getInt(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">uName</span> <span class="operator">=</span> rs.getString(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">pwd</span> <span class="operator">=</span> rs.getString(<span class="string">&quot;password&quot;</span>);</span><br><span class="line">            <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> rs.getString(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">            <span class="type">int</span> <span class="variable">age</span> <span class="operator">=</span> rs.getInt(<span class="string">&quot;age&quot;</span>);</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="string">&quot;ID: &quot;</span> + id + <span class="string">&quot;, Username: &quot;</span> + uName + <span class="string">&quot;, Password: &quot;</span> + pwd + <span class="string">&quot;, Name: &quot;</span> + name + <span class="string">&quot;, Age: &quot;</span> + age);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 关闭资源</span></span><br><span class="line">        rs.close();</span><br><span class="line">        pstmt.close();</span><br><span class="line">        conn.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建预编译的PreparedStatement对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PreparedStatement pstmt=conn.prepareStatement(<span class="string">&quot;select * from user where username=? and password=?&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>在编写sql语句有两种方式：</p>
+<ol>
+<li><p>静态sql(参数硬编码–写死了）</p>
+</li>
+<li><p>预编译sql（参数动态传递）<br>参数使用 <code>?</code> 进行占位</p>
+</li>
+</ol>
+<p>预编译sql好处：<br>防止sql注入，性能更高</p>
+<ul>
+<li>设置参数：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pstmt.setString(<span class="number">1</span>,<span class="string">&quot;daqiao&quot;</span>);</span><br><span class="line">pstmt.setString(<span class="number">2</span>,<span class="string">&quot;123456&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>设置好参数之后，我们的查询语句就完整了</p>
+<ul>
+<li>执行查询</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ResultSet rs=pstmt.executeQuery();</span><br></pre></td></tr></table></figure>
+<p>这里的ResultSet封装了DQL查询语句<strong>查询的结果</strong></p>
+<ul>
+<li>处理结果集（我们获取到的是一个元组？</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(rs.next())&#123;</span><br><span class="line">	<span class="type">int</span> id=rs.getInt(<span class="string">&quot;id&quot;</span>);</span><br><span class="line">		<span class="type">String</span> <span class="variable">uName</span> <span class="operator">=</span> rs.getString(<span class="string">&quot;username&quot;</span>); </span><br><span class="line">		<span class="type">String</span> <span class="variable">pwd</span> <span class="operator">=</span> rs.getString(<span class="string">&quot;password&quot;</span>);</span><br><span class="line">		<span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> rs.getString(<span class="string">&quot;name&quot;</span>); </span><br><span class="line">		<span class="type">int</span> <span class="variable">age</span> <span class="operator">=</span> rs.getInt(<span class="string">&quot;age&quot;</span>);</span><br><span class="line">		System._out_.println(<span class="string">&quot;ID: &quot;</span> + id + <span class="string">&quot;, Username: &quot;</span> + uName + <span class="string">&quot;, Password: &quot;</span> + pwd + <span class="string">&quot;, Name: &quot;</span> + name + <span class="string">&quot;, Age: &quot;</span> + age);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 对查询结果集的操作：<br> <code>next()</code> 将<strong>光标</strong>从当前位置向前移动一行，并判断当前行是否为有效行，返回值为boolean.<br> <code>getXxx()</code>获取数据，可根据罗列的编号获取，也可以格局列名获取。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">rs.first();        <span class="comment">// 移动到第一行</span></span><br><span class="line">rs.last();         <span class="comment">// 移动到最后一行</span></span><br><span class="line">rs.beforeFirst();  <span class="comment">// 移动到第一行之前</span></span><br><span class="line">rs.afterLast();    <span class="comment">// 移动到最后一行之后</span></span><br><span class="line">rs.absolute(<span class="number">5</span>);    <span class="comment">// 移动到第5行</span></span><br><span class="line">rs.relative(-<span class="number">2</span>);   <span class="comment">// 从当前位置向前移动2行</span></span><br><span class="line">rs.previous();     <span class="comment">// 移动到上一行</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>后续处理–关闭资源</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rs.close();</span><br><span class="line">pstmt.close();</span><br><span class="line">conn.close();</span><br></pre></td></tr></table></figure>
+
+<h4 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h4><p>通过<strong>控制输入</strong>来修改事先定义好的SQL语句，以达到执行代码对服务器进行攻击的方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">loginVulnerable</span><span class="params">(String username, String password)</span> <span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">    <span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> DriverManager.getConnection(<span class="string">&quot;jdbc:mysql://localhost:3306/web&quot;</span>, <span class="string">&quot;root&quot;</span>, <span class="string">&quot;1234&quot;</span>);</span><br><span class="line">    <span class="type">Statement</span> <span class="variable">stmt</span> <span class="operator">=</span> conn.createStatement();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 🚨 危险：直接拼接用户输入到SQL中</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">sql</span> <span class="operator">=</span> <span class="string">&quot;SELECT * FROM user WHERE username = &#x27;&quot;</span> + username + <span class="string">&quot;&#x27; AND password = &#x27;&quot;</span> + password + <span class="string">&quot;&#x27;&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    System.out.println(<span class="string">&quot;🚨 执行的SQL语句: &quot;</span> + sql);</span><br><span class="line">    </span><br><span class="line">    <span class="type">ResultSet</span> <span class="variable">rs</span> <span class="operator">=</span> stmt.executeQuery(sql);</span><br><span class="line">    <span class="type">boolean</span> <span class="variable">loginSuccess</span> <span class="operator">=</span> rs.next();</span><br><span class="line">    </span><br><span class="line">    rs.close();</span><br><span class="line">    stmt.close();</span><br><span class="line">    conn.close();</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> loginSuccess;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这里如果我们用的是硬编码，则会出现：<br>如果有人通过控制表单输入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user: ababbabab</span><br><span class="line">key: &#x27;or&#x27;1&#x27;=&#x27;1</span><br></pre></td></tr></table></figure>
+<p>则会在我们的拼接作用下变为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">user</span> <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;ababbabab&#x27;</span> <span class="keyword">AND</span> password <span class="operator">=</span> <span class="string">&#x27;&#x27;</span><span class="keyword">or</span><span class="string">&#x27;1&#x27;</span><span class="operator">=</span><span class="string">&#x27;1&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>那结果就会返回1了！！！<br>导致登陆成功。</p>
+<p>但是如果是预编译，则不会出现这种状况</p>
+<ul>
+<li>会把整个<code>&#39; or &#39;1&#39;=&#39;1</code>作为一个完整的参数，赋值给第2个问号（<code>&#39; or &#39;1&#39;=&#39;1</code>进行了转义，只当做字符串使用）</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> <span class="keyword">user</span> <span class="keyword">WHERE</span> username <span class="operator">=</span> <span class="string">&#x27;hacker&#x27;</span> <span class="keyword">AND</span> password <span class="operator">=</span> <span class="string">&#x27;\&#x27;</span> <span class="keyword">or</span> \<span class="string">&#x27;1\&#x27;</span> <span class="operator">=</span> \<span class="string">&#x27;1&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>尝试update</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ParameterizedTest</span>  </span><br><span class="line"><span class="meta">@CsvSource(&#123;&quot;1,123456,25&quot;&#125;)</span>  </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testUpdate</span><span class="params">(<span class="type">int</span> newId,String newPassword,<span class="type">int</span> newAge)</span> <span class="keyword">throws</span> Exception &#123;  </span><br><span class="line">    <span class="comment">// 获取连接  </span></span><br><span class="line">    <span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> DriverManager.getConnection(<span class="string">&quot;jdbc:mysql://localhost:3306/web&quot;</span>, <span class="string">&quot;root&quot;</span>, <span class="string">&quot;123456&quot;</span>);  </span><br><span class="line">    <span class="comment">// 创建预编译的PreparedStatement对象  </span></span><br><span class="line">    <span class="type">PreparedStatement</span> <span class="variable">pstmt</span> <span class="operator">=</span> conn.prepareStatement(<span class="string">&quot;update user set password=?,age=? where id=?&quot;</span>);  </span><br><span class="line">    <span class="comment">// 设置参数  </span></span><br><span class="line">    pstmt.setString(<span class="number">1</span>, newPassword); <span class="comment">// 第一个问号对应的参数  </span></span><br><span class="line">    pstmt.setInt(<span class="number">2</span>, newAge); <span class="comment">// 第二个问号对应的参数  </span></span><br><span class="line">    pstmt.setInt(<span class="number">3</span>,newId);<span class="comment">//第三个  </span></span><br><span class="line">    <span class="comment">// 执行更新  </span></span><br><span class="line">    <span class="type">int</span> <span class="variable">rowsUpdated</span> <span class="operator">=</span> pstmt.executeUpdate();  </span><br><span class="line">    <span class="comment">// 输出结果  </span></span><br><span class="line">    System.out.println(rowsUpdated+<span class="string">&quot; rows(s) updated.&quot;</span>);  </span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 关闭资源  </span></span><br><span class="line">    pstmt.close();  </span><br><span class="line">    conn.close();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Mybatis"><a href="#Mybatis" class="headerlink" title="Mybatis"></a>Mybatis</h1><p>持久层框架，用于简化JDBC的开发</p>
+<ul>
+<li>持久层：数据访问层（dao），用于操作数据库</li>
+<li>框架：是一个半成品软件，是一套可重用的、通用的、软件基础代码模型</li>
+</ul>
+<p><img src="/img/file-20251126112751881.png"><br>大大简化了操作</p>
+<h2 id="简单尝试"><a href="#简单尝试" class="headerlink" title="简单尝试"></a>简单尝试</h2><p>在application.properties里添加：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#数据库访问的url地址</span></span><br><span class="line"><span class="attr">spring.datasource.url</span>=<span class="string">jdbc:mysql://localhost:3306/web</span></span><br><span class="line"><span class="comment">#数据库驱动类类名</span></span><br><span class="line"><span class="attr">spring.datasource.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"><span class="comment">#访问数据库-用户名</span></span><br><span class="line"><span class="attr">spring.datasource.username</span>=<span class="string">root</span></span><br><span class="line"><span class="comment">#访问数据库-密码</span></span><br><span class="line"><span class="attr">spring.datasource.password</span>=<span class="string">123456</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="编写一个mybatis程序："><a href="#编写一个mybatis程序：" class="headerlink" title="编写一个mybatis程序："></a>编写一个mybatis程序：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.itheima.demo2.mapper;  </span><br><span class="line"><span class="keyword">import</span> com.itheima.demo2.pojo.User;  </span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.annotations.Mapper;  </span><br><span class="line"><span class="keyword">import</span> org.apache.ibatis.annotations.Select;  </span><br><span class="line"><span class="keyword">import</span> java.util.List;  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@Mapper</span> <span class="comment">// 表示这是mybatis中的mapper接口  </span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">UserMapper</span> &#123;  </span><br><span class="line">    <span class="comment">// 查询全部  </span></span><br><span class="line">    <span class="meta">@Select(&quot;select * from User&quot;)</span>  </span><br><span class="line">    <span class="keyword">public</span> List&lt;User&gt; <span class="title function_">findAll</span><span class="params">()</span>;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里@Mapper表示这是mybatis中的mapper接口，程序运行时，框架会自动生成接口的<strong>实体类对象</strong>，并交给Spring的IOC容器管理</p>
+<p>@Select用于表示要用select查询</p>
+<h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.itheima.demo2;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> com.itheima.demo2.mapper.UserMapper;  </span><br><span class="line"><span class="keyword">import</span> com.itheima.demo2.pojo.User;  </span><br><span class="line"><span class="keyword">import</span> org.junit.jupiter.api.Test;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.boot.test.context.SpringBootTest;  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">import</span> java.util.List;  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@SpringBootTest</span>  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Demo2ApplicationTests</span> &#123;  </span><br><span class="line">  </span><br><span class="line">    <span class="meta">@Test</span>  </span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">contextLoads</span><span class="params">()</span> &#123;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="meta">@Autowired</span> <span class="comment">// 自动注入  </span></span><br><span class="line">    <span class="keyword">private</span> UserMapper userMapper;  </span><br><span class="line">  </span><br><span class="line">    <span class="meta">@Test</span>  </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">testFindAll</span><span class="params">()</span>&#123;  </span><br><span class="line">        List&lt;User&gt; userList=userMapper.findAll();  <span class="comment">//调用mapper接口方法</span></span><br><span class="line">        <span class="keyword">for</span>(User user:userList)&#123;  </span><br><span class="line">            System.out.println(user);  <span class="comment">//遍历并打印结果</span></span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;  </span><br><span class="line">  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/img/file-20251126143749695.png"><br>可以正确查找</p>
+<h3 id="配置IDEA关联MySQL-数据库"><a href="#配置IDEA关联MySQL-数据库" class="headerlink" title="配置IDEA关联MySQL 数据库"></a>配置IDEA关联MySQL 数据库</h3><p><img src="/img/file-20251126144033529.png"><br>这里发现无法解析表user，因为我们还没有建立连接<br><img src="/img/file-20251126144520311.png"><br><img src="/img/file-20251126144625628.png"><br>加入mybatis配置，可以看到日志</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#mybatis的配置</span></span><br><span class="line"><span class="attr">mybatis.configuration.log-impl</span>=<span class="string">org.apache.ibatis.logging.stdout.StdOutImpl</span></span><br></pre></td></tr></table></figure>
+<p><img src="/img/file-20251126144902246.png"></p>
+<h3 id="mybatis的好处"><a href="#mybatis的好处" class="headerlink" title="mybatis的好处"></a>mybatis的好处</h3><p>我们前面在使用jdbc时，总是要将数据库连接参数硬编码在java代码中。<br>但是mybatis将数据库连接四要素放在了appllication.properties里。<br>查询结果的解析和封装我们都无需关注，mybatis自动完成映射封装<br>在mybatis中使用了数据库连接池技术，从而避免了频繁的创建链接、销毁链接带来的资源浪费。</p>
+<h3 id="数据库连接池"><a href="#数据库连接池" class="headerlink" title="数据库连接池"></a>数据库连接池</h3><ul>
+<li><p>没有数据库连接池的情况：<br>每次客户端执行sql语句，都要创建一个新的连接对象，执行完再关闭连接对象进而释放资源。</p>
+</li>
+<li><p>有数据库连接池的情况：<br>数据库连接池是个<strong>容器</strong>，负责分配、管理数据库连接(Connection)</p>
+</li>
+</ul>
+<p>程序启动后，会在数据库连接池中创建一定数量的connection对象。</p>
+<p>允许应用程序<strong>重复使用一个现有的数据库连接</strong>，而不是再重新建立一个（借过来用然后再归还）</p>
+<p>释放空闲时间超过<strong>最大空闲时间</strong>的连接，来避免因为没有释放连接而引起的数据库连接遗漏</p>
+<p>sun官方提供了数据库连接池标准</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public Connection getConnection() throws SQLException;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第三方组织必须按照DataSource接口实现</li>
+</ul>
+<h3 id="增删查改"><a href="#增删查改" class="headerlink" title="增删查改"></a>增删查改</h3><p>在Mybatis中，我们可以通过参数占位符号 <code>#&#123;...&#125;</code> 来占位，在调用<code>deleteById</code>方法时，传递的参数值，最终会替换占位符。</p>
+<p>例子:<br><img src="/img/file-20251126153814121.png"><br>比如这里，会将占位符替换为？，生成一个预编译的sql语句<br><img src="/img/file-20251126153954163.png"></p>
+<p>insert：<br><img src="/img/file-20251126154336675.png"></p>
+<p>Mybatis的开发有两种，一种是注解一种是<strong>xml</strong></p>
+<h1 id="Spring配置"><a href="#Spring配置" class="headerlink" title="Spring配置"></a>Spring配置</h1><p>使用yml格式来配置<br><img src="/img/file-20251126163051775.png"></p>
+<h2 id="yml语法"><a href="#yml语法" class="headerlink" title="yml语法"></a>yml语法</h2><ul>
+<li>大小写敏感</li>
+<li>数值前边必须有空格，作为分隔符</li>
+<li>使用缩进表示层级关系，缩进不可以使用tab键！只可以用空格（idea里会将tab自动转换为空格）</li>
+<li>缩进的空格数目不重要，只要相同层级的元素左侧对其即可。</li>
+<li><code>#</code> 表示注释，从这个字符一直到行尾，都会被解析器忽略</li>
+</ul>
+<h3 id="yml的数据格式"><a href="#yml的数据格式" class="headerlink" title="yml的数据格式"></a>yml的数据格式</h3><ul>
+<li>对象&#x2F;map集合</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">user:</span><br><span class="line">	name: zhangsan</span><br><span class="line">	age: 18</span><br><span class="line">	password: 123456</span><br></pre></td></tr></table></figure>
+<ul>
+<li>数组&#x2F;List&#x2F;Set结合</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hobby:</span><br><span class="line">	- java</span><br><span class="line">	- game</span><br><span class="line">	- sport</span><br></pre></td></tr></table></figure>
+
+<p>在yml格式的配置文件中，如果配置项的值是以 0 开头的，值需要使用 ‘’ 引起来，因为以0开头在yml中表示8进制的数据。</p>
+
+    </div>
+
+    
+      <aside class="toc" id="toc" aria-label="目录">
+        <div class="toc-title">目录</div>
+        <nav class="toc-list" id="tocList"></nav>
+      </aside>
+    
+  </div>
+
+  
+    <div class="post-footer-tags">
+      <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="tag" href="/tags/%E5%90%8E%E7%AB%AF/">后端</a><a class="tag" href="/tags/javaWeb/">javaWeb</a>
+    </div>
+  
+
+  
+    <nav class="post-nav">
+      
+        <a class="post-nav-item prev" href="/2025/11/26/JavaWeb-practical/">
+          <span class="post-nav-label">上一篇</span>
+          <span class="post-nav-title">JavaWeb_practical</span>
+        </a>
+      
+      
+        <a class="post-nav-item next" href="/2025/11/18/JavaWeb-SpringBootWeb/">
+          <span class="post-nav-label">下一篇</span>
+          <span class="post-nav-title">JavaWeb_SpringBootWeb</span>
+        </a>
+      
+    </nav>
+  
+</article>
+
+  </main>
+  <footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-text">
+      
+      
+      
+      
+      © 2025 - 2026 linqt · Powered by Hexo · Theme Ink
+    </p>
+  </div>
+</footer>
+
+  <div class="search-modal" id="searchModal" data-search-path="/search.json" hidden>
+  <div class="search-mask" data-close></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="搜索文章">
+    <div class="search-field">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+      <input type="text" id="searchInput" placeholder="搜索标题、标签、正文…" autocomplete="off" spellcheck="false">
+      <kbd>ESC</kbd>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+  <button class="back-to-top" id="backToTop" aria-label="回到顶部" title="回到顶部">↑</button>
+  <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,318 +1,92 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
+<html lang="zh-CN" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
-  
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="linqt">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="比赛结果：    NS-2025-00 须弥识花大赛 解题报告（Writeup）一、赛题理解与任务目标本次比赛模拟须弥地区的生态危机，任务目标是构建一个具备泛化能力的花卉识别 AI，能够在复杂环境下准确分类多种花卉种类。 从技术角度看，本题实质为一个 多类图像分类任务，即输入为一张图像，输出为其对应的花卉类别标签。该任务可归结为监督学习问题，挑战点在于：  样本环境多变（雨天、晴天、被踩踏等） 类">
-<meta property="og:type" content="article">
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="generator" content="Hexo">
+<title>Ai新手赛部分题解 · linqt&#39;s blog</title>
+<meta name="description" content="">
+<meta name="author" content="linqt">
+<link rel="icon" href="/img/cute.jpg">
+<link rel="alternate" href="/atom.xml" title="linqt&#39;s blog" type="application/atom+xml">
 <meta property="og:title" content="Ai新手赛部分题解">
-<meta property="og:url" content="https://pqcu77.github.io/2025/04/29/ai%E6%96%B0%E6%89%8B%E8%B5%9B%E9%83%A8%E5%88%86%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pqcu77.github.io/2025/04/29/ai%E6%96%B0%E6%89%8B%E8%B5%9B%E9%83%A8%E5%88%86%E9%A2%98%E8%A7%A3/">
 <meta property="og:site_name" content="linqt&#39;s blog">
-<meta property="og:description" content="比赛结果：    NS-2025-00 须弥识花大赛 解题报告（Writeup）一、赛题理解与任务目标本次比赛模拟须弥地区的生态危机，任务目标是构建一个具备泛化能力的花卉识别 AI，能够在复杂环境下准确分类多种花卉种类。 从技术角度看，本题实质为一个 多类图像分类任务，即输入为一张图像，输出为其对应的花卉类别标签。该任务可归结为监督学习问题，挑战点在于：  样本环境多变（雨天、晴天、被踩踏等） 类">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250429113148114.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/d7c6ae3d320a570860ea2a249e091e3.jpg">
-<meta property="og:image" content="https://pqcu77.github.io/img/f5c32e6412ef17296b10162cf510e4d.jpg">
-<meta property="og:image" content="https://pqcu77.github.io/img/af1752655222fcb5c747d3799a11201.jpg">
-<meta property="article:published_time" content="2025-04-29T03:25:57.000Z">
-<meta property="article:modified_time" content="2025-04-29T03:32:51.352Z">
-<meta property="article:author" content="linqt">
-<meta property="article:tag" content="AI">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250429113148114.png">
-  
-  
-    <meta name="referrer" content="no-referrer-when-downgrade">
-  
-  
-  <title>Ai新手赛部分题解 - linqt&#39;s blog</title>
+<meta name="theme-color" content="#0d1117">
+<link rel="stylesheet" href="/css/main.css">
+<style>
+  :root[data-theme="dark"] { --accent: #7aa2f7; }
+  :root[data-theme="light"] { --accent: #2f6fdb; }
+</style>
+<script>
+  // 避免刷新时主题闪烁
+  (function () {
+    try {
+      var saved = localStorage.getItem('ink-theme');
+      var d = 'dark';
+      var t = (saved === 'light' || saved === 'dark') ? saved
+        : (d === 'auto' ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : d);
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-  
-<link rel="stylesheet" href="/custom/custom.css">
-<link rel="stylesheet" href="/custom/welcome.css">
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-
-  
-<meta name="generator" content="Hexo 7.3.0"></head>
-
-
-<body>
-  
-
-  <header>
-    
-
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>PQCU&#39; blog</strong>
+</head>
+<body class=" page-post    ">
+  <div class="progress-bar" id="progressBar"></div>
+  <header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a class="site-brand" href="/">
+      PQCU&#39; blog
     </a>
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/" target="_self">
-                <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/" target="_self">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/" target="_self">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/" target="_self">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="Ai新手赛部分题解"></span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-04-29 11:25" pubdate>
-          2025年4月29日 上午
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          <!-- compatible with older versions-->
-          7.3k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          <!-- compatible with older versions-->
-          61 分钟
-        
-      </span>
-    
-
-    
-    
+    <nav class="site-nav">
       
-        <span id="busuanzi_container_page_pv" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="busuanzi_value_page_pv"></span>次
-        </span>
-        
+        <a class="nav-link" href="/archives/">文章</a>
+      
+        <a class="nav-link" href="/categories/">分类</a>
+      
+        <a class="nav-link" href="/tags/">标签</a>
+      
+        <a class="nav-link" href="/about/">关于</a>
+      
 
       
-    
+        <button class="icon-btn" id="searchBtn" aria-label="搜索" title="搜索 (Ctrl+K)">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+        </button>
+      
+
+      
+        <button class="icon-btn" id="themeToggle" aria-label="切换主题" title="切换明暗">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        </button>
+      
+    </nav>
   </div>
+</header>
 
-
-        
-      </div>
-
+  <main class="container main">
+    
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">Ai新手赛部分题解</h1>
+    <div class="post-meta">
+      <time datetime="2025-04-29T03:25:57.000Z">2025-04-29</time>
+      <span class="dot">·</span><span>22516 字</span>
+      <span class="dot">·</span><span>64 分钟</span>
       
     </div>
-  </div>
-</div>
-
-</div>
-
   </header>
 
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <h1 id="seo-header">Ai新手赛部分题解</h1>
-            
-              <p id="updated-time" class="note note-info" style="display: none">
-                
-                  
-                    本文最后更新于 2025-04-29T11:32:51+08:00
-                  
-                  
-
-                
-              </p>
-            
-            
-              <div class="markdown-body">
-                
-                <p>比赛结果：<br><img src="/img/file-20250429113148114.png" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/img/d7c6ae3d320a570860ea2a249e091e3.jpg" srcset="/img/loading.gif" lazyload alt="排行榜"></p>
-<p><img src="/img/f5c32e6412ef17296b10162cf510e4d.jpg" srcset="/img/loading.gif" lazyload alt="最后得分"></p>
-<p><img src="/img/af1752655222fcb5c747d3799a11201.jpg" srcset="/img/loading.gif" lazyload alt="奖品+奖状"></p>
+  <div class="post-layout">
+    <div class="post-body" id="postBody">
+      <p>比赛结果：<br><img src="/img/file-20250429113148114.png"></p>
+<p><img src="/img/d7c6ae3d320a570860ea2a249e091e3.jpg" alt="排行榜"></p>
+<p><img src="/img/f5c32e6412ef17296b10162cf510e4d.jpg" alt="最后得分"></p>
+<p><img src="/img/af1752655222fcb5c747d3799a11201.jpg" alt="奖品+奖状"></p>
 <h1 id="NS-2025-00-须弥识花大赛-解题报告（Writeup）"><a href="#NS-2025-00-须弥识花大赛-解题报告（Writeup）" class="headerlink" title="NS-2025-00 须弥识花大赛 解题报告（Writeup）"></a>NS-2025-00 须弥识花大赛 解题报告（Writeup）</h1><h2 id="一、赛题理解与任务目标"><a href="#一、赛题理解与任务目标" class="headerlink" title="一、赛题理解与任务目标"></a>一、赛题理解与任务目标</h2><p>本次比赛模拟须弥地区的生态危机，任务目标是构建一个具备泛化能力的花卉识别 AI，能够在复杂环境下准确分类多种花卉种类。</p>
 <p>从技术角度看，本题实质为一个 <strong>多类图像分类任务</strong>，即输入为一张图像，输出为其对应的花卉类别标签。该任务可归结为监督学习问题，挑战点在于：</p>
 <ul>
@@ -391,7 +165,7 @@
 </ol>
 <p>对上述增强图像进行推理后平均预测结果，提高模型的鲁棒性和准确性。</p>
 <h3 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h3><p>最终输出为 <code>results.csv</code>，包含：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs csv">file_name,label<br>123.jpg,7<br>...<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file_name,label</span><br><span class="line">123.jpg,7</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <p>确保与比赛提交格式一致。</p>
 <h2 id="五、性能评估与可视化"><a href="#五、性能评估与可视化" class="headerlink" title="五、性能评估与可视化"></a>五、性能评估与可视化</h2><p>训练阶段使用验证集进行模型性能评估，并生成：</p>
@@ -416,39 +190,39 @@
 <li>合理的训练控制策略（如早停和混合精度）提升了训练效率和最终性能。</li>
 </ul>
 <p>最终模型在验证集上表现稳定，预测准确率高，泛化能力强，能够较好适应测试集中复杂多变的花卉图像。效果良好，但达不到优秀，得分360。</p>
-<h2 id="附录一：关键代码模块"><a href="#附录一：关键代码模块" class="headerlink" title="附录一：关键代码模块"></a>附录一：关键代码模块</h2><h3 id="模型构建（多模型集成）"><a href="#模型构建（多模型集成）" class="headerlink" title="模型构建（多模型集成）"></a>模型构建（多模型集成）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ModelEnsemble</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, num_classes, device, num_models=<span class="hljs-number">3</span>, model_types=<span class="hljs-literal">None</span>, use_pretrained=<span class="hljs-literal">True</span></span>):<br>        <span class="hljs-built_in">super</span>(ModelEnsemble, <span class="hljs-variable language_">self</span>).__init__()<br>        <span class="hljs-variable language_">self</span>.models = []<br>        <span class="hljs-variable language_">self</span>.device = device<br>        <span class="hljs-variable language_">self</span>.num_models = num_models<br>        ...<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_models):<br>            model_type = model_types[i % <span class="hljs-built_in">len</span>(model_types)]<br>            <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;resnet&#x27;</span> <span class="hljs-keyword">in</span> model_type:<br>                model = torchvision.models.resnet50(weights=pretrained_weights)<br>                num_ftrs = model.fc.in_features<br>                model.fc = nn.Sequential(nn.Dropout(<span class="hljs-number">0.5</span>), nn.Linear(num_ftrs, num_classes))<br>            <span class="hljs-keyword">elif</span> <span class="hljs-string">&#x27;efficientnet&#x27;</span> <span class="hljs-keyword">in</span> model_type:<br>                model = torchvision.models.efficientnet_b0(weights=pretrained_weights)<br>                num_ftrs = model.classifier[<span class="hljs-number">1</span>].in_features<br>                model.classifier[<span class="hljs-number">1</span>] = nn.Sequential(nn.Dropout(<span class="hljs-number">0.3</span>), nn.Linear(num_ftrs, num_classes))<br>            <span class="hljs-keyword">elif</span> <span class="hljs-string">&#x27;mobilenet&#x27;</span> <span class="hljs-keyword">in</span> model_type:<br>                model = torchvision.models.mobilenet_v3_large(weights=pretrained_weights)<br>                num_ftrs = model.classifier[<span class="hljs-number">3</span>].in_features<br>                model.classifier[<span class="hljs-number">3</span>] = nn.Sequential(nn.Dropout(<span class="hljs-number">0.3</span>), nn.Linear(num_ftrs, num_classes))<br>            <span class="hljs-variable language_">self</span>.models.append(model.to(device))<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, x</span>):<br>        outputs = [model(x) <span class="hljs-keyword">for</span> model <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.models]<br>        <span class="hljs-keyword">return</span> torch.mean(torch.stack(outputs), dim=<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+<h2 id="附录一：关键代码模块"><a href="#附录一：关键代码模块" class="headerlink" title="附录一：关键代码模块"></a>附录一：关键代码模块</h2><h3 id="模型构建（多模型集成）"><a href="#模型构建（多模型集成）" class="headerlink" title="模型构建（多模型集成）"></a>模型构建（多模型集成）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ModelEnsemble</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, num_classes, device, num_models=<span class="number">3</span>, model_types=<span class="literal">None</span>, use_pretrained=<span class="literal">True</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(ModelEnsemble, <span class="variable language_">self</span>).__init__()</span><br><span class="line">        <span class="variable language_">self</span>.models = []</span><br><span class="line">        <span class="variable language_">self</span>.device = device</span><br><span class="line">        <span class="variable language_">self</span>.num_models = num_models</span><br><span class="line">        ...</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_models):</span><br><span class="line">            model_type = model_types[i % <span class="built_in">len</span>(model_types)]</span><br><span class="line">            <span class="keyword">if</span> <span class="string">&#x27;resnet&#x27;</span> <span class="keyword">in</span> model_type:</span><br><span class="line">                model = torchvision.models.resnet50(weights=pretrained_weights)</span><br><span class="line">                num_ftrs = model.fc.in_features</span><br><span class="line">                model.fc = nn.Sequential(nn.Dropout(<span class="number">0.5</span>), nn.Linear(num_ftrs, num_classes))</span><br><span class="line">            <span class="keyword">elif</span> <span class="string">&#x27;efficientnet&#x27;</span> <span class="keyword">in</span> model_type:</span><br><span class="line">                model = torchvision.models.efficientnet_b0(weights=pretrained_weights)</span><br><span class="line">                num_ftrs = model.classifier[<span class="number">1</span>].in_features</span><br><span class="line">                model.classifier[<span class="number">1</span>] = nn.Sequential(nn.Dropout(<span class="number">0.3</span>), nn.Linear(num_ftrs, num_classes))</span><br><span class="line">            <span class="keyword">elif</span> <span class="string">&#x27;mobilenet&#x27;</span> <span class="keyword">in</span> model_type:</span><br><span class="line">                model = torchvision.models.mobilenet_v3_large(weights=pretrained_weights)</span><br><span class="line">                num_ftrs = model.classifier[<span class="number">3</span>].in_features</span><br><span class="line">                model.classifier[<span class="number">3</span>] = nn.Sequential(nn.Dropout(<span class="number">0.3</span>), nn.Linear(num_ftrs, num_classes))</span><br><span class="line">            <span class="variable language_">self</span>.models.append(model.to(device))</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">        outputs = [model(x) <span class="keyword">for</span> model <span class="keyword">in</span> <span class="variable language_">self</span>.models]</span><br><span class="line">        <span class="keyword">return</span> torch.mean(torch.stack(outputs), dim=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h3 id="标签混合增强（MixUp-CutMix）"><a href="#标签混合增强（MixUp-CutMix）" class="headerlink" title="标签混合增强（MixUp &amp; CutMix）"></a>标签混合增强（MixUp &amp; CutMix）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MixUp</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, alpha=<span class="hljs-number">0.2</span></span>): <span class="hljs-variable language_">self</span>.alpha = alpha<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__call__</span>(<span class="hljs-params">self, batch, targets</span>):<br>        lam = np.random.beta(<span class="hljs-variable language_">self</span>.alpha, <span class="hljs-variable language_">self</span>.alpha)<br>        index = torch.randperm(batch.size(<span class="hljs-number">0</span>)).to(batch.device)<br>        mixed_batch = lam * batch + (<span class="hljs-number">1</span> - lam) * batch[index]<br>        <span class="hljs-keyword">return</span> mixed_batch, targets, targets[index], lam<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">CutMix</span>:<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, alpha=<span class="hljs-number">1.0</span></span>): <span class="hljs-variable language_">self</span>.alpha = alpha<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__call__</span>(<span class="hljs-params">self, batch, targets</span>):<br>        lam = np.random.beta(<span class="hljs-variable language_">self</span>.alpha, <span class="hljs-variable language_">self</span>.alpha)<br>        index = torch.randperm(batch.size(<span class="hljs-number">0</span>)).to(batch.device)<br>        bbx1, bby1, bbx2, bby2 = <span class="hljs-variable language_">self</span>._rand_bbox(batch.size(), lam)<br>        batch[:, :, bbx1:bbx2, bby1:bby2] = batch[index, :, bbx1:bbx2, bby1:bby2]<br>        lam = <span class="hljs-number">1</span> - ((bbx2 - bbx1) * (bby2 - bby1)) / (batch.size(-<span class="hljs-number">1</span>) * batch.size(-<span class="hljs-number">2</span>))<br>        <span class="hljs-keyword">return</span> batch, targets, targets[index], lam<br></code></pre></td></tr></table></figure>
+<h3 id="标签混合增强（MixUp-CutMix）"><a href="#标签混合增强（MixUp-CutMix）" class="headerlink" title="标签混合增强（MixUp &amp; CutMix）"></a>标签混合增强（MixUp &amp; CutMix）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MixUp</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, alpha=<span class="number">0.2</span></span>): <span class="variable language_">self</span>.alpha = alpha</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, batch, targets</span>):</span><br><span class="line">        lam = np.random.beta(<span class="variable language_">self</span>.alpha, <span class="variable language_">self</span>.alpha)</span><br><span class="line">        index = torch.randperm(batch.size(<span class="number">0</span>)).to(batch.device)</span><br><span class="line">        mixed_batch = lam * batch + (<span class="number">1</span> - lam) * batch[index]</span><br><span class="line">        <span class="keyword">return</span> mixed_batch, targets, targets[index], lam</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CutMix</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, alpha=<span class="number">1.0</span></span>): <span class="variable language_">self</span>.alpha = alpha</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__call__</span>(<span class="params">self, batch, targets</span>):</span><br><span class="line">        lam = np.random.beta(<span class="variable language_">self</span>.alpha, <span class="variable language_">self</span>.alpha)</span><br><span class="line">        index = torch.randperm(batch.size(<span class="number">0</span>)).to(batch.device)</span><br><span class="line">        bbx1, bby1, bbx2, bby2 = <span class="variable language_">self</span>._rand_bbox(batch.size(), lam)</span><br><span class="line">        batch[:, :, bbx1:bbx2, bby1:bby2] = batch[index, :, bbx1:bbx2, bby1:bby2]</span><br><span class="line">        lam = <span class="number">1</span> - ((bbx2 - bbx1) * (bby2 - bby1)) / (batch.size(-<span class="number">1</span>) * batch.size(-<span class="number">2</span>))</span><br><span class="line">        <span class="keyword">return</span> batch, targets, targets[index], lam</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h3 id="标签平滑损失函数"><a href="#标签平滑损失函数" class="headerlink" title="标签平滑损失函数"></a>标签平滑损失函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LabelSmoothingLoss</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, classes, smoothing=<span class="hljs-number">0.1</span></span>):<br>        <span class="hljs-built_in">super</span>(LabelSmoothingLoss, <span class="hljs-variable language_">self</span>).__init__()<br>        <span class="hljs-variable language_">self</span>.confidence = <span class="hljs-number">1.0</span> - smoothing<br>        <span class="hljs-variable language_">self</span>.smoothing = smoothing<br>        <span class="hljs-variable language_">self</span>.cls = classes<br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, pred, target</span>):<br>        pred = pred.log_softmax(dim=-<span class="hljs-number">1</span>)<br>        true_dist = torch.zeros_like(pred)<br>        true_dist.fill_(<span class="hljs-variable language_">self</span>.smoothing / (<span class="hljs-variable language_">self</span>.cls - <span class="hljs-number">1</span>))<br>        true_dist.scatter_(<span class="hljs-number">1</span>, target.unsqueeze(<span class="hljs-number">1</span>), <span class="hljs-variable language_">self</span>.confidence)<br>        <span class="hljs-keyword">return</span> torch.mean(torch.<span class="hljs-built_in">sum</span>(-true_dist * pred, dim=-<span class="hljs-number">1</span>))<br></code></pre></td></tr></table></figure>
+<h3 id="标签平滑损失函数"><a href="#标签平滑损失函数" class="headerlink" title="标签平滑损失函数"></a>标签平滑损失函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LabelSmoothingLoss</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, classes, smoothing=<span class="number">0.1</span></span>):</span><br><span class="line">        <span class="built_in">super</span>(LabelSmoothingLoss, <span class="variable language_">self</span>).__init__()</span><br><span class="line">        <span class="variable language_">self</span>.confidence = <span class="number">1.0</span> - smoothing</span><br><span class="line">        <span class="variable language_">self</span>.smoothing = smoothing</span><br><span class="line">        <span class="variable language_">self</span>.cls = classes</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, pred, target</span>):</span><br><span class="line">        pred = pred.log_softmax(dim=-<span class="number">1</span>)</span><br><span class="line">        true_dist = torch.zeros_like(pred)</span><br><span class="line">        true_dist.fill_(<span class="variable language_">self</span>.smoothing / (<span class="variable language_">self</span>.cls - <span class="number">1</span>))</span><br><span class="line">        true_dist.scatter_(<span class="number">1</span>, target.unsqueeze(<span class="number">1</span>), <span class="variable language_">self</span>.confidence)</span><br><span class="line">        <span class="keyword">return</span> torch.mean(torch.<span class="built_in">sum</span>(-true_dist * pred, dim=-<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h3 id="测试时增强（TTA）-1"><a href="#测试时增强（TTA）-1" class="headerlink" title="测试时增强（TTA）"></a>测试时增强（TTA）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">test_time_augmentation</span>(<span class="hljs-params">model, image, transform, device, num_augmentations=<span class="hljs-number">5</span></span>):<br>    model.<span class="hljs-built_in">eval</span>()<br>    predictions = []<br><br>    <span class="hljs-comment"># 原图预测</span><br>    image_tensor = transform(image).unsqueeze(<span class="hljs-number">0</span>).to(device)<br>    predictions.append(model(image_tensor))<br><br>    <span class="hljs-comment"># 水平翻转</span><br>    h_tensor = transform(transforms.functional.hflip(image)).unsqueeze(<span class="hljs-number">0</span>).to(device)<br>    predictions.append(model(h_tensor))<br><br>    <span class="hljs-comment"># 垂直翻转</span><br>    v_tensor = transform(transforms.functional.vflip(image)).unsqueeze(<span class="hljs-number">0</span>).to(device)<br>    predictions.append(model(v_tensor))<br><br>    <span class="hljs-comment"># 中心裁剪+亮度扰动</span><br>    jitter_transform = transforms.Compose([<br>        transforms.ColorJitter(brightness=<span class="hljs-number">0.2</span>),<br>        transform<br>    ])<br>    jitter_tensor = jitter_transform(image).unsqueeze(<span class="hljs-number">0</span>).to(device)<br>    predictions.append(model(jitter_tensor))<br><br>    <span class="hljs-comment"># 综合平均</span><br>    <span class="hljs-keyword">return</span> torch.mean(torch.stack(predictions), dim=<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="测试时增强（TTA）-1"><a href="#测试时增强（TTA）-1" class="headerlink" title="测试时增强（TTA）"></a>测试时增强（TTA）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">test_time_augmentation</span>(<span class="params">model, image, transform, device, num_augmentations=<span class="number">5</span></span>):</span><br><span class="line">    model.<span class="built_in">eval</span>()</span><br><span class="line">    predictions = []</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 原图预测</span></span><br><span class="line">    image_tensor = transform(image).unsqueeze(<span class="number">0</span>).to(device)</span><br><span class="line">    predictions.append(model(image_tensor))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 水平翻转</span></span><br><span class="line">    h_tensor = transform(transforms.functional.hflip(image)).unsqueeze(<span class="number">0</span>).to(device)</span><br><span class="line">    predictions.append(model(h_tensor))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 垂直翻转</span></span><br><span class="line">    v_tensor = transform(transforms.functional.vflip(image)).unsqueeze(<span class="number">0</span>).to(device)</span><br><span class="line">    predictions.append(model(v_tensor))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 中心裁剪+亮度扰动</span></span><br><span class="line">    jitter_transform = transforms.Compose([</span><br><span class="line">        transforms.ColorJitter(brightness=<span class="number">0.2</span>),</span><br><span class="line">        transform</span><br><span class="line">    ])</span><br><span class="line">    jitter_tensor = jitter_transform(image).unsqueeze(<span class="number">0</span>).to(device)</span><br><span class="line">    predictions.append(model(jitter_tensor))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 综合平均</span></span><br><span class="line">    <span class="keyword">return</span> torch.mean(torch.stack(predictions), dim=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
 
 
 
 <h1 id="NS-2025-07-LLM-to-BTs–Writeup"><a href="#NS-2025-07-LLM-to-BTs–Writeup" class="headerlink" title="NS-2025-07 LLM to BTs–Writeup"></a>NS-2025-07 LLM to BTs–Writeup</h1><h2 id="题目概述"><a href="#题目概述" class="headerlink" title="题目概述"></a>题目概述</h2><p>本题要求实现一个将英文自然语言指令自动转换为行为树(Behavior Tree)结构化XML的系统。系统需要将用户文本指令转换为符合BehaviorTree.CPP库和Groot可视化工具要求的XML，并且以规定格式输出，包含119个使用CDATA包装的item元素。系统需要正确理解指令中的执行逻辑，并构建相应的行为树结构。</p>
 <h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><p>针对不使用大语言模型的环境限制，我实现了一个基于规则和模式匹配的SimpleBehaviorTreeGenerator类。主要解题思路包括：</p>
-<h3 id="1-数据分析与样例学习"><a href="#1-数据分析与样例学习" class="headerlink" title="1. 数据分析与样例学习"></a>1. 数据分析与样例学习</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">load_training_examples</span>(<span class="hljs-params">self, input_file, output_file, max_examples=<span class="hljs-number">20</span></span>):<br>    <span class="hljs-string">&quot;&quot;&quot;加载训练示例用于参考&quot;&quot;&quot;</span><br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(input_file, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        inputs = json.load(f)<br>    <br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(output_file, <span class="hljs-string">&#x27;r&#x27;</span>, encoding=<span class="hljs-string">&#x27;utf-8&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        outputs = json.load(f)<br>        <br>    <span class="hljs-comment"># 选择示例（简单起见，取前N个）</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(<span class="hljs-built_in">zip</span>(inputs[:max_examples], outputs[:max_examples]))<br></code></pre></td></tr></table></figure>
+<h3 id="1-数据分析与样例学习"><a href="#1-数据分析与样例学习" class="headerlink" title="1. 数据分析与样例学习"></a>1. 数据分析与样例学习</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">load_training_examples</span>(<span class="params">self, input_file, output_file, max_examples=<span class="number">20</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;加载训练示例用于参考&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(input_file, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        inputs = json.load(f)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(output_file, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        outputs = json.load(f)</span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 选择示例（简单起见，取前N个）</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">list</span>(<span class="built_in">zip</span>(inputs[:max_examples], outputs[:max_examples]))</span><br></pre></td></tr></table></figure>
 
 <p>通过载入训练样例，系统可以参考已有的指令-行为树对应关系，提高生成质量。为了节省内存，我只载入了前20个样例作为参考。</p>
-<h3 id="2-基于相似度的模式匹配"><a href="#2-基于相似度的模式匹配" class="headerlink" title="2. 基于相似度的模式匹配"></a>2. 基于相似度的模式匹配</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_similar_example</span>(<span class="hljs-params">self, instruction</span>):<br>    <span class="hljs-comment"># 提取指令中的关键词</span><br>    keywords = <span class="hljs-variable language_">self</span>.extract_keywords(instruction)<br>    <br>    best_match = <span class="hljs-literal">None</span><br>    best_score = <span class="hljs-number">0</span><br>    <br>    <span class="hljs-keyword">for</span> ex_input, ex_output <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.train_examples:<br>        <span class="hljs-comment"># 计算关键词匹配度</span><br>        ex_keywords = <span class="hljs-variable language_">self</span>.extract_keywords(ex_input)<br>        common_keywords = <span class="hljs-built_in">set</span>(keywords) &amp; <span class="hljs-built_in">set</span>(ex_keywords)<br>        score = <span class="hljs-built_in">len</span>(common_keywords) / <span class="hljs-built_in">max</span>(<span class="hljs-built_in">len</span>(keywords), <span class="hljs-number">1</span>)<br>        <br>        <span class="hljs-keyword">if</span> score &gt; best_score <span class="hljs-keyword">and</span> score &gt; <span class="hljs-number">0.2</span>:  <span class="hljs-comment"># 至少20%的关键词匹配</span><br>            best_score = score<br>            best_match = (ex_input, ex_output)<br>    <br>    <span class="hljs-keyword">return</span> best_match<br></code></pre></td></tr></table></figure>
+<h3 id="2-基于相似度的模式匹配"><a href="#2-基于相似度的模式匹配" class="headerlink" title="2. 基于相似度的模式匹配"></a>2. 基于相似度的模式匹配</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">find_similar_example</span>(<span class="params">self, instruction</span>):</span><br><span class="line">    <span class="comment"># 提取指令中的关键词</span></span><br><span class="line">    keywords = <span class="variable language_">self</span>.extract_keywords(instruction)</span><br><span class="line">    </span><br><span class="line">    best_match = <span class="literal">None</span></span><br><span class="line">    best_score = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> ex_input, ex_output <span class="keyword">in</span> <span class="variable language_">self</span>.train_examples:</span><br><span class="line">        <span class="comment"># 计算关键词匹配度</span></span><br><span class="line">        ex_keywords = <span class="variable language_">self</span>.extract_keywords(ex_input)</span><br><span class="line">        common_keywords = <span class="built_in">set</span>(keywords) &amp; <span class="built_in">set</span>(ex_keywords)</span><br><span class="line">        score = <span class="built_in">len</span>(common_keywords) / <span class="built_in">max</span>(<span class="built_in">len</span>(keywords), <span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> score &gt; best_score <span class="keyword">and</span> score &gt; <span class="number">0.2</span>:  <span class="comment"># 至少20%的关键词匹配</span></span><br><span class="line">            best_score = score</span><br><span class="line">            best_match = (ex_input, ex_output)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> best_match</span><br></pre></td></tr></table></figure>
 
 <p>系统会尝试在训练样例中找到与输入指令相似的例子，通过关键词匹配计算相似度，当相似度超过20%时，可以借鉴其行为树结构。</p>
 <h3 id="3-规则化语义解析"><a href="#3-规则化语义解析" class="headerlink" title="3. 规则化语义解析"></a>3. 规则化语义解析</h3><p>为了从文本中提取动作和条件，我实现了多个关键函数：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">extract_actions</span>(<span class="hljs-params">self, text</span>):<br>    <span class="hljs-comment"># 基于常见动词的简单提取</span><br>    action_list = []<br>    <br>    <span class="hljs-comment"># 常见动作动词</span><br>    action_verbs = [<span class="hljs-string">&quot;打开&quot;</span>, <span class="hljs-string">&quot;关闭&quot;</span>, <span class="hljs-string">&quot;移动&quot;</span>, <span class="hljs-string">&quot;走向&quot;</span>, <span class="hljs-string">&quot;前进&quot;</span>, <span class="hljs-string">&quot;后退&quot;</span>, <span class="hljs-string">&quot;转向&quot;</span>, <span class="hljs-string">&quot;拿起&quot;</span>, <span class="hljs-string">&quot;放下&quot;</span>,<br>                    <span class="hljs-string">&quot;检查&quot;</span>, <span class="hljs-string">&quot;观察&quot;</span>, <span class="hljs-string">&quot;寻找&quot;</span>, <span class="hljs-string">&quot;等待&quot;</span>, <span class="hljs-string">&quot;计算&quot;</span>, <span class="hljs-string">&quot;进入&quot;</span>, <span class="hljs-string">&quot;离开&quot;</span>, <span class="hljs-string">&quot;拿&quot;</span>, <span class="hljs-string">&quot;取&quot;</span>, <br>                    <span class="hljs-string">&quot;放置&quot;</span>, <span class="hljs-string">&quot;推&quot;</span>, <span class="hljs-string">&quot;拉&quot;</span>, <span class="hljs-string">&quot;跳&quot;</span>, <span class="hljs-string">&quot;握住&quot;</span>, <span class="hljs-string">&quot;松开&quot;</span>, <span class="hljs-string">&quot;启动&quot;</span>, <span class="hljs-string">&quot;停止&quot;</span>, <span class="hljs-string">&quot;跟随&quot;</span>,<br>                    <span class="hljs-string">&quot;测量&quot;</span>, <span class="hljs-string">&quot;抓取&quot;</span>, <span class="hljs-string">&quot;识别&quot;</span>, <span class="hljs-string">&quot;使用&quot;</span>, <span class="hljs-string">&quot;保存&quot;</span>, <span class="hljs-string">&quot;下载&quot;</span>, <span class="hljs-string">&quot;上传&quot;</span>, <span class="hljs-string">&quot;执行&quot;</span>, <span class="hljs-string">&quot;完成&quot;</span>]<br>    <br>    <span class="hljs-comment"># 分割文本</span><br>    parts = re.split(<span class="hljs-string">r&#x27;[,，。、；;]&#x27;</span>, text)<br>    <br>    <span class="hljs-comment"># 检查每个部分是否包含动作</span><br>    <span class="hljs-keyword">for</span> part <span class="hljs-keyword">in</span> parts:<br>        <span class="hljs-comment"># 省略实现细节...</span><br>        <br>    <span class="hljs-keyword">return</span> action_list<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">extract_actions</span>(<span class="params">self, text</span>):</span><br><span class="line">    <span class="comment"># 基于常见动词的简单提取</span></span><br><span class="line">    action_list = []</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 常见动作动词</span></span><br><span class="line">    action_verbs = [<span class="string">&quot;打开&quot;</span>, <span class="string">&quot;关闭&quot;</span>, <span class="string">&quot;移动&quot;</span>, <span class="string">&quot;走向&quot;</span>, <span class="string">&quot;前进&quot;</span>, <span class="string">&quot;后退&quot;</span>, <span class="string">&quot;转向&quot;</span>, <span class="string">&quot;拿起&quot;</span>, <span class="string">&quot;放下&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;检查&quot;</span>, <span class="string">&quot;观察&quot;</span>, <span class="string">&quot;寻找&quot;</span>, <span class="string">&quot;等待&quot;</span>, <span class="string">&quot;计算&quot;</span>, <span class="string">&quot;进入&quot;</span>, <span class="string">&quot;离开&quot;</span>, <span class="string">&quot;拿&quot;</span>, <span class="string">&quot;取&quot;</span>, </span><br><span class="line">                    <span class="string">&quot;放置&quot;</span>, <span class="string">&quot;推&quot;</span>, <span class="string">&quot;拉&quot;</span>, <span class="string">&quot;跳&quot;</span>, <span class="string">&quot;握住&quot;</span>, <span class="string">&quot;松开&quot;</span>, <span class="string">&quot;启动&quot;</span>, <span class="string">&quot;停止&quot;</span>, <span class="string">&quot;跟随&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;测量&quot;</span>, <span class="string">&quot;抓取&quot;</span>, <span class="string">&quot;识别&quot;</span>, <span class="string">&quot;使用&quot;</span>, <span class="string">&quot;保存&quot;</span>, <span class="string">&quot;下载&quot;</span>, <span class="string">&quot;上传&quot;</span>, <span class="string">&quot;执行&quot;</span>, <span class="string">&quot;完成&quot;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 分割文本</span></span><br><span class="line">    parts = re.split(<span class="string">r&#x27;[,，。、；;]&#x27;</span>, text)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检查每个部分是否包含动作</span></span><br><span class="line">    <span class="keyword">for</span> part <span class="keyword">in</span> parts:</span><br><span class="line">        <span class="comment"># 省略实现细节...</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> action_list</span><br></pre></td></tr></table></figure>
 
 <p>虽然代码中包含了中文动词列表，但考虑到实际测试集全是英文，我在实际部署前对代码做了修改，补充了英文动词列表，如”move”、”go”、”turn”、”pick”等。</p>
-<h3 id="4-控制结构判断"><a href="#4-控制结构判断" class="headerlink" title="4. 控制结构判断"></a>4. 控制结构判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">determine_control_structure</span>(<span class="hljs-params">self, text</span>):<br>    <span class="hljs-comment"># 默认使用顺序执行</span><br>    structure = <span class="hljs-string">&quot;Sequence&quot;</span><br>    <br>    <span class="hljs-comment"># 检查是否存在选择逻辑</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">any</span>(keyword <span class="hljs-keyword">in</span> text <span class="hljs-keyword">for</span> keyword <span class="hljs-keyword">in</span> [<span class="hljs-string">&quot;或者&quot;</span>, <span class="hljs-string">&quot;否则&quot;</span>, <span class="hljs-string">&quot;要么&quot;</span>, <span class="hljs-string">&quot;如果不&quot;</span>, <span class="hljs-string">&quot;失败后&quot;</span>, <span class="hljs-string">&quot;选择&quot;</span>]):<br>        structure = <span class="hljs-string">&quot;Fallback&quot;</span><br>    <br>    <span class="hljs-comment"># 检查是否存在并行逻辑</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">any</span>(keyword <span class="hljs-keyword">in</span> text <span class="hljs-keyword">for</span> keyword <span class="hljs-keyword">in</span> [<span class="hljs-string">&quot;同时&quot;</span>, <span class="hljs-string">&quot;并行&quot;</span>, <span class="hljs-string">&quot;一起&quot;</span>, <span class="hljs-string">&quot;并且&quot;</span>, <span class="hljs-string">&quot;一边&quot;</span>, <span class="hljs-string">&quot;同步&quot;</span>]):<br>        structure = <span class="hljs-string">&quot;Parallel&quot;</span><br>    <br>    <span class="hljs-comment"># 检查是否需要反应式</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">any</span>(keyword <span class="hljs-keyword">in</span> text <span class="hljs-keyword">for</span> keyword <span class="hljs-keyword">in</span> [<span class="hljs-string">&quot;持续检查&quot;</span>, <span class="hljs-string">&quot;保持&quot;</span>, <span class="hljs-string">&quot;反复&quot;</span>, <span class="hljs-string">&quot;一直&quot;</span>, <span class="hljs-string">&quot;直到&quot;</span>, <span class="hljs-string">&quot;监控&quot;</span>]):<br>        <span class="hljs-keyword">if</span> structure == <span class="hljs-string">&quot;Sequence&quot;</span>:<br>            structure = <span class="hljs-string">&quot;ReactiveSequence&quot;</span><br>        <span class="hljs-keyword">elif</span> structure == <span class="hljs-string">&quot;Fallback&quot;</span>:<br>            structure = <span class="hljs-string">&quot;ReactiveFallback&quot;</span><br>    <br>    <span class="hljs-keyword">return</span> structure<br></code></pre></td></tr></table></figure>
+<h3 id="4-控制结构判断"><a href="#4-控制结构判断" class="headerlink" title="4. 控制结构判断"></a>4. 控制结构判断</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">determine_control_structure</span>(<span class="params">self, text</span>):</span><br><span class="line">    <span class="comment"># 默认使用顺序执行</span></span><br><span class="line">    structure = <span class="string">&quot;Sequence&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检查是否存在选择逻辑</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">any</span>(keyword <span class="keyword">in</span> text <span class="keyword">for</span> keyword <span class="keyword">in</span> [<span class="string">&quot;或者&quot;</span>, <span class="string">&quot;否则&quot;</span>, <span class="string">&quot;要么&quot;</span>, <span class="string">&quot;如果不&quot;</span>, <span class="string">&quot;失败后&quot;</span>, <span class="string">&quot;选择&quot;</span>]):</span><br><span class="line">        structure = <span class="string">&quot;Fallback&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检查是否存在并行逻辑</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">any</span>(keyword <span class="keyword">in</span> text <span class="keyword">for</span> keyword <span class="keyword">in</span> [<span class="string">&quot;同时&quot;</span>, <span class="string">&quot;并行&quot;</span>, <span class="string">&quot;一起&quot;</span>, <span class="string">&quot;并且&quot;</span>, <span class="string">&quot;一边&quot;</span>, <span class="string">&quot;同步&quot;</span>]):</span><br><span class="line">        structure = <span class="string">&quot;Parallel&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 检查是否需要反应式</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">any</span>(keyword <span class="keyword">in</span> text <span class="keyword">for</span> keyword <span class="keyword">in</span> [<span class="string">&quot;持续检查&quot;</span>, <span class="string">&quot;保持&quot;</span>, <span class="string">&quot;反复&quot;</span>, <span class="string">&quot;一直&quot;</span>, <span class="string">&quot;直到&quot;</span>, <span class="string">&quot;监控&quot;</span>]):</span><br><span class="line">        <span class="keyword">if</span> structure == <span class="string">&quot;Sequence&quot;</span>:</span><br><span class="line">            structure = <span class="string">&quot;ReactiveSequence&quot;</span></span><br><span class="line">        <span class="keyword">elif</span> structure == <span class="string">&quot;Fallback&quot;</span>:</span><br><span class="line">            structure = <span class="string">&quot;ReactiveFallback&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> structure</span><br></pre></td></tr></table></figure>
 
 <p>同样，在实际部署前，我将关键词判断逻辑修改为英文版本，增加了”or”、”else”、”parallel”、”simultaneously”、”continuous”等关键词。</p>
-<h3 id="5-XML树构建与验证"><a href="#5-XML树构建与验证" class="headerlink" title="5. XML树构建与验证"></a>5. XML树构建与验证</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_xml_tree</span>(<span class="hljs-params">self, actions, conditions, control_structure</span>):<br>    xml = <span class="hljs-string">f&#x27;&lt;root BTCPP_format=&quot;4&quot;&gt;\n&#x27;</span><br>    xml += <span class="hljs-string">f&#x27;  &lt;BehaviorTree ID=&quot;MainTree&quot;&gt;\n&#x27;</span><br>    xml += <span class="hljs-string">f&#x27;    &lt;<span class="hljs-subst">&#123;control_structure&#125;</span> name=&quot;Root<span class="hljs-subst">&#123;control_structure&#125;</span>&quot;&gt;\n&#x27;</span><br>    <br>    <span class="hljs-comment"># 添加条件节点</span><br>    <span class="hljs-keyword">for</span> condition <span class="hljs-keyword">in</span> conditions:<br>        xml += <span class="hljs-string">f&#x27;      &lt;Condition ID=&quot;<span class="hljs-subst">&#123;condition[<span class="hljs-string">&quot;ID&quot;</span>]&#125;</span>&quot; /&gt;\n&#x27;</span><br>    <br>    <span class="hljs-comment"># 添加动作节点</span><br>    <span class="hljs-keyword">for</span> action <span class="hljs-keyword">in</span> actions:<br>        xml += <span class="hljs-string">f&#x27;      &lt;Action ID=&quot;<span class="hljs-subst">&#123;action[<span class="hljs-string">&quot;ID&quot;</span>]&#125;</span>&quot; /&gt;\n&#x27;</span><br>    <br>    xml += <span class="hljs-string">f&#x27;    &lt;/<span class="hljs-subst">&#123;control_structure&#125;</span>&gt;\n&#x27;</span><br>    xml += <span class="hljs-string">f&#x27;  &lt;/BehaviorTree&gt;\n&#x27;</span><br>    xml += <span class="hljs-string">&#x27;&lt;/root&gt;&#x27;</span><br>    <br>    <span class="hljs-keyword">return</span> xml<br></code></pre></td></tr></table></figure>
+<h3 id="5-XML树构建与验证"><a href="#5-XML树构建与验证" class="headerlink" title="5. XML树构建与验证"></a>5. XML树构建与验证</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">build_xml_tree</span>(<span class="params">self, actions, conditions, control_structure</span>):</span><br><span class="line">    xml = <span class="string">f&#x27;&lt;root BTCPP_format=&quot;4&quot;&gt;\n&#x27;</span></span><br><span class="line">    xml += <span class="string">f&#x27;  &lt;BehaviorTree ID=&quot;MainTree&quot;&gt;\n&#x27;</span></span><br><span class="line">    xml += <span class="string">f&#x27;    &lt;<span class="subst">&#123;control_structure&#125;</span> name=&quot;Root<span class="subst">&#123;control_structure&#125;</span>&quot;&gt;\n&#x27;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 添加条件节点</span></span><br><span class="line">    <span class="keyword">for</span> condition <span class="keyword">in</span> conditions:</span><br><span class="line">        xml += <span class="string">f&#x27;      &lt;Condition ID=&quot;<span class="subst">&#123;condition[<span class="string">&quot;ID&quot;</span>]&#125;</span>&quot; /&gt;\n&#x27;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 添加动作节点</span></span><br><span class="line">    <span class="keyword">for</span> action <span class="keyword">in</span> actions:</span><br><span class="line">        xml += <span class="string">f&#x27;      &lt;Action ID=&quot;<span class="subst">&#123;action[<span class="string">&quot;ID&quot;</span>]&#125;</span>&quot; /&gt;\n&#x27;</span></span><br><span class="line">    </span><br><span class="line">    xml += <span class="string">f&#x27;    &lt;/<span class="subst">&#123;control_structure&#125;</span>&gt;\n&#x27;</span></span><br><span class="line">    xml += <span class="string">f&#x27;  &lt;/BehaviorTree&gt;\n&#x27;</span></span><br><span class="line">    xml += <span class="string">&#x27;&lt;/root&gt;&#x27;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> xml</span><br></pre></td></tr></table></figure>
 
 <p>这个函数构建了符合BehaviorTree.CPP格式的XML结构，通过validate_xml函数进行检查确保结构合法。</p>
 <h3 id="6-CDATA标签处理"><a href="#6-CDATA标签处理" class="headerlink" title="6. CDATA标签处理"></a>6. CDATA标签处理</h3><p>最初遇到的主要技术困难是ElementTree库不直接支持CDATA标签。解决方案是使用minidom库：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 提取所有item节点并手动添加CDATA</span><br>item_nodes = items_node.getElementsByTagName(<span class="hljs-string">&quot;item&quot;</span>)<br><br><span class="hljs-keyword">for</span> item_node <span class="hljs-keyword">in</span> item_nodes:<br>    <span class="hljs-comment"># 获取文本内容</span><br>    text_content = <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> item_node.childNodes:<br>        <span class="hljs-keyword">if</span> child.nodeType == minidom.Node.TEXT_NODE:<br>            text_content += child.data<br>    <br>    <span class="hljs-comment"># 清除所有子节点</span><br>    <span class="hljs-keyword">while</span> item_node.hasChildNodes():<br>        item_node.removeChild(item_node.firstChild)<br>    <br>    <span class="hljs-comment"># 创建新的CDATA节点</span><br>    cdata = reparsed.createCDATASection(text_content)<br>    item_node.appendChild(cdata)<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 提取所有item节点并手动添加CDATA</span></span><br><span class="line">item_nodes = items_node.getElementsByTagName(<span class="string">&quot;item&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> item_node <span class="keyword">in</span> item_nodes:</span><br><span class="line">    <span class="comment"># 获取文本内容</span></span><br><span class="line">    text_content = <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> child <span class="keyword">in</span> item_node.childNodes:</span><br><span class="line">        <span class="keyword">if</span> child.nodeType == minidom.Node.TEXT_NODE:</span><br><span class="line">            text_content += child.data</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 清除所有子节点</span></span><br><span class="line">    <span class="keyword">while</span> item_node.hasChildNodes():</span><br><span class="line">        item_node.removeChild(item_node.firstChild)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 创建新的CDATA节点</span></span><br><span class="line">    cdata = reparsed.createCDATASection(text_content)</span><br><span class="line">    item_node.appendChild(cdata)</span><br></pre></td></tr></table></figure>
 
 <p>这段代码解决了将XML内容正确包装在CDATA标签中的问题，确保输出符合要求格式。</p>
 <h2 id="实现中的关键技术难点与解决方案"><a href="#实现中的关键技术难点与解决方案" class="headerlink" title="实现中的关键技术难点与解决方案"></a>实现中的关键技术难点与解决方案</h2><h3 id="1-CDATA节点处理"><a href="#1-CDATA节点处理" class="headerlink" title="1. CDATA节点处理"></a>1. CDATA节点处理</h3><p><strong>问题</strong>: ElementTree库不直接支持创建CDATA节点，导致初始实现时出错。</p>
@@ -457,7 +231,7 @@
 <p><strong>解决方案</strong>: 在实际部署前，修改了关键词列表，添加了英文动作动词和条件关键词，并调整了相关的正则表达式和文本处理逻辑。</p>
 <h3 id="3-输出格式标准化"><a href="#3-输出格式标准化" class="headerlink" title="3. 输出格式标准化"></a>3. 输出格式标准化</h3><p><strong>问题</strong>: 需要确保生成119个item元素，即使测试输入可能少于这个数量。</p>
 <p><strong>解决方案</strong>: 在process_test_set方法中强制处理119个项目，对于超出测试集范围的项目使用空字符串作为内容：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 确保处理119个项目</span><br><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">120</span>):<br>    <span class="hljs-comment"># 如果索引超出测试输入范围，使用空XML</span><br>    <span class="hljs-keyword">if</span> i-<span class="hljs-number">1</span> &lt; <span class="hljs-built_in">len</span>(test_inputs):<br>        instruction = test_inputs[i-<span class="hljs-number">1</span>]<br>        <span class="hljs-comment"># 生成行为树</span><br>        xml_output = <span class="hljs-variable language_">self</span>.generate_behavior_tree(instruction)<br>    <span class="hljs-keyword">else</span>:<br>        logger.info(<span class="hljs-string">f&quot;No instruction for item <span class="hljs-subst">&#123;i&#125;</span>, using empty XML&quot;</span>)<br>        xml_output = <span class="hljs-string">&quot;&quot;</span><br>    <br>    <span class="hljs-comment"># 创建item元素...</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 确保处理119个项目</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">120</span>):</span><br><span class="line">    <span class="comment"># 如果索引超出测试输入范围，使用空XML</span></span><br><span class="line">    <span class="keyword">if</span> i-<span class="number">1</span> &lt; <span class="built_in">len</span>(test_inputs):</span><br><span class="line">        instruction = test_inputs[i-<span class="number">1</span>]</span><br><span class="line">        <span class="comment"># 生成行为树</span></span><br><span class="line">        xml_output = <span class="variable language_">self</span>.generate_behavior_tree(instruction)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        logger.info(<span class="string">f&quot;No instruction for item <span class="subst">&#123;i&#125;</span>, using empty XML&quot;</span>)</span><br><span class="line">        xml_output = <span class="string">&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 创建item元素...</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="使用的工具与依赖"><a href="#使用的工具与依赖" class="headerlink" title="使用的工具与依赖"></a>使用的工具与依赖</h2><ol>
 <li><p><strong>Python 3.8+</strong>: 主要开发语言</p>
@@ -477,7 +251,7 @@
 </li>
 </ol>
 <h2 id="关键算法分析"><a href="#关键算法分析" class="headerlink" title="关键算法分析"></a>关键算法分析</h2><h3 id="1-相似度计算算法"><a href="#1-相似度计算算法" class="headerlink" title="1. 相似度计算算法"></a>1. 相似度计算算法</h3><p>使用集合交集计算关键词匹配度，算法复杂度为O(len(keywords))，通过设置阈值0.2确保只使用足够相似的样例。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">common_keywords = <span class="hljs-built_in">set</span>(keywords) &amp; <span class="hljs-built_in">set</span>(ex_keywords)<br>score = <span class="hljs-built_in">len</span>(common_keywords) / <span class="hljs-built_in">max</span>(<span class="hljs-built_in">len</span>(keywords), <span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">common_keywords = <span class="built_in">set</span>(keywords) &amp; <span class="built_in">set</span>(ex_keywords)</span><br><span class="line">score = <span class="built_in">len</span>(common_keywords) / <span class="built_in">max</span>(<span class="built_in">len</span>(keywords), <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 
 <h3 id="2-动作提取算法"><a href="#2-动作提取算法" class="headerlink" title="2. 动作提取算法"></a>2. 动作提取算法</h3><p>通过文本分割和动词匹配，识别可能的动作，复杂度为O(n*m)，其中n是文本片段数，m是动词列表长度。</p>
 <h3 id="3-控制结构判断算法"><a href="#3-控制结构判断算法" class="headerlink" title="3. 控制结构判断算法"></a>3. 控制结构判断算法</h3><p>通过关键词匹配确定最合适的控制结构，采用优先级判断的方式处理多种可能性。</p>
@@ -566,10 +340,10 @@
 <li><p>程序会自动保存最佳环境到<code>results.json</code></p>
 </li>
 <li><p>可使用<code>test_env.py</code>可视化结果：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python test_env.py results.json --test-agent<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python test_env.py results.json --test-agent</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>使用 <code>test_scoring.py</code>来进行评分：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python test_scoring.py results.json <br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python test_scoring.py results.json </span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>我们本地测试是可以实现让agent十次都失败，但是最终提交结果没有拿到400分满分，可能还是稍微有些许漏洞或者应该多提交几次（hh。（最终得分是：399.95）</li>
@@ -598,25 +372,25 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_misleading_path</span>(<span class="hljs-params">self, start, end, existing_obstacles=[]</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;创建一个误导性的路径，利用无人机向右和向上的偏好&quot;&quot;&quot;</span><br>        obstacles = []<br>        <br>        <span class="hljs-comment"># 计算从起点到终点的直线方向</span><br>        dx = end[<span class="hljs-number">0</span>] - start[<span class="hljs-number">0</span>]<br>        dy = end[<span class="hljs-number">1</span>] - start[<span class="hljs-number">1</span>]<br>        <br>        <span class="hljs-comment"># 创建一个看似通向目标但实际是误导的路径</span><br>        mislead_x = start[<span class="hljs-number">0</span>] + dx * <span class="hljs-number">0.6</span><br>        mislead_y = start[<span class="hljs-number">1</span>] + dy * <span class="hljs-number">0.6</span><br>        <br>        <span class="hljs-comment"># 在误导点周围创建障碍物包围圈</span><br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):<br>            angle = random.uniform(<span class="hljs-number">0</span>, <span class="hljs-number">2</span> * math.pi)<br>            radius = random.uniform(<span class="hljs-number">5</span>, <span class="hljs-number">8</span>)<br>            x = mislead_x + radius * math.cos(angle)<br>            y = mislead_y + radius * math.sin(angle)<br>            <br>            <span class="hljs-comment"># 确保在场地范围内</span><br>            x = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, x))<br>            y = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, y))<br>            <br>            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles):<br>                obstacles.append(&#123;<span class="hljs-string">&quot;x&quot;</span>: x, <span class="hljs-string">&quot;y&quot;</span>: y&#125;)<br>        <br>        <span class="hljs-comment"># 创建一个向右上方的诱饵路径（利用代理对向右和向上的偏好）</span><br>        bait_points = []<br>        bait_length = <span class="hljs-built_in">min</span>(<span class="hljs-number">10</span>, <span class="hljs-built_in">int</span>(<span class="hljs-variable language_">self</span>.point_distance(start, end) / <span class="hljs-number">3</span>))<br>        <br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, bait_length + <span class="hljs-number">1</span>):<br>            bait_x = start[<span class="hljs-number">0</span>] + i * <span class="hljs-number">1.5</span><br>            bait_y = start[<span class="hljs-number">1</span>] + i * <span class="hljs-number">1.5</span><br>            bait_points.append([bait_x, bait_y])<br>        <br>        <span class="hljs-comment"># 在诱饵路径末端设置障碍物陷阱</span><br>        <span class="hljs-keyword">if</span> bait_points:<br>            end_point = bait_points[-<span class="hljs-number">1</span>]<br>            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):<br>                angle = random.uniform(<span class="hljs-number">0</span>, <span class="hljs-number">2</span> * math.pi)<br>                radius = random.uniform(<span class="hljs-number">3</span>, <span class="hljs-number">6</span>)<br>                x = end_point[<span class="hljs-number">0</span>] + radius * math.cos(angle)<br>                y = end_point[<span class="hljs-number">1</span>] + radius * math.sin(angle)<br>                <br>                <span class="hljs-comment"># 确保在场地范围内</span><br>                x = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, x))<br>                y = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, y))<br>                <br>                <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles):<br>                    obstacles.append(&#123;<span class="hljs-string">&quot;x&quot;</span>: x, <span class="hljs-string">&quot;y&quot;</span>: y&#125;)<br>        <br>        <span class="hljs-keyword">return</span> obstacles<br>        <br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_misleading_path</span>(<span class="params">self, start, end, existing_obstacles=[]</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;创建一个误导性的路径，利用无人机向右和向上的偏好&quot;&quot;&quot;</span></span><br><span class="line">        obstacles = []</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 计算从起点到终点的直线方向</span></span><br><span class="line">        dx = end[<span class="number">0</span>] - start[<span class="number">0</span>]</span><br><span class="line">        dy = end[<span class="number">1</span>] - start[<span class="number">1</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 创建一个看似通向目标但实际是误导的路径</span></span><br><span class="line">        mislead_x = start[<span class="number">0</span>] + dx * <span class="number">0.6</span></span><br><span class="line">        mislead_y = start[<span class="number">1</span>] + dy * <span class="number">0.6</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 在误导点周围创建障碍物包围圈</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">            angle = random.uniform(<span class="number">0</span>, <span class="number">2</span> * math.pi)</span><br><span class="line">            radius = random.uniform(<span class="number">5</span>, <span class="number">8</span>)</span><br><span class="line">            x = mislead_x + radius * math.cos(angle)</span><br><span class="line">            y = mislead_y + radius * math.sin(angle)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 确保在场地范围内</span></span><br><span class="line">            x = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">min</span>(<span class="variable language_">self</span>.field_size - <span class="number">1</span>, x))</span><br><span class="line">            y = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">min</span>(<span class="variable language_">self</span>.field_size - <span class="number">1</span>, y))</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles):</span><br><span class="line">                obstacles.append(&#123;<span class="string">&quot;x&quot;</span>: x, <span class="string">&quot;y&quot;</span>: y&#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 创建一个向右上方的诱饵路径（利用代理对向右和向上的偏好）</span></span><br><span class="line">        bait_points = []</span><br><span class="line">        bait_length = <span class="built_in">min</span>(<span class="number">10</span>, <span class="built_in">int</span>(<span class="variable language_">self</span>.point_distance(start, end) / <span class="number">3</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, bait_length + <span class="number">1</span>):</span><br><span class="line">            bait_x = start[<span class="number">0</span>] + i * <span class="number">1.5</span></span><br><span class="line">            bait_y = start[<span class="number">1</span>] + i * <span class="number">1.5</span></span><br><span class="line">            bait_points.append([bait_x, bait_y])</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 在诱饵路径末端设置障碍物陷阱</span></span><br><span class="line">        <span class="keyword">if</span> bait_points:</span><br><span class="line">            end_point = bait_points[-<span class="number">1</span>]</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">                angle = random.uniform(<span class="number">0</span>, <span class="number">2</span> * math.pi)</span><br><span class="line">                radius = random.uniform(<span class="number">3</span>, <span class="number">6</span>)</span><br><span class="line">                x = end_point[<span class="number">0</span>] + radius * math.cos(angle)</span><br><span class="line">                y = end_point[<span class="number">1</span>] + radius * math.sin(angle)</span><br><span class="line">                </span><br><span class="line">                <span class="comment"># 确保在场地范围内</span></span><br><span class="line">                x = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">min</span>(<span class="variable language_">self</span>.field_size - <span class="number">1</span>, x))</span><br><span class="line">                y = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">min</span>(<span class="variable language_">self</span>.field_size - <span class="number">1</span>, y))</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> <span class="variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles):</span><br><span class="line">                    obstacles.append(&#123;<span class="string">&quot;x&quot;</span>: x, <span class="string">&quot;y&quot;</span>: y&#125;)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> obstacles</span><br><span class="line">        </span><br></pre></td></tr></table></figure>
 
 <h4 id="感知边界障碍"><a href="#感知边界障碍" class="headerlink" title="感知边界障碍"></a>感知边界障碍</h4><ul>
 <li>在无人机感知范围边界（约15m）布置障碍物</li>
 <li>使无人机难以提前规划路径，容易陷入局部最优</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_narrow_passages</span>(<span class="hljs-params">self, start, end, existing_obstacles=[]</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;创建狭窄通道，利用无人机在障碍物3米范围内的负奖励&quot;&quot;&quot;</span><br>    obstacles = []<br>    <br>    <span class="hljs-comment"># 计算从起点到终点的方向</span><br>    dx = end[<span class="hljs-number">0</span>] - start[<span class="hljs-number">0</span>]<br>    dy = end[<span class="hljs-number">1</span>] - start[<span class="hljs-number">1</span>]<br>    distance = math.sqrt(dx**<span class="hljs-number">2</span> + dy**<span class="hljs-number">2</span>)<br>    <br>    <span class="hljs-comment"># 将方向单位化</span><br>    <span class="hljs-keyword">if</span> distance &gt; <span class="hljs-number">0</span>:<br>        dx /= distance<br>        dy /= distance<br>    <br>    <span class="hljs-comment"># 计算垂直于路径方向的向量</span><br>    perp_dx = -dy<br>    perp_dy = dx<br>    <br>    <span class="hljs-comment"># 在路径上创建多个狭窄通道</span><br>    num_passages = <span class="hljs-built_in">min</span>(<span class="hljs-number">4</span>, <span class="hljs-built_in">int</span>(distance / <span class="hljs-number">10</span>))<br>    passage_width = <span class="hljs-number">3.5</span>  <span class="hljs-comment"># 略大于障碍物直径+无人机直径</span><br>    <br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_passages):<br>        <span class="hljs-comment"># 计算通道中心点</span><br>        t = (i + <span class="hljs-number">1</span>) / (num_passages + <span class="hljs-number">1</span>)<br>        center_x = start[<span class="hljs-number">0</span>] + t * dx * distance<br>        center_y = start[<span class="hljs-number">1</span>] + t * dy * distance<br>        <br>        <span class="hljs-comment"># 在通道两侧创建障碍物</span><br>        <span class="hljs-keyword">for</span> side <span class="hljs-keyword">in</span> [-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>]:<br>            offset = passage_width / <span class="hljs-number">2</span> + <span class="hljs-variable language_">self</span>.obstacle_radius<br>            x = center_x + side * perp_dx * offset<br>            y = center_y + side * perp_dy * offset<br>            <br>            <span class="hljs-comment"># 确保在场地范围内</span><br>            x = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, x))<br>            y = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, y))<br>            <br>            <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">self</span>.point_distance([x, y], start) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span> <br>                <span class="hljs-variable language_">self</span>.point_distance([x, y], end) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span><br>                <span class="hljs-variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles)):<br>                obstacles.append(&#123;<span class="hljs-string">&quot;x&quot;</span>: x, <span class="hljs-string">&quot;y&quot;</span>: y&#125;)<br>    <br>    <span class="hljs-keyword">return</span> obstacles<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_narrow_passages</span>(<span class="params">self, start, end, existing_obstacles=[]</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;创建狭窄通道，利用无人机在障碍物3米范围内的负奖励&quot;&quot;&quot;</span></span><br><span class="line">    obstacles = []</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算从起点到终点的方向</span></span><br><span class="line">    dx = end[<span class="number">0</span>] - start[<span class="number">0</span>]</span><br><span class="line">    dy = end[<span class="number">1</span>] - start[<span class="number">1</span>]</span><br><span class="line">    distance = math.sqrt(dx**<span class="number">2</span> + dy**<span class="number">2</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 将方向单位化</span></span><br><span class="line">    <span class="keyword">if</span> distance &gt; <span class="number">0</span>:</span><br><span class="line">        dx /= distance</span><br><span class="line">        dy /= distance</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算垂直于路径方向的向量</span></span><br><span class="line">    perp_dx = -dy</span><br><span class="line">    perp_dy = dx</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 在路径上创建多个狭窄通道</span></span><br><span class="line">    num_passages = <span class="built_in">min</span>(<span class="number">4</span>, <span class="built_in">int</span>(distance / <span class="number">10</span>))</span><br><span class="line">    passage_width = <span class="number">3.5</span>  <span class="comment"># 略大于障碍物直径+无人机直径</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_passages):</span><br><span class="line">        <span class="comment"># 计算通道中心点</span></span><br><span class="line">        t = (i + <span class="number">1</span>) / (num_passages + <span class="number">1</span>)</span><br><span class="line">        center_x = start[<span class="number">0</span>] + t * dx * distance</span><br><span class="line">        center_y = start[<span class="number">1</span>] + t * dy * distance</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 在通道两侧创建障碍物</span></span><br><span class="line">        <span class="keyword">for</span> side <span class="keyword">in</span> [-<span class="number">1</span>, <span class="number">1</span>]:</span><br><span class="line">            offset = passage_width / <span class="number">2</span> + <span class="variable language_">self</span>.obstacle_radius</span><br><span class="line">            x = center_x + side * perp_dx * offset</span><br><span class="line">            y = center_y + side * perp_dy * offset</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 确保在场地范围内</span></span><br><span class="line">            x = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">min</span>(<span class="variable language_">self</span>.field_size - <span class="number">1</span>, x))</span><br><span class="line">            y = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">min</span>(<span class="variable language_">self</span>.field_size - <span class="number">1</span>, y))</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (<span class="variable language_">self</span>.point_distance([x, y], start) &gt;= <span class="variable language_">self</span>.min_obstacle_to_start_end <span class="keyword">and</span> </span><br><span class="line">                <span class="variable language_">self</span>.point_distance([x, y], end) &gt;= <span class="variable language_">self</span>.min_obstacle_to_start_end <span class="keyword">and</span></span><br><span class="line">                <span class="variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles)):</span><br><span class="line">                obstacles.append(&#123;<span class="string">&quot;x&quot;</span>: x, <span class="string">&quot;y&quot;</span>: y&#125;)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> obstacles</span><br></pre></td></tr></table></figure>
 
 <h4 id="狭窄通道"><a href="#狭窄通道" class="headerlink" title="狭窄通道"></a>狭窄通道</h4><ul>
 <li>设计宽度刚好略大于无人机通过能力的通道（约3.5m）</li>
 <li>利用无人机对靠近障碍物的负奖励，使其犹豫不决</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_narrow_passages</span>(<span class="hljs-params">self, start, end, existing_obstacles=[]</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;创建狭窄通道，利用无人机在障碍物3米范围内的负奖励&quot;&quot;&quot;</span><br>    obstacles = []<br>    <br>    <span class="hljs-comment"># 计算从起点到终点的方向</span><br>    dx = end[<span class="hljs-number">0</span>] - start[<span class="hljs-number">0</span>]<br>    dy = end[<span class="hljs-number">1</span>] - start[<span class="hljs-number">1</span>]<br>    distance = math.sqrt(dx**<span class="hljs-number">2</span> + dy**<span class="hljs-number">2</span>)<br>    <br>    <span class="hljs-comment"># 将方向单位化</span><br>    <span class="hljs-keyword">if</span> distance &gt; <span class="hljs-number">0</span>:<br>        dx /= distance<br>        dy /= distance<br>    <br>    <span class="hljs-comment"># 计算垂直于路径方向的向量</span><br>    perp_dx = -dy<br>    perp_dy = dx<br>    <br>    <span class="hljs-comment"># 在路径上创建多个狭窄通道</span><br>    num_passages = <span class="hljs-built_in">min</span>(<span class="hljs-number">4</span>, <span class="hljs-built_in">int</span>(distance / <span class="hljs-number">10</span>))<br>    passage_width = <span class="hljs-number">3.5</span>  <span class="hljs-comment"># 略大于障碍物直径+无人机直径</span><br>    <br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num_passages):<br>        <span class="hljs-comment"># 计算通道中心点</span><br>        t = (i + <span class="hljs-number">1</span>) / (num_passages + <span class="hljs-number">1</span>)<br>        center_x = start[<span class="hljs-number">0</span>] + t * dx * distance<br>        center_y = start[<span class="hljs-number">1</span>] + t * dy * distance<br>        <br>        <span class="hljs-comment"># 在通道两侧创建障碍物</span><br>        <span class="hljs-keyword">for</span> side <span class="hljs-keyword">in</span> [-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>]:<br>            offset = passage_width / <span class="hljs-number">2</span> + <span class="hljs-variable language_">self</span>.obstacle_radius<br>            x = center_x + side * perp_dx * offset<br>            y = center_y + side * perp_dy * offset<br>            <br>            <span class="hljs-comment"># 确保在场地范围内</span><br>            x = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, x))<br>            y = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, y))<br>            <br>            <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">self</span>.point_distance([x, y], start) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span> <br>                <span class="hljs-variable language_">self</span>.point_distance([x, y], end) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span><br>                <span class="hljs-variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles)):<br>                obstacles.append(&#123;<span class="hljs-string">&quot;x&quot;</span>: x, <span class="hljs-string">&quot;y&quot;</span>: y&#125;)<br>    <br>    <span class="hljs-keyword">return</span> obstacles<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_narrow_passages</span>(<span class="params">self, start, end, existing_obstacles=[]</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;创建狭窄通道，利用无人机在障碍物3米范围内的负奖励&quot;&quot;&quot;</span></span><br><span class="line">    obstacles = []</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算从起点到终点的方向</span></span><br><span class="line">    dx = end[<span class="number">0</span>] - start[<span class="number">0</span>]</span><br><span class="line">    dy = end[<span class="number">1</span>] - start[<span class="number">1</span>]</span><br><span class="line">    distance = math.sqrt(dx**<span class="number">2</span> + dy**<span class="number">2</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 将方向单位化</span></span><br><span class="line">    <span class="keyword">if</span> distance &gt; <span class="number">0</span>:</span><br><span class="line">        dx /= distance</span><br><span class="line">        dy /= distance</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 计算垂直于路径方向的向量</span></span><br><span class="line">    perp_dx = -dy</span><br><span class="line">    perp_dy = dx</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 在路径上创建多个狭窄通道</span></span><br><span class="line">    num_passages = <span class="built_in">min</span>(<span class="number">4</span>, <span class="built_in">int</span>(distance / <span class="number">10</span>))</span><br><span class="line">    passage_width = <span class="number">3.5</span>  <span class="comment"># 略大于障碍物直径+无人机直径</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_passages):</span><br><span class="line">        <span class="comment"># 计算通道中心点</span></span><br><span class="line">        t = (i + <span class="number">1</span>) / (num_passages + <span class="number">1</span>)</span><br><span class="line">        center_x = start[<span class="number">0</span>] + t * dx * distance</span><br><span class="line">        center_y = start[<span class="number">1</span>] + t * dy * distance</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 在通道两侧创建障碍物</span></span><br><span class="line">        <span class="keyword">for</span> side <span class="keyword">in</span> [-<span class="number">1</span>, <span class="number">1</span>]:</span><br><span class="line">            offset = passage_width / <span class="number">2</span> + <span class="variable language_">self</span>.obstacle_radius</span><br><span class="line">            x = center_x + side * perp_dx * offset</span><br><span class="line">            y = center_y + side * perp_dy * offset</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 确保在场地范围内</span></span><br><span class="line">            x = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">min</span>(<span class="variable language_">self</span>.field_size - <span class="number">1</span>, x))</span><br><span class="line">            y = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">min</span>(<span class="variable language_">self</span>.field_size - <span class="number">1</span>, y))</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (<span class="variable language_">self</span>.point_distance([x, y], start) &gt;= <span class="variable language_">self</span>.min_obstacle_to_start_end <span class="keyword">and</span> </span><br><span class="line">                <span class="variable language_">self</span>.point_distance([x, y], end) &gt;= <span class="variable language_">self</span>.min_obstacle_to_start_end <span class="keyword">and</span></span><br><span class="line">                <span class="variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles)):</span><br><span class="line">                obstacles.append(&#123;<span class="string">&quot;x&quot;</span>: x, <span class="string">&quot;y&quot;</span>: y&#125;)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> obstacles</span><br></pre></td></tr></table></figure>
 
 <h4 id="迷宫结构"><a href="#迷宫结构" class="headerlink" title="迷宫结构"></a>迷宫结构</h4><ul>
 <li>创建复杂的迷宫式布局</li>
 <li>增加路径规划的复杂度，容易使智能体迷失方向</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_maze_structure</span>(<span class="hljs-params">self, start, end, existing_obstacles=[]</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;创建迷宫结构，让无人机容易迷失方向&quot;&quot;&quot;</span><br>    obstacles = []<br>    <br>    <span class="hljs-comment"># 在起点和终点之间创建迷宫结构</span><br>    mid_x = (start[<span class="hljs-number">0</span>] + end[<span class="hljs-number">0</span>]) / <span class="hljs-number">2</span><br>    mid_y = (start[<span class="hljs-number">1</span>] + end[<span class="hljs-number">1</span>]) / <span class="hljs-number">2</span><br>    <br>    <span class="hljs-comment"># 创建迷宫的中心区域</span><br>    maze_radius = <span class="hljs-built_in">min</span>(<span class="hljs-number">15</span>, <span class="hljs-variable language_">self</span>.point_distance(start, end) / <span class="hljs-number">3</span>)<br>    <br>    <span class="hljs-comment"># 创建迷宫的几条&quot;墙&quot;</span><br>    <span class="hljs-keyword">for</span> wall_idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>):<br>        wall_angle = wall_idx * <span class="hljs-number">2</span> * math.pi / <span class="hljs-number">3</span><br>        wall_length = maze_radius * <span class="hljs-number">0.8</span><br>        <br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>):<br>            t = (i + <span class="hljs-number">1</span>) / <span class="hljs-number">4</span><br>            x = mid_x + t * wall_length * math.cos(wall_angle)<br>            y = mid_y + t * wall_length * math.sin(wall_angle)<br>            <br>            <span class="hljs-comment"># 确保在场地范围内</span><br>            x = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, x))<br>            y = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, y))<br>            <br>            <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">self</span>.point_distance([x, y], start) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span> <br>                <span class="hljs-variable language_">self</span>.point_distance([x, y], end) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span><br>                <span class="hljs-variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles)):<br>                obstacles.append(&#123;<span class="hljs-string">&quot;x&quot;</span>: x, <span class="hljs-string">&quot;y&quot;</span>: y&#125;)<br>    <br>    <span class="hljs-comment"># 创建一些随机的迷宫元素</span><br>    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>):<br>        angle = random.uniform(<span class="hljs-number">0</span>, <span class="hljs-number">2</span> * math.pi)<br>        radius = random.uniform(maze_radius * <span class="hljs-number">0.3</span>, maze_radius)<br>        x = mid_x + radius * math.cos(angle)<br>        y = mid_y + radius * math.sin(angle)<br>        <br>        <span class="hljs-comment"># 确保在场地范围内</span><br>        x = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, x))<br>        y = <span class="hljs-built_in">max</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.field_size - <span class="hljs-number">1</span>, y))<br>        <br>        <span class="hljs-keyword">if</span> (<span class="hljs-variable language_">self</span>.point_distance([x, y], start) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span> <br>            <span class="hljs-variable language_">self</span>.point_distance([x, y], end) &gt;= <span class="hljs-variable language_">self</span>.min_obstacle_to_start_end <span class="hljs-keyword">and</span><br>            <span class="hljs-variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles)):<br>            obstacles.append(&#123;<span class="hljs-string">&quot;x&quot;</span>: x, <span class="hljs-string">&quot;y&quot;</span>: y&#125;)<br>    <br>    <span class="hljs-keyword">return</span> obstacles<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">create_maze_structure</span>(<span class="params">self, start, end, existing_obstacles=[]</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;创建迷宫结构，让无人机容易迷失方向&quot;&quot;&quot;</span></span><br><span class="line">    obstacles = []</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 在起点和终点之间创建迷宫结构</span></span><br><span class="line">    mid_x = (start[<span class="number">0</span>] + end[<span class="number">0</span>]) / <span class="number">2</span></span><br><span class="line">    mid_y = (start[<span class="number">1</span>] + end[<span class="number">1</span>]) / <span class="number">2</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 创建迷宫的中心区域</span></span><br><span class="line">    maze_radius = <span class="built_in">min</span>(<span class="number">15</span>, <span class="variable language_">self</span>.point_distance(start, end) / <span class="number">3</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 创建迷宫的几条&quot;墙&quot;</span></span><br><span class="line">    <span class="keyword">for</span> wall_idx <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">        wall_angle = wall_idx * <span class="number">2</span> * math.pi / <span class="number">3</span></span><br><span class="line">        wall_length = maze_radius * <span class="number">0.8</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">            t = (i + <span class="number">1</span>) / <span class="number">4</span></span><br><span class="line">            x = mid_x + t * wall_length * math.cos(wall_angle)</span><br><span class="line">            y = mid_y + t * wall_length * math.sin(wall_angle)</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 确保在场地范围内</span></span><br><span class="line">            x = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">min</span>(<span class="variable language_">self</span>.field_size - <span class="number">1</span>, x))</span><br><span class="line">            y = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">min</span>(<span class="variable language_">self</span>.field_size - <span class="number">1</span>, y))</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (<span class="variable language_">self</span>.point_distance([x, y], start) &gt;= <span class="variable language_">self</span>.min_obstacle_to_start_end <span class="keyword">and</span> </span><br><span class="line">                <span class="variable language_">self</span>.point_distance([x, y], end) &gt;= <span class="variable language_">self</span>.min_obstacle_to_start_end <span class="keyword">and</span></span><br><span class="line">                <span class="variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles)):</span><br><span class="line">                obstacles.append(&#123;<span class="string">&quot;x&quot;</span>: x, <span class="string">&quot;y&quot;</span>: y&#125;)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 创建一些随机的迷宫元素</span></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">        angle = random.uniform(<span class="number">0</span>, <span class="number">2</span> * math.pi)</span><br><span class="line">        radius = random.uniform(maze_radius * <span class="number">0.3</span>, maze_radius)</span><br><span class="line">        x = mid_x + radius * math.cos(angle)</span><br><span class="line">        y = mid_y + radius * math.sin(angle)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 确保在场地范围内</span></span><br><span class="line">        x = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">min</span>(<span class="variable language_">self</span>.field_size - <span class="number">1</span>, x))</span><br><span class="line">        y = <span class="built_in">max</span>(<span class="number">1</span>, <span class="built_in">min</span>(<span class="variable language_">self</span>.field_size - <span class="number">1</span>, y))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (<span class="variable language_">self</span>.point_distance([x, y], start) &gt;= <span class="variable language_">self</span>.min_obstacle_to_start_end <span class="keyword">and</span> </span><br><span class="line">            <span class="variable language_">self</span>.point_distance([x, y], end) &gt;= <span class="variable language_">self</span>.min_obstacle_to_start_end <span class="keyword">and</span></span><br><span class="line">            <span class="variable language_">self</span>.is_valid_position([x, y], existing_obstacles + obstacles)):</span><br><span class="line">            obstacles.append(&#123;<span class="string">&quot;x&quot;</span>: x, <span class="string">&quot;y&quot;</span>: y&#125;)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> obstacles</span><br></pre></td></tr></table></figure>
 
 <h1 id="NS-2025-11-接管厨房客厅的那一天-Writeup"><a href="#NS-2025-11-接管厨房客厅的那一天-Writeup" class="headerlink" title="NS-2025-11 接管厨房客厅的那一天 Writeup"></a>NS-2025-11 接管厨房客厅的那一天 Writeup</h1><h2 id="一、任务背景与目标"><a href="#一、任务背景与目标" class="headerlink" title="一、任务背景与目标"></a>一、任务背景与目标</h2><p>本次“NS-2025-11 家庭智能协作挑战”要求参赛者基于多模态输入（图像 + 自然语言）构建智能体，使其控制机械臂完成一系列具有挑战性的家庭任务。这些任务具有不同的动态特征与动作要求，包括：</p>
 <ul>
@@ -631,7 +405,7 @@
 <h2 id="二、系统架构与模型设计"><a href="#二、系统架构与模型设计" class="headerlink" title="二、系统架构与模型设计"></a>二、系统架构与模型设计</h2><p>为统一处理所有任务，我们设计了统一结构的策略网络 <code>TaskModel</code>，其整体结构分为以下三个部分：</p>
 <h3 id="2-1-编码器：ActionDecoder-encoder"><a href="#2-1-编码器：ActionDecoder-encoder" class="headerlink" title="2.1 编码器：ActionDecoder.encoder"></a>2.1 编码器：<code>ActionDecoder.encoder</code></h3><p>输入为 <code>[B, T, D]</code> 的观测向量序列（图像 + 语言的融合特征），经过两层全连接网络映射到维度为 <code>embed_dim=128</code> 的特征表示，并通过 <code>ReLU</code> 激活增强非线性表达能力。</p>
 <h3 id="2-2-时序建模模块：TemporalBlock"><a href="#2-2-时序建模模块：TemporalBlock" class="headerlink" title="2.2 时序建模模块：TemporalBlock"></a>2.2 时序建模模块：<code>TemporalBlock</code></h3><p>采用标准的 Transformer 子结构（多头注意力 + 残差 LayerNorm + 前馈网络），能够建模动作序列中时间步间的依赖关系与长期轨迹规律：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">MultiheadAttention -&gt; LayerNorm -&gt; MLP -&gt; LayerNorm<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MultiheadAttention -&gt; LayerNorm -&gt; MLP -&gt; LayerNorm</span><br></pre></td></tr></table></figure>
 
 <p>该模块允许模型识别出不同时间步之间的操作规律，如“插入-旋转-释放”等时序动作序列。</p>
 <h3 id="2-3-动作解码头"><a href="#2-3-动作解码头" class="headerlink" title="2.3 动作解码头"></a>2.3 动作解码头</h3><ul>
@@ -765,469 +539,73 @@
 <hr>
 <h2 id="八、-部分代码展示"><a href="#八、-部分代码展示" class="headerlink" title="八、 部分代码展示"></a>八、 部分代码展示</h2><p>关键代码：</p>
 <h3 id="1-模型主干设计（BasePolicy）"><a href="#1-模型主干设计（BasePolicy）" class="headerlink" title="1. 模型主干设计（BasePolicy）"></a>1. 模型主干设计（BasePolicy）</h3><p>这是所有任务共享的基本网络结构，使用了 <code>ResNet18</code> 提取视觉特征，并用 <code>TransformerEncoder</code> 编码语言。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BasePolicy</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):<br>        <span class="hljs-built_in">super</span>().__init__()<br>        resnet = resnet18(pretrained=<span class="hljs-literal">True</span>)<br>        <span class="hljs-variable language_">self</span>.vision_encoder = nn.Sequential(*<span class="hljs-built_in">list</span>(resnet.children())[:-<span class="hljs-number">1</span>])<br>        encoder_layer = nn.TransformerEncoderLayer(d_model=<span class="hljs-number">512</span>, nhead=<span class="hljs-number">8</span>)<br>        <span class="hljs-variable language_">self</span>.lang_encoder = nn.TransformerEncoder(encoder_layer, num_layers=<span class="hljs-number">2</span>)<br>        <span class="hljs-variable language_">self</span>.cross_modal = nn.MultiheadAttention(embed_dim=<span class="hljs-number">512</span>, num_heads=<span class="hljs-number">8</span>, batch_first=<span class="hljs-literal">True</span>)<br>        <span class="hljs-variable language_">self</span>.fc_out = nn.Sequential(<br>            nn.Linear(<span class="hljs-number">1024</span>, <span class="hljs-number">256</span>), nn.ReLU(),<br>            nn.Linear(<span class="hljs-number">256</span>, <span class="hljs-number">128</span>), nn.ReLU(),<br>            nn.Linear(<span class="hljs-number">128</span>, <span class="hljs-number">7</span>)<br>        )<br>        <span class="hljs-variable language_">self</span>.grip_cls = nn.Sequential(<br>            nn.Linear(<span class="hljs-number">1024</span>, <span class="hljs-number">64</span>), nn.ReLU(),<br>            nn.Linear(<span class="hljs-number">64</span>, <span class="hljs-number">2</span>)<br>        )<br><br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BasePolicy</span>(nn.Module):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line">        resnet = resnet18(pretrained=<span class="literal">True</span>)</span><br><span class="line">        <span class="variable language_">self</span>.vision_encoder = nn.Sequential(*<span class="built_in">list</span>(resnet.children())[:-<span class="number">1</span>])</span><br><span class="line">        encoder_layer = nn.TransformerEncoderLayer(d_model=<span class="number">512</span>, nhead=<span class="number">8</span>)</span><br><span class="line">        <span class="variable language_">self</span>.lang_encoder = nn.TransformerEncoder(encoder_layer, num_layers=<span class="number">2</span>)</span><br><span class="line">        <span class="variable language_">self</span>.cross_modal = nn.MultiheadAttention(embed_dim=<span class="number">512</span>, num_heads=<span class="number">8</span>, batch_first=<span class="literal">True</span>)</span><br><span class="line">        <span class="variable language_">self</span>.fc_out = nn.Sequential(</span><br><span class="line">            nn.Linear(<span class="number">1024</span>, <span class="number">256</span>), nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">256</span>, <span class="number">128</span>), nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">128</span>, <span class="number">7</span>)</span><br><span class="line">        )</span><br><span class="line">        <span class="variable language_">self</span>.grip_cls = nn.Sequential(</span><br><span class="line">            nn.Linear(<span class="number">1024</span>, <span class="number">64</span>), nn.ReLU(),</span><br><span class="line">            nn.Linear(<span class="number">64</span>, <span class="number">2</span>)</span><br><span class="line">        )</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h3 id="2-跨模态编码（视觉-语言）"><a href="#2-跨模态编码（视觉-语言）" class="headerlink" title="2. 跨模态编码（视觉 + 语言）"></a>2. <strong>跨模态编码（视觉 + 语言）</strong></h3><p>视觉特征和语言特征交叉融合，通过 Multi-Head Attention 得到联合特征。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">encode_inputs</span>(<span class="hljs-params">self, obs, instr</span>):<br>    B, C_view, Two, C, H, W = obs.shape<br>    obs = obs.view(B * C_view * Two, C, H, W)<br>    vision_feat = <span class="hljs-variable language_">self</span>.vision_encoder(obs).view(B, C_view * Two, -<span class="hljs-number">1</span>).mean(dim=<span class="hljs-number">1</span>)<br>    instr = instr.permute(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>)<br>    lang_feat_seq = <span class="hljs-variable language_">self</span>.lang_encoder(instr).permute(<span class="hljs-number">1</span>, <span class="hljs-number">0</span>, <span class="hljs-number">2</span>)<br>    lang_feat_att, _ = <span class="hljs-variable language_">self</span>.cross_modal(vision_feat.unsqueeze(<span class="hljs-number">1</span>), lang_feat_seq, lang_feat_seq)<br>    <span class="hljs-keyword">return</span> vision_feat, lang_feat_att.squeeze(<span class="hljs-number">1</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">encode_inputs</span>(<span class="params">self, obs, instr</span>):</span><br><span class="line">    B, C_view, Two, C, H, W = obs.shape</span><br><span class="line">    obs = obs.view(B * C_view * Two, C, H, W)</span><br><span class="line">    vision_feat = <span class="variable language_">self</span>.vision_encoder(obs).view(B, C_view * Two, -<span class="number">1</span>).mean(dim=<span class="number">1</span>)</span><br><span class="line">    instr = instr.permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">    lang_feat_seq = <span class="variable language_">self</span>.lang_encoder(instr).permute(<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">    lang_feat_att, _ = <span class="variable language_">self</span>.cross_modal(vision_feat.unsqueeze(<span class="number">1</span>), lang_feat_seq, lang_feat_seq)</span><br><span class="line">    <span class="keyword">return</span> vision_feat, lang_feat_att.squeeze(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 
-<h3 id="3-loss函数"><a href="#3-loss函数" class="headerlink" title="3. loss函数"></a>3. loss函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">multi_loss</span>(<span class="hljs-params">pred, target, task=<span class="hljs-literal">None</span>, epoch=<span class="hljs-number">0</span></span>):<br>    pos_loss = F.mse_loss(pred[:, :<span class="hljs-number">3</span>], target[:, :<span class="hljs-number">3</span>])<br>    rot_weight = <span class="hljs-built_in">min</span>(<span class="hljs-number">1.0</span>, epoch / <span class="hljs-number">20.0</span>)<br>    rot_loss = F.smooth_l1_loss(pred[:, <span class="hljs-number">3</span>:<span class="hljs-number">7</span>], target[:, <span class="hljs-number">3</span>:<span class="hljs-number">7</span>]) * rot_weight<br>    grip_target = target[:, <span class="hljs-number">7</span>:].long().squeeze(<span class="hljs-number">1</span>)<br>    grip_loss = F.cross_entropy(torch.cat([<span class="hljs-number">1</span> - pred[:, <span class="hljs-number">7</span>:], pred[:, <span class="hljs-number">7</span>:]], dim=<span class="hljs-number">1</span>), grip_target)<br><br>    <span class="hljs-keyword">if</span> task == <span class="hljs-string">&#x27;stack_blocks&#x27;</span>:<br>        rot_loss *= <span class="hljs-number">2.0</span><br>    <span class="hljs-keyword">elif</span> task == <span class="hljs-string">&#x27;put_money_in_safe&#x27;</span>:<br>        pos_loss *= <span class="hljs-number">1.5</span><br>    <span class="hljs-keyword">elif</span> task == <span class="hljs-string">&#x27;light_bulb_in&#x27;</span>:<br>        pos_loss *= <span class="hljs-number">1.3</span><br>        grip_loss *= <span class="hljs-number">1.2</span><br><br>    <span class="hljs-keyword">return</span> pos_loss + rot_loss + <span class="hljs-number">0.1</span> * grip_loss<br></code></pre></td></tr></table></figure>
+<h3 id="3-loss函数"><a href="#3-loss函数" class="headerlink" title="3. loss函数"></a>3. loss函数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">multi_loss</span>(<span class="params">pred, target, task=<span class="literal">None</span>, epoch=<span class="number">0</span></span>):</span><br><span class="line">    pos_loss = F.mse_loss(pred[:, :<span class="number">3</span>], target[:, :<span class="number">3</span>])</span><br><span class="line">    rot_weight = <span class="built_in">min</span>(<span class="number">1.0</span>, epoch / <span class="number">20.0</span>)</span><br><span class="line">    rot_loss = F.smooth_l1_loss(pred[:, <span class="number">3</span>:<span class="number">7</span>], target[:, <span class="number">3</span>:<span class="number">7</span>]) * rot_weight</span><br><span class="line">    grip_target = target[:, <span class="number">7</span>:].long().squeeze(<span class="number">1</span>)</span><br><span class="line">    grip_loss = F.cross_entropy(torch.cat([<span class="number">1</span> - pred[:, <span class="number">7</span>:], pred[:, <span class="number">7</span>:]], dim=<span class="number">1</span>), grip_target)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> task == <span class="string">&#x27;stack_blocks&#x27;</span>:</span><br><span class="line">        rot_loss *= <span class="number">2.0</span></span><br><span class="line">    <span class="keyword">elif</span> task == <span class="string">&#x27;put_money_in_safe&#x27;</span>:</span><br><span class="line">        pos_loss *= <span class="number">1.5</span></span><br><span class="line">    <span class="keyword">elif</span> task == <span class="string">&#x27;light_bulb_in&#x27;</span>:</span><br><span class="line">        pos_loss *= <span class="number">1.3</span></span><br><span class="line">        grip_loss *= <span class="number">1.2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> pos_loss + rot_loss + <span class="number">0.1</span> * grip_loss</span><br></pre></td></tr></table></figure>
 
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
+    </div>
 
-<span class="category-chains">
-  
-  
     
-      <span class="category-chain">
-        
-  <a href="/categories/AI/" class="category-chain-item">AI</a>
-  
-  
-
-      </span>
+      <aside class="toc" id="toc" aria-label="目录">
+        <div class="toc-title">目录</div>
+        <nav class="toc-list" id="tocList"></nav>
+      </aside>
     
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/AI/" class="print-no-link">#AI</a>
-      
-    </div>
-  
-</div>
-
-
-              
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>Ai新手赛部分题解</div>
-      <div>https://pqcu77.github.io/2025/04/29/ai新手赛部分题解/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>linqt</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2025年4月29日</div>
-        </div>
-      
-      
-      
-        <div class="license-meta-item">
-          <div>许可协议</div>
-          <div>
-            
-              
-              
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-cc-by"></i>
-                  </span>
-                </a>
-              
-            
-          </div>
-        </div>
-      
-    </div>
-    <div class="license-icon iconfont"></div>
   </div>
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2025/04/29/AI-lab5/" title="AI-Lab5">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">AI-Lab5</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2025/04/21/AI-Lab4-2/" title="AI-Lab4.2">
-                        <span class="hidden-mobile">AI-Lab4.2</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-          </article>
-        </div>
-      </div>
+  
+    <div class="post-footer-tags">
+      <a class="tag" href="/tags/AI/">AI</a>
     </div>
+  
 
-    <div class="side-col d-none d-lg-block col-lg-2">
+  
+    <nav class="post-nav">
       
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>目录</span>
-  </p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
+        <a class="post-nav-item prev" href="/2025/04/29/AI-lab5/">
+          <span class="post-nav-label">上一篇</span>
+          <span class="post-nav-title">AI-Lab5</span>
+        </a>
+      
+      
+        <a class="post-nav-item next" href="/2025/04/21/AI-Lab4-2/">
+          <span class="post-nav-label">下一篇</span>
+          <span class="post-nav-title">AI-Lab4.2</span>
+        </a>
+      
+    </nav>
   
+</article>
 
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-
-    
   </main>
+  <footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-text">
+      
+      
+      
+      
+      © 2025 - 2026 linqt · Powered by Hexo · Theme Ink
+    </p>
+  </div>
+</footer>
 
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  <div class="search-modal" id="searchModal" data-search-path="/search.json" hidden>
+  <div class="search-mask" data-close></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="搜索文章">
+    <div class="search-field">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+      <input type="text" id="searchInput" placeholder="搜索标题、标签、正文…" autocomplete="off" spellcheck="false">
+      <kbd>ESC</kbd>
     </div>
-  
-  
-  
+    <div class="search-results" id="searchResults"></div>
+  </div>
 </div>
 
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
-<script>
-  var relativeDate = function() {
-    var updatedTime = document.getElementById('updated-time');
-    if (updatedTime) {
-      var text = updatedTime.textContent;
-      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
-      var matchs = text.match(reg);
-      if (matchs) {
-        var relativeTime = moment(matchs[0]).fromNow();
-        updatedTime.textContent = text.replace(reg, relativeTime);
-      }
-      updatedTime.style.display = '';
-    }
-  };
-  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
-    if (!'zh-cn'.startsWith('en')) {
-      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
-        relativeDate();
-      });
-    } else {
-      relativeDate();
-    }
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init(Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc));
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-      }
-    });
-  });
-</script>
-
-
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  
-      <script>
-        if (!window.MathJax) {
-          window.MathJax = {
-            tex    : {
-              inlineMath: { '[+]': [['$', '$']] }
-            },
-            loader : {
-              load: ['ui/lazy']
-            },
-            options: {
-              renderActions: {
-                insertedScript: [200, () => {
-                  document.querySelectorAll('mjx-container').forEach(node => {
-                    let target = node.parentNode;
-                    if (target.nodeName.toLowerCase() === 'li') {
-                      target.parentNode.classList.add('has-jax');
-                    }
-                  });
-                }, '', false]
-              }
-            }
-          };
-        } else {
-          MathJax.startup.document.state(0);
-          MathJax.texReset();
-          MathJax.typeset();
-          MathJax.typesetPromise();
-        }
-
-        Fluid.events.registerRefreshCallback(function() {
-          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
-            MathJax.startup.document.state(0);
-            MathJax.texReset();
-            MathJax.typeset();
-            MathJax.typesetPromise();
-          }
-        });
-      </script>
-    
-
-  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
-
-  <script  src="/js/local-search.js" ></script>
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-  
-<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-<script src="/custom/custom.js"></script>
-<script src="/custom/firework.js"></script>
-<script src="/custom/label-page.js"></script>
-<script src="/custom/moving.js"></script>
-<script src="/custom/welcome.css.js"></script>
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  <button class="back-to-top" id="backToTop" aria-label="回到顶部" title="回到顶部">↑</button>
+  <script src="/js/main.js"></script>
 </body>
 </html>
-<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
-<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
-<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
-<script type="text/javascript" src="/custom/firework.js"></script>

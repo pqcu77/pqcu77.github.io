@@ -1,332 +1,89 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
+<html lang="zh-CN" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
-  
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="linqt">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="OS_Lab4：中断实验要求 DDL：2024年4月20号 24:00 提交的内容：将4个assignment的代码和实验报告放到压缩包中，命名为“lab4-学号-姓名”，并交到课程并交到课程邮箱 os_sysu_lab@163.com  将实验报告的pdf提交至 http:&#x2F;&#x2F;inbox.weiyun.com&#x2F;NOKI03hf Example材料的代码放置在src目录下。  实验概述本章会学习：">
-<meta property="og:type" content="article">
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="generator" content="Hexo">
+<title>OS_Lab4 · linqt&#39;s blog</title>
+<meta name="description" content="">
+<meta name="author" content="linqt">
+<link rel="icon" href="/img/cute.jpg">
+<link rel="alternate" href="/atom.xml" title="linqt&#39;s blog" type="application/atom+xml">
 <meta property="og:title" content="OS_Lab4">
-<meta property="og:url" content="https://pqcu77.github.io/2025/04/02/OS-Lab4/index.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pqcu77.github.io/2025/04/02/OS-Lab4/">
 <meta property="og:site_name" content="linqt&#39;s blog">
-<meta property="og:description" content="OS_Lab4：中断实验要求 DDL：2024年4月20号 24:00 提交的内容：将4个assignment的代码和实验报告放到压缩包中，命名为“lab4-学号-姓名”，并交到课程并交到课程邮箱 os_sysu_lab@163.com  将实验报告的pdf提交至 http:&#x2F;&#x2F;inbox.weiyun.com&#x2F;NOKI03hf Example材料的代码放置在src目录下。  实验概述本章会学习：">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250402143442814.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250402144450731.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250402144559227.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250402151015905.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250402151025502.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250402154026967.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250402165250552.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250402171903443.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250402172029124.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250402172325228.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405172317304.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405172728632.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405173725507.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405173905771.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405174025929.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405174118941.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250405174414639.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250409142738523.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250409142845513.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/file-20250409144538936.png">
-<meta property="article:published_time" content="2025-04-02T06:23:04.000Z">
-<meta property="article:modified_time" content="2025-04-12T03:29:46.513Z">
-<meta property="article:author" content="linqt">
-<meta property="article:tag" content="学习笔记">
-<meta property="article:tag" content="OS_Labs">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://pqcu77.github.io/img/file-20250402143442814.png">
-  
-  
-    <meta name="referrer" content="no-referrer-when-downgrade">
-  
-  
-  <title>OS_Lab4 - linqt&#39;s blog</title>
+<meta name="theme-color" content="#0d1117">
+<link rel="stylesheet" href="/css/main.css">
+<style>
+  :root[data-theme="dark"] { --accent: #7aa2f7; }
+  :root[data-theme="light"] { --accent: #2f6fdb; }
+</style>
+<script>
+  // 避免刷新时主题闪烁
+  (function () {
+    try {
+      var saved = localStorage.getItem('ink-theme');
+      var d = 'dark';
+      var t = (saved === 'light' || saved === 'dark') ? saved
+        : (d === 'auto' ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : d);
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-  
-<link rel="stylesheet" href="/custom/custom.css">
-<link rel="stylesheet" href="/custom/welcome.css">
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-
-  
 </head>
-
-
-<body>
-  
-
-  <header>
-    
-
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>PQCU&#39; blog</strong>
+<body class=" page-post    ">
+  <div class="progress-bar" id="progressBar"></div>
+  <header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a class="site-brand" href="/">
+      PQCU&#39; blog
     </a>
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
+    <nav class="site-nav">
+      
+        <a class="nav-link" href="/archives/">文章</a>
+      
+        <a class="nav-link" href="/categories/">分类</a>
+      
+        <a class="nav-link" href="/tags/">标签</a>
+      
+        <a class="nav-link" href="/about/">关于</a>
+      
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/" target="_self">
-                <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/" target="_self">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/" target="_self">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/" target="_self">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-          </li>
-        
-      </ul>
+      
+        <button class="icon-btn" id="searchBtn" aria-label="搜索" title="搜索 (Ctrl+K)">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+        </button>
+      
+
+      
+        <button class="icon-btn" id="themeToggle" aria-label="切换主题" title="切换明暗">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        </button>
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="container main">
+    
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">OS_Lab4</h1>
+    <div class="post-meta">
+      <time datetime="2025-04-02T06:23:04.000Z">2025-04-02</time>
+      <span class="dot">·</span><span>18820 字</span>
+      <span class="dot">·</span><span>54 分钟</span>
+      <span class="dot">·</span><span>更新于 2025-04-12</span>
     </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="OS_Lab4"></span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-04-02 14:23" pubdate>
-          2025年4月2日 下午
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          <!-- compatible with older versions-->
-          7.2k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          <!-- compatible with older versions-->
-          60 分钟
-        
-      </span>
-    
-
-    
-    
-      
-        <span id="busuanzi_container_page_pv" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="busuanzi_value_page_pv"></span>次
-        </span>
-        
-
-      
-    
-  </div>
-
-
-        
-      </div>
-
-      
-    </div>
-  </div>
-</div>
-
-</div>
-
   </header>
 
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <h1 id="seo-header">OS_Lab4</h1>
-            
-              <p id="updated-time" class="note note-info" style="display: none">
-                
-                  
-                    本文最后更新于 2025-04-12T11:29:46+08:00
-                  
-                  
-
-                
-              </p>
-            
-            
-              <div class="markdown-body">
-                
-                <h1 id="OS-Lab4：中断"><a href="#OS-Lab4：中断" class="headerlink" title="OS_Lab4：中断"></a>OS_Lab4：中断</h1><h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><ul>
+  <div class="post-layout">
+    <div class="post-body" id="postBody">
+      <h1 id="OS-Lab4：中断"><a href="#OS-Lab4：中断" class="headerlink" title="OS_Lab4：中断"></a>OS_Lab4：中断</h1><h2 id="实验要求"><a href="#实验要求" class="headerlink" title="实验要求"></a>实验要求</h2><ul>
 <li>DDL：<strong>2024年4月20号 24:00</strong></li>
 <li>提交的内容：将<strong>4个assignment的代码</strong>和<strong>实验报告</strong>放到<strong>压缩包</strong>中，命名为“<strong>lab4-学号-姓名</strong>”，并交到课程并交到课程邮箱 <a href="https://gitee.com/link?target=mailto:os_sysu_lab@163.com">os_sysu_lab@163.com</a><br>  将实验报告的pdf提交至 <a href="https://gitee.com/link?target=http://inbox.weiyun.com/NOKI03hf">http://inbox.weiyun.com/NOKI03hf</a></li>
 <li><strong>Example材料的代码放置在<code>src</code>目录下</strong>。</li>
@@ -343,7 +100,7 @@
 </ul>
 <p>通过本章的学习，同学们将掌握<strong>使用C语言来编写内核</strong>的方法，<strong>理解保护模式的中断处理机制和处理时钟中断</strong>，为后面的二级分页机制和多线程&#x2F;进程打下基础。</p>
 <h2 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/linzworld/p/13690620.html">C语言-从代码到程序的过程理解 - 亥码 - 博客园</a></p>
-<h2 id="C代码变成C程序的过程"><a href="#C代码变成C程序的过程" class="headerlink" title="C代码变成C程序的过程"></a>C代码变成C程序的过程</h2><p><img src="/img/file-20250402143442814.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="C代码变成C程序的过程"><a href="#C代码变成C程序的过程" class="headerlink" title="C代码变成C程序的过程"></a>C代码变成C程序的过程</h2><p><img src="/img/file-20250402143442814.png"></p>
 <ol>
 <li>预处理：输入源程序并保存(.C文件)。<ul>
 <li>处理源代码中以“#”开头的预编译指令</li>
@@ -359,9 +116,9 @@
 <li>将多个目标文件链接生成可执行文件( .EXE文件（windows）,.out文件（Linux）)。</li>
 </ol>
 <p>gcc指令生成中间过程文件：<br><code>gcc [选项] 要编译的文件 [选项] [目标文件]</code><br>or<br><code>gcc [option] filename [option] [objectfile]</code></p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus">gcc <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span> <span class="hljs-comment">//直接生成可执行文件main.out</span><br>gcc hello<span class="hljs-selector-class">.c</span> -o hello <br>gcc -E <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span> -o hello<span class="hljs-selector-class">.i</span> <span class="hljs-comment">//生成预处理后的代码（还是文本文件）</span><br>gcc -S <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span> -o hello<span class="hljs-selector-class">.s</span> <span class="hljs-comment">//汇编代码</span><br>gcc -c <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.c</span> -o hello<span class="hljs-selector-class">.o</span> <span class="hljs-comment">//目标代码</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gcc main.c //直接生成可执行文件main.out</span><br><span class="line">gcc hello.c -o hello </span><br><span class="line">gcc -E main.c -o hello.i //生成预处理后的代码（还是文本文件）</span><br><span class="line">gcc -S main.c -o hello.s //汇编代码</span><br><span class="line">gcc -c main.c -o hello.o //目标代码</span><br></pre></td></tr></table></figure>
 
-<h3 id="example0"><a href="#example0" class="headerlink" title="example0"></a>example0</h3><p><strong>使用gcc跑一下程序</strong><br><img src="/img/file-20250402144450731.png" srcset="/img/loading.gif" lazyload><br>or（可以不列举.h，因为.c文件中已经#include了，在.c&#x3D;&gt;.i阶段会将.h文件内容展开插入到）<br><img src="/img/file-20250402144559227.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="example0"><a href="#example0" class="headerlink" title="example0"></a>example0</h3><p><strong>使用gcc跑一下程序</strong><br><img src="/img/file-20250402144450731.png"><br>or（可以不列举.h，因为.c文件中已经#include了，在.c&#x3D;&gt;.i阶段会将.h文件内容展开插入到）<br><img src="/img/file-20250402144559227.png"></p>
 <ul>
 <li>在.h中编写函数声明，不要在.h中实现函数，如果.h被多次引用可能会导致出现<strong>函数重定义</strong>问题</li>
 <li>编译时要把所有.c和.cpp文件都加上去编译</li>
@@ -370,11 +127,11 @@
 <ul>
 <li>预处理生成.i文件：<br>  <code>gcc -E main.c -o main</code></li>
 </ul>
-<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs autoit"><span class="hljs-meta"># 0 <span class="hljs-string">&quot;main.c&quot;</span></span><br><span class="hljs-meta"># 0 <span class="hljs-string">&quot;&lt;built-in&gt;&quot;</span></span><br><span class="hljs-meta"># 0 <span class="hljs-string">&quot;&lt;command-line&gt;&quot;</span></span><br><span class="hljs-meta"># 1 <span class="hljs-string">&quot;/usr/include/stdc-predef.h&quot;</span> 1 3 4</span><br><span class="hljs-meta"># 0 <span class="hljs-string">&quot;&lt;command-line&gt;&quot;</span> 2</span><br><span class="hljs-meta"># 1 <span class="hljs-string">&quot;main.c&quot;</span></span><br><span class="hljs-meta"># 1 <span class="hljs-string">&quot;print.h&quot;</span> 1  </span><br>  <br><br>void print_something()<span class="hljs-comment">;</span><br><span class="hljs-meta"># 2 <span class="hljs-string">&quot;main.c&quot;</span> 2</span><br><br><span class="hljs-built_in">int</span> main() &#123;<br><br>    print_something()<span class="hljs-comment">;</span><br><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># 0 &quot;main.c&quot;</span><br><span class="line"># 0 &quot;&lt;built-in&gt;&quot;</span><br><span class="line"># 0 &quot;&lt;command-line&gt;&quot;</span><br><span class="line"># 1 &quot;/usr/include/stdc-predef.h&quot; 1 3 4</span><br><span class="line"># 0 &quot;&lt;command-line&gt;&quot; 2</span><br><span class="line"># 1 &quot;main.c&quot;</span><br><span class="line"># 1 &quot;print.h&quot; 1  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">void print_something();</span><br><span class="line"># 2 &quot;main.c&quot; 2</span><br><span class="line"></span><br><span class="line">int main() &#123;</span><br><span class="line"></span><br><span class="line">    print_something();</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>编译生成汇编文件<br>  <code>gcc -S main.c -o main.s -masm=intel</code><br>  这里 <code>-masm=intel</code> 指示生成intel风格的汇编代码，否则默认AT&amp;T风格代码</li>
 </ul>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-meta">	.file</span>	<span class="hljs-string">&quot;main.c&quot;</span><br><span class="hljs-meta">	.intel_syntax</span> noprefix<br><span class="hljs-meta">	.text</span><br><span class="hljs-meta">	.globl</span>	main<br><span class="hljs-meta">	.type</span>	main, @function<br><span class="hljs-symbol">main:</span><br><span class="hljs-symbol">.LFB0:</span><br><span class="hljs-meta">	.cfi_startproc</span><br>	endbr64<br>	<span class="hljs-keyword">push</span>	<span class="hljs-built_in">rbp</span><br><span class="hljs-meta">	.cfi_def_cfa_offset</span> <span class="hljs-number">16</span><br><span class="hljs-meta">	.cfi_offset</span> <span class="hljs-number">6</span>, -<span class="hljs-number">16</span><br>	<span class="hljs-keyword">mov</span>	<span class="hljs-built_in">rbp</span>, <span class="hljs-built_in">rsp</span><br><span class="hljs-meta">	.cfi_def_cfa_register</span> <span class="hljs-number">6</span><br>	<span class="hljs-keyword">mov</span>	<span class="hljs-built_in">eax</span>, <span class="hljs-number">0</span><br>	<span class="hljs-keyword">call</span>	print_something@PLT<br>	<span class="hljs-keyword">mov</span>	<span class="hljs-built_in">eax</span>, <span class="hljs-number">0</span><br>	<span class="hljs-keyword">pop</span>	<span class="hljs-built_in">rbp</span><br><span class="hljs-meta">	.cfi_def_cfa</span> <span class="hljs-number">7</span>, <span class="hljs-number">8</span><br>	<span class="hljs-keyword">ret</span><br><span class="hljs-meta">	.cfi_endproc</span><br><span class="hljs-symbol">.LFE0:</span><br><span class="hljs-meta">	.size</span>	main, .-main<br><span class="hljs-meta">	.ident</span>	<span class="hljs-string">&quot;GCC: (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0&quot;</span><br><span class="hljs-meta">	.section</span>	.note<span class="hljs-number">.</span>GNU-stack,<span class="hljs-string">&quot;&quot;</span>,@progbits<br><span class="hljs-meta">	.section</span>	.note<span class="hljs-number">.</span>gnu<span class="hljs-number">.</span>property,<span class="hljs-string">&quot;a&quot;</span><br><span class="hljs-meta">	.align</span> <span class="hljs-number">8</span><br><span class="hljs-meta">	.long</span>	1f - 0f<br><span class="hljs-meta">	.long</span>	4f - 1f<br><span class="hljs-meta">	.long</span>	<span class="hljs-number">5</span><br><span class="hljs-number">0</span>:<br><span class="hljs-meta">	.string</span>	<span class="hljs-string">&quot;GNU&quot;</span><br><span class="hljs-number">1</span>:<br><span class="hljs-meta">	.align</span> <span class="hljs-number">8</span><br><span class="hljs-meta">	.long</span>	<span class="hljs-number">0xc0000002</span><br><span class="hljs-meta">	.long</span>	3f - 2f<br><span class="hljs-number">2</span>:<br><span class="hljs-meta">	.long</span>	<span class="hljs-number">0x3</span><br><span class="hljs-number">3</span>:<br><span class="hljs-meta">	.align</span> <span class="hljs-number">8</span><br><span class="hljs-number">4</span>:<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">	.file	&quot;main.c&quot;</span><br><span class="line">	.intel_syntax noprefix</span><br><span class="line">	.text</span><br><span class="line">	.globl	main</span><br><span class="line">	.type	main, @function</span><br><span class="line">main:</span><br><span class="line">.LFB0:</span><br><span class="line">	.cfi_startproc</span><br><span class="line">	endbr64</span><br><span class="line">	push	rbp</span><br><span class="line">	.cfi_def_cfa_offset 16</span><br><span class="line">	.cfi_offset 6, -16</span><br><span class="line">	mov	rbp, rsp</span><br><span class="line">	.cfi_def_cfa_register 6</span><br><span class="line">	mov	eax, 0</span><br><span class="line">	call	print_something@PLT</span><br><span class="line">	mov	eax, 0</span><br><span class="line">	pop	rbp</span><br><span class="line">	.cfi_def_cfa 7, 8</span><br><span class="line">	ret</span><br><span class="line">	.cfi_endproc</span><br><span class="line">.LFE0:</span><br><span class="line">	.size	main, .-main</span><br><span class="line">	.ident	&quot;GCC: (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0&quot;</span><br><span class="line">	.section	.note.GNU-stack,&quot;&quot;,@progbits</span><br><span class="line">	.section	.note.gnu.property,&quot;a&quot;</span><br><span class="line">	.align 8</span><br><span class="line">	.long	1f - 0f</span><br><span class="line">	.long	4f - 1f</span><br><span class="line">	.long	5</span><br><span class="line">0:</span><br><span class="line">	.string	&quot;GNU&quot;</span><br><span class="line">1:</span><br><span class="line">	.align 8</span><br><span class="line">	.long	0xc0000002</span><br><span class="line">	.long	3f - 2f</span><br><span class="line">2:</span><br><span class="line">	.long	0x3</span><br><span class="line">3:</span><br><span class="line">	.align 8</span><br><span class="line">4:</span><br></pre></td></tr></table></figure>
 <ul>
 <li>重定位<br>  <code>gcc main.c print.c -o main.o</code><ul>
 <li>在linux下，可重定位文件的格式是<strong>ELF</strong>文件格式，其包含了ELF头（ELF header）、程序头表（Program header table）、节（Section）和节头表（Section header table）等信息。</li>
@@ -382,7 +139,7 @@
 </li>
 <li><strong>gcc是编译工具集合，在进行这些操作时会自动调用as、ld等</strong></li>
 </ul>
-<h2 id="Makefile（OS-Lab3中也有相关内容）"><a href="#Makefile（OS-Lab3中也有相关内容）" class="headerlink" title="Makefile（OS_Lab3中也有相关内容）"></a>Makefile（OS_Lab3中也有相关内容）</h2><p><img src="/img/file-20250402151015905.png" srcset="/img/loading.gif" lazyload><br><img src="/img/file-20250402151025502.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="Makefile（OS-Lab3中也有相关内容）"><a href="#Makefile（OS-Lab3中也有相关内容）" class="headerlink" title="Makefile（OS_Lab3中也有相关内容）"></a>Makefile（OS_Lab3中也有相关内容）</h2><p><img src="/img/file-20250402151015905.png"><br><img src="/img/file-20250402151025502.png"></p>
 <h2 id="C-C-和汇编混合编程"><a href="#C-C-和汇编混合编程" class="headerlink" title="C&#x2F;C++和汇编混合编程"></a>C&#x2F;C++和汇编混合编程</h2><ul>
 <li>在C&#x2F;C++代码中使用汇编代码实现的函数。</li>
 <li>在汇编代码中使用C&#x2F;C++中的函数。</li>
@@ -397,9 +154,9 @@
 <li>同理，要在c中使用汇编函数也只需要声明用到的函数来自外部即可<br>&#x3D;&gt;how？</li>
 <li><strong>汇编代码</strong>：<br>使用来自C的函数：<br>声明：</li>
 </ul>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">extern</span> function_from_C<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extern function_from_C</span><br></pre></td></tr></table></figure>
 <p>使用时：</p>
-<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autoit"><span class="hljs-built_in">call</span> function_from_C<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">call function_from_C</span><br></pre></td></tr></table></figure>
 
 <p>使用来自CPP的函数：</p>
 <ul>
@@ -407,19 +164,19 @@
 <li>因为C++支持函数重载，为了区别同名的重载函数，C++在编译时会进行名字修饰。也就是说，<code>function_from_CPP</code>编译后的标号不再是<code>function_from_CPP</code>，而是要<strong>带上额外的信息</strong>。而&#x3D;&#x3D;C代码编译后的标号还是原来的函数名&#x3D;&#x3D;。</li>
 <li>extern “C” 目的是告诉编译器按C代码规则编译，不加名字修饰。<br>在C++代码中声明：</li>
 </ul>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">functionFromCpp</span>()</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extern &quot;C&quot; void functionFromCpp();</span><br></pre></td></tr></table></figure>
 <p>在汇编代码中声明：</p>
-<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-keyword">extern</span> function_from_CPP<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extern function_from_CPP</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>C&#x2F;CPP：<br>要先在汇编代码中奖函数声明为 <code>global</code>。</li>
 </ul>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript"><span class="hljs-keyword">global</span> function_from_asm<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">global function_from_asm</span><br></pre></td></tr></table></figure>
 
 <p>C&#x2F;C++中声明其来自外部：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-function"><span class="hljs-keyword">extern</span> <span class="hljs-keyword">void</span> <span class="hljs-title">function_from_asm</span>()</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extern void function_from_asm();</span><br></pre></td></tr></table></figure>
 <p>在C++中需要声明为 <code>extern &quot;C&quot;</code> </p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs csharp"><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">function_from_asm</span>()</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extern &quot;C&quot; void function_from_asm();</span><br></pre></td></tr></table></figure>
 
 <h3 id="如果函数带返回值和参数"><a href="#如果函数带返回值和参数" class="headerlink" title="如果函数带返回值和参数"></a>如果函数带返回值和参数</h3><ul>
 <li>如果函数有<strong>参数</strong>，那么参数&#x3D;&#x3D;<strong>从右向左&#x3D;&#x3D;依次入栈</strong>。</li>
@@ -433,8 +190,8 @@
 <li>在文件<code>main.cpp</code>中调用汇编函数<code>function_from_asm</code>。</li>
 </ul>
 <p>指令：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus">gcc -o c_func<span class="hljs-selector-class">.o</span> -m32 -c c_func<span class="hljs-selector-class">.c</span><br>g++ -o cpp_func<span class="hljs-selector-class">.o</span> -m32 -c cpp_func<span class="hljs-selector-class">.cpp</span> <br>g++ -o <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span> -m32 -c <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.cpp</span><br>nasm -o asm_utils<span class="hljs-selector-class">.o</span> -f elf32 asm_utils<span class="hljs-selector-class">.asm</span><br>g++ -o <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.out</span> <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.o</span> c_func<span class="hljs-selector-class">.o</span> cpp_func<span class="hljs-selector-class">.o</span> asm_utils<span class="hljs-selector-class">.o</span> -m32<br></code></pre></td></tr></table></figure>
-<p><code>-f elf32</code>指定了nasm编译生成的文件格式是<code>ELF32</code>文件格式<br><img src="/img/file-20250402154026967.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gcc -o c_func.o -m32 -c c_func.c</span><br><span class="line">g++ -o cpp_func.o -m32 -c cpp_func.cpp </span><br><span class="line">g++ -o main.o -m32 -c main.cpp</span><br><span class="line">nasm -o asm_utils.o -f elf32 asm_utils.asm</span><br><span class="line">g++ -o main.out main.o c_func.o cpp_func.o asm_utils.o -m32</span><br></pre></td></tr></table></figure>
+<p><code>-f elf32</code>指定了nasm编译生成的文件格式是<code>ELF32</code>文件格式<br><img src="/img/file-20250402154026967.png"></p>
 <h3 id="Example2：内核加载"><a href="#Example2：内核加载" class="headerlink" title="Example2：内核加载"></a>Example2：内核加载</h3><p>项目结构：</p>
 <ul>
 <li><code>project/build</code>。存放Makefile，make之后生成的中间文件如<code>.o</code>，<code>.bin</code>等会放置在这里，目的是防止这些文件混在代码文件中。</li>
@@ -443,19 +200,19 @@
 <li><code>project/src</code>。存放<code>.c</code>，<code>.cpp</code>等函数实现的文件。</li>
 </ul>
 <p>不需要在.cpp文件中写出.h的具体地址，只需要在编译时指出include和.cpp文件的地址就行了。<br>编译指令中使用<code>-I</code>参数指明<strong>头文件的位置</strong>即可：</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">g</span>++ -o hello -<span class="hljs-selector-tag">I</span>../include ../<span class="hljs-attribute">src</span>/hello<span class="hljs-selector-class">.cpp</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -o hello -I../include ../src/hello.cpp</span><br></pre></td></tr></table></figure>
 
 <p>mbr &#x3D;&gt; bootloader &#x3D;&gt; kernel<br>进入内核后，定义内核起始点<br>src&#x2F;boot&#x2F;entry.asm：</p>
-<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs avrasm">extern setup_kernel<br><span class="hljs-symbol">enter_kernel:</span><br>    <span class="hljs-keyword">jmp</span> setup_kernel<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">extern setup_kernel</span><br><span class="line">enter_kernel:</span><br><span class="line">    jmp setup_kernel</span><br></pre></td></tr></table></figure>
 <p>在链接阶段巧妙地将<code>entry.asm</code>的代码放在内核代码的最开始部分，使得bootloader在执行跳转之后，转到的就是内核代码的起始指令，执行 <code>jmp setup_kernel</code> 。然后就跳转到了C++编写的函数<code>setup_kernel</code>，即可以使用c++来写内核了。</p>
 <p>运行代码：<br>way1：不使用makefile</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cd build<br><span class="hljs-comment"># 编译mbr和bootloader</span><br>nasm -o mbr.bin -f bin -I<span class="hljs-built_in">..</span>/include/ <span class="hljs-built_in">..</span>/src/boot/mbr.asm<br>nasm -o bootloader.bin -f bin -I<span class="hljs-built_in">..</span>/include/ <span class="hljs-built_in">..</span>/src/boot/bootloader.asm<br><span class="hljs-comment"># `-I`参数指定了头文件路径，`-f`指定了生成的文件格式是二进制的文件。</span><br><br><span class="hljs-comment"># 编译内核的代码，将所有的代码都统一编译成可重定位文件，然后再链接成一个可执行文件</span><br><span class="hljs-comment"># 编译 entry.asm和asm_utils.asm</span><br>nasm -o entry.obj -f elf32 <span class="hljs-built_in">..</span>/src/boot/entry.asm<br>nasm -o asm_utils.o -f elf32 <span class="hljs-built_in">..</span>/src/utils/asm_utils.asm<br><br><span class="hljs-comment"># 编译setup.cpp</span><br>g++ -g -Wall <span class="hljs-attribute">-march</span>=i386 -m32 -nostdlib -fno-builtin -ffreestanding -fno-pic -I<span class="hljs-built_in">..</span>/include -c <span class="hljs-built_in">..</span>/src/kernel/setup.cpp<br><br><span class="hljs-comment"># 链接生成可重定位文件：kernel.bin和kernel.o（只包含代码的文件和可执行文件）</span><br><br>ld -o kernel.o -melf_i386 -N entry.obj setup.o asm_utils.o -e enter_kernel -Ttext 0x00020000<br>ld -o kernel.bin -melf_i386 -N entry.obj setup.o asm_utils.o -e enter_kernel -Ttext 0x00020000 --oformat binary<br><br><span class="hljs-comment"># 最后将mbr.bin bootloader.bin kernel.bin写入硬盘</span><br><br>dd <span class="hljs-attribute">if</span>=mbr.bin <span class="hljs-attribute">of</span>=../run/hd.img <span class="hljs-attribute">bs</span>=512 <span class="hljs-attribute">count</span>=1 <span class="hljs-attribute">seek</span>=0 <span class="hljs-attribute">conv</span>=notrunc<br>dd <span class="hljs-attribute">if</span>=bootloader.bin <span class="hljs-attribute">of</span>=../run/hd.img <span class="hljs-attribute">bs</span>=512 <span class="hljs-attribute">count</span>=5 <span class="hljs-attribute">seek</span>=1 <span class="hljs-attribute">conv</span>=notrunc<br>dd <span class="hljs-attribute">if</span>=kernel.bin <span class="hljs-attribute">of</span>=../run/hd.img <span class="hljs-attribute">bs</span>=512 <span class="hljs-attribute">count</span>=200 <span class="hljs-attribute">seek</span>=6 <span class="hljs-attribute">conv</span>=notrunc<br><br><span class="hljs-comment"># 在run目录下启动</span><br><br>qemu-system-i386 -hda <span class="hljs-built_in">..</span>/run/hd.img -serial <span class="hljs-literal">null</span> -parallel stdio -no-reboot<br><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">cd build</span><br><span class="line"># 编译mbr和bootloader</span><br><span class="line">nasm -o mbr.bin -f bin -I../include/ ../src/boot/mbr.asm</span><br><span class="line">nasm -o bootloader.bin -f bin -I../include/ ../src/boot/bootloader.asm</span><br><span class="line"># `-I`参数指定了头文件路径，`-f`指定了生成的文件格式是二进制的文件。</span><br><span class="line"></span><br><span class="line"># 编译内核的代码，将所有的代码都统一编译成可重定位文件，然后再链接成一个可执行文件</span><br><span class="line"># 编译 entry.asm和asm_utils.asm</span><br><span class="line">nasm -o entry.obj -f elf32 ../src/boot/entry.asm</span><br><span class="line">nasm -o asm_utils.o -f elf32 ../src/utils/asm_utils.asm</span><br><span class="line"></span><br><span class="line"># 编译setup.cpp</span><br><span class="line">g++ -g -Wall -march=i386 -m32 -nostdlib -fno-builtin -ffreestanding -fno-pic -I../include -c ../src/kernel/setup.cpp</span><br><span class="line"></span><br><span class="line"># 链接生成可重定位文件：kernel.bin和kernel.o（只包含代码的文件和可执行文件）</span><br><span class="line"></span><br><span class="line">ld -o kernel.o -melf_i386 -N entry.obj setup.o asm_utils.o -e enter_kernel -Ttext 0x00020000</span><br><span class="line">ld -o kernel.bin -melf_i386 -N entry.obj setup.o asm_utils.o -e enter_kernel -Ttext 0x00020000 --oformat binary</span><br><span class="line"></span><br><span class="line"># 最后将mbr.bin bootloader.bin kernel.bin写入硬盘</span><br><span class="line"></span><br><span class="line">dd if=mbr.bin of=../run/hd.img bs=512 count=1 seek=0 conv=notrunc</span><br><span class="line">dd if=bootloader.bin of=../run/hd.img bs=512 count=5 seek=1 conv=notrunc</span><br><span class="line">dd if=kernel.bin of=../run/hd.img bs=512 count=200 seek=6 conv=notrunc</span><br><span class="line"></span><br><span class="line"># 在run目录下启动</span><br><span class="line"></span><br><span class="line">qemu-system-i386 -hda ../run/hd.img -serial null -parallel stdio -no-reboot</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>way2：使用makefile</p>
-<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs gauss">cd build<br><span class="hljs-built_in">make</span><br><span class="hljs-built_in">make</span> <span class="hljs-keyword">run</span><br></code></pre></td></tr></table></figure>
-<p><img src="/img/file-20250402165250552.png" srcset="/img/loading.gif" lazyload></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd build</span><br><span class="line">make</span><br><span class="line">make run</span><br></pre></td></tr></table></figure>
+<p><img src="/img/file-20250402165250552.png"></p>
 <p><strong>一些解释：</strong></p>
-<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">g++ -g -Wall -march<span class="hljs-operator">=</span><span class="hljs-type">i386</span> -m<span class="hljs-number">32</span> -nostdlib -fno-<span class="hljs-keyword">builtin</span> -ffreestanding -fno-pic -I../include -<span class="hljs-keyword">c</span> ../src/kernel/setup.cpp<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -g -Wall -march=i386 -m32 -nostdlib -fno-builtin -ffreestanding -fno-pic -I../include -c ../src/kernel/setup.cpp</span><br></pre></td></tr></table></figure>
 <p>参数介绍：</p>
 <ul>
 <li><code>-O0</code>告诉编译器<strong>不开启编译优化</strong>。（如果要开启有几种可以选择，O1,O2,O3…</li>
@@ -467,7 +224,7 @@
 <li><code>-I</code>指定了代码需要的头文件的目录。</li>
 <li><code>-c</code>表示生成可重定位文件。</li>
 </ul>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">ld -o kernel<span class="hljs-selector-class">.o</span> -melf_i386 -N entry<span class="hljs-selector-class">.obj</span> setup<span class="hljs-selector-class">.o</span> asm_utils<span class="hljs-selector-class">.o</span> -e enter_kernel -Ttext <span class="hljs-number">0</span>x00020000<br><br>ld -o kernel<span class="hljs-selector-class">.bin</span> -melf_i386 -N entry<span class="hljs-selector-class">.obj</span> setup<span class="hljs-selector-class">.o</span> asm_utils<span class="hljs-selector-class">.o</span> -e enter_kernel -Ttext <span class="hljs-number">0</span>x00020000 <span class="hljs-attr">--oformat</span> binary<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ld -o kernel.o -melf_i386 -N entry.obj setup.o asm_utils.o -e enter_kernel -Ttext 0x00020000</span><br><span class="line"></span><br><span class="line">ld -o kernel.bin -melf_i386 -N entry.obj setup.o asm_utils.o -e enter_kernel -Ttext 0x00020000 --oformat binary</span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>-m</code>参数指定<strong>模拟器为i386</strong>。</li>
 <li><code>-N</code>参数告诉链接器<strong>不要进行页对齐</strong>。</li>
@@ -693,7 +450,7 @@
 <li>中断服务程序处理完成，使用iret返回。</li>
 </ul>
 <h4 id="中断前的准备"><a href="#中断前的准备" class="headerlink" title="中断前的准备"></a>中断前的准备</h4><ul>
-<li><p>为了标识中断处理程序的位置，保护模式使用了中断描述符（64位）。<br><img src="/img/file-20250402171903443.png" srcset="/img/loading.gif" lazyload></p>
+<li><p>为了标识中断处理程序的位置，保护模式使用了中断描述符（64位）。<br><img src="/img/file-20250402171903443.png"></p>
 </li>
 <li><p>段选择子：中断程序所在段的选择子。</p>
 </li>
@@ -708,7 +465,7 @@
 <li><p>保留位：保留不使用。</p>
 </li>
 </ul>
-<p>中断描述符的结合被称为中断描述符表IDT，并存放在IDTR中。<br><img src="/img/file-20250402172029124.png" srcset="/img/loading.gif" lazyload><br>中断描述符最多有2^16&#x2F;2^3&#x3D;2^13<br>但CPU只能处理前256个中断，所以我们只会往IDT中放入256个中断描述符。<br>类似地，我们使用<strong>lidt指令</strong>对IDTR赋值<br><img src="/img/file-20250402172325228.png" srcset="/img/loading.gif" lazyload alt="使用lgdt为GDTR赋值"></p>
+<p>中断描述符的结合被称为中断描述符表IDT，并存放在IDTR中。<br><img src="/img/file-20250402172029124.png"><br>中断描述符最多有2^16&#x2F;2^3&#x3D;2^13<br>但CPU只能处理前256个中断，所以我们只会往IDT中放入256个中断描述符。<br>类似地，我们使用<strong>lidt指令</strong>对IDTR赋值<br><img src="/img/file-20250402172325228.png" alt="使用lgdt为GDTR赋值"></p>
 <h4 id="CPU检查是否有中断信号"><a href="#CPU检查是否有中断信号" class="headerlink" title="CPU检查是否有中断信号"></a>CPU检查是否有中断信号</h4><ul>
 <li>除了主动调用中断之外，CPU<strong>每执行完一条指令</strong>之后，就回去中断控制器8259A中检查是否有中断请求。</li>
 <li>若有中断请求，在相应的时钟脉冲到来时，CPU就会<strong>从总线上读取中断向量号</strong>。</li>
@@ -734,9 +491,9 @@
 <li>定义中断默认处理函数。</li>
 <li>初始化256个中断描述符。</li>
 </ul>
-<h4 id="中断管理器"><a href="#中断管理器" class="headerlink" title="中断管理器"></a>中断管理器</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> INTERRUPT_H</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> INTERRUPT_H</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;os_type.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InterruptManager</span></span><br><span class="hljs-class">&#123;</span><br>	private:<br>	    <span class="hljs-comment">// IDT起始地址</span><br>	    uint32 *IDT;<br>	    <br>	public:<br>	    InterruptManager();<br>	    <span class="hljs-comment">// 初始化</span><br>	    <span class="hljs-type">void</span> <span class="hljs-title function_">initialize</span><span class="hljs-params">()</span>;<br>	    <span class="hljs-comment">// 设置中断描述符</span><br>	    <span class="hljs-comment">// index   第index个描述符，index=0, 1, ..., 255</span><br>	    <span class="hljs-comment">// address 中断处理程序的起始地址</span><br>	    <span class="hljs-comment">// DPL     中断描述符的特权级</span><br>	    <span class="hljs-type">void</span> <span class="hljs-title function_">setInterruptDescriptor</span><span class="hljs-params">(uint32 index, uint32 address, byte DPL)</span>;<br>&#125;;<br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
+<h4 id="中断管理器"><a href="#中断管理器" class="headerlink" title="中断管理器"></a>中断管理器</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> INTERRUPT_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> INTERRUPT_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;os_type.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">InterruptManager</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	private:</span><br><span class="line">	    <span class="comment">// IDT起始地址</span></span><br><span class="line">	    uint32 *IDT;</span><br><span class="line">	    </span><br><span class="line">	public:</span><br><span class="line">	    InterruptManager();</span><br><span class="line">	    <span class="comment">// 初始化</span></span><br><span class="line">	    <span class="type">void</span> <span class="title function_">initialize</span><span class="params">()</span>;</span><br><span class="line">	    <span class="comment">// 设置中断描述符</span></span><br><span class="line">	    <span class="comment">// index   第index个描述符，index=0, 1, ..., 255</span></span><br><span class="line">	    <span class="comment">// address 中断处理程序的起始地址</span></span><br><span class="line">	    <span class="comment">// DPL     中断描述符的特权级</span></span><br><span class="line">	    <span class="type">void</span> <span class="title function_">setInterruptDescriptor</span><span class="params">(uint32 index, uint32 address, byte DPL)</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
-<h5 id="初始化IDT-initialize"><a href="#初始化IDT-initialize" class="headerlink" title="初始化IDT: initialize()"></a>初始化IDT: <code>initialize()</code></h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">InterruptManager::initialize</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-comment">// 初始化IDT</span><br>    IDT = (uint32 *)IDT_START_ADDRESS;<br>    asm_lidt(IDT_START_ADDRESS, <span class="hljs-number">256</span> * <span class="hljs-number">8</span> - <span class="hljs-number">1</span>);<br><br>    <span class="hljs-keyword">for</span> (uint i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">256</span>; ++i)<br>    &#123;<br>        setInterruptDescriptor(i, (uint32)asm_interrupt_empty_handler, <span class="hljs-number">0</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="初始化IDT-initialize"><a href="#初始化IDT-initialize" class="headerlink" title="初始化IDT: initialize()"></a>初始化IDT: <code>initialize()</code></h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">InterruptManager::initialize</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 初始化IDT</span></span><br><span class="line">    IDT = (uint32 *)IDT_START_ADDRESS;</span><br><span class="line">    asm_lidt(IDT_START_ADDRESS, <span class="number">256</span> * <span class="number">8</span> - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (uint i = <span class="number">0</span>; i &lt; <span class="number">256</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        setInterruptDescriptor(i, (uint32)asm_interrupt_empty_handler, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>设置IDT地址，然后初始化256个中断描述符（每个8字节）</p>
 <ul>
 <li>IDT_START_ADDRESS&#x3D;…</li>
@@ -760,14 +517,14 @@
 <li>DPL&#x3D;0表示特权级0.</li>
 <li>代码段选择子等于bootloader中的代码段选择子，也就是寻址4GB空间的代码段选择子。</li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 设置中断描述符</span><br><span class="hljs-comment">// index   第index个描述符，index=0, 1, ..., 255</span><br><span class="hljs-comment">// address 中断处理程序的起始地址</span><br><span class="hljs-comment">// DPL     中断描述符的特权级</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">InterruptManager::setInterruptDescriptor</span><span class="hljs-params">(uint32 index, uint32 address, byte DPL)</span><br>&#123;<br>    IDT[index * <span class="hljs-number">2</span>] = (CODE_SELECTOR &lt;&lt; <span class="hljs-number">16</span>) | (address &amp; <span class="hljs-number">0xffff</span>);<br>    IDT[index * <span class="hljs-number">2</span> + <span class="hljs-number">1</span>] = (address &amp; <span class="hljs-number">0xffff0000</span>) | (<span class="hljs-number">0x1</span> &lt;&lt; <span class="hljs-number">15</span>) | (DPL &lt;&lt; <span class="hljs-number">13</span>) | (<span class="hljs-number">0xe</span> &lt;&lt; <span class="hljs-number">8</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置中断描述符</span></span><br><span class="line"><span class="comment">// index   第index个描述符，index=0, 1, ..., 255</span></span><br><span class="line"><span class="comment">// address 中断处理程序的起始地址</span></span><br><span class="line"><span class="comment">// DPL     中断描述符的特权级</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">InterruptManager::setInterruptDescriptor</span><span class="params">(uint32 index, uint32 address, byte DPL)</span></span><br><span class="line">&#123;</span><br><span class="line">    IDT[index * <span class="number">2</span>] = (CODE_SELECTOR &lt;&lt; <span class="number">16</span>) | (address &amp; <span class="number">0xffff</span>);</span><br><span class="line">    IDT[index * <span class="number">2</span> + <span class="number">1</span>] = (address &amp; <span class="number">0xffff0000</span>) | (<span class="number">0x1</span> &lt;&lt; <span class="number">15</span>) | (DPL &lt;&lt; <span class="number">13</span>) | (<span class="number">0xe</span> &lt;&lt; <span class="number">8</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
 <li>IDT是起始地址指针</li>
 </ul>
-<h5 id="中断默认处理函数"><a href="#中断默认处理函数" class="headerlink" title="中断默认处理函数"></a>中断默认处理函数</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs asm">ASM_UNHANDLED_INTERRUPT_INFO db &#x27;Unhandled interrupt happened, halt...&#x27;<br>                             db 0<br><br>; void asm_unhandled_interrupt()<br>asm_unhandled_interrupt:<br>    cli ;关中断<br>    mov esi, ASM_UNHANDLED_INTERRUPT_INFO ;提示字符串<br>    xor ebx, ebx<br>    mov ah, 0x03<br>.output_information:<br>    cmp byte[esi], 0<br>    je .end<br>    mov al, byte[esi]<br>    mov word[gs:bx], ax<br>    inc esi<br>    add ebx, 2<br>    jmp .output_information<br>.end:<br>    jmp $<br></code></pre></td></tr></table></figure>
+<h5 id="中断默认处理函数"><a href="#中断默认处理函数" class="headerlink" title="中断默认处理函数"></a>中断默认处理函数</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">ASM_UNHANDLED_INTERRUPT_INFO db &#x27;Unhandled interrupt happened, halt...&#x27;</span><br><span class="line">                             db 0</span><br><span class="line"></span><br><span class="line">; void asm_unhandled_interrupt()</span><br><span class="line">asm_unhandled_interrupt:</span><br><span class="line">    cli ;关中断</span><br><span class="line">    mov esi, ASM_UNHANDLED_INTERRUPT_INFO ;提示字符串</span><br><span class="line">    xor ebx, ebx</span><br><span class="line">    mov ah, 0x03</span><br><span class="line">.output_information:</span><br><span class="line">    cmp byte[esi], 0</span><br><span class="line">    je .end</span><br><span class="line">    mov al, byte[esi]</span><br><span class="line">    mov word[gs:bx], ax</span><br><span class="line">    inc esi</span><br><span class="line">    add ebx, 2</span><br><span class="line">    jmp .output_information</span><br><span class="line">.end:</span><br><span class="line">    jmp $</span><br></pre></td></tr></table></figure>
 
-<p><img src="/img/file-20250405172317304.png" srcset="/img/loading.gif" lazyload></p>
-<p><img src="/img/file-20250405172728632.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/img/file-20250405172317304.png"></p>
+<p><img src="/img/file-20250405172728632.png"></p>
 <h2 id="8259A-芯片（可编程中断控制器）"><a href="#8259A-芯片（可编程中断控制器）" class="headerlink" title="8259A 芯片（可编程中断控制器）"></a>8259A 芯片（可编程中断控制器）</h2><blockquote>
 <p>[!NOTE]<br>硬中断和软中断指示调用方式不同，而中断的初始化和中断描述符的设置方式是完全相同的</p>
 </blockquote>
@@ -776,7 +533,7 @@
 <blockquote>
 <p>[!NOTE]<br>四个ICW必须严格按照顺序依次发送</p>
 </blockquote>
-<h4 id="ICW结构"><a href="#ICW结构" class="headerlink" title="ICW结构"></a>ICW结构</h4><h5 id="ICW1：发送到0x20端口（主片）和0xA0端口（从片）"><a href="#ICW1：发送到0x20端口（主片）和0xA0端口（从片）" class="headerlink" title="ICW1：发送到0x20端口（主片）和0xA0端口（从片）"></a>ICW1：发送到0x20端口（主片）和0xA0端口（从片）</h5><p><img src="/img/file-20250405173725507.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="ICW结构"><a href="#ICW结构" class="headerlink" title="ICW结构"></a>ICW结构</h4><h5 id="ICW1：发送到0x20端口（主片）和0xA0端口（从片）"><a href="#ICW1：发送到0x20端口（主片）和0xA0端口（从片）" class="headerlink" title="ICW1：发送到0x20端口（主片）和0xA0端口（从片）"></a>ICW1：发送到0x20端口（主片）和0xA0端口（从片）</h5><p><img src="/img/file-20250405173725507.png"></p>
 <ul>
 <li><p>I位：若<strong>置1</strong>，表示<strong>ICW4会被发送</strong>。置0表示ICW4不会被发送。我们会发送ICW4，所以I位置1。</p>
 </li>
@@ -785,19 +542,19 @@
 <li><p>M位：指出中断请求的<strong>电平触发模式</strong>，在PC机中，M位应当被置0，表示采用“<strong>边沿触发模式</strong>”。</p>
 </li>
 </ul>
-<h5 id="ICW2：发送到0x21（主片）和0xA1（从片）端口"><a href="#ICW2：发送到0x21（主片）和0xA1（从片）端口" class="headerlink" title="ICW2：发送到0x21（主片）和0xA1（从片）端口"></a>ICW2：发送到0x21（主片）和0xA1（从片）端口</h5><p><img src="/img/file-20250405173905771.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="ICW2：发送到0x21（主片）和0xA1（从片）端口"><a href="#ICW2：发送到0x21（主片）和0xA1（从片）端口" class="headerlink" title="ICW2：发送到0x21（主片）和0xA1（从片）端口"></a>ICW2：发送到0x21（主片）和0xA1（从片）端口</h5><p><img src="/img/file-20250405173905771.png"></p>
 <p>对于主片和从片，ICW2都是用来表示当&#x3D;&#x3D;IRQ0&#x3D;&#x3D;的中断发生时，8259A会向CPU提供的中断向量号。</p>
 <p>此后，IRQ0，IRQ1，…，IRQ7的<strong>中断号</strong>为ICW2，ICW2+1，ICW2+2，…，ICW2+7。</p>
 <p>&#x3D;&#x3D;ICW2的低3位必须是0&#x3D;&#x3D;</p>
 <h5 id="ICW3：发送到0x21（主片）和0xA1（从片）端口"><a href="#ICW3：发送到0x21（主片）和0xA1（从片）端口" class="headerlink" title="ICW3：发送到0x21（主片）和0xA1（从片）端口"></a>ICW3：发送到0x21（主片）和0xA1（从片）端口</h5><ul>
 <li>ICW3只有在级联工作时才会被发送，主要用来建立两处PIC之间的连接，对于主片和从片，其结构是不一样的</li>
-<li>主片：<br><img src="/img/file-20250405174025929.png" srcset="/img/loading.gif" lazyload><br>上面的相应位被置1，则相应的IRQ线就被用作于与从片相连，若置0则表示被连接到外围设备。</li>
+<li>主片：<br><img src="/img/file-20250405174025929.png"><br>上面的相应位被置1，则相应的IRQ线就被用作于与从片相连，若置0则表示被连接到外围设备。</li>
 </ul>
 <p>从片被连接到主片的IRQ2位，所以主片只有第2位被置1&#x3D;&gt;主片<strong>ICW3&#x3D;0x04</strong></p>
 <ul>
-<li>从片：<br><img src="/img/file-20250405174118941.png" srcset="/img/loading.gif" lazyload><br>IRQ指出是主片的哪一个IRQ连接到了从片，这里，从片的<strong>ICW3&#x3D;0x02</strong>，即IRQ&#x3D;0x02，其他位置均为0。</li>
+<li>从片：<br><img src="/img/file-20250405174118941.png"><br>IRQ指出是主片的哪一个IRQ连接到了从片，这里，从片的<strong>ICW3&#x3D;0x02</strong>，即IRQ&#x3D;0x02，其他位置均为0。</li>
 </ul>
-<h5 id="ICW4：发送到0x21（主片）和0xA1（从片）端口"><a href="#ICW4：发送到0x21（主片）和0xA1（从片）端口" class="headerlink" title="ICW4：发送到0x21（主片）和0xA1（从片）端口"></a>ICW4：发送到0x21（主片）和0xA1（从片）端口</h5><p><img src="/img/file-20250405174414639.png" srcset="/img/loading.gif" lazyload></p>
+<h5 id="ICW4：发送到0x21（主片）和0xA1（从片）端口"><a href="#ICW4：发送到0x21（主片）和0xA1（从片）端口" class="headerlink" title="ICW4：发送到0x21（主片）和0xA1（从片）端口"></a>ICW4：发送到0x21（主片）和0xA1（从片）端口</h5><p><img src="/img/file-20250405174414639.png"></p>
 <ul>
 <li><p>EOI位：若置1表示<strong>自动结束</strong>，在PC位上这位需要被清零，详细原因在后面再提到。</p>
 </li>
@@ -812,16 +569,16 @@
 <p>[!NOTE]<br><strong>对于8259A芯片产生的中断，我们需要手动在中断返回前向8259A发送EOI消息。如果没有发送EOI消息，那么此后的中断便不会被响应</strong></p>
 </blockquote>
 <p>发送EOI消息的示例代码：</p>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-comment">;发送OCW2字</span><br><span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0x20</span><br><span class="hljs-keyword">out</span> <span class="hljs-number">0x20</span>, <span class="hljs-built_in">al</span><br><span class="hljs-keyword">out</span> <span class="hljs-number">0xa0</span>, <span class="hljs-built_in">al</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">;发送OCW2字</span><br><span class="line">mov al, 0x20</span><br><span class="line">out 0x20, al</span><br><span class="line">out 0xa0, al</span><br></pre></td></tr></table></figure>
 <ul>
 <li>8259A的中断处理函数末尾必须加上这段代码，否则中断不会被响应</li>
 </ul>
 <h3 id="优先级、中断屏蔽字和EOI消息的动态改变"><a href="#优先级、中断屏蔽字和EOI消息的动态改变" class="headerlink" title="优先级、中断屏蔽字和EOI消息的动态改变"></a>优先级、中断屏蔽字和EOI消息的动态改变</h3><p><strong>初始化</strong>8259A后，可以在任何时优先级、中断屏蔽字和EOI消息的动态改变候<strong>发送OCW</strong>（Operation Command Words）字来实现</p>
 <p>OCW有三个：OCW1，OCW2，OCW3</p>
 <ul>
-<li><p>OCW1：中断屏蔽，发送到0x21（主片）或0xA1（从片）端口<br><img src="/img/file-20250409142738523.png" srcset="/img/loading.gif" lazyload><br>位置1表示<strong>屏蔽相应的IRQ请求</strong>。<br>在初始化8259A的代码末尾，将0xFF发送到0x21和0xA1端口。这是因为我们还没建立起处理8259A芯片的中断处理函数，所以暂时屏蔽主片和从片的所有中断。</p>
+<li><p>OCW1：中断屏蔽，发送到0x21（主片）或0xA1（从片）端口<br><img src="/img/file-20250409142738523.png"><br>位置1表示<strong>屏蔽相应的IRQ请求</strong>。<br>在初始化8259A的代码末尾，将0xFF发送到0x21和0xA1端口。这是因为我们还没建立起处理8259A芯片的中断处理函数，所以暂时屏蔽主片和从片的所有中断。</p>
 </li>
-<li><p>OCW2：一般用于<strong>发送EOI消息</strong>，发送到0x20（主片）或0xA0（从片）端口。<br><img src="/img/file-20250409142845513.png" srcset="/img/loading.gif" lazyload><br>EOI消息是发送<code>0x20</code>，即<strong>只有EOI位是1</strong>，<strong>其他位置为0</strong>。</p>
+<li><p>OCW2：一般用于<strong>发送EOI消息</strong>，发送到0x20（主片）或0xA0（从片）端口。<br><img src="/img/file-20250409142845513.png"><br>EOI消息是发送<code>0x20</code>，即<strong>只有EOI位是1</strong>，<strong>其他位置为0</strong>。</p>
 </li>
 <li><p>OCW3：用于<u>设置下一个读端口动作将要读取的IRR或ISR</u>，我们不需要使用。</p>
 </li>
@@ -834,22 +591,22 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">interrupt_handler_example:</span><br>	<span class="hljs-keyword">pushad</span><br>	... <span class="hljs-comment">; 中断处理程序</span><br>	<span class="hljs-keyword">popad</span><br>	<br>	<span class="hljs-comment">; 非必须</span><br>	<br>	<span class="hljs-comment">; 1 弹出错误码，没有则不可以加入</span><br>	<span class="hljs-keyword">add</span> <span class="hljs-built_in">esp</span>, <span class="hljs-number">4</span><br>	<br>	<span class="hljs-comment">; 2 对于8259A芯片产生的中断，最后需要发送EOI消息，若不是则不可以加入</span><br>	<span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0x20</span><br>	<span class="hljs-keyword">out</span> <span class="hljs-number">0x20</span>, <span class="hljs-built_in">al</span><br>	<span class="hljs-keyword">out</span> <span class="hljs-number">0xa0</span>, <span class="hljs-built_in">al</span><br><br>	<span class="hljs-keyword">iret</span> <span class="hljs-comment">;中断返回</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">interrupt_handler_example:</span><br><span class="line">	pushad</span><br><span class="line">	... ; 中断处理程序</span><br><span class="line">	popad</span><br><span class="line">	</span><br><span class="line">	; 非必须</span><br><span class="line">	</span><br><span class="line">	; 1 弹出错误码，没有则不可以加入</span><br><span class="line">	add esp, 4</span><br><span class="line">	</span><br><span class="line">	; 2 对于8259A芯片产生的中断，最后需要发送EOI消息，若不是则不可以加入</span><br><span class="line">	mov al, 0x20</span><br><span class="line">	out 0x20, al</span><br><span class="line">	out 0xa0, al</span><br><span class="line"></span><br><span class="line">	iret ;中断返回</span><br></pre></td></tr></table></figure>
 
-<h3 id="Example4-8259A编程"><a href="#Example4-8259A编程" class="headerlink" title="Example4 8259A编程"></a>Example4 8259A编程</h3><p><img src="/img/file-20250409144538936.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="Example4-8259A编程"><a href="#Example4-8259A编程" class="headerlink" title="Example4 8259A编程"></a>Example4 8259A编程</h3><p><img src="/img/file-20250409144538936.png"></p>
 <ul>
 <li>初始化8259A芯片：</li>
 </ul>
-<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs ceylon"><span class="hljs-keyword">void</span> InterruptManager::initialize<span class="hljs-number">8259</span>A()<br>&#123;<br>    <span class="hljs-comment">// ICW 1</span><br>    asm<span class="hljs-number">_</span><span class="hljs-keyword">out</span><span class="hljs-number">_p</span>ort(<span class="hljs-number">0</span>x<span class="hljs-number">20</span>, <span class="hljs-number">0</span>x<span class="hljs-number">11</span>);<br>    asm<span class="hljs-number">_</span><span class="hljs-keyword">out</span><span class="hljs-number">_p</span>ort(<span class="hljs-number">0</span>xa<span class="hljs-number">0</span>, <span class="hljs-number">0</span>x<span class="hljs-number">11</span>);<br>    <span class="hljs-comment">// ICW 2</span><br>    IRQ<span class="hljs-number">0_8259</span>A<span class="hljs-number">_M</span>ASTER = <span class="hljs-number">0</span>x<span class="hljs-number">20</span>;<br>    IRQ<span class="hljs-number">0_8259</span>A<span class="hljs-number">_</span>SLAVE = <span class="hljs-number">0</span>x<span class="hljs-number">28</span>;<br>    asm<span class="hljs-number">_</span><span class="hljs-keyword">out</span><span class="hljs-number">_p</span>ort(<span class="hljs-number">0</span>x<span class="hljs-number">21</span>, IRQ<span class="hljs-number">0_8259</span>A<span class="hljs-number">_M</span>ASTER);<br>    asm<span class="hljs-number">_</span><span class="hljs-keyword">out</span><span class="hljs-number">_p</span>ort(<span class="hljs-number">0</span>xa<span class="hljs-number">1</span>, IRQ<span class="hljs-number">0_8259</span>A<span class="hljs-number">_</span>SLAVE);<br>    <span class="hljs-comment">// ICW 3</span><br>    asm<span class="hljs-number">_</span><span class="hljs-keyword">out</span><span class="hljs-number">_p</span>ort(<span class="hljs-number">0</span>x<span class="hljs-number">21</span>, <span class="hljs-number">4</span>);<br>    asm<span class="hljs-number">_</span><span class="hljs-keyword">out</span><span class="hljs-number">_p</span>ort(<span class="hljs-number">0</span>xa<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);<br>    <span class="hljs-comment">// ICW 4</span><br>    asm<span class="hljs-number">_</span><span class="hljs-keyword">out</span><span class="hljs-number">_p</span>ort(<span class="hljs-number">0</span>x<span class="hljs-number">21</span>, <span class="hljs-number">1</span>);<br>    asm<span class="hljs-number">_</span><span class="hljs-keyword">out</span><span class="hljs-number">_p</span>ort(<span class="hljs-number">0</span>xa<span class="hljs-number">1</span>, <span class="hljs-number">1</span>);<br><br>    <span class="hljs-comment">// OCW 1 屏蔽主片所有中断，但主片的IRQ2需要开启</span><br>    asm<span class="hljs-number">_</span><span class="hljs-keyword">out</span><span class="hljs-number">_p</span>ort(<span class="hljs-number">0</span>x<span class="hljs-number">21</span>, <span class="hljs-number">0</span>xfb);<br>    <span class="hljs-comment">// OCW 1 屏蔽从片所有中断</span><br>    asm<span class="hljs-number">_</span><span class="hljs-keyword">out</span><span class="hljs-number">_p</span>ort(<span class="hljs-number">0</span>xa<span class="hljs-number">1</span>, <span class="hljs-number">0</span>xff);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void InterruptManager::initialize8259A()</span><br><span class="line">&#123;</span><br><span class="line">    // ICW 1</span><br><span class="line">    asm_out_port(0x20, 0x11);</span><br><span class="line">    asm_out_port(0xa0, 0x11);</span><br><span class="line">    // ICW 2</span><br><span class="line">    IRQ0_8259A_MASTER = 0x20;</span><br><span class="line">    IRQ0_8259A_SLAVE = 0x28;</span><br><span class="line">    asm_out_port(0x21, IRQ0_8259A_MASTER);</span><br><span class="line">    asm_out_port(0xa1, IRQ0_8259A_SLAVE);</span><br><span class="line">    // ICW 3</span><br><span class="line">    asm_out_port(0x21, 4);</span><br><span class="line">    asm_out_port(0xa1, 2);</span><br><span class="line">    // ICW 4</span><br><span class="line">    asm_out_port(0x21, 1);</span><br><span class="line">    asm_out_port(0xa1, 1);</span><br><span class="line"></span><br><span class="line">    // OCW 1 屏蔽主片所有中断，但主片的IRQ2需要开启</span><br><span class="line">    asm_out_port(0x21, 0xfb);</span><br><span class="line">    // OCW 1 屏蔽从片所有中断</span><br><span class="line">    asm_out_port(0xa1, 0xff);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>初始化8259A芯片的过程是通过设置一系列的ICW字来完成的。由于我们并未建立处理8259A中断的任何函数，因此在初始化的最后，我们需要屏蔽主片和从片的所有中断。</p>
 <ul>
 <li><code>asm_out_port</code> 是对 <code>out</code> 指令的封装</li>
 </ul>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">asm_out_port:</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">ebp</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ebp</span>, <span class="hljs-built_in">esp</span><br><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">edx</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">eax</span><br><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">edx</span>, [<span class="hljs-built_in">ebp</span> + <span class="hljs-number">4</span> * <span class="hljs-number">2</span>] <span class="hljs-comment">; port</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">eax</span>, [<span class="hljs-built_in">ebp</span> + <span class="hljs-number">4</span> * <span class="hljs-number">3</span>] <span class="hljs-comment">; value</span><br>    <span class="hljs-keyword">out</span> <span class="hljs-built_in">dx</span>, <span class="hljs-built_in">al</span><br>    <br>    <span class="hljs-keyword">pop</span> <span class="hljs-built_in">eax</span><br>    <span class="hljs-keyword">pop</span> <span class="hljs-built_in">edx</span><br>    <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ebp</span><br>    <span class="hljs-keyword">ret</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">asm_out_port:</span><br><span class="line">    push ebp</span><br><span class="line">    mov ebp, esp</span><br><span class="line"></span><br><span class="line">    push edx</span><br><span class="line">    push eax</span><br><span class="line"></span><br><span class="line">    mov edx, [ebp + 4 * 2] ; port</span><br><span class="line">    mov eax, [ebp + 4 * 3] ; value</span><br><span class="line">    out dx, al</span><br><span class="line">    </span><br><span class="line">    pop eax</span><br><span class="line">    pop edx</span><br><span class="line">    pop ebp</span><br><span class="line">    ret</span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>asm_in_port</code> 是对 <code>in</code> 指令的封装</li>
 </ul>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-comment">; void asm_in_port(uint16 port, uint8 *value)</span><br><span class="hljs-symbol">asm_in_port:</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">ebp</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ebp</span>, <span class="hljs-built_in">esp</span><br><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">edx</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">eax</span><br>    <span class="hljs-keyword">push</span> <span class="hljs-built_in">ebx</span><br><br>    <span class="hljs-keyword">xor</span> <span class="hljs-built_in">eax</span>, <span class="hljs-built_in">eax</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">edx</span>, [<span class="hljs-built_in">ebp</span> + <span class="hljs-number">4</span> * <span class="hljs-number">2</span>] <span class="hljs-comment">; port</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">ebx</span>, [<span class="hljs-built_in">ebp</span> + <span class="hljs-number">4</span> * <span class="hljs-number">3</span>] <span class="hljs-comment">; *value</span><br><br>    <span class="hljs-keyword">in</span> <span class="hljs-built_in">al</span>, <span class="hljs-built_in">dx</span><br>    <span class="hljs-keyword">mov</span> [<span class="hljs-built_in">ebx</span>], <span class="hljs-built_in">al</span><br><br>    <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ebx</span><br>    <span class="hljs-keyword">pop</span> <span class="hljs-built_in">eax</span><br>    <span class="hljs-keyword">pop</span> <span class="hljs-built_in">edx</span><br>    <span class="hljs-keyword">pop</span> <span class="hljs-built_in">ebp</span><br>    <span class="hljs-keyword">ret</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">; void asm_in_port(uint16 port, uint8 *value)</span><br><span class="line">asm_in_port:</span><br><span class="line">    push ebp</span><br><span class="line">    mov ebp, esp</span><br><span class="line"></span><br><span class="line">    push edx</span><br><span class="line">    push eax</span><br><span class="line">    push ebx</span><br><span class="line"></span><br><span class="line">    xor eax, eax</span><br><span class="line">    mov edx, [ebp + 4 * 2] ; port</span><br><span class="line">    mov ebx, [ebp + 4 * 3] ; *value</span><br><span class="line"></span><br><span class="line">    in al, dx</span><br><span class="line">    mov [ebx], al</span><br><span class="line"></span><br><span class="line">    pop ebx</span><br><span class="line">    pop eax</span><br><span class="line">    pop edx</span><br><span class="line">    pop ebp</span><br><span class="line">    ret</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>处理时钟中断：主片的IRQ0中断<ul>
@@ -864,7 +621,7 @@
 </li>
 </ul>
 <p>&#x3D;&gt;编写中断处理函数：<br>不再使用放置字符到显存地址的方式来显示字符，而是去封装一个函数来处理屏幕输出的类 <code>STDIO</code> </p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> STDIO_H</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> STDIO_H</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;os_type.h&quot;</span></span><br><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">STDIO</span></span><br><span class="hljs-class">&#123;</span><br>private:<br>    uint8 *screen;<br><br>public:<br>    STDIO();<br>    <span class="hljs-comment">// 初始化函数</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">initialize</span><span class="hljs-params">()</span>;<br>    <span class="hljs-comment">// 打印字符c，颜色color到位置(x,y)</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">print</span><span class="hljs-params">(uint x, uint y, uint8 c, uint8 color)</span>;<br>    <span class="hljs-comment">// 打印字符c，颜色color到光标位置</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">print</span><span class="hljs-params">(uint8 c, uint8 color)</span>;<br>    <span class="hljs-comment">// 打印字符c，颜色默认到光标位置</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">print</span><span class="hljs-params">(uint8 c)</span>;<br>    <span class="hljs-comment">// 移动光标到一维位置</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">moveCursor</span><span class="hljs-params">(uint position)</span>;<br>    <span class="hljs-comment">// 移动光标到二维位置</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">moveCursor</span><span class="hljs-params">(uint x, uint y)</span>;<br>    <span class="hljs-comment">// 获取光标位置</span><br>    uint <span class="hljs-title function_">getCursor</span><span class="hljs-params">()</span>;<br><br>public:<br>    <span class="hljs-comment">// 滚屏</span><br>    <span class="hljs-type">void</span> <span class="hljs-title function_">rollUp</span><span class="hljs-params">()</span>;<br>&#125;;<br><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> STDIO_H</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> STDIO_H</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;os_type.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">STDIO</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">private:</span><br><span class="line">    uint8 *screen;</span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    STDIO();</span><br><span class="line">    <span class="comment">// 初始化函数</span></span><br><span class="line">    <span class="type">void</span> <span class="title function_">initialize</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">// 打印字符c，颜色color到位置(x,y)</span></span><br><span class="line">    <span class="type">void</span> <span class="title function_">print</span><span class="params">(uint x, uint y, uint8 c, uint8 color)</span>;</span><br><span class="line">    <span class="comment">// 打印字符c，颜色color到光标位置</span></span><br><span class="line">    <span class="type">void</span> <span class="title function_">print</span><span class="params">(uint8 c, uint8 color)</span>;</span><br><span class="line">    <span class="comment">// 打印字符c，颜色默认到光标位置</span></span><br><span class="line">    <span class="type">void</span> <span class="title function_">print</span><span class="params">(uint8 c)</span>;</span><br><span class="line">    <span class="comment">// 移动光标到一维位置</span></span><br><span class="line">    <span class="type">void</span> <span class="title function_">moveCursor</span><span class="params">(uint position)</span>;</span><br><span class="line">    <span class="comment">// 移动光标到二维位置</span></span><br><span class="line">    <span class="type">void</span> <span class="title function_">moveCursor</span><span class="params">(uint x, uint y)</span>;</span><br><span class="line">    <span class="comment">// 获取光标位置</span></span><br><span class="line">    uint <span class="title function_">getCursor</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">public:</span><br><span class="line">    <span class="comment">// 滚屏</span></span><br><span class="line">    <span class="type">void</span> <span class="title function_">rollUp</span><span class="params">()</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>处理光标位置<ul>
@@ -874,18 +631,18 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">STDIO::moveCursor</span><span class="hljs-params">(uint position)</span><br>&#123;<br>    <span class="hljs-keyword">if</span> (position &gt;= <span class="hljs-number">80</span> * <span class="hljs-number">25</span>) <span class="hljs-comment">//判断是否溢出</span><br>    &#123;<br>        <span class="hljs-keyword">return</span>;<br>    &#125;<br><br>    uint8 temp;<br><br>    <span class="hljs-comment">// 处理高8位</span><br>    temp = (position &gt;&gt; <span class="hljs-number">8</span>) &amp; <span class="hljs-number">0xff</span>;<br>    asm_out_port(<span class="hljs-number">0x3d4</span>, <span class="hljs-number">0x0e</span>);<br>    asm_out_port(<span class="hljs-number">0x3d5</span>, temp);<span class="hljs-comment">//out--写入</span><br><br>    <span class="hljs-comment">// 处理低8位</span><br>    temp = position &amp; <span class="hljs-number">0xff</span>;<br>    asm_out_port(<span class="hljs-number">0x3d4</span>, <span class="hljs-number">0x0f</span>);<br>    asm_out_port(<span class="hljs-number">0x3d5</span>, temp);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">STDIO::moveCursor</span><span class="params">(uint position)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (position &gt;= <span class="number">80</span> * <span class="number">25</span>) <span class="comment">//判断是否溢出</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    uint8 temp;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 处理高8位</span></span><br><span class="line">    temp = (position &gt;&gt; <span class="number">8</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line">    asm_out_port(<span class="number">0x3d4</span>, <span class="number">0x0e</span>);</span><br><span class="line">    asm_out_port(<span class="number">0x3d5</span>, temp);<span class="comment">//out--写入</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 处理低8位</span></span><br><span class="line">    temp = position &amp; <span class="number">0xff</span>;</span><br><span class="line">    asm_out_port(<span class="number">0x3d4</span>, <span class="number">0x0f</span>);</span><br><span class="line">    asm_out_port(<span class="number">0x3d5</span>, temp);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>获取光标：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c">uint <span class="hljs-title function_">STDIO::getCursor</span><span class="hljs-params">()</span><br>&#123;<br>    uint pos;<br>    uint8 temp;<br><br>    pos = <span class="hljs-number">0</span>;<br>    temp = <span class="hljs-number">0</span>;<br>    <span class="hljs-comment">// 处理高8位</span><br>    asm_out_port(<span class="hljs-number">0x3d4</span>, <span class="hljs-number">0x0e</span>);<br>    asm_in_port(<span class="hljs-number">0x3d5</span>, &amp;temp);<span class="hljs-comment">//in--读取</span><br>    pos = ((uint)temp) &lt;&lt; <span class="hljs-number">8</span>;<br><br>    <span class="hljs-comment">// 处理低8位</span><br>    asm_out_port(<span class="hljs-number">0x3d4</span>, <span class="hljs-number">0x0f</span>);<br>    asm_in_port(<span class="hljs-number">0x3d5</span>, &amp;temp);<br>    pos = pos | ((uint)temp);<br><br>    <span class="hljs-keyword">return</span> pos;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">uint <span class="title function_">STDIO::getCursor</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    uint pos;</span><br><span class="line">    uint8 temp;</span><br><span class="line"></span><br><span class="line">    pos = <span class="number">0</span>;</span><br><span class="line">    temp = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 处理高8位</span></span><br><span class="line">    asm_out_port(<span class="number">0x3d4</span>, <span class="number">0x0e</span>);</span><br><span class="line">    asm_in_port(<span class="number">0x3d5</span>, &amp;temp);<span class="comment">//in--读取</span></span><br><span class="line">    pos = ((uint)temp) &lt;&lt; <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 处理低8位</span></span><br><span class="line">    asm_out_port(<span class="number">0x3d4</span>, <span class="number">0x0f</span>);</span><br><span class="line">    asm_in_port(<span class="number">0x3d5</span>, &amp;temp);</span><br><span class="line">    pos = pos | ((uint)temp);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> pos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>中断处理函数</li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 中断处理函数</span><br><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-type">void</span> <span class="hljs-title function_">c_time_interrupt_handler</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-comment">// 清空屏幕</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">80</span>; ++i)<br>    &#123;<br>        stdio.print(<span class="hljs-number">0</span>, i, <span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-number">0x07</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// 输出中断发生的次数</span><br>    ++times;<br>    <span class="hljs-type">char</span> str[] = <span class="hljs-string">&quot;interrupt happend: &quot;</span>;<br>    <span class="hljs-type">char</span> number[<span class="hljs-number">10</span>];<br>    <span class="hljs-type">int</span> temp = times;<br><br>    <span class="hljs-comment">// 将数字转换为字符串表示</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; ++i ) &#123;<br>        <span class="hljs-keyword">if</span>(temp) &#123;<br>            number[i] = temp % <span class="hljs-number">10</span> + <span class="hljs-string">&#x27;0&#x27;</span>;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            number[i] = <span class="hljs-string">&#x27;0&#x27;</span>;<br>        &#125;<br>        temp /= <span class="hljs-number">10</span>;<br>    &#125;<br><br>    <span class="hljs-comment">// 移动光标到(0,0)输出字符</span><br>    stdio.moveCursor(<span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; str[i]; ++i ) &#123;<br>        stdio.print(str[i]);<br>    &#125;<br><br>    <span class="hljs-comment">// 输出中断发生的次数</span><br>    <span class="hljs-keyword">for</span>( <span class="hljs-type">int</span> i = <span class="hljs-number">9</span>; i &gt; <span class="hljs-number">0</span>; --i ) &#123;<br>        stdio.print(number[i]);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 中断处理函数</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="type">void</span> <span class="title function_">c_time_interrupt_handler</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 清空屏幕</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">80</span>; ++i)</span><br><span class="line">    &#123;</span><br><span class="line">        stdio.print(<span class="number">0</span>, i, <span class="string">&#x27; &#x27;</span>, <span class="number">0x07</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出中断发生的次数</span></span><br><span class="line">    ++times;</span><br><span class="line">    <span class="type">char</span> str[] = <span class="string">&quot;interrupt happend: &quot;</span>;</span><br><span class="line">    <span class="type">char</span> number[<span class="number">10</span>];</span><br><span class="line">    <span class="type">int</span> temp = times;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将数字转换为字符串表示</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i ) &#123;</span><br><span class="line">        <span class="keyword">if</span>(temp) &#123;</span><br><span class="line">            number[i] = temp % <span class="number">10</span> + <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            number[i] = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        temp /= <span class="number">10</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 移动光标到(0,0)输出字符</span></span><br><span class="line">    stdio.moveCursor(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; str[i]; ++i ) &#123;</span><br><span class="line">        stdio.print(str[i]);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出中断发生的次数</span></span><br><span class="line">    <span class="keyword">for</span>( <span class="type">int</span> i = <span class="number">9</span>; i &gt; <span class="number">0</span>; --i ) &#123;</span><br><span class="line">        stdio.print(number[i]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><strong>上面这个函数还不完全是一个中断处理函数，因为我们进入中断后需要保护现场，离开中断需要恢复现场</strong>。这里，现场指的是寄存器的内容。但是，C语言并未提供相关指令。最重要的是，中断的返回需要使用<code>iret</code>指令，而C语言的任何函数编译出来的返回语句都是<code>ret</code>。因此，我们<strong>只能在汇编代码中完成保护现场、恢复现场和中断返回</strong></p>
 <p>中断发生后 &#x3D;&gt; CPU跳转到汇编实现的代码 &#x3D;&gt; 使用汇编代码保存寄存器的内容 &#x3D;&gt; 保护现场后，调用 <code>call</code> 指令来跳转到C语言编写的中断函数主题 &#x3D;&gt; C语言函数返回后 &#x3D;&gt; 返回到 <code>call</code> 指令的下一条汇编代码 &#x3D;&gt; 汇报代码中恢复保存的寄存器内容 &#x3D;&gt; <code>iret</code>返回</p>
-<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs x86asm"><span class="hljs-symbol">asm_time_interrupt_handler:</span><br>    <span class="hljs-keyword">pushad</span><br>    <br>    <span class="hljs-keyword">nop</span> <span class="hljs-comment">; 否则断点打不上去</span><br>    <span class="hljs-comment">; 发送EOI消息，否则下一次中断不发生</span><br>    <span class="hljs-keyword">mov</span> <span class="hljs-built_in">al</span>, <span class="hljs-number">0x20</span><br>    <span class="hljs-keyword">out</span> <span class="hljs-number">0x20</span>, <span class="hljs-built_in">al</span><br>    <span class="hljs-keyword">out</span> <span class="hljs-number">0xa0</span>, <span class="hljs-built_in">al</span><br>    <br>    <span class="hljs-keyword">call</span> c_time_interrupt_handler<br><br>    <span class="hljs-keyword">popad</span><br>    <span class="hljs-keyword">iret</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">asm_time_interrupt_handler:</span><br><span class="line">    pushad</span><br><span class="line">    </span><br><span class="line">    nop ; 否则断点打不上去</span><br><span class="line">    ; 发送EOI消息，否则下一次中断不发生</span><br><span class="line">    mov al, 0x20</span><br><span class="line">    out 0x20, al</span><br><span class="line">    out 0xa0, al</span><br><span class="line">    </span><br><span class="line">    call c_time_interrupt_handler</span><br><span class="line"></span><br><span class="line">    popad</span><br><span class="line">    iret</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p><code>pushad</code>指令是将<code>EAX</code>,<code>ECX</code>,<code>EDX</code>,<code>EBX</code>,<code>ESP</code>,<code>EBP</code>,<code>ESI</code>,<code>EDI</code>依次入栈，<code>popad</code>则相反</p>
@@ -895,7 +652,7 @@
 <li><p>设置中断描述符</p>
 </li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">InterruptManager::setTimeInterrupt</span><span class="hljs-params">(<span class="hljs-type">void</span> *handler)</span><br>&#123;<br>    setInterruptDescriptor(IRQ0_8259A_MASTER, (uint32)handler, <span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">InterruptManager::setTimeInterrupt</span><span class="params">(<span class="type">void</span> *handler)</span></span><br><span class="line">&#123;</span><br><span class="line">    setInterruptDescriptor(IRQ0_8259A_MASTER, (uint32)handler, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>封装开启和关闭时钟中断的函数<ul>
@@ -904,7 +661,7 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span> <span class="hljs-title function_">InterruptManager::enableTimeInterrupt</span><span class="hljs-params">()</span><br>&#123;<br>    uint8 value;<br>    <span class="hljs-comment">// 读入主片OCW</span><br>    asm_in_port(<span class="hljs-number">0x21</span>, &amp;value);<br>    <span class="hljs-comment">// 开启主片时钟中断，置0开启</span><br>    value = value &amp; <span class="hljs-number">0xfe</span>;<br>    asm_out_port(<span class="hljs-number">0x21</span>, value);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">InterruptManager::disableTimeInterrupt</span><span class="hljs-params">()</span><br>&#123;<br>    uint8 value;<br>    asm_in_port(<span class="hljs-number">0x21</span>, &amp;value);<br>    <span class="hljs-comment">// 关闭时钟中断，置1关闭</span><br>    value = value | <span class="hljs-number">0x01</span>;<br>    asm_out_port(<span class="hljs-number">0x21</span>, value);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">InterruptManager::enableTimeInterrupt</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    uint8 value;</span><br><span class="line">    <span class="comment">// 读入主片OCW</span></span><br><span class="line">    asm_in_port(<span class="number">0x21</span>, &amp;value);</span><br><span class="line">    <span class="comment">// 开启主片时钟中断，置0开启</span></span><br><span class="line">    value = value &amp; <span class="number">0xfe</span>;</span><br><span class="line">    asm_out_port(<span class="number">0x21</span>, value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">InterruptManager::disableTimeInterrupt</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    uint8 value;</span><br><span class="line">    asm_in_port(<span class="number">0x21</span>, &amp;value);</span><br><span class="line">    <span class="comment">// 关闭时钟中断，置1关闭</span></span><br><span class="line">    value = value | <span class="number">0x01</span>;</span><br><span class="line">    asm_out_port(<span class="number">0x21</span>, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 <h2 id="实验任务"><a href="#实验任务" class="headerlink" title="实验任务"></a>实验任务</h2><h3 id="Assignment-1-混合编程的基本思路"><a href="#Assignment-1-混合编程的基本思路" class="headerlink" title="Assignment 1 混合编程的基本思路"></a>Assignment 1 混合编程的基本思路</h3><p>复现Example 1，结合具体的代码说明C代码调用汇编函数的语法和汇编代码调用C函数的语法。例如，结合代码说明<code>global</code>、<code>extern</code>关键字的作用，为什么C++的函数前需要加上<code>extern &quot;C&quot;</code>等， 结果截图并说说你是怎么做的。同时，学习make的使用，并用make来构建Example 1，结果截图并说说你是怎么做的。</p>
@@ -919,472 +676,67 @@
 </ul>
 </li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs c">uint8 color = <span class="hljs-number">0</span>;<br><span class="hljs-type">int</span> cnt = <span class="hljs-number">0</span>;<br><br><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-type">void</span> <span class="hljs-title function_">c_time_interrupt_handler</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-comment">// 清空屏幕</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">80</span>; ++i) &#123;<br>        stdio.print(<span class="hljs-number">0</span>, i, <span class="hljs-string">&#x27; &#x27;</span>, <span class="hljs-number">0x07</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// 输出中断发生的次数</span><br>    ++times;<br>    <br>    <span class="hljs-type">const</span> <span class="hljs-type">char</span> str[] = <span class="hljs-string">&quot;LQT 23336139&quot;</span>;  <br>    <span class="hljs-type">const</span> <span class="hljs-type">int</span> str_len = <span class="hljs-number">13</span>;  <span class="hljs-comment">// 实际显示长度</span><br>    <span class="hljs-type">char</span> number[<span class="hljs-number">13</span>] = &#123;<span class="hljs-number">0</span>&#125;; <br>    <br>    <span class="hljs-comment">// 正确转换数字为字符串</span><br>    <span class="hljs-type">int</span> temp = times;<br>    <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">do</span> &#123;<br>        number[i++] = temp % <span class="hljs-number">10</span> + <span class="hljs-string">&#x27;0&#x27;</span>;<br>        temp /= <span class="hljs-number">10</span>;<br>    &#125; <span class="hljs-keyword">while</span>(temp &amp;&amp; i &lt; <span class="hljs-number">10</span>);<br>    <br>    <span class="hljs-comment">// 第一行输出</span><br>    stdio.moveCursor(<span class="hljs-number">0</span>);<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; str_len; i++) &#123;<br>        <span class="hljs-keyword">if</span>(i &gt;= cnt &amp;&amp; i &lt; cnt + <span class="hljs-number">3</span> &amp;&amp; cnt + <span class="hljs-number">2</span> &lt; str_len) &#123;<br>            stdio.print(str[i], ++color % <span class="hljs-number">16</span>);<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            stdio.print(str[i]);<br>        &#125;<br>    &#125;<br>    <br>    cnt = (cnt + <span class="hljs-number">1</span>) % (str_len - <span class="hljs-number">2</span>);  <span class="hljs-comment">// 限制cnt范围</span><br>    <br>    <span class="hljs-comment">// 第二行输出</span><br>    <span class="hljs-type">const</span> <span class="hljs-type">char</span> str1[] = <span class="hljs-string">&quot;interrupt happend: &quot;</span>;<br>    stdio.moveCursor(<span class="hljs-number">80</span>);  <span class="hljs-comment">// 第二行开始</span><br>    <br>    <span class="hljs-comment">// 输出前缀字符串</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; str1[i]; i++) &#123;<br>        stdio.print(str1[i]);<br>    &#125;<br>    <br>    <span class="hljs-comment">// 逆序输出数字(从最高位开始)</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = i<span class="hljs-number">-1</span>; j &gt;= <span class="hljs-number">0</span>; j--) &#123;<br>        stdio.print(number[j]);<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">uint8 color = <span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="type">void</span> <span class="title function_">c_time_interrupt_handler</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 清空屏幕</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">80</span>; ++i) &#123;</span><br><span class="line">        stdio.print(<span class="number">0</span>, i, <span class="string">&#x27; &#x27;</span>, <span class="number">0x07</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出中断发生的次数</span></span><br><span class="line">    ++times;</span><br><span class="line">    </span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> str[] = <span class="string">&quot;LQT 23336139&quot;</span>;  </span><br><span class="line">    <span class="type">const</span> <span class="type">int</span> str_len = <span class="number">13</span>;  <span class="comment">// 实际显示长度</span></span><br><span class="line">    <span class="type">char</span> number[<span class="number">13</span>] = &#123;<span class="number">0</span>&#125;; </span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 正确转换数字为字符串</span></span><br><span class="line">    <span class="type">int</span> temp = times;</span><br><span class="line">    <span class="type">int</span> i = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        number[i++] = temp % <span class="number">10</span> + <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">        temp /= <span class="number">10</span>;</span><br><span class="line">    &#125; <span class="keyword">while</span>(temp &amp;&amp; i &lt; <span class="number">10</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 第一行输出</span></span><br><span class="line">    stdio.moveCursor(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; str_len; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(i &gt;= cnt &amp;&amp; i &lt; cnt + <span class="number">3</span> &amp;&amp; cnt + <span class="number">2</span> &lt; str_len) &#123;</span><br><span class="line">            stdio.print(str[i], ++color % <span class="number">16</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            stdio.print(str[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    cnt = (cnt + <span class="number">1</span>) % (str_len - <span class="number">2</span>);  <span class="comment">// 限制cnt范围</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 第二行输出</span></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> str1[] = <span class="string">&quot;interrupt happend: &quot;</span>;</span><br><span class="line">    stdio.moveCursor(<span class="number">80</span>);  <span class="comment">// 第二行开始</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 输出前缀字符串</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; str1[i]; i++) &#123;</span><br><span class="line">        stdio.print(str1[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 逆序输出数字(从最高位开始)</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = i<span class="number">-1</span>; j &gt;= <span class="number">0</span>; j--) &#123;</span><br><span class="line">        stdio.print(number[j]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
 
-<span class="category-chains">
-  
-  
     
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-    <span>></span>
+      <aside class="toc" id="toc" aria-label="目录">
+        <div class="toc-title">目录</div>
+        <nav class="toc-list" id="tocList"></nav>
+      </aside>
     
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS-Labs/" class="category-chain-item">OS_Labs</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
-      
-        <a href="/tags/OS-Labs/" class="print-no-link">#OS_Labs</a>
-      
-    </div>
-  
-</div>
-
-
-              
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>OS_Lab4</div>
-      <div>https://pqcu77.github.io/2025/04/02/OS-Lab4/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>linqt</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2025年4月2日</div>
-        </div>
-      
-      
-      
-        <div class="license-meta-item">
-          <div>许可协议</div>
-          <div>
-            
-              
-              
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-cc-by"></i>
-                  </span>
-                </a>
-              
-            
-          </div>
-        </div>
-      
-    </div>
-    <div class="license-icon iconfont"></div>
   </div>
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2025/04/02/OS-Lab5-updated/" title="OS_Lab5_updated">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">OS_Lab5_updated</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2025/03/29/ubuntu22-04%E5%AE%89%E8%A3%85bcc/" title="ubuntu22.04安装bcc">
-                        <span class="hidden-mobile">ubuntu22.04安装bcc</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-          </article>
-        </div>
-      </div>
+  
+    <div class="post-footer-tags">
+      <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="tag" href="/tags/OS-Labs/">OS_Labs</a>
     </div>
+  
 
-    <div class="side-col d-none d-lg-block col-lg-2">
+  
+    <nav class="post-nav">
       
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>目录</span>
-  </p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
+        <a class="post-nav-item prev" href="/2025/04/10/eBPF-chap3/">
+          <span class="post-nav-label">上一篇</span>
+          <span class="post-nav-title">eBPF-Chap3</span>
+        </a>
+      
+      
+        <a class="post-nav-item next" href="/2025/04/02/OS-Lab5-updated/">
+          <span class="post-nav-label">下一篇</span>
+          <span class="post-nav-title">OS_Lab5_updated</span>
+        </a>
+      
+    </nav>
   
+</article>
 
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-
-    
   </main>
+  <footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-text">
+      
+      
+      
+      
+      © 2025 - 2026 linqt · Powered by Hexo · Theme Ink
+    </p>
+  </div>
+</footer>
 
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  <div class="search-modal" id="searchModal" data-search-path="/search.json" hidden>
+  <div class="search-mask" data-close></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="搜索文章">
+    <div class="search-field">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+      <input type="text" id="searchInput" placeholder="搜索标题、标签、正文…" autocomplete="off" spellcheck="false">
+      <kbd>ESC</kbd>
     </div>
-  
-  
-  
+    <div class="search-results" id="searchResults"></div>
+  </div>
 </div>
 
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
-<script>
-  var relativeDate = function() {
-    var updatedTime = document.getElementById('updated-time');
-    if (updatedTime) {
-      var text = updatedTime.textContent;
-      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
-      var matchs = text.match(reg);
-      if (matchs) {
-        var relativeTime = moment(matchs[0]).fromNow();
-        updatedTime.textContent = text.replace(reg, relativeTime);
-      }
-      updatedTime.style.display = '';
-    }
-  };
-  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
-    if (!'zh-cn'.startsWith('en')) {
-      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
-        relativeDate();
-      });
-    } else {
-      relativeDate();
-    }
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init(Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc));
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-      }
-    });
-  });
-</script>
-
-
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  
-      <script>
-        if (!window.MathJax) {
-          window.MathJax = {
-            tex    : {
-              inlineMath: { '[+]': [['$', '$']] }
-            },
-            loader : {
-              load: ['ui/lazy']
-            },
-            options: {
-              renderActions: {
-                insertedScript: [200, () => {
-                  document.querySelectorAll('mjx-container').forEach(node => {
-                    let target = node.parentNode;
-                    if (target.nodeName.toLowerCase() === 'li') {
-                      target.parentNode.classList.add('has-jax');
-                    }
-                  });
-                }, '', false]
-              }
-            }
-          };
-        } else {
-          MathJax.startup.document.state(0);
-          MathJax.texReset();
-          MathJax.typeset();
-          MathJax.typesetPromise();
-        }
-
-        Fluid.events.registerRefreshCallback(function() {
-          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
-            MathJax.startup.document.state(0);
-            MathJax.texReset();
-            MathJax.typeset();
-            MathJax.typesetPromise();
-          }
-        });
-      </script>
-    
-
-  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
-
-  <script  src="/js/local-search.js" ></script>
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-  
-<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-<script src="/custom/custom.js"></script>
-<script src="/custom/firework.js"></script>
-<script src="/custom/label-page.js"></script>
-<script src="/custom/moving.js"></script>
-<script src="/custom/welcome.css.js"></script>
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  <button class="back-to-top" id="backToTop" aria-label="回到顶部" title="回到顶部">↑</button>
+  <script src="/js/main.js"></script>
 </body>
 </html>
-<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
-<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
-<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
-<script type="text/javascript" src="/custom/firework.js"></script>

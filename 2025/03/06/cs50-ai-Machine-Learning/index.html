@@ -1,319 +1,89 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
+<html lang="zh-CN" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
-  
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="linqt">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="Machine Learning 机器学习为计算机提供数据，而非确切的指令，通过这些数据，计算机学习去识别模式并自行执行  监督学习 监督学习是指计算机基于输入-输出对数据集来学习函数映射。 监督意味着这些数据已经有了确切的标签or分类  分类学习：最近邻居分类 为相关变量分配最近的观察值   比如这张图，根据最近观察值策略，可能会认为他是红色的；然而从更大角度来看，它周围蓝色点居多，我们直觉地认">
-<meta property="og:type" content="article">
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="generator" content="Hexo">
+<title>Cs50-Ai-Machine-Learning · linqt&#39;s blog</title>
+<meta name="description" content="">
+<meta name="author" content="linqt">
+<link rel="icon" href="/img/cute.jpg">
+<link rel="alternate" href="/atom.xml" title="linqt&#39;s blog" type="application/atom+xml">
 <meta property="og:title" content="Cs50-Ai-Machine-Learning">
-<meta property="og:url" content="https://pqcu77.github.io/2025/03/06/cs50-ai-Machine-Learning/index.html">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://pqcu77.github.io/2025/03/06/cs50-ai-Machine-Learning/">
 <meta property="og:site_name" content="linqt&#39;s blog">
-<meta property="og:description" content="Machine Learning 机器学习为计算机提供数据，而非确切的指令，通过这些数据，计算机学习去识别模式并自行执行  监督学习 监督学习是指计算机基于输入-输出对数据集来学习函数映射。 监督意味着这些数据已经有了确切的标签or分类  分类学习：最近邻居分类 为相关变量分配最近的观察值   比如这张图，根据最近观察值策略，可能会认为他是红色的；然而从更大角度来看，它周围蓝色点居多，我们直觉地认">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://pqcu77.github.io/img/nearestneighbor.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/decisionboundary.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/perceptronlearning.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/hardthreshold.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/softthreshold.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/01loss.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/reinforcement.png">
-<meta property="og:image" content="https://pqcu77.github.io/img/qlearning.png">
-<meta property="article:published_time" content="2025-03-06T06:58:57.000Z">
-<meta property="article:modified_time" content="2025-03-10T03:48:27.267Z">
-<meta property="article:author" content="linqt">
-<meta property="article:tag" content="学习笔记">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://pqcu77.github.io/img/nearestneighbor.png">
-  
-  
-    <meta name="referrer" content="no-referrer-when-downgrade">
-  
-  
-  <title>Cs50-Ai-Machine-Learning - linqt&#39;s blog</title>
+<meta name="theme-color" content="#0d1117">
+<link rel="stylesheet" href="/css/main.css">
+<style>
+  :root[data-theme="dark"] { --accent: #7aa2f7; }
+  :root[data-theme="light"] { --accent: #2f6fdb; }
+</style>
+<script>
+  // 避免刷新时主题闪烁
+  (function () {
+    try {
+      var saved = localStorage.getItem('ink-theme');
+      var d = 'dark';
+      var t = (saved === 'light' || saved === 'dark') ? saved
+        : (d === 'auto' ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : d);
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-  
-<link rel="stylesheet" href="/custom/custom.css">
-<link rel="stylesheet" href="/custom/welcome.css">
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-
-  
 </head>
-
-
-<body>
-  
-
-  <header>
-    
-
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>PQCU&#39; blog</strong>
+<body class=" page-post    ">
+  <div class="progress-bar" id="progressBar"></div>
+  <header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a class="site-brand" href="/">
+      PQCU&#39; blog
     </a>
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
+    <nav class="site-nav">
+      
+        <a class="nav-link" href="/archives/">文章</a>
+      
+        <a class="nav-link" href="/categories/">分类</a>
+      
+        <a class="nav-link" href="/tags/">标签</a>
+      
+        <a class="nav-link" href="/about/">关于</a>
+      
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/" target="_self">
-                <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/" target="_self">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/" target="_self">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/" target="_self">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-          </li>
-        
-      </ul>
+      
+        <button class="icon-btn" id="searchBtn" aria-label="搜索" title="搜索 (Ctrl+K)">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+        </button>
+      
+
+      
+        <button class="icon-btn" id="themeToggle" aria-label="切换主题" title="切换明暗">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        </button>
+      
+    </nav>
+  </div>
+</header>
+
+  <main class="container main">
+    
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">Cs50-Ai-Machine-Learning</h1>
+    <div class="post-meta">
+      <time datetime="2025-03-06T06:58:57.000Z">2025-03-06</time>
+      <span class="dot">·</span><span>7314 字</span>
+      <span class="dot">·</span><span>21 分钟</span>
+      <span class="dot">·</span><span>更新于 2025-03-10</span>
     </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="Cs50-Ai-Machine-Learning"></span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-03-06 14:58" pubdate>
-          2025年3月6日 下午
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          <!-- compatible with older versions-->
-          3.7k 字
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          <!-- compatible with older versions-->
-          32 分钟
-        
-      </span>
-    
-
-    
-    
-      
-        <span id="busuanzi_container_page_pv" style="display: none">
-          <i class="iconfont icon-eye" aria-hidden="true"></i>
-          <span id="busuanzi_value_page_pv"></span>次
-        </span>
-        
-
-      
-    
-  </div>
-
-
-        
-      </div>
-
-      
-    </div>
-  </div>
-</div>
-
-</div>
-
   </header>
 
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <h1 id="seo-header">Cs50-Ai-Machine-Learning</h1>
-            
-              <p id="updated-time" class="note note-info" style="display: none">
-                
-                  
-                    本文最后更新于 2025-03-10T11:48:27+08:00
-                  
-                  
-
-                
-              </p>
-            
-            
-              <div class="markdown-body">
-                
-                <h1 id="Machine-Learning"><a href="#Machine-Learning" class="headerlink" title="Machine Learning"></a>Machine Learning</h1><ul>
+  <div class="post-layout">
+    <div class="post-body" id="postBody">
+      <h1 id="Machine-Learning"><a href="#Machine-Learning" class="headerlink" title="Machine Learning"></a>Machine Learning</h1><ul>
 <li>机器学习为计算机提供数据，而非确切的指令，通过这些数据，计算机学习去识别模式并自行执行</li>
 </ul>
 <h2 id="监督学习"><a href="#监督学习" class="headerlink" title="监督学习"></a>监督学习</h2><ul>
@@ -323,7 +93,7 @@
 <h3 id="分类学习：最近邻居分类"><a href="#分类学习：最近邻居分类" class="headerlink" title="分类学习：最近邻居分类"></a>分类学习：最近邻居分类</h3><ul>
 <li>为相关变量分配<strong>最近的观察值</strong></li>
 </ul>
-<p><img src="/img/nearestneighbor.png" srcset="/img/loading.gif" lazyload alt="Nearest Neighbor Classification"></p>
+<p><img src="/img/nearestneighbor.png" alt="Nearest Neighbor Classification"></p>
 <p>比如这张图，根据最近观察值策略，可能会认为他是红色的；然而从更大角度来看，它周围蓝色点居多，我们直觉地认为，蓝色可能是更好的预测，即时最近的观察值是红色的（局限性or不准确）</p>
 <ul>
 <li>优化：k最近邻居分类，根据点最近的k个邻居的值来判断。缺点是需要消耗计算力去测量各个点到相关点的距离。（进一步可以通过剪枝或更符合的数据结构加速）<ul>
@@ -340,7 +110,7 @@
 <li>感知器（perceptron）：单层感知器（包含输入和输出层，且二者直接相连）、多层感知器（多层计算）</li>
 <li>与最近邻策略相反，解决分类问题的另一种方法是将数据作为一个整体来查看，并尝试创建一个<strong>决策边界</strong>–二分类的线性分类模型</li>
 </ul>
-<p><img src="/img/decisionboundary.png" srcset="/img/loading.gif" lazyload alt="Decision Boundary"></p>
+<p><img src="/img/decisionboundary.png" alt="Decision Boundary"></p>
 <p>缺点：数据很混乱，很少能画一条线并将类整齐地划分为两个观测值而没有任何错误。</p>
 <p>将各个参数与对应的权重相乘之后相加，输入到激活函数，通过判断是否超过阈值得到期望。</p>
 <p>例子：</p>
@@ -352,15 +122,15 @@
 </ul>
 </li>
 </ul>
-<p><img src="/img/perceptronlearning.png" srcset="/img/loading.gif" lazyload alt="Perceptron Learning Rule"></p>
+<p><img src="/img/perceptronlearning.png" alt="Perceptron Learning Rule"></p>
 <p>这里的y代表观测值，而h(x)代表估计值，如果他们误差较大，说明要调整这个数据的权重</p>
 <ul>
 <li><p>如果它们<strong>相同</strong>，则整个项等于零，因此<strong>权重不会改变</strong>。如果我们低估了（在观察到 Rain 时调用 No Rain），那么括号中的值将为 1，权重将增加新的值α学习系数。如果我们高估（在观察到 No Rain 时调用 Rain），则括号中的值将为 -1，权重将减少 x 的值，缩放 α。α越高，每个新事件对权重的影响就越大。</p>
 </li>
 <li><p>结果是一个阈值函数，一旦超过设定的值函数值就会发生跳跃</p>
 <ul>
-<li>硬性阈值<img src="/img/hardthreshold.png" srcset="/img/loading.gif" lazyload alt="Hard Threshold"></li>
-<li>软性阈值    <img src="/img/softthreshold.png" srcset="/img/loading.gif" lazyload alt="软阈值"></li>
+<li>硬性阈值<img src="/img/hardthreshold.png" alt="Hard Threshold"></li>
+<li>软性阈值    <img src="/img/softthreshold.png" alt="软阈值"></li>
 </ul>
 </li>
 </ul>
@@ -372,7 +142,7 @@
 <h3 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h3><h4 id="0-1损失函数"><a href="#0-1损失函数" class="headerlink" title="0-1损失函数"></a>0-1损失函数</h4><ul>
 <li>L(预测，损失)：当实际&#x3D;预测，则L&#x3D;0；否则，L&#x3D;1</li>
 </ul>
-<p><img src="/img/01loss.png" srcset="/img/loading.gif" lazyload alt="0-1 Loss Function"></p>
+<p><img src="/img/01loss.png" alt="0-1 Loss Function"></p>
 <ul>
 <li>预测连续值时，可以使用L1和L2损失函数，更加看重每个预测域观测值之间的差异程度。<ul>
 <li>L1：L(实际，预测)&#x3D;|实际-预测|</li>
@@ -386,7 +156,7 @@
 <p>测试我们是否过度拟合模型的一种方法是使用 <strong>Holdout Cross Validation</strong>。在这种技术中，我们将所有数据一分为二：<strong>训练集</strong>和测试<strong>集</strong>。我们在训练集上运行学习算法，然后查看它对测试集中数据的预测能力如何。这里的想法是，通过测试训练中未使用的数据，我们可以衡量学习的泛化程度。</p>
 <p>保持交叉验证的缺点是，我们无法使用一半的数据来训练模型，因为它用于评估目的。解决这个问题的一种方法是使用 <strong>k-Fold\ 交叉验证</strong>。在这个过程中，我们将数据分成 k 个集合。我们运行训练 k 次，每次都省略一个数据集并将其用作测试集。我们最终对模型进行了 k 种不同的评估，我们可以对模型进行平均并估计我们的模型如何泛化而不会丢失任何数据。</p>
 <h3 id="强度学习"><a href="#强度学习" class="headerlink" title="强度学习"></a>强度学习</h3><p>在每次行动过后，agent会得到反馈（正反馈或负反馈</p>
-<p><img src="/img/reinforcement.png" srcset="/img/loading.gif" lazyload alt="Reinforcement Learning"></p>
+<p><img src="/img/reinforcement.png" alt="Reinforcement Learning"></p>
 <h3 id="马尔可夫决策过程"><a href="#马尔可夫决策过程" class="headerlink" title="马尔可夫决策过程"></a>马尔可夫决策过程</h3><ul>
 <li>Set of states <strong>S</strong></li>
 <li>Set of actions <strong>Actions(S)</strong></li>
@@ -397,7 +167,7 @@
 <p>模型从所有估计值等于0开始，当执行作并收到奖励时，该函数会执行两项作：</p>
 <p>1） 它根据当前奖励和预期的未来奖励估计 <strong>Q（s， a）</strong> 的值，以及</p>
 <p> 2） 更新 <strong>Q（s， a）</strong> 以同时考虑旧估计值和新估计值。</p>
-<p><img src="/img/qlearning.png" srcset="/img/loading.gif" lazyload alt="Q 学习公式"></p>
+<p><img src="/img/qlearning.png" alt="Q 学习公式"></p>
 <p>训练强化学习模型的另一种方法是，不是在每次移动时提供反馈，而是在整个过程结束时提供反馈</p>
 <h2 id="非监督学习"><a href="#非监督学习" class="headerlink" title="非监督学习"></a>非监督学习</h2><ul>
 <li>没有人为进行分类，只有输入数据，AI会学习这些数据中的模式</li>
@@ -425,7 +195,7 @@
 </ul>
 </li>
 <li><p>shopping.py文件</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():<br><br>    <span class="hljs-comment"># Check command-line arguments</span><br>    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(sys.argv) != <span class="hljs-number">2</span>:<br>        sys.exit(<span class="hljs-string">&quot;Usage: python shopping.py data&quot;</span>)<br><br>    <span class="hljs-comment"># Load data from spreadsheet and split into train and test sets</span><br>    evidence, labels = load_data(sys.argv[<span class="hljs-number">1</span>])<br>    X_train, X_test, y_train, y_test = train_test_split(<br>        evidence, labels, test_size=TEST_SIZE<br>    )<br><br>    <span class="hljs-comment"># Train model and make predictions</span><br>    model = train_model(X_train, y_train)<br>    predictions = model.predict(X_test)<br>    sensitivity, specificity = evaluate(y_test, predictions)<br><br>    <span class="hljs-comment"># Print results</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Correct: <span class="hljs-subst">&#123;(y_test == predictions).<span class="hljs-built_in">sum</span>()&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;Incorrect: <span class="hljs-subst">&#123;(y_test != predictions).<span class="hljs-built_in">sum</span>()&#125;</span>&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;True Positive Rate: <span class="hljs-subst">&#123;<span class="hljs-number">100</span> * sensitivity:<span class="hljs-number">.2</span>f&#125;</span>%&quot;</span>)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;True Negative Rate: <span class="hljs-subst">&#123;<span class="hljs-number">100</span> * specificity:<span class="hljs-number">.2</span>f&#125;</span>%&quot;</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">def main():</span><br><span class="line"></span><br><span class="line">    # Check command-line arguments</span><br><span class="line">    if len(sys.argv) != 2:</span><br><span class="line">        sys.exit(&quot;Usage: python shopping.py data&quot;)</span><br><span class="line"></span><br><span class="line">    # Load data from spreadsheet and split into train and test sets</span><br><span class="line">    evidence, labels = load_data(sys.argv[1])</span><br><span class="line">    X_train, X_test, y_train, y_test = train_test_split(</span><br><span class="line">        evidence, labels, test_size=TEST_SIZE</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    # Train model and make predictions</span><br><span class="line">    model = train_model(X_train, y_train)</span><br><span class="line">    predictions = model.predict(X_test)</span><br><span class="line">    sensitivity, specificity = evaluate(y_test, predictions)</span><br><span class="line"></span><br><span class="line">    # Print results</span><br><span class="line">    print(f&quot;Correct: &#123;(y_test == predictions).sum()&#125;&quot;)</span><br><span class="line">    print(f&quot;Incorrect: &#123;(y_test != predictions).sum()&#125;&quot;)</span><br><span class="line">    print(f&quot;True Positive Rate: &#123;100 * sensitivity:.2f&#125;%&quot;)</span><br><span class="line">    print(f&quot;True Negative Rate: &#123;100 * specificity:.2f&#125;%&quot;)</span><br></pre></td></tr></table></figure>
 
 
 
@@ -448,7 +218,7 @@
 <p><code>labels</code> 中的每个值应为整数 1（用户完成购买）或 0（否则）。</p>
 <p>例如，第一个证据列表的值应为 <code>[0, 0.0, 0, 0.0, 1, 0.0, 0.2, 0.2, 0.0, 0.0, 1, 1, 1, 1, 1, 1, 0]</code>，第一个标签的值应为 <code>0</code>。</p>
 <p>更加顺序化：</p>
-<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">evidence should be <span class="hljs-keyword">a</span> list <span class="hljs-keyword">of</span> lists, where <span class="hljs-keyword">each</span> list <span class="hljs-keyword">contains</span> <span class="hljs-keyword">the</span><br>    following values, <span class="hljs-keyword">in</span> order:<br>        - Administrative, <span class="hljs-keyword">an</span> integer0<br>        - Administrative_Duration, <span class="hljs-keyword">a</span> floating point number1<br>        - Informational, <span class="hljs-keyword">an</span> integer2<br>        - Informational_Duration, <span class="hljs-keyword">a</span> floating point number3<br>        - ProductRelated, <span class="hljs-keyword">an</span> integer4<br>        - ProductRelated_Duration, <span class="hljs-keyword">a</span> floating point number5<br>        - BounceRates, <span class="hljs-keyword">a</span> floating point number6<br>        - ExitRates, <span class="hljs-keyword">a</span> floating point number7<br>        - PageValues, <span class="hljs-keyword">a</span> floating point number8<br>        - SpecialDay, <span class="hljs-keyword">a</span> floating point number9<br>        - Month, <span class="hljs-keyword">an</span> index <span class="hljs-built_in">from</span> <span class="hljs-number">0</span> (January) <span class="hljs-built_in">to</span> <span class="hljs-number">11</span> (December)<span class="hljs-number">10</span><br>        - OperatingSystems, <span class="hljs-keyword">an</span> integer11<br>        - Browser, <span class="hljs-keyword">an</span> integer12<br>        - Region, <span class="hljs-keyword">an</span> integer13<br>        - TrafficType, <span class="hljs-keyword">an</span> integer14<br>        - VisitorType, <span class="hljs-keyword">an</span> <span class="hljs-keyword">integer</span> <span class="hljs-number">0</span> (<span class="hljs-keyword">not</span> returning) <span class="hljs-keyword">or</span> <span class="hljs-number">1</span> (returning)<span class="hljs-number">15</span><br>        - Weekend, <span class="hljs-keyword">an</span> <span class="hljs-keyword">integer</span> <span class="hljs-number">0</span> (<span class="hljs-keyword">if</span> <span class="hljs-literal">false</span>) <span class="hljs-keyword">or</span> <span class="hljs-number">1</span> (<span class="hljs-keyword">if</span> <span class="hljs-literal">true</span>)<span class="hljs-number">16</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">evidence should be a list of lists, where each list contains the</span><br><span class="line">    following values, in order:</span><br><span class="line">        - Administrative, an integer0</span><br><span class="line">        - Administrative_Duration, a floating point number1</span><br><span class="line">        - Informational, an integer2</span><br><span class="line">        - Informational_Duration, a floating point number3</span><br><span class="line">        - ProductRelated, an integer4</span><br><span class="line">        - ProductRelated_Duration, a floating point number5</span><br><span class="line">        - BounceRates, a floating point number6</span><br><span class="line">        - ExitRates, a floating point number7</span><br><span class="line">        - PageValues, a floating point number8</span><br><span class="line">        - SpecialDay, a floating point number9</span><br><span class="line">        - Month, an index from 0 (January) to 11 (December)10</span><br><span class="line">        - OperatingSystems, an integer11</span><br><span class="line">        - Browser, an integer12</span><br><span class="line">        - Region, an integer13</span><br><span class="line">        - TrafficType, an integer14</span><br><span class="line">        - VisitorType, an integer 0 (not returning) or 1 (returning)15</span><br><span class="line">        - Weekend, an integer 0 (if false) or 1 (if true)16</span><br></pre></td></tr></table></figure>
 
 
 
@@ -494,469 +264,66 @@
 </ul>
 <p>通过这些步骤，你应该能够成功实现 <code>load_data</code>、<code>train_model</code> 和 <code>evaluate</code> 函数。</p>
 
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
+    </div>
 
-<span class="category-chains">
-  
-  
     
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-    <span>></span>
+      <aside class="toc" id="toc" aria-label="目录">
+        <div class="toc-title">目录</div>
+        <nav class="toc-list" id="tocList"></nav>
+      </aside>
     
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/" class="category-chain-item">AI</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="print-no-link">#学习笔记</a>
-      
-    </div>
-  
-</div>
-
-
-              
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>Cs50-Ai-Machine-Learning</div>
-      <div>https://pqcu77.github.io/2025/03/06/cs50-ai-Machine-Learning/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>linqt</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2025年3月6日</div>
-        </div>
-      
-      
-      
-        <div class="license-meta-item">
-          <div>许可协议</div>
-          <div>
-            
-              
-              
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-cc-by"></i>
-                  </span>
-                </a>
-              
-            
-          </div>
-        </div>
-      
-    </div>
-    <div class="license-icon iconfont"></div>
   </div>
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2025/03/11/AI-lab2/" title="AI-Lab2">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">AI-Lab2</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2025/03/05/OS-lab2/" title="OS_lab2">
-                        <span class="hidden-mobile">OS_lab2</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-          </article>
-        </div>
-      </div>
+  
+    <div class="post-footer-tags">
+      <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
     </div>
+  
 
-    <div class="side-col d-none d-lg-block col-lg-2">
+  
+    <nav class="post-nav">
       
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>目录</span>
-  </p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
+        <a class="post-nav-item prev" href="/2025/03/11/AI-lab2/">
+          <span class="post-nav-label">上一篇</span>
+          <span class="post-nav-title">AI-Lab2</span>
+        </a>
+      
+      
+        <a class="post-nav-item next" href="/2025/03/05/OS-lab2/">
+          <span class="post-nav-label">下一篇</span>
+          <span class="post-nav-title">OS_lab2</span>
+        </a>
+      
+    </nav>
   
+</article>
 
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-  
-  
-
-
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
-
-    
   </main>
+  <footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-text">
+      
+      
+      
+      
+      © 2025 - 2026 linqt · Powered by Hexo · Theme Ink
+    </p>
+  </div>
+</footer>
 
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  <div class="search-modal" id="searchModal" data-search-path="/search.json" hidden>
+  <div class="search-mask" data-close></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="搜索文章">
+    <div class="search-field">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+      <input type="text" id="searchInput" placeholder="搜索标题、标签、正文…" autocomplete="off" spellcheck="false">
+      <kbd>ESC</kbd>
     </div>
-  
-  
-  
+    <div class="search-results" id="searchResults"></div>
+  </div>
 </div>
 
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  
-<script>
-  var relativeDate = function() {
-    var updatedTime = document.getElementById('updated-time');
-    if (updatedTime) {
-      var text = updatedTime.textContent;
-      var reg = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2})/;
-      var matchs = text.match(reg);
-      if (matchs) {
-        var relativeTime = moment(matchs[0]).fromNow();
-        updatedTime.textContent = text.replace(reg, relativeTime);
-      }
-      updatedTime.style.display = '';
-    }
-  };
-  Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/moment.min.js', function() {
-    if (!'zh-cn'.startsWith('en')) {
-      Fluid.utils.createScript('https://lib.baomitu.com/moment.js/2.29.4/locale/zh-cn.min.js', function() {
-        relativeDate();
-      });
-    } else {
-      relativeDate();
-    }
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init(Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc));
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-      }
-    });
-  });
-</script>
-
-
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  
-      <script>
-        if (!window.MathJax) {
-          window.MathJax = {
-            tex    : {
-              inlineMath: { '[+]': [['$', '$']] }
-            },
-            loader : {
-              load: ['ui/lazy']
-            },
-            options: {
-              renderActions: {
-                insertedScript: [200, () => {
-                  document.querySelectorAll('mjx-container').forEach(node => {
-                    let target = node.parentNode;
-                    if (target.nodeName.toLowerCase() === 'li') {
-                      target.parentNode.classList.add('has-jax');
-                    }
-                  });
-                }, '', false]
-              }
-            }
-          };
-        } else {
-          MathJax.startup.document.state(0);
-          MathJax.texReset();
-          MathJax.typeset();
-          MathJax.typesetPromise();
-        }
-
-        Fluid.events.registerRefreshCallback(function() {
-          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
-            MathJax.startup.document.state(0);
-            MathJax.texReset();
-            MathJax.typeset();
-            MathJax.typesetPromise();
-          }
-        });
-      </script>
-    
-
-  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
-
-  <script  src="/js/local-search.js" ></script>
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-  
-<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-<script src="/custom/custom.js"></script>
-<script src="/custom/firework.js"></script>
-<script src="/custom/label-page.js"></script>
-<script src="/custom/moving.js"></script>
-<script src="/custom/welcome.css.js"></script>
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  <button class="back-to-top" id="backToTop" aria-label="回到顶部" title="回到顶部">↑</button>
+  <script src="/js/main.js"></script>
 </body>
 </html>
-<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
-<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
-<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
-<script type="text/javascript" src="/custom/firework.js"></script>

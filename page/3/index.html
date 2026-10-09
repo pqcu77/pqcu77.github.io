@@ -1,1023 +1,327 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
+<html lang="zh-CN" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
-  
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="linqt">
-  <meta name="keywords" content="">
-  
-    <meta property="og:type" content="website">
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="generator" content="Hexo">
+<title>linqt&#39;s blog</title>
+<meta name="description" content="">
+<meta name="author" content="linqt">
+<link rel="icon" href="/img/cute.jpg">
+<link rel="alternate" href="/atom.xml" title="linqt&#39;s blog" type="application/atom+xml">
 <meta property="og:title" content="linqt&#39;s blog">
-<meta property="og:url" content="https://pqcu77.github.io/page/3/index.html">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pqcu77.github.io">
 <meta property="og:site_name" content="linqt&#39;s blog">
-<meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="linqt">
-<meta name="twitter:card" content="summary_large_image">
-  
-  
-    <meta name="referrer" content="no-referrer-when-downgrade">
-  
-  
-  <title>linqt&#39;s blog</title>
+<meta name="theme-color" content="#0d1117">
+<link rel="stylesheet" href="/css/main.css">
+<style>
+  :root[data-theme="dark"] { --accent: #7aa2f7; }
+  :root[data-theme="light"] { --accent: #2f6fdb; }
+</style>
+<script>
+  // 避免刷新时主题闪烁
+  (function () {
+    try {
+      var saved = localStorage.getItem('ink-theme');
+      var d = 'dark';
+      var t = (saved === 'light' || saved === 'dark') ? saved
+        : (d === 'auto' ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : d);
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-  
-<link rel="stylesheet" href="/custom/custom.css">
-<link rel="stylesheet" href="/custom/welcome.css">
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"pqcu77.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-
-  
 </head>
-
-
-<body>
-  
-
-  <header>
-    
-
-<div class="header-inner" style="height: 100vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>PQCU&#39; blog</strong>
+<body class="page-home     ">
+  <div class="progress-bar" id="progressBar"></div>
+  <header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a class="site-brand" href="/">
+      PQCU&#39; blog
     </a>
 
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
+    <nav class="site-nav">
+      
+        <a class="nav-link" href="/archives/">文章</a>
+      
+        <a class="nav-link" href="/categories/">分类</a>
+      
+        <a class="nav-link" href="/tags/">标签</a>
+      
+        <a class="nav-link" href="/about/">关于</a>
+      
 
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/" target="_self">
-                <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/" target="_self">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/" target="_self">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/" target="_self">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/" target="_self">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-          </li>
-        
-      </ul>
-    </div>
+      
+        <button class="icon-btn" id="searchBtn" aria-label="搜索" title="搜索 (Ctrl+K)">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+        </button>
+      
+
+      
+        <button class="icon-btn" id="themeToggle" aria-label="切换主题" title="切换明暗">
+          <svg class="icon-sun" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        </button>
+      
+    </nav>
   </div>
-</nav>
+</header>
 
+  <main class="container main">
+    
+
+  <section class="hero">
+    <p class="hero-sub">hello!</p>
+  </section>
+
+
+<section class="list-section">
   
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="找到自己的频率，随性且自由"></span>
-          
-        </div>
-
+<ul class="post-list">
+  
+    <li class="post-item">
+      <div class="post-meta-line">
+        <time class="post-date" datetime="2025-06-18T06:55:22.000Z">2025-06-18</time>
+        
+          <span class="post-cats">
+            <a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS-Labs/">OS_Labs</a>
+          </span>
         
       </div>
-
-      
-        <div class="scroll-down-bar">
-          <i class="iconfont icon-arrowdown"></i>
-        </div>
-      
-    </div>
-  </div>
-</div>
-
-</div>
-
-  </header>
-
-  <main>
-    
-      <div class="container nopadding-x-md">
-        <div id="board"
-          style="margin-top: 0">
-          
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-md-10 m-auto">
-                
-
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/04/29/AI-lab5/" target="_self">
-          AI-Lab5
-        </a>
+      <h2 class="post-title">
+        <a href="/2025/06/18/OS-lab9-update/">OS-Lab9-Update</a>
       </h2>
-
+      <p class="post-excerpt">Project1 malloc&amp;#x2F;free的实现方案二：参考实现 参考、复现、测试并详细分析以下实现思路和代码（70分）。 加分项（30分）：下面的代码没有做线程&amp;#x2F…</p>
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/04/29/AI-lab5/" target="_self">
-        <div>
-          理论内容回顾PyTorch重安装conda（虽然与pytorch没什么大关系）由于我将ai实验移动到ubuntu里来做，所以我重新在这里安装一下conda。（先使用miniconda了） 1wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh 安装完如果发现重启了终端也无法查找到 conda --ver
+        <div class="post-tags">
+          <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="tag" href="/tags/OS-Labs/">OS_Labs</a>
         </div>
-      </a>
-
-      <div class="index-btm post-metas">
+      
+    </li>
+  
+    <li class="post-item">
+      <div class="post-meta-line">
+        <time class="post-date" datetime="2025-06-11T07:27:13.000Z">2025-06-11</time>
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-04-29 14:32" pubdate>
-              2025-04-29
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/" class="category-chain-item">AI</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/AI/">#AI</a>
-            
-              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">#学习笔记</a>
-            
-          </div>
+          <span class="post-cats">
+            <a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS-Labs/">OS_Labs</a>
+          </span>
         
       </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/04/29/ai%E6%96%B0%E6%89%8B%E8%B5%9B%E9%83%A8%E5%88%86%E9%A2%98%E8%A7%A3/" target="_self">
-          Ai新手赛部分题解
-        </a>
+      <h2 class="post-title">
+        <a href="/2025/06/11/OS-lab9/">OS_lab9</a>
       </h2>
-
+      <p class="post-excerpt">Project1 malloc&amp;#x2F;free的实现方案二：参考实现 参考、复现、测试并详细分析以下实现思路和代码（70分）。 加分项（30分）：下面的代码没有做线程&amp;#x2F…</p>
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/04/29/ai%E6%96%B0%E6%89%8B%E8%B5%9B%E9%83%A8%E5%88%86%E9%A2%98%E8%A7%A3/" target="_self">
-        <div>
-          比赛结果：    NS-2025-00 须弥识花大赛 解题报告（Writeup）一、赛题理解与任务目标本次比赛模拟须弥地区的生态危机，任务目标是构建一个具备泛化能力的花卉识别 AI，能够在复杂环境下准确分类多种花卉种类。 从技术角度看，本题实质为一个 多类图像分类任务，即输入为一张图像，输出为其对应的花卉类别标签。该任务可归结为监督学习问题，挑战点在于：  样本环境多变（雨天、晴天、被踩踏等） 类
+        <div class="post-tags">
+          <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="tag" href="/tags/OS-Labs/">OS_Labs</a>
         </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-04-29 11:25" pubdate>
-              2025-04-29
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
+      
+    </li>
   
-  
-    
-      <span class="category-chain">
+    <li class="post-item">
+      <div class="post-meta-line">
+        <time class="post-date" datetime="2025-06-09T08:26:06.000Z">2025-06-09</time>
         
-  <a href="/categories/AI/" class="category-chain-item">AI</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/AI/">#AI</a>
-            
-          </div>
+          <span class="post-cats">
+            <a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/">AI</a>
+          </span>
         
       </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/04/21/AI-Lab4-2/" target="_self">
-          AI-Lab4.2
-        </a>
+      <h2 class="post-title">
+        <a href="/2025/06/09/ai-agent/">Ai-Agent</a>
       </h2>
-
+      <p class="post-excerpt">理论知识agent的定义：大模型时代的 AI Agent &amp;#x3D; LLM × （规划+记忆+工具） Al Agent是一种能够感知环境、进行决策和执行动作的智能实体。 运行过…</p>
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/04/21/AI-Lab4-2/" target="_self">
-        <div>
-          人工神经网络介绍单层感知机 由于M-P神经元模型参数需要事先设定好，为了能够自适应学习出所需要的参数，研究人员就提出了单层感知机(Perceptron) 感知机的基本公式为：y(𝑥)&#x3D;𝑠𝑖𝑔𝑛(𝑤𝑥+𝑏) sign为符号函数，当自变量为正数时取值为1，否则取值为0  多层感知机 包含三个层次：一个输入层，一个或多个中间层(也叫隐藏层，hidden layer) 和一个输出
+        <div class="post-tags">
+          <a class="tag" href="/tags/AI/">AI</a><a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
         </div>
-      </a>
-
-      <div class="index-btm post-metas">
+      
+    </li>
+  
+    <li class="post-item">
+      <div class="post-meta-line">
+        <time class="post-date" datetime="2025-05-21T07:27:13.000Z">2025-05-21</time>
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-04-21 16:25" pubdate>
-              2025-04-21
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/" class="category-chain-item">AI</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/AI/">#AI</a>
-            
-              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">#学习笔记</a>
-            
-          </div>
+          <span class="post-cats">
+            <a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS-Labs/">OS_Labs</a>
+          </span>
         
       </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/04/17/LaTex-learning/" target="_self">
-          LaTex_learning
-        </a>
+      <h2 class="post-title">
+        <a href="/2025/05/21/OS-lab8/">OS_lab8</a>
       </h2>
-
+      <p class="post-excerpt">从内核态到用户态实验概述在本章中，我们首先会简单讨论保护模式下的特权级的相关内容。特权级保护是保护模式的特点之一，通过特权级保护，我们区分了内核态和用户态，从而限制用户态的代码对特…</p>
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/04/17/LaTex-learning/" target="_self">
-        <div>
-          参考资料链接：TEX Live指南2025LaTeX 入门 - OI Wiki 安装 [!NOTE]本文是在windows下的安装记录+vscode配置使用  通过官网进行安装，下载 install-tl-windows.exe ，跟着指令继续做即可 安装好后，需要将bin加入环境变量，此处我是加入 E:\software\texLive2\texlive\2025\bin\windows 到环境
+        <div class="post-tags">
+          <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="tag" href="/tags/OS-Labs/">OS_Labs</a>
         </div>
-      </a>
-
-      <div class="index-btm post-metas">
+      
+    </li>
+  
+    <li class="post-item">
+      <div class="post-meta-line">
+        <time class="post-date" datetime="2025-05-12T08:24:32.000Z">2025-05-12</time>
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-04-17 19:16" pubdate>
-              2025-04-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Latex/" class="category-chain-item">Latex</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">#学习笔记</a>
-            
-              <a href="/tags/Latex/">#Latex</a>
-            
-          </div>
+          <span class="post-cats">
+            <a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/">AI</a>
+          </span>
         
       </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/04/14/AI-lab4/" target="_self">
-          AI-Lab3
-        </a>
+      <h2 class="post-title">
+        <a href="/2025/05/12/AI-lab6/">AI_lab6（未整理，乱七八糟）</a>
       </h2>
-
+      <p class="post-excerpt">深度强化学习传统的RL算法有个很大的问题在于它是一种表格方法，就是根据过去出现过的状态，统计和迭代Q值。 基于表格的方法局限性很大：（对未知的泛化能力弱） 一方面适用的状态和动作空…</p>
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/04/14/AI-lab4/" target="_self">
-        <div>
-          基础知识监督学习与无监督学习监督学习 训练集有标签y 目标是找到能区分正负样本的决策边界，据此拟合一个假设函数 分类问题  无监督学习 训练集的数据不带有标签y 需要根据样本间的相似性对样本集进行聚类，试图使类内差距最小化，类间差距最大化 聚类问题 k-means，密度聚类，层次聚类等    K聚类算法概述：  K-means算法是一种无监督学习方法。 使用一个没有标签的数据集，然后将数据聚类成不
+        <div class="post-tags">
+          <a class="tag" href="/tags/AI/">AI</a><a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
         </div>
-      </a>
-
-      <div class="index-btm post-metas">
+      
+    </li>
+  
+    <li class="post-item">
+      <div class="post-meta-line">
+        <time class="post-date" datetime="2025-05-11T09:05:19.000Z">2025-05-11</time>
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-04-14 17:07" pubdate>
-              2025-04-14
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/" class="category-chain-item">AI</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/AI/">#AI</a>
-            
-              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">#学习笔记</a>
-            
-          </div>
+          <span class="post-cats">
+            <a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS-Labs/">OS_Labs</a>
+          </span>
         
       </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/04/14/Some%20Resources/" target="_self">
-          Some Resources
-        </a>
+      <h2 class="post-title">
+        <a href="/2025/05/11/OS-lab7/">OS_lab7</a>
       </h2>
-
+      <p class="post-excerpt">内存管理实验概述 学习如何使用位图和地址池来管理资源 实现在物理地址空间下的内存管理 学习并开启二级分页机制&amp;#x3D;&amp;gt;实现在虚拟地址空间下的内存管理 基于分页机制，我们可…</p>
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/04/14/Some%20Resources/" target="_self">
-        <div>
-          在线LaTeX公式编辑器-帮助文档
+        <div class="post-tags">
+          <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="tag" href="/tags/OS-Labs/">OS_Labs</a>
         </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-04-14 10:20" pubdate>
-              2025-04-14
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
+      
+    </li>
   
-  
-    
-      <span class="category-chain">
+    <li class="post-item">
+      <div class="post-meta-line">
+        <time class="post-date" datetime="2025-05-07T06:24:33.000Z">2025-05-07</time>
         
-  <a href="/categories/%E8%B5%84%E6%96%99/" class="category-chain-item">资料</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E8%B5%84%E6%96%99/">#资料</a>
-            
-          </div>
+          <span class="post-cats">
+            <a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS-Labs/">OS_Labs</a>
+          </span>
         
       </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/04/10/eBPF-chap3/" target="_self">
-          eBPF-Chap3
-        </a>
+      <h2 class="post-title">
+        <a href="/2025/05/07/OS-Lab6/">OS_Lab6</a>
       </h2>
-
+      <p class="post-excerpt">并发与锁机制实验概述使用硬件支持的原子指令来实现自旋锁SpinLock &amp;#x3D;&amp;gt; 可以用来实现线程互斥然后使用SpinLock来实现信号量，最后使用SpinLock和信…</p>
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/04/10/eBPF-chap3/" target="_self">
-        <div>
-          eBPF程序结构本章展示了eBPF程序从源代码到执行的整个过程中经历的各个阶段  eBPF程序是一组eBPF字节码指令，可以直接使用eBPF字节码编写，但是一般来说使用高级语言编写会更轻松  eBPF 虚拟机 计算机软件实现 以eBPF字节码（由一组指令组成）指令的形式接受程序，这些指令必须转换为在CPU上运行的本地机器指令。  eBPF寄存器 使用10个通用寄存器（0-9） 寄存器10用作栈指针
+        <div class="post-tags">
+          <a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="tag" href="/tags/OS-Labs/">OS_Labs</a>
         </div>
-      </a>
-
-      <div class="index-btm post-metas">
+      
+    </li>
+  
+    <li class="post-item">
+      <div class="post-meta-line">
+        <time class="post-date" datetime="2025-04-29T06:32:13.000Z">2025-04-29</time>
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-04-10 00:00" pubdate>
-              2025-04-10
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS/" class="category-chain-item">OS</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS/eBPF/" class="category-chain-item">eBPF</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">#学习笔记</a>
-            
-              <a href="/tags/OS/">#OS</a>
-            
-              <a href="/tags/eBPF/">#eBPF</a>
-            
-          </div>
+          <span class="post-cats">
+            <a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/">AI</a>
+          </span>
         
       </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/04/02/OS-Lab5-updated/" target="_self">
-          OS_Lab5_updated
-        </a>
+      <h2 class="post-title">
+        <a href="/2025/04/29/AI-lab5/">AI-Lab5</a>
       </h2>
-
+      <p class="post-excerpt">理论内容回顾PyTorch重安装conda（虽然与pytorch没什么大关系）由于我将ai实验移动到ubuntu里来做，所以我重新在这里安装一下conda。（先使用minicond…</p>
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/04/02/OS-Lab5-updated/" target="_self">
-        <div>
-          内核线程实验概述本次实验会学习C语言的可变参数机制的实现方法，然后实现一个简单的printf函数，通过printf()和gdb来帮助debug；同时会实现内核线程（定义PCB；实现基于时钟中断的RR算法）。 实验要求 DDL：2024.5.4 24:00 提交的内容：将3+1（选做）个assignment的代码和实验报告放到压缩包中，命名为“lab5-学号-姓名”，并交到课程邮箱 os_sysu_
+        <div class="post-tags">
+          <a class="tag" href="/tags/AI/">AI</a><a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
         </div>
-      </a>
-
-      <div class="index-btm post-metas">
+      
+    </li>
+  
+    <li class="post-item">
+      <div class="post-meta-line">
+        <time class="post-date" datetime="2025-04-29T03:25:57.000Z">2025-04-29</time>
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-04-02 14:23" pubdate>
-              2025-04-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS-Labs/" class="category-chain-item">OS_Labs</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">#学习笔记</a>
-            
-              <a href="/tags/OS-Labs/">#OS_Labs</a>
-            
-          </div>
+          <span class="post-cats">
+            <a class="chip" href="/categories/AI/">AI</a>
+          </span>
         
       </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/04/02/OS-Lab4/" target="_self">
-          OS_Lab4
-        </a>
+      <h2 class="post-title">
+        <a href="/2025/04/29/ai%E6%96%B0%E6%89%8B%E8%B5%9B%E9%83%A8%E5%88%86%E9%A2%98%E8%A7%A3/">Ai新手赛部分题解</a>
       </h2>
-
+      <p class="post-excerpt">比赛结果： NS-2025-00 须弥识花大赛 解题报告（Writeup）一、赛题理解与任务目标本次比赛模拟须弥地区的生态危机，任务目标是构建一个具备泛化能力的花卉识别 AI，能够…</p>
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/04/02/OS-Lab4/" target="_self">
-        <div>
-          OS_Lab4：中断实验要求 DDL：2024年4月20号 24:00 提交的内容：将4个assignment的代码和实验报告放到压缩包中，命名为“lab4-学号-姓名”，并交到课程并交到课程邮箱 os_sysu_lab@163.com  将实验报告的pdf提交至 http://inbox.weiyun.com/NOKI03hf Example材料的代码放置在src目录下。  实验概述本章会学习：
+        <div class="post-tags">
+          <a class="tag" href="/tags/AI/">AI</a>
         </div>
-      </a>
-
-      <div class="index-btm post-metas">
+      
+    </li>
+  
+    <li class="post-item">
+      <div class="post-meta-line">
+        <time class="post-date" datetime="2025-04-21T08:25:19.000Z">2025-04-21</time>
         
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-04-02 14:23" pubdate>
-              2025-04-02
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/OS-Labs/" class="category-chain-item">OS_Labs</a>
-  
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">#学习笔记</a>
-            
-              <a href="/tags/OS-Labs/">#OS_Labs</a>
-            
-          </div>
+          <span class="post-cats">
+            <a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="chip" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/AI/">AI</a>
+          </span>
         
       </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/03/29/ubuntu22-04%E5%AE%89%E8%A3%85bcc/" target="_self">
-          ubuntu22.04安装bcc
-        </a>
+      <h2 class="post-title">
+        <a href="/2025/04/21/AI-Lab4-2/">AI-Lab4.2</a>
       </h2>
-
+      <p class="post-excerpt">人工神经网络介绍单层感知机 由于M-P神经元模型参数需要事先设定好，为了能够自适应学习出所需要的参数，研究人员就提出了单层感知机(Perceptron) 感知机的基本公式为：y(�…</p>
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/03/29/ubuntu22-04%E5%AE%89%E8%A3%85bcc/" target="_self">
-        <div>
-          WSL2安装BCC_bcc wsl-CSDN博客 遇到问题： 1LD vmlinux BTFIDS vmlinux FAILED: load BTF from vmlinux: No such file or directory make: *** [Makefile:1226: vmlinux] Error 255 make: *** Deleting file &#x27;vmlinux&#x
+        <div class="post-tags">
+          <a class="tag" href="/tags/AI/">AI</a><a class="tag" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a>
         </div>
-      </a>
+      
+    </li>
+  
+</ul>
 
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-03-29 17:08" pubdate>
-              2025-03-29
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-
-
-  <nav aria-label="navigation">
-    <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/2/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><a class="extend next" rel="next" href="/page/4/#board"><i class="iconfont icon-arrowright"></i></a>
-    </span>
+  
+  <nav class="pagination">
+    
+      <a class="page-nav" href="/page/2/">← 更新</a>
+    
+    <span class="page-current">3 / 6</span>
+    
+      <a class="page-nav" href="/page/4/">更早 →</a>
+    
   </nav>
 
 
+</section>
 
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    
+  </main>
+  <footer class="site-footer">
+  <div class="container footer-inner">
+    <p class="footer-text">
+      
+      
+      
+      
+      © 2025 - 2026 linqt · Powered by Hexo · Theme Ink
+    </p>
+  </div>
+</footer>
 
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
+  <div class="search-modal" id="searchModal" data-search-path="/search.json" hidden>
+  <div class="search-mask" data-close></div>
+  <div class="search-panel" role="dialog" aria-modal="true" aria-label="搜索文章">
+    <div class="search-field">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm5 12 4 4"/></svg>
+      <input type="text" id="searchInput" placeholder="搜索标题、标签、正文…" autocomplete="off" spellcheck="false">
+      <kbd>ESC</kbd>
     </div>
+    <div class="search-results" id="searchResults"></div>
   </div>
 </div>
 
-    
-
-    
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
-    </div>
-  
-  
-  
-</div>
-
-  </footer>
-
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
-
-
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-
-  <script  src="/js/local-search.js" ></script>
-
-
-
-
-  
-<script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-<script src="/custom/custom.js"></script>
-<script src="/custom/firework.js"></script>
-<script src="/custom/label-page.js"></script>
-<script src="/custom/moving.js"></script>
-<script src="/custom/welcome.css.js"></script>
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
+  <button class="back-to-top" id="backToTop" aria-label="回到顶部" title="回到顶部">↑</button>
+  <script src="/js/main.js"></script>
 </body>
 </html>
-<!-- <canvas class="fireworks" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></canvas> -->
-<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
-<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
-<script type="text/javascript" src="/custom/firework.js"></script>
