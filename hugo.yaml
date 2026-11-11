@@ -10,14 +10,15 @@ baseURL: 'https://pqcu77.github.io/'
 # 网站标题（浏览器标签页 / SEO 标题）
 title: 'linqt@blogs'
 # 语言代码（中国大陆简体中文）
-languageCode: 'zh-CN'
+locale: 'zh-CN'
 DefaultContentLanguage: 'zh'
 # 中-日-韩语言（影响字数统计与摘要截断）
 hasCJKLanguage: true
 # 主题名称（必须对应 themes/PaperMod）
 theme: PaperMod
 # 每页显示的文章数量
-paginate: 5
+pagination:
+pagerSize: 10
 
 # 是否生成 robots.txt
 enableRobotsTXT: true
@@ -213,7 +214,7 @@ privacy:
     disabled: true
     enableDNT: true
     simple: true
-  twitter:
+  x:
     disabled: true
     enableDNT: true
     simple: true
@@ -227,5 +228,5 @@ privacy:
 services:
   instagram:
     disableInlineCSS: true
-  twitter:
+  x:
     disableInlineCSS: true
