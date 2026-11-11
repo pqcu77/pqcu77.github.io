@@ -1,0 +1,231 @@
+# ============================================================
+#  linqt@blogs  —  Hugo + PaperMod 配置
+#  站点地址: https://pqcu77.github.io
+#  仓库地址: https://github.com/pqcu77/pqcu77.github.io
+# ============================================================
+
+# ---------- 站点基础 ----------
+# 起始 URL（用户站点 = 根路径，结尾必须带 /）
+baseURL: 'https://pqcu77.github.io/'
+# 网站标题（浏览器标签页 / SEO 标题）
+title: 'linqt@blogs'
+# 语言代码（中国大陆简体中文）
+languageCode: 'zh-CN'
+DefaultContentLanguage: 'zh-CN'
+# 中-日-韩语言（影响字数统计与摘要截断）
+hasCJKLanguage: true
+# 主题名称（必须对应 themes/PaperMod）
+theme: PaperMod
+# 每页显示的文章数量
+paginate: 5
+
+# 是否生成 robots.txt
+enableRobotsTXT: true
+# 是否启用 Emoji（:smile: 写法）
+enableEmoji: true
+# 是否读取 Git 信息（true 则显示"最后修改时间"，需 CI 拉取完整历史）
+enableGitInfo: false
+
+# 内容构建开关
+buildDrafts: false      # 是否构建草稿
+buildFuture: false      # 是否构建未来日期的文章
+buildExpired: false     # 是否构建已过期文章
+
+# 压缩输出静态文件
+minify:
+  minifyOutput: true
+
+
+# ============================================================
+#  全局参数
+# ============================================================
+params:
+  # ---- SEO / 元信息 ----
+  title: 'linqt@blogs'
+  description: 'linqt 的技术博客，记录学习、开发与折腾日常'
+  # 关键词（主流搜索引擎已基本不参考，可留空）
+  # keywords: [Blog, Hugo, PaperMod, 技术笔记]
+  author: 'linqt'
+  # 多作者写法: ["linqt", "guest"]
+  # OpenGraph / Twitter Card 分享预览图（放 static/ 下，建议 1200x630）
+  # 文件不存在就注释掉，否则分享时 404
+  # images: ['opengraph.webp']
+  # 日期格式（Go 的参考时间，勿改数字）
+  DateFormat: '2006-01-02'
+
+  # ---- 外观 ----
+  defaultTheme: auto        # auto / dark / light
+  disableThemeToggle: false # 是否隐藏主题切换按钮
+
+  # ---- 文章页元素 ----
+  ShowReadingTime: true     # 阅读时长
+  ShowWordCount: true       # 字数统计
+  ShowShareButtons: true    # 分享按钮
+  ShowPostNavLinks: true    # 上/下一篇导航
+  ShowBreadCrumbs: true     # 面包屑
+  ShowCodeCopyButtons: true # 代码复制按钮（技术博客建议开）
+  ShowRssIconInSectionTermList: true  # 列表页显示 RSS 图标（PaperMod 正确字段名）
+
+  # ---- 文章目录 ----
+  showtoc: true             # 文章内显示目录
+  tocopen: false            # 是否默认展开
+  UseHugoToc: true          # 用 Hugo 原生 TOC 渲染
+
+  # ---- 显示开关 ----
+  hidemeta: false           # 隐藏文章 Meta 信息
+  hideSummary: false        # 隐藏文章摘要
+  disableScrollToTop: false # 禁用"回到顶部"
+  comments: false           # 评论系统（接入 Artalk/Twikoo 时再开）
+
+  # ---- Favicon ----
+  # 图标文件放 static/ 后取消注释；没有就整段保持注释，
+  # 浏览器会自动使用 static/favicon.ico 或忽略。
+  # 注意：这里填的是完整 <link> 标签，不是纯 URL！
+  # assets:
+  #   favicon: '<link rel="icon" href="/favicon.ico">'
+  #   favicon16x16: '<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">'
+  #   favicon32x32: '<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">'
+  #   apple_touch_icon: '<link rel="apple-touch-icon" href="/apple-touch-icon.png">'
+  #   safari_pinned_tab: '<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">'
+
+  # ---- 导航栏左侧标识 ----
+  label:
+    text: 'linqt@blogs'     # 纯文字 Logo（与 title 保持一致）
+    # icon: /apple-touch-icon.png   # 有图标再开，否则导航栏裂图
+    iconHeight: 35
+
+  # ---- 首页：信息模式（默认，展示一段自我介绍）----
+  homeInfoParams:
+    Title: "Hi there 👋"
+    Content: "欢迎来到 linqt@blogs，这里记录我的学习笔记、开发实践与各种折腾。"
+
+  # ---- 首页：个人信息模式（与上面二选一，启用后覆盖信息模式）----
+  profileMode:
+    enabled: false
+    # title: linqt
+    # subtitle: '写代码，也写点别的'
+    # imageUrl: 'img/avatar.png'
+    # imageWidth: 120
+    # imageHeight: 120
+    # imageTitle: linqt
+    # buttons:
+    #   - name: 文章
+    #     url: posts
+    #   - name: 标签
+    #     url: tags
+
+  # ---- 社交图标 ----
+  socialIcons:
+    - name: github
+      url: 'https://github.com/pqcu77'
+    # 需要别的就解开，名字必须是 PaperMod 内置支持的：
+    # - name: rss
+    #   url: /index.xml
+    # - name: email
+    #   url: 'mailto:your@email.com'
+    # - name: bilibili
+    #   url: 'https://space.bilibili.com/xxxxxx'
+
+  # ---- 站长验证（部署后在各站长平台获取）----
+  analytics:
+    google:
+      SiteVerificationTag: ''
+    bing:
+      SiteVerificationTag: ''
+    yandex:
+      SiteVerificationTag: ''
+
+  # ---- 文章封面图 ----
+  cover:
+    hidden: false           # 是否全局隐藏
+    hiddenInList: false     # 是否在列表页/首页隐藏
+    hiddenInSingle: false   # 是否在文章页隐藏
+
+  # ---- "在 GitHub 上编辑本文" ----
+  editPost:
+    URL: 'https://github.com/pqcu77/pqcu77.github.io/edit/main/content'
+    Text: '在 GitHub 上编辑'
+    appendFilePath: true    # 自动拼接当前文件路径
+
+  # ---- 站内搜索（Fuse.js 参数）----
+  # 参考 https://fusejs.io/api/options.html
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    keys: ['title', 'permalink', 'summary', 'content']
+
+
+# ============================================================
+#  顶部导航栏
+# ============================================================
+menu:
+  main:
+    - identifier: posts
+      name: 文章
+      url: /posts/
+      weight: 1
+    - identifier: archives
+      name: 归档
+      url: /archives/
+      weight: 10
+    - identifier: categories
+      name: 分类
+      url: /categories/
+      weight: 20
+    - identifier: tags
+      name: 标签
+      url: /tags/
+      weight: 30
+    - identifier: search
+      name: 搜索
+      url: /search/
+      weight: 40
+    - identifier: repo
+      name: 仓库
+      url: https://github.com/pqcu77/pqcu77.github.io
+      weight: 50
+
+
+# ============================================================
+#  代码高亮（Chroma）
+#  文档: https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#using-hugos-syntax-highlighter-chroma
+# ============================================================
+pygmentsUseClasses: true
+markup:
+  highlight:
+    noClasses: false
+    guessSyntax: true       # 未标注语言时自动识别
+    lineNos: true           # 显示行号
+    # anchorLineNos: true   # 行号可作为锚点跳转
+    # codeFences: true
+    style: monokai          # 配色，可选: github / monokai / dracula / one-dark 等
+
+
+# ============================================================
+#  隐私合规（嵌入第三方内容时生效，当前未使用可整段删除）
+# ============================================================
+privacy:
+  vimeo:
+    disabled: true
+    enableDNT: true
+    simple: true
+  twitter:
+    disabled: true
+    enableDNT: true
+    simple: true
+  instagram:
+    disabled: true
+    simple: true
+  youtube:
+    disabled: true
+    privacyEnhanced: true
+
+services:
+  instagram:
+    disableInlineCSS: true
+  twitter:
+    disableInlineCSS: true
