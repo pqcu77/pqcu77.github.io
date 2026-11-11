@@ -1,3 +1,0 @@
-User-agent: *
-Disallow:
-Sitemap: https://pqcu77.github.io/sitemap.xml
